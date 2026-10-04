@@ -22,7 +22,8 @@
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
     "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
-    "qa:media": "node scripts/qa-media-architecture.mjs"
+    "qa:media": "node scripts/qa-media-architecture.mjs",
+    "qa:photos": "node scripts/qa-photo-integrity.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
