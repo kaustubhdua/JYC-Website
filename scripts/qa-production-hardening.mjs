@@ -43,6 +43,10 @@ for(const fn of ['supabase/functions/admin-management/index.ts','supabase/functi
 
 const config=read('supabase/config.toml');
 if(!config.includes('[functions.error-report]')||!config.includes('verify_jwt = false')) failures.push('public error-report Edge Function is not configured');
+const errorReport=read('supabase/functions/error-report/index.ts');
+if(!errorReport.includes("const originAllowed=origin &&")||!errorReport.includes("new TextEncoder().encode(raw).byteLength>18000")) failures.push('error-report must reject untrusted origins and oversized bodies before parsing');
+const adminManagement=read('supabase/functions/admin-management/index.ts');
+if(!adminManagement.includes("new TextEncoder().encode(raw).byteLength > 20000")) failures.push('admin-management must bound the raw request body before JSON parsing');
 
 const main=read('src/main.jsx');
 const project=read('src/v14-final-platform.jsx');
