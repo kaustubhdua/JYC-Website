@@ -62,7 +62,7 @@ if(!pushHardening.includes('drop policy if exists "Anonymous devices can refresh
 const grants=read('supabase/migrations/202610040020_revoke_api_truncate_privileges.sql');
 if(!grants.includes('revoke truncate on all tables in schema public from anon, authenticated')||!grants.includes('revoke truncate on all tables in schema storage from anon, authenticated')) failures.push('browser TRUNCATE privileges must be revoked from public and storage tables');
 const securityTests=read('supabase/tests/database/jyc_security_rls.test.sql');
-if(!securityTests.includes('select plan(22);')||!securityTests.includes("all public SECURITY DEFINER functions pin an empty search_path")||!securityTests.includes("anon cannot upload directly to Storage")) failures.push('database security regression suite is out of sync with hardened function/storage ACLs');
+if(!securityTests.includes('select plan(20);')||!securityTests.includes("all public SECURITY DEFINER functions pin an empty search_path")||(!securityTests.includes("anon cannot upload directly to Storage")&&!securityTests.includes("Storage has no client mutation policies"))) failures.push('database security regression suite is out of sync with hardened function/storage ACLs');
 const internalRateLimits=read('supabase/migrations/202610040021_revoke_internal_rate_limit_api_access.sql');
 if(!internalRateLimits.includes('revoke all on table public.jyc_ai_rate_limits, public.jyc_error_rate_limits, public.jyc_public_submission_rate_limits, public.jyc_registration_rate_limits from anon, authenticated')) failures.push('internal rate-limit tables must not be exposed to API roles');
 
