@@ -1,6 +1,8 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current release: V52 — final club-only production release**
+> **Current release: V52 — final club-only production release
+
+> Final QA validation pass: October 4, 2026**
 
 The official public website for **JIIT Youth Club (JYC), JIIT Wish Town Campus, Sector 128, Noida**.
 
