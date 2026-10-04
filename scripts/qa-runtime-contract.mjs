@@ -16,6 +16,8 @@ for(const n of names){const ok=exports.has(n);console.log(`${ok?'PASS':'FAIL'}: 
 const required=['EventTools','DownloadICS'];
 for(const n of required){const ok=exports.has(n);console.log(`${ok?'PASS':'FAIL'}: runtime-critical export ${n}`);if(!ok)failed++}
 const source=fs.readFileSync(path.join(root,'src/main.jsx'),'utf8');
+const media=fs.readFileSync(path.join(root,'src/jyc-source-media.js'),'utf8');
+const next=fs.readFileSync(path.join(root,'src/jyc-next-experience.jsx'),'utf8');
 const metaOriginOk=extra.includes("export function usePageMeta")&&extra.includes("const origin=(import.meta.env.VITE_SITE_URL||window.location.origin)");
 console.log((metaOriginOk ? "PASS" : "FAIL")+": usePageMeta resolves a site origin before building canonical/OG URLs");
 if(!metaOriginOk)failed++;
@@ -27,5 +29,12 @@ const modalA11yOk=extra.includes("export function GalleryItems")&&extra.includes
 console.log((modalA11yOk ? "PASS" : "FAIL")+": gallery lightbox keeps keyboard focus inside the modal");
 if(!modalA11yOk)failed++;
 for(const [label,needle] of [['Fest Mode fallback',':[]'],['Recruitment homepage gate','recruitmentEnabled(data)'],['Contact route',"clean==='/contact'"]]){const ok=source.includes(needle);console.log(`${ok?'PASS':'FAIL'}: ${label}`);if(!ok)failed++}
+const curationOk=media.includes('ARCHIVE_VISUAL_SUBJECTS')&&media.includes('ARCHIVE_EDITORIAL_ORDER')&&media.includes('curateArchivePhotos')&&next.includes('curateArchivePhotos(JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,36)');
+console.log((curationOk ? "PASS" : "FAIL")+": source archive media has an explicit editorial curation layer and the homepage photo story uses it");
+if(!curationOk)failed++;
+const eventArchiveOk=media.includes("Dron-O-War")&&media.includes("p5-event-")&&media.includes("CodeAI Hackathon")&&media.includes("RIDE Hack");
+console.log((eventArchiveOk ? "PASS" : "FAIL")+": event media can use strongly source-named archive material without inventing event associations");
+if(!eventArchiveOk)failed++;
+
 if(failed)process.exit(1);
 console.log('Runtime contract QA complete.');
