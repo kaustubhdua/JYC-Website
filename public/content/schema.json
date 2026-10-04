@@ -4,8 +4,6 @@
     "club": ["id","name","type","category","description","interests","published","status","recruitment","auditions","socials"],
     "event": ["id","title","clubId","date","start","end","venue","description","registrationMode","registrationUrl","published","archived"],
     "person": ["id","name","role","bio","photo","published"],
-    "album": ["id","name","coverUrl","published"],
-    "certificate": ["id","recipient","event","date","title","description"],
-    "location": ["id","name","type","description","mapUrl"]
+    "album": ["id","name","coverUrl","published"]
   }
 }
