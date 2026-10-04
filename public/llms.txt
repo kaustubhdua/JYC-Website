@@ -2,7 +2,7 @@
 
 JIIT Youth Club 128 is the student-led central coordinating body for major college events, fests and inter-society activities at JIIT Wish Town Campus, Sector 128, Noida.
 
-The public website is the official organisational source for published JYC information: identity, leadership, clubs and hubs, events, achievements, announcements, gallery/memories and contact.
+The public website is the official organisational source for published JYC information: identity, leadership, history, clubs and hubs, events, fests, achievements, announcements, gallery/memories, archive, recruitment and contact.
 
 ## Core public pages
 
@@ -17,8 +17,11 @@ The public website is the official organisational source for published JYC infor
 - /gallery — official event and club memories
 - /achievements — documented JYC achievements
 - /announcements — official JYC notices, registrations, results and updates
-- /join-jyc — recruitment destination; currently Coming Soon unless an official cycle is published
+- /recruitment — official recruitment / Join JYC destination; published cycles appear when JYC opens them
+- /calendar — JYC event calendar only
+- /archive — JYC historical and visual archive
 - /contact — official contact channels and query form
+- /updates — JYC Now / verified recent updates
 
 ## Canonical content rule
 
@@ -41,3 +44,8 @@ LinkedIn: JIIT Youth Club
 
 
 Public website: Home, About, History, Clubs, Events, Event Calendar, Fests, Gallery, Leadership, Archive, Recruitment, Announcements/JYC Now and Contact. Academic utilities, My JYC, student accounts, attendance, passes, certificates and campus utilities are outside scope.
+
+
+## Release boundary
+
+V52 is a club-only public website. Academic calendars, student accounts, attendance, passes, certificates, campus utilities and student-help workflows are outside the public product.
