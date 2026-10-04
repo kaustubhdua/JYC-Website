@@ -151,6 +151,59 @@ const EVENT_ALIASES={
   'TechTonic 2.0':['TechTonic 2.0','TechTonic']
 };
 const token=v=>normalise(v);
+const ARCHIVE_VISUAL_SUBJECTS={
+  'clubs/abhivyakti':'theatre · performance · student community',
+  'clubs/arcadia':'community · visual culture',
+  'clubs/aura':'community · campus life',
+  'clubs/bds':'community · campus life',
+  'clubs/cicr':'robotics · creative technology · projects',
+  'clubs/cine-film':'film · camera · media',
+  'clubs/cypherx':'cybersecurity · infosec · workshops',
+  'clubs/dronotics':'drones · engineering · competition',
+  'clubs/eloquence':'literary · speaking · culture',
+  'clubs/innovation':'innovation · hackathons · workshops',
+  'clubs/jodc':'open source · programming · developer community',
+  'clubs/jsa':'student community · service',
+  'clubs/neural-nexus':'AI · learning · technology',
+  'clubs/panache':'fashion · photography · visual culture',
+  'clubs/prismatic':'graphic design · visual art',
+  'clubs/rph':'coding · hackathons · career',
+  'clubs/vamunique':'fashion · dance · culture',
+  'clubs/zencoders':'programming · people · developer community',
+  'festivals/aakriti':'festivals · art · campus culture',
+  'gallery/campus-events':'campus life · people · stages · talks',
+  'sports':'sports · competition · campus life'
+};
+const ARCHIVE_EDITORIAL_ORDER=[
+  'gallery/campus-events','festivals/aakriti','clubs/abhivyakti','clubs/dronotics',
+  'clubs/innovation','sports','clubs/panache','clubs/zencoders','clubs/neural-nexus',
+  'clubs/cicr','clubs/jodc','clubs/rph','clubs/vamunique','clubs/prismatic',
+  'clubs/cypherx','clubs/cine-film','clubs/eloquence','clubs/arcadia','clubs/aura','clubs/bds','clubs/jsa'
+];
+const archiveCategory=item=>String(item?.category||'').trim();
+const archiveSubject=item=>ARCHIVE_VISUAL_SUBJECTS[archiveCategory(item)]||'JYC visual archive';
+const curateArchivePhotos=(items=[],limit=36)=>{
+  const photos=(Array.isArray(items)?items:[]).filter(item=>item?.mediaKind==='photo'&&item?.url);
+  const buckets=new Map(ARCHIVE_EDITORIAL_ORDER.map(category=>[category,[]]));
+  const overflow=[];
+  photos.forEach(item=>{const category=archiveCategory(item);if(buckets.has(category))buckets.get(category).push(item);else overflow.push(item)});
+  const out=[]; let depth=0;
+  while(out.length<limit){
+    let added=false;
+    for(const category of ARCHIVE_EDITORIAL_ORDER){
+      const item=buckets.get(category)?.[depth];
+      if(item){out.push(item);added=true;if(out.length>=limit)break;}
+    }
+    if(!added)break;
+    depth++;
+  }
+  if(out.length<limit)overflow.slice(0,limit-out.length).forEach(item=>out.push(item));
+  return out.map(item=>({...item,subject:item.subject||archiveSubject(item)}));
+};
+export const JYC_ARCHIVE_EDITORIAL_SUBJECTS=ARCHIVE_VISUAL_SUBJECTS;
+export const JYC_ARCHIVE_EDITORIAL_ORDER=ARCHIVE_EDITORIAL_ORDER;
+export {curateArchivePhotos};
+
 const EVENT_ASSOCIATIONS=new Map(Object.entries(EVENT_ALIASES).flatMap(([event,aliases])=>aliases.map(alias=>[normalise(alias),event])));
 const sourceEventAlias=name=>{
   const key=normalise(name);
@@ -194,7 +247,15 @@ export function sourceEventMedia(eventOrName){
     const association=normalise(item.association);
     return association===normalise(alias)||EVENT_ALIASES[alias]?.some(a=>association===normalise(a));
   }):[];
-  const items=[...exact,...related].map(enrichMediaItem).filter(Boolean);
+  // Only use archive-level event associations when the source package names the event/collection
+  // strongly enough to avoid mislabelling unrelated campus photography.
+  const archiveEventRules={
+    'Dron-O-War':item=>item.category==='clubs/dronotics'&&/(p5-event-|p4-image72[8-9]|p4-image73[0-3]|p4-image74[3-4])/i.test(item.sourcePath||''),
+    'CodeAI Hackathon':item=>item.category==='clubs/innovation'&&/p[34]-image70[3-7]|p5-DSC03/i.test(item.sourcePath||''),
+    'RIDE Hack\'26':item=>item.category==='clubs/innovation'&&/p5-DSC03/i.test(item.sourcePath||'')
+  };
+  const archiveRelated=alias&&archiveEventRules[alias]?JYC_SOURCE_ARCHIVE_CATALOG.filter(archiveEventRules[alias]):[];
+  const items=[...exact,...related,...archiveRelated].map(enrichMediaItem).filter(Boolean);
   const seen=new Set();
   return {
     name:name||alias||'JYC',
@@ -202,7 +263,7 @@ export function sourceEventMedia(eventOrName){
     items:items.filter(item=>{if(seen.has(item.url))return false;seen.add(item.url);return true})
   };
 }
-export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,sourcePhotography:SOURCE_GALLERY.filter(item=>mediaKind(item)==='photo').length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length};
+export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,sourcePhotography:SOURCE_GALLERY.filter(item=>mediaKind(item)==='photo').length,archivePhotography:JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length,editorialSubjects:Object.keys(ARCHIVE_VISUAL_SUBJECTS).length};
 
 export function buildJycMediaManifest(gallery=[]){
   const merged=[...mergeSourceGallery(gallery)].reduce((acc,item)=>{const key=String(item?.url||item?.id||'');if(key&&!acc.some(x=>String(x?.url||x?.id||'')===key))acc.push(item);return acc},[]);
