@@ -32,6 +32,11 @@ export default defineConfig({
               priority: 25
             },
             {
+              name: 'jyc-archive-data',
+              test: /[\\/]src[\\/](?:source-archive-index|jyc-source-archive|jyc-source-media)\.js$/,
+              priority: 35
+            },
+            {
               name: 'vendor',
               test: /node_modules[\\/]/,
               priority: 10,
