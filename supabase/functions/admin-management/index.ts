@@ -40,7 +40,11 @@ Deno.serve(async (req) => {
     if (!caller?.is_active) return json({ error: 'Administrator access is inactive.' }, 403, origin)
 
     const contentLength = Number(req.headers.get('Content-Length') || 0)
-    const body = await req.json()
+    if (contentLength > 20000) return json({ error: 'Request is too large.' }, 413, origin)
+    const raw = await req.text()
+    if (new TextEncoder().encode(raw).byteLength > 20000) return json({ error: 'Request is too large.' }, 413, origin)
+    let body: any
+    try { body = JSON.parse(raw) } catch { return json({ error: 'Invalid JSON request.' }, 400, origin) }
 
     if (body.action === 'health') {
       const { error: dbError } = await adminClient.from('jyc_admins').select('user_id').limit(1)
@@ -48,8 +52,6 @@ Deno.serve(async (req) => {
     }
 
     if (caller.role !== 'super_admin') return json({ error: 'Only Super Admin can manage administrators.' }, 403, origin)
-    if (contentLength > 20000) return json({ error: 'Request is too large.' }, 413, origin)
-
     if (body.action === 'list') {
       const { data, error } = await adminClient.from('jyc_admins').select('user_id,role,display_name,is_active,club_id').order('display_name')
       if (error) throw error
