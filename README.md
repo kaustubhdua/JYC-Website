@@ -1,6 +1,6 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current direction: V47 — JYC identity, history & community editorial experience**
+> **Current direction: V51 — final club-only public website**
 
 The official public website for **JIIT Youth Club (JYC), JIIT Wish Town Campus, Sector 128, Noida**.
 
@@ -18,16 +18,15 @@ JYC 128 is the central coordinating body for major college events, fests and int
 - Clubs & Hubs
 - Gallery
 - Achievements
-- Announcements
-- JYC Now — verified recent public updates from JYC and published hubs
-- Join JYC — Coming Soon until an official cycle is published
+- Announcements / JYC Now
+- Recruitment / Join JYC
 - Contact
 
 ### Public journey
 
 **Identity → About → Leadership → Clubs → Events → Event Details → Results / Achievements → Gallery / Memories → Contact**
 
-This is **not** an academic portal, attendance/schedule portal, student-help portal, campus utility dashboard or social-network clone.
+This is **not** an academic portal, student-help portal, attendance/check-in system, event-pass/certificate system, student account area, campus utility dashboard or social-network clone.
 
 ## Benchmark direction
 
@@ -249,3 +248,12 @@ Provider credentials must never use a `VITE_` prefix or appear in browser code.
 **V49 — Production Finish** is the current release candidate. It adds the final interaction layer, mobile resilience, fail-closed JYC Now synchronization, connector versioning, and the production-finish QA contract.
 
 See RELEASE-V49-PRODUCTION-FINISH.md.
+
+
+## V51 final product boundary
+
+The public product is intentionally limited to the JYC organisational website: **Home, About, History, Clubs/Hubs, Club detail, Events, Event detail, Fest experiences, Gallery, Leadership/Team, Archive, Recruitment, Announcements/JYC Now and Contact**. A small **JYC Event Calendar** is retained only as an event-discovery view; it contains JYC events, not academic dates or campus utilities.
+
+Legacy student-platform destinations such as My JYC, account sign-in, planner, notifications, QR utilities, projects, settings and native event-registration flows are no longer part of the public journey and redirect to the appropriate club website destination. The private Control Center remains available only for authorised JYC publishing operations.
+
+The visual direction is deliberately editorial: JYC beige, black and white, real supplied JYC photography, compact layouts, strong typography and restrained motion. Decorative starfields, assistant/chat surfaces, intrusive event popups and portal-style UI are not mounted in the public shell.
