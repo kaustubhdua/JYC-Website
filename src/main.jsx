@@ -90,8 +90,6 @@ function publicDemoData(){
  return mergePublicFallback(norm({...empty,clubs,events:PUBLIC_EVENT_FALLBACK,gallery:PUBLIC_GALLERY_FALLBACK,team:PUBLIC_TEAM_FALLBACK,homepage:{...empty.homepage,activities:PUBLIC_ACTIVITIES}}));
 }
 import { normalizeSearch, rankSearchResults } from './lib/search.js';
-import {JYCBot} from './jyc-bot.jsx';
-import {FeaturedEventPopup} from './featured-event-popup.jsx';
 import {CREATOR,JYC_CONTACTS} from './lib/site-config.js';
 
 import {MomentsSection} from './v14-platform.jsx';
