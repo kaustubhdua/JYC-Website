@@ -1,7 +1,7 @@
 // JYC V1 public experience contract.
 // Keep navigation, discovery labels and filters here so page components stay focused on rendering.
 export const JYC_PUBLIC_ROUTES=[
-  ['About','/about'],['History','/history'],['Clubs','/clubs'],['Events','/events'],['Gallery','/gallery'],['Leadership','/leadership'],['Contact','/contact']
+  ['About','/about'],['History','/history'],['Clubs','/clubs'],['Events','/events'],['Gallery','/gallery'],['Leadership','/team'],['Archive','/archive'],['Recruitment','/recruitment'],['Announcements','/announcements'],['Event Calendar','/calendar'],['Contact','/contact']
 ];
 
 export const JYC_EVENT_CATEGORIES=['All','Cultural','Technical','Literary','Sports','Management','Social','Creative'];
@@ -31,7 +31,7 @@ export const JYC_OFFICIAL_SITE_SCOPE=Object.freeze({
   campus:'JIIT Wish Town Campus · Sector 128, Noida',
   purpose:'Official organisational website for JYC 128 identity, leadership, clubs, events, history, gallery, recruitment, announcements and contact.',
   excludedPublicProductTypes:['academic portal','student help portal','attendance/check-in system','event pass/certificate system','campus utility dashboard','student account area','social network'],
-  publicJourney:['identity','about','history','leadership','clubs','events','event-details','fest','gallery','recruitment','announcements','contact']
+  publicJourney:['identity','about','history','leadership','clubs','events','event-details','fest','gallery','archive','achievements','recruitment','announcements','calendar','contact']
 });
 
 export const JYC_CONTENT_RULES={
