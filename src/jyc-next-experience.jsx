@@ -2,7 +2,7 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {JYC_HUB_SOURCE_REGISTRY,JYC_HUB_SOURCE_STATUS,JYC_HUB_VERIFIED_CURRENT,JYC_HUB_SOURCE_ONLY} from './jyc-hub-registry.js';
-import {sourceHubMedia,canonicalHubName,JYC_SOURCE_ARCHIVE_PHOTO_ITEMS} from './jyc-source-media.js';
+import {sourceHubMedia,canonicalHubName,JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,curateArchivePhotos} from './jyc-source-media.js';
 import {JYC_SOURCE_ARCHIVE_STATS} from './jyc-source-archive.js';
 
 const ROUTES=[
@@ -54,7 +54,8 @@ export function PhotoStory({data}){
   const maxSourceDepth=Math.max(0,...sourceBuckets.map(bucket=>bucket.length));
   for(let depth=0;depth<maxSourceDepth;depth++) sourceBuckets.forEach(bucket=>{if(bucket[depth])sourcePhotos.push(bucket[depth]);});
   const raw=[...published,...sourcePhotos,...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS];
-  const preferred=[...raw.filter(g=>/Converge|Dron-O-War|Ebullience|JAI|JYC Archive/i.test(String(g.association||''))),...raw];
+  const curated=curateArchivePhotos(JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,36);
+  const preferred=[...raw.filter(g=>/Converge|Dron-O-War|Ebullience|JAI|JYC Archive/i.test(String(g.association||''))),...curated,...raw];
   const seen=new Set();
   return preferred.filter(g=>{const key=g.id||g.url;if(seen.has(key))return false;seen.add(key);return true});
  },[data?.gallery]);
