@@ -12,7 +12,7 @@ import {hubDetails} from './v23.6-hub-details.js';
 import {hubIdentity,eventIdentity} from './hub-identities.js';
 import {PDF_HUB_GALLERY,PDF_HUB_STORIES,HUB_PHOTO_MAP} from './pdf-hub-content.js';
 import {PDF_HUB_EXTRA_GALLERY,PDF_HUB_PROGRAMME} from './pdf-hub-extra.js';
-import {enrichSourceClubs,mergeSourceGallery,sourceHubMedia,sourceEventMedia,buildJycMediaManifest} from './jyc-source-media.js';
+import {enrichSourceClubs,mergeSourceGallery,sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {JYC_EVENT_CATEGORIES,JYC_COMMUNITY_DISCOVERY,JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {JYC_SOCIALS,festSocialProfile,socialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
