@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 const read=p=>fs.readFileSync(p,'utf8');
 const main=read('src/main.jsx'), fallbacks=read('src/content/jyc-public-fallbacks.js'), extra=read('src/extra-features.jsx'), details=read('src/v23.6-hub-details.js'), registry=read('src/jyc-hub-registry.js'), media=read('src/jyc-source-media.js'), bot=read('src/jyc-bot.jsx'), theme=read('src/styles/jyc-v56-final-system.css'), system=read('src/styles/public-system.css'), llms=read('public/llms.txt'), sitemap=read('scripts/generate-sitemap.mjs');
+const source=main+'\n'+media+'\n'+extra;
 const fail=[];const check=(ok,msg)=>{if(!ok)fail.push(msg)};
 const hubs=['Fortissimo','BDS','VamUnique','Panache','RPH','CICR','Innovation','Zencoders','JODC','CypherX','Arcadia','Neural Nexus','GDG','Dronotics','Aakriti','Aura','Cinekala','Abhivyakti','Prismatic','Eloquence','JSA','Qriosity','JIIT OPTICA'];
 for(const h of hubs)check(new RegExp("(?:['\\\"])?"+h.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')+"(?:['\\\"])?\\s*:").test(details),`hub detail missing: ${h}`);
