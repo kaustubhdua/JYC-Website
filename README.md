@@ -228,7 +228,7 @@ A release should be considered production-ready only after:
 
 ## Current release status
 
-**V52 is the current code release.** The codebase is intentionally in finish-and-stabilise mode rather than feature-expansion mode.
+**V52 is the current code release.** The codebase is intentionally in finish-and-stabilise mode rather than feature-expansion mode. The public CSS stack has also been reduced to current layers only.
 
 The highest-value remaining production work is operational rather than architectural:
 
