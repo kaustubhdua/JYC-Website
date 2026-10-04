@@ -21,11 +21,7 @@ const scripts = [
   'qa-data-integrity.mjs',
   'qa-accessibility-contract.mjs',
   'qa-repo-hygiene.mjs',
-  'qa-v45-social-bot.mjs',
-  'qa-v47-jyc-now.mjs',
-  'qa-v49-production-finish.mjs',
-  'qa-v50-deep-production.mjs',
-  'qa-assistant-resilience.mjs'
+  'qa-v51-final-club-only.mjs'
 ];
 
 for (const script of scripts) {
