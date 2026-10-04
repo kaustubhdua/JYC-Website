@@ -94,9 +94,8 @@ import {JYCBot} from './jyc-bot.jsx';
 import {FeaturedEventPopup} from './featured-event-popup.jsx';
 import {CREATOR,JYC_CONTACTS} from './lib/site-config.js';
 
-import {QRSharePage} from './v14-platform-plus.jsx';
 import {MomentsSection} from './v14-platform.jsx';
-import {SkipLink,InstallPrompt,MaintenanceGate,ErrorBoundary,MyJYC,CalendarPage,EventTools,DownloadICS,RegistrationPage,AccountLogin,JsonLd,usePageMeta,EventReminderButton,Gallery,GalleryItems,RecruitmentHub} from './extra-features.jsx';
+import {SkipLink,InstallPrompt,MaintenanceGate,ErrorBoundary,EventTools,DownloadICS,JsonLd,usePageMeta,Gallery,GalleryItems,RecruitmentHub} from './extra-features.jsx';
 const Admin=lazy(()=>import('./admin-chunk.jsx'));
 import {readSiteCache,writeSiteCache,siteCacheAge,formatCacheAge,armStoredReminders,googleCalendarUrl} from './v15-functional.js';
 
@@ -219,7 +218,7 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
   if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;
   const connectionNotice=(!online||error)?<div className={`connection-notice ${readSiteCache()?'cached':'offline'} ${error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'setup-needed':''}`} role="status"><span>{!online?'You are offline. JYC will keep using cached content until the connection returns.':error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'JYC data service needs setup.':readSiteCache()?`Showing the last saved JYC snapshot · ${formatCacheAge(siteCacheAge())}.`:'JYC content is currently offline.'}</span><button onClick={()=>window.dispatchEvent(new CustomEvent('jyc-refresh-data'))}>Refresh</button></div>:null;
  const isAdmin=loc.pathname.startsWith('/admin');
- const content=<div className="app-frame"><SiteAtmosphere/><ScrollProgress/><BackToTop/><SkipLink/>{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/><JYCBot data={data}/><FeaturedEventPopup/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<InstallPrompt/></div>;
+ const content=<div className="app-frame"><ScrollProgress/><BackToTop/><SkipLink/>{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<InstallPrompt/></div>;
  return <MaintenanceGate data={isAdmin?{maintenance:{on:false}}:data}>{content}</MaintenanceGate>}
 
 function ClubDetail({data,id,virtualName}){
@@ -357,6 +356,23 @@ function Events({data}){
 }
 
 
+
+function JYCCalendarPage({data}){
+ const events=(Array.isArray(data.events)?data.events:[]).filter(e=>e.published&&!e.archived).sort((a,b)=>`${a.date||''}${a.start||''}`.localeCompare(`${b.date||''}${b.start||''}`));
+ const [month,setMonth]=useState(()=>new Date());
+ const year=month.getFullYear(), m=month.getMonth();
+ const monthEvents=events.filter(e=>{const d=new Date(`${e.date}T12:00:00`);return d.getFullYear()===year&&d.getMonth()===m});
+ const label=month.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+ const shift=n=>setMonth(new Date(year,m+n,1));
+ return <section className="section page unified-public-page jyc-calendar-page">
+  <Breadcrumbs items={[{label:'Event Calendar'}]}/><EcosystemContextRail/>
+  <div className="compact-page-head reveal"><div><span className="eyebrow">JYC EVENT CALENDAR</span><h1>Find the next JYC experience.</h1><p>A calendar for JYC events only. Academic schedules and campus utilities do not live here.</p></div><div className="page-stat-row"><span><b>{events.length}</b> published events</span><span><b>{monthEvents.length}</b> this month</span></div></div>
+  <div className="calendar-controls reveal"><button className="btn secondary" onClick={()=>shift(-1)}>← Previous</button><strong>{label}</strong><button className="btn secondary" onClick={()=>shift(1)}>Next →</button></div>
+  <div className="calendar"><Calendar events={monthEvents}/></div>
+  <div className="calendar-footer-note reveal"><span className="eyebrow">JYC WEBSITE</span><p>For complete event details, registration links and official media, open the event record.</p><a className="text-link" href="/events">Browse all events →</a></div>
+ </section>
+}
+
 function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  const nav=useNavigate();
  const p=useLocation().pathname;
@@ -377,19 +393,13 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/gallery':'JYC Gallery | JIIT Youth Club 128',
   '/contact':'Contact JIIT Youth Club | JYC',
   '/recruitment':'JIIT Club Recruitment & Auditions | JIIT Youth Club',
-  '/my-jyc':'My JYC | Published JYC content',
   '/calendar':'JYC 128 Event Calendar | JIIT Youth Club',
   '/event-calendar':'JYC 128 Event Calendar | JIIT Youth Club',
-  '/planner':'JYC Events | JIIT Youth Club',
-  '/notifications':'JYC Notifications',
-  '/login':'Sign In | JIIT Youth Club',
-  '/download':'JIIT Youth Club Platform',
-    '/agenda':'My JYC Agenda | JIIT Events',
+
   '/achievements':'JYC Achievements & Wall of Fame | JIIT Noida',
   '/join-jyc':'Join JYC | JIIT Youth Club',
   '/announcements':'JYC Announcements & Updates | JIIT Noida',
   '/updates':'JYC Now · Recent JYC & Hub Updates | JIIT Youth Club',
-  '/settings':'JYC Experience Settings',
   '/resources':'JIIT Youth Club | JYC Clubs & Events',
   '/guide':'About JIIT Youth Club | JYC',
   '/admin':'JYC Control Center'
@@ -403,7 +413,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/resources':'JIIT Youth Club — official clubs, events, fests and community information.',
   '/guide':'About JIIT Youth Club — purpose, communities, events and campus life.',
     '/calendar':'Browse the JYC 128 event calendar by date, category and event status.',
-  '/planner':'JYC event planning tools are not part of the public JYC editorial experience.',
   '/recruitment':'Find published JIIT club recruitment opportunities, auditions and official application links through JIIT Youth Club.',
   '/about':'Learn about JYC 128, its history and role at JIIT, its vision, mission and student-community values.',
   '/contact':'Official JYC 128 contact details, social channels and query form.',
@@ -415,11 +424,11 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/achievements':'JYC 128 achievements, Wall of Fame, community milestones and published outcomes.',
   '/join-jyc':'Join JYC 128 is currently coming soon. Recruitment and application opportunities will be published here when the next official cycle opens.'
  };
- const privateRoute=['/admin','/login','/notifications','/settings','/agenda','/projects/submit','/download','/planner'].includes(clean)||clean.startsWith('/qr/')||clean.endsWith('/register');
- const knownPublic=['/','/about','/history','/clubs','/events','/fests','/gallery','/team','/leadership','/contact','/archive','/calendar','/event-calendar','/events','/achievements','/announcements','/updates','/resources','/recruitment','/join-jyc'].includes(clean)&&(clean!=='/fests'||isFestMode(data));
+ const privateRoute=clean==='/admin';
+ const knownPublic=['/','/about','/history','/clubs','/events','/fests','/gallery','/team','/leadership','/contact','/archive','/calendar','/event-calendar','/achievements','/announcements','/updates','/recruitment','/join-jyc'].includes(clean)&&(clean!=='/fests'||isFestMode(data));
  const knownDetail=Boolean(club||event);
  const unknownRoute=!privateRoute&&!knownPublic&&!knownDetail;
- const pageType=club?'club':event?'event':clean==='/fests'?'fests':clean==='/clubs'?'clubs':clean==='/events'?'events':clean==='/gallery'?'gallery':clean==='/team'||clean==='/leadership'?'team':clean==='/history'?'history':clean==='/resources'?'resources':clean==='/announcements'?'announcements':clean==='/updates'?'updates':clean==='/achievements'?'achievements':clean==='/guide'?'about':clean==='/calendar'||clean==='/planner'?'calendar':clean==='/recruitment'?'recruitment':clean==='/join-jyc'?'join-jyc':clean==='/about'?'about':clean==='/contact'?'contact':'home';
+ const pageType=club?'club':event?'event':clean==='/fests'?'fests':clean==='/clubs'?'clubs':clean==='/events'?'events':clean==='/gallery'?'gallery':clean==='/team'||clean==='/leadership'?'team':clean==='/history'?'history':clean==='/announcements'?'announcements':clean==='/updates'?'updates':clean==='/achievements'?'achievements':clean==='/calendar'||clean==='/event-calendar'?'calendar':clean==='/recruitment'?'recruitment':clean==='/join-jyc'?'join-jyc':clean==='/about'?'about':clean==='/contact'?'contact':'home';
  const canonicalPath=club?`/clubs/${slug(club.name)}`:event?`/events/${slug(event.title)}${parts[2]==='register'?'/register':''}`:clean;
  useEffect(()=>{if((club||event)&&slugId!==slug((club||event).name||(club||event).title)){const target=event?`/events/${slug(event.title)}${parts[2]==='register'?'/register':''}`:`/clubs/${slug(club.name)}`;nav(target,{replace:true});}},[slugId,club?.id,event?.id,parts[2],nav]);
  const title=club?`${club.name} | JIIT Club · JYC`:event?`${event.title} | JIIT Event · JYC`:titles[clean]||'JIIT Youth Club';
@@ -429,11 +438,11 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  if(clean==='/')return <>{schema}<Home data={data}/></>;
  if(clean==='/history')return <><JYCHistory data={data}/></>;
  if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
- if(clean==='/events')return <>{schema}<Events data={data}/></>;if(clean==='/fests')return isFestMode(data)?<>{schema}<FestsPage data={data}/></>:<Navigate to="/events" replace/>;if(event&&parts[2]==='register')return <>{schema}<RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session}/></>;
+ if(clean==='/events')return <>{schema}<Events data={data}/></>;if(clean==='/fests')return isFestMode(data)?<>{schema}<FestsPage data={data}/></>:<Navigate to="/events" replace/>;if(event&&parts[2]==='register')return <Navigate to={`/events/${slug(event.title)}`} replace/>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session}/></>;
  if(clean==='/gallery')return <>{schema}<Gallery data={data}/></>;if(clean==='/team'||clean==='/leadership')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <ArchivePage data={data}/>;
  if(clean==='/announcements')return <Announcements data={data}/>;
  if(clean==='/updates')return <><JYCNowPage data={data}/></>;
- if(clean==='/achievements')return <Achievements data={data}/>;if(clean==='/join-jyc')return <JoinJYC/>;if(clean==='/recruitment')return recruitmentEnabled(data)?<>{schema}<RecruitmentHub data={data}/></>:<Navigate to="/clubs" replace/>;if(clean==='/calendar'||clean==='/event-calendar')return <>{schema}<CalendarPage data={data}/></>;if(clean==='/planner')return <Navigate to="/events" replace/>;if(clean==='/notifications')return <Navigate to="/my-jyc" replace/>;if(clean==='/login')return <Navigate to="/my-jyc" replace/>;if(clean==='/download')return <Navigate to="/about" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean.startsWith('/qr/'))return <QRSharePage data={data}/>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/agenda')return <Navigate to="/my-jyc" replace/>;if(clean==='/projects'||clean==='/projects/submit')return <Navigate to="/clubs" replace/>;if(clean==='/settings')return <Navigate to="/about" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/admin')return <Suspense fallback={<section className="section page"><span className="eyebrow">JYC CONTROL CENTER</span><h1>Loading Control Center…</h1><p>Preparing the administrative workspace.</p></section>}><Admin data={data} admin={admin} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
+ if(clean==='/achievements')return <Achievements data={data}/>;if(clean==='/join-jyc')return <JoinJYC/>;if(clean==='/recruitment')return recruitmentEnabled(data)?<>{schema}<RecruitmentHub data={data}/></>:<Navigate to="/clubs" replace/>;if(clean==='/calendar'||clean==='/event-calendar')return <>{schema}<JYCCalendarPage data={data}/></>;if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/planner'||clean==='/notifications'||clean==='/login'||clean==='/download'||clean==='/agenda'||clean==='/settings'||clean==='/projects'||clean==='/projects/submit'||clean.startsWith('/qr/'))return <Navigate to="/" replace/>;if(clean==='/admin')return <Suspense fallback={<section className="section page"><span className="eyebrow">JYC CONTROL CENTER</span><h1>Loading Control Center…</h1><p>Preparing the administrative workspace.</p></section>}><Admin data={data} admin={admin} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
 }
 function NavIcon({kind}){const paths={home:'M3 10.5 12 3l9 7.5M5.5 9.5V21h13V9.5M9 21v-6h6v6',clubs:'M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8-1.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20a5.5 5.5 0 0 1 11 0M14 20a6 6 0 0 1 7.5 0',events:'M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z',gallery:'M4 5h16v14H4zM4 16l4-4 3 3 2-2 5 5M15 9h.01',team:'M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8-1.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20a5.5 5.5 0 0 1 11 0M14 20a6 6 0 0 1 7.5 0',more:'M5 7h14M5 12h14M5 17h14',search:'M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Zm5.5-2 5 5'};return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={paths[kind]||paths.more}/></svg>}
 
@@ -513,7 +522,7 @@ const explore=[
    ['/leadership','Leadership','Faculty, Apex and Core Team'],
    ['/clubs','Clubs & Communities','Explore the official hub ecosystem'],
    ['/events','Events','Upcoming, ongoing and completed experiences'],
-   ['/event-calendar','Event Calendar','Browse JYC events by date'],
+   ['/calendar','Event Calendar','Browse JYC events by date'],
    ['/gallery','Gallery','Event memories, years and visual archive'],
    ['/achievements','Achievements','Wall of Fame and community outcomes'],
    ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
@@ -548,11 +557,17 @@ function Search({data,admin,close}){
  const events=data.events.filter(e=>e.published&&!e.archived);
  const team=data.team.filter(m=>m.published===true);
  const pageIndex=[
-  ['JIIT Youth Club','Official JYC website for JIIT Noida clubs, events, fests, people and campus activity.','PAGE','/'],
-  ['About JYC','About the JIIT Youth Club community, purpose and student-led work.','PAGE','/about'],['Clubs','Explore official JIIT student clubs, societies, communities and interests.','PAGE','/clubs'],['Events','Upcoming, live and past JYC events, workshops, competitions and campus activities.','PAGE','/events'],
-  ...(isFestMode(data)?[['Fests','Flagship JIIT and JYC fest experiences.','PAGE','/fests']]:[]),
-  ['JYC Team','Meet the people behind JYC.','PAGE','/team'],['Contact JYC','Official JYC contact information.','PAGE','/contact'],['JYC Archive','Published JYC events, clubs, gallery moments and campus stories.','PAGE','/archive'],['Announcements','JYC announcements, registration notices and updates.','PAGE','/announcements'],['Achievements','JYC achievements, wall of fame and published outcomes.','PAGE','/achievements'],['JYC Calendar','Published JYC event dates and programme.','PAGE','/calendar'],
-  ...((data.academicCalendar?.showInSearch!==false)?[['JIIT Academic Calendar 2026–27','Official academic dates, exams, vacations and holidays.','ACADEMIC','/calendar']]:[]),
+  ['JIIT Youth Club','Official JYC website for JIIT Noida clubs, events, people and campus experiences.','PAGE','/'],
+  ['About JYC','About the JIIT Youth Club community, purpose and student-led work.','PAGE','/about'],
+  ['Clubs','Explore official JIIT student clubs, societies, communities and interests.','PAGE','/clubs'],
+  ['Events','Upcoming, live and past JYC events, workshops, competitions and campus activities.','PAGE','/events'],
+  ...(isFestMode(data)?[['Fests','Flagship JYC fest experiences.','PAGE','/fests']]:[]),
+  ['JYC Team','Meet the people behind JYC.','PAGE','/team'],
+  ['Contact JYC','Official JYC contact information.','PAGE','/contact'],
+  ['JYC Archive','Published JYC events, clubs, gallery moments and campus stories.','PAGE','/archive'],
+  ['Announcements','JYC announcements, registration notices and updates.','PAGE','/announcements'],
+  ['Achievements','JYC achievements, wall of fame and published outcomes.','PAGE','/achievements'],
+  ['JYC Event Calendar','Published JYC events by date.','PAGE','/calendar'],
   ['Events & venues','Find published JYC event locations.','PAGE','/events']
  ];
  const adminPages=admin?[['Control Center','Staff publishing, reviews, registrations and operations.','ADMIN','/admin']]:[];
@@ -598,7 +613,7 @@ function Search({data,admin,close}){
 }
 function ConfirmDialog({request,onClose}){useEffect(()=>{const onKey=e=>{if(e.key==='Escape')onClose(false);if(e.key==='Enter')onClose(true)};document.addEventListener('keydown',onKey);return()=>document.removeEventListener('keydown',onKey)},[onClose]);return <div className="confirm-overlay" role="presentation" onMouseDown={e=>{if(e.currentTarget===e.target)onClose(false)}}><div className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="jyc-confirm-title" aria-describedby="jyc-confirm-text"><span className="eyebrow">JYC · CONFIRM</span><h2 id="jyc-confirm-title">{request.title||'Are you sure?'}</h2><p id="jyc-confirm-text">{request.text||''}</p><div className="confirm-actions"><button className="btn secondary" onClick={()=>onClose(false)}>Cancel</button><button className={`btn ${request.danger?'danger':''}`} onClick={()=>onClose(true)}>{request.confirmLabel||'Confirm'}</button></div></div></div>}
 
-function Footer({data,admin}){const nav=useNavigate();return <footer className="jyc-footer jyc-club-footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo-lockup"><LogoImage alt="JYC logo"/></div><div><strong>JIIT YOUTH CLUB</strong><span>READY TO SOAR · JIIT SECTOR 128</span><p>The student-led club behind JIIT's communities, events and campus experiences.</p></div></div><div className="footer-nav"><span className="eyebrow">JYC</span><div><button onClick={()=>nav('/about')}>About</button><button onClick={()=>nav('/clubs')}>Clubs</button><button onClick={()=>nav('/events')}>Events</button>{isFestMode(data)&&<button onClick={()=>nav('/fests')}>Fests</button>}<button onClick={()=>nav('/team')}>Team</button><button onClick={()=>nav('/join-jyc')}>Join JYC</button><button onClick={()=>nav('/calendar')}>Event Calendar</button><button onClick={()=>nav('/archive')}>Archive</button><button onClick={()=>nav('/history')}>History</button><button onClick={()=>nav('/contact')}>Contact</button></div></div><div className="footer-connect creator-card"><span className="eyebrow">BUILT FOR JYC</span><strong>JYC public experience</strong><p>Official club information, communities and experiences in one public home.</p><span className="eyebrow">CONNECT</span><a href={JYC_CONTACTS.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={JYC_CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a href={'mailto:'+data.creator.email}>Email ↗</a></div></div><div className="footer-bottom"><small>© {new Date().getFullYear()} JYC 128 · Website by {data.creator.name}</small><span>JIIT YOUTH CLUB</span><button className="footer-admin-link" onClick={()=>nav('/admin')} aria-label="JYC staff access">Staff Control Center ↗</button></div></footer>}
+function Footer({data,admin}){const nav=useNavigate();return <footer className="jyc-footer jyc-club-footer"><div className="footer-top"><div className="footer-brand"><div className="footer-logo-lockup"><LogoImage alt="JYC logo"/></div><div><strong>JIIT YOUTH CLUB</strong><span>READY TO SOAR · JIIT SECTOR 128</span><p>The student-led club behind JIIT's communities, events and campus experiences.</p></div></div><div className="footer-nav"><span className="eyebrow">JYC</span><div><button onClick={()=>nav('/about')}>About</button><button onClick={()=>nav('/clubs')}>Clubs</button><button onClick={()=>nav('/events')}>Events</button>{isFestMode(data)&&<button onClick={()=>nav('/fests')}>Fests</button>}<button onClick={()=>nav('/team')}>Team</button><button onClick={()=>nav('/join-jyc')}>Join JYC</button><button onClick={()=>nav('/calendar')}>Event calendar</button><button onClick={()=>nav('/archive')}>Archive</button><button onClick={()=>nav('/history')}>History</button><button onClick={()=>nav('/contact')}>Contact</button></div></div><div className="footer-connect creator-card"><span className="eyebrow">BUILT FOR JYC</span><strong>JYC public experience</strong><p>Official club information, communities and experiences in one public home.</p><span className="eyebrow">CONNECT</span><a href={JYC_CONTACTS.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={JYC_CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a href={'mailto:'+data.creator.email}>Email ↗</a></div></div><div className="footer-bottom"><small>© {new Date().getFullYear()} JYC 128 · Website by {data.creator.name}</small><span>JIIT YOUTH CLUB</span><button className="footer-admin-link" onClick={()=>nav('/admin')} aria-label="JYC staff access">Staff Control Center ↗</button></div></footer>}
 
 function Loading({stage='INITIALIZING',cached=false}){ 
  const labels={INITIALIZING:['INITIALIZING','CONNECTING TO JYC'],LOADING:['LOADING','PREPARING THE CAMPUS ECOSYSTEM'],SYNCING:['SYNCING',cached?'USING YOUR LATEST SAVED SNAPSHOT':'CHECKING THE LATEST CAMPUS DATA'],READY:['READY','BUILDING YOUR EXPERIENCE'],OFFLINE:['OFFLINE','OPENING THE LAST AVAILABLE JYC EXPERIENCE']};
