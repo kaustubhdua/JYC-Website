@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(14);
 
 select ok(not has_table_privilege('anon','public.jyc_site_data','INSERT'),'anon cannot insert into jyc_site_data');
 select ok(not has_table_privilege('authenticated','public.jyc_site_data','INSERT'),'authenticated cannot insert into jyc_site_data');
@@ -16,7 +16,7 @@ select ok(not has_table_privilege('authenticated','storage.objects','INSERT'),'a
 select ok((select relrowsecurity from pg_class where oid='public.jyc_campuses'::regclass),'campus registry has RLS enabled');
 select ok((select relrowsecurity from pg_class where oid='public.jyc_content_verification'::regclass),'content verification has RLS enabled');
 select ok(not has_table_privilege('anon','public.jyc_admins','TRUNCATE'),'anon cannot truncate JYC admin records');
-select ok(not has_table_privilege('authenticated','storage.objects','TRUNCATE'),'authenticated cannot truncate Storage objects');
+select ok(not has_table_privilege('authenticated','public.jyc_site_data','TRUNCATE'),'authenticated cannot truncate site data');
 
 select * from finish();
 rollback;
