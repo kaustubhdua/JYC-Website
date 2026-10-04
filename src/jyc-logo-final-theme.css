@@ -827,3 +827,28 @@ html[data-theme="dark"] .public-app .card:hover,html[data-theme="dark"] .public-
  .jyc-footer .footer-bottom{flex-direction:column;text-align:center;gap:10px}
  .jyc-footer .footer-nav>div{display:flex;justify-content:center;flex-wrap:wrap}
 }
+
+/* PHOTO ARCHIVE FINAL PASS */
+.gallery-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.gallery-active-filter{font-size:.82rem;letter-spacing:.03em;opacity:.72}
+.gallery-filter-groups{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.45fr);gap:20px;margin-top:16px}
+.gallery-filter-groups>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gallery-filter-groups small{width:100%;font-size:.68rem;letter-spacing:.14em;opacity:.58}
+.gallery-meta{display:block;margin-top:5px;font-size:.68rem;letter-spacing:.02em;opacity:.68}
+.gallery-provenance{display:block;margin-top:4px;font-size:.66rem;letter-spacing:.03em;opacity:.55}
+.lightbox-content{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,.55fr);align-items:center;gap:24px;max-width:min(1180px,88vw);max-height:82vh}
+.lightbox-content img{width:100%;max-height:76vh;object-fit:contain;border-radius:18px}
+.lightbox-copy{padding:8px 0}
+.lightbox-copy h2{margin:.5rem 0 .7rem}
+.lightbox-copy p{margin:0 0 .5rem;opacity:.78}
+@media (max-width:760px){
+ .gallery-filter-groups{grid-template-columns:1fr}
+ .gallery-controls{align-items:flex-start}
+ .gallery-active-filter{width:100%}
+ .lightbox-content{grid-template-columns:1fr;gap:10px;max-width:92vw;max-height:82vh;overflow:auto}
+ .lightbox-content img{max-height:62vh}
+ .lightbox-copy{padding:0 4px 12px}
+}
+@media (prefers-reduced-motion:reduce){
+ .lightbox-content img{transition:none!important}
+}
