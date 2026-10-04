@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const base = process.env.JYC_BASE_URL || 'http://127.0.0.1:5173';
-const routes = ['/', '/about', '/history', '/clubs', '/events', '/gallery', '/team', '/planner', '/map', '/my-jyc', '/contact', '/fests', '/guide', '/updates'];
+const routes = ['/', '/about', '/history', '/clubs', '/events', '/gallery', '/team', '/calendar', '/archive', '/recruitment', '/contact', '/fests', '/updates', '/announcements'];
 
 test('public app mounts with no runtime errors', async ({ page }) => {
   const errors = [];
@@ -54,6 +54,20 @@ test('homepage accessibility and responsive guardrails', async ({ page }) => {
     document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
   );
   expect(overflow).toBe(false);
+});
+
+test('retired student-platform routes resolve to safe public destinations', async ({ page }) => {
+  for (const route of ['/my-jyc','/login','/planner','/notifications','/settings','/agenda','/projects','/download']) {
+    await page.goto(base + route, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#root')).not.toBeEmpty();
+    expect(new URL(page.url()).pathname).not.toBe(route);
+  }
+});
+
+test('JYC calendar contains only event content', async ({ page }) => {
+  await page.goto(base + '/calendar', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByText('JYC EVENT CALENDAR')).toBeVisible();
+  await expect(page.getByText('Academic Calendar')).toHaveCount(0);
 });
 
 test('reduced-motion mode disables hero animation', async ({ page }) => {
