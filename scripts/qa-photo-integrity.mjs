@@ -1,0 +1,25 @@
+import {JYC_SOURCE_MEDIA_STATS,mergeSourceGallery,sourceEventMedia,buildJycMediaManifest} from '../src/jyc-source-media.js';
+
+const assert=(name,ok,detail='')=>{console.log((ok?'PASS: ':'FAIL: ')+name+(detail?' — '+detail:''));if(!ok)process.exitCode=1};
+const gallery=mergeSourceGallery([]);
+const manifest=buildJycMediaManifest([]);
+const urls=gallery.map(x=>x.url).filter(Boolean);
+const duplicateUrls=urls.filter((url,i)=>urls.indexOf(url)!==i);
+const missing=gallery.filter(x=>!x.url||!x.association||!x.alt||!x.role||!x.sourceLabel);
+const presentationWithoutPage=gallery.filter(x=>x.sourceType==='presentation-export'&&!x.page);
+const event=sourceEventMedia('Ebullience');
+const induction=sourceEventMedia('Induction');
+const eventUrls=new Set(event.items.map(x=>x.url));
+const inductionUrls=new Set(induction.items.map(x=>x.url));
+assert('source gallery has maintained communities',JYC_SOURCE_MEDIA_STATS.maintainedCommunities>0);
+assert('source gallery is non-empty',gallery.length>0);
+assert('manifest total matches merged source gallery',manifest.total===gallery.length);
+assert('source gallery has no duplicate URLs',duplicateUrls.length===0,duplicateUrls.slice(0,3).join(', '));
+assert('every published media item has provenance and alt metadata',missing.length===0,missing.slice(0,3).map(x=>x.id||x.url).join(', '));
+assert('presentation exports preserve source-page context',presentationWithoutPage.length===0,presentationWithoutPage.slice(0,3).map(x=>x.id).join(', '));
+assert('Ebullience maps to its own source collection',event.items.length>0);
+assert('Induction does not inherit Ebullience photography',[...inductionUrls].every(url=>!eventUrls.has(url)));
+assert('manifest exposes visual roles',manifest.roles.includes('club')&&manifest.roles.includes('event')&&manifest.roles.includes('archive'));
+assert('manifest exposes source types',manifest.sourceTypes.includes('presentation-export')&&manifest.sourceTypes.includes('maintained-jyc-media'));
+if(process.exitCode)process.exit(1);
+console.log('Photo integrity QA: all checks passed.');
