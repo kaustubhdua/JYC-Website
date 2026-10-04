@@ -96,8 +96,8 @@ const enrichMediaItem=item=>{
     association,
     year:year||item.year||'',
     role,
-    sourceType:item.page?'presentation-export':/^https?:\\/\\//i.test(String(item.url))?'official-external-media':item.sourceType||'maintained-jyc-media',
-    sourceLabel:item.sourceLabel||(/^https?:\\/\\//i.test(String(item.url))?`${association} · official external media`:'JYC maintained source archive'),
+    sourceType:item.page?'presentation-export':/^https?:\/\//i.test(String(item.url))?'official-external-media':item.sourceType||'maintained-jyc-media',
+    sourceLabel:item.sourceLabel||(/^https?:\/\//i.test(String(item.url))?`${association} · official external media`:'JYC maintained source archive'),
     alt:item.alt||item.caption||`${association} · JYC visual archive`,
     published:item.published!==false
   };
