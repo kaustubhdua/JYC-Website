@@ -19,7 +19,9 @@
     "qa:mobile-first": "npm run qa",
     "qa:security": "node scripts/qa-security.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
-    "qa:performance": "npm run build && node scripts/qa-performance.mjs"
+    "qa:performance": "npm run build && node scripts/qa-performance.mjs",
+    "qa:final": "npm run qa",
+    "qa:hygiene": "node scripts/qa-final-hygiene.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
