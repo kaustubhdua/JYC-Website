@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 const read=p=>fs.readFileSync(p,'utf8');
 const source=read('src/jyc-source-media.js');
+const archive=read('src/source-archive-index.js');
 const main=read('src/main.jsx');
 const css=read('src/jyc-logo-final-theme.css');
 const gallery=read('src/extra-features.jsx');
@@ -18,9 +19,9 @@ const checks=[
  ['media alt metadata exists',source.includes('alt:item.alt||item.caption')],
  ['external media is classified',source.includes('official-external-media')],
  ['gallery uses role filters',gallery.includes("roleLabels")&&gallery.includes('MEDIA TYPE')],
- ['gallery has no undefined archive item collection',!gallery.includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')],
+ ['gallery has no unused archive photo import',!gallery.includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')],
  ['archive photo policy is content-aware',source.includes('ARCHIVE_PHOTO_EXCLUSIONS')&&source.includes('ARCHIVE_SHOWCASE_PHOTOS')],
- ['complete source archive inventory is wired',source.includes('JYC_SOURCE_ARCHIVE_CATALOG')&&source.includes('JYC_SOURCE_ARCHIVE_STATS')&&source.includes('813')],
+ ['complete source archive inventory is wired',source.includes('JYC_SOURCE_ARCHIVE_CATALOG')&&source.includes('JYC_SOURCE_ARCHIVE_STATS')&&archive.includes('sourceAssetFiles":873')&&archive.includes('uniqueBinaryHashes":813')],
 ];
 let failed=0; for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failed++}
 if(failed)process.exit(1);
