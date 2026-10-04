@@ -29,9 +29,9 @@ export const JYC_V1_ANIMATION_CONTRACT={
 export const JYC_OFFICIAL_SITE_SCOPE=Object.freeze({
   organisation:'JIIT Youth Club 128',
   campus:'JIIT Wish Town Campus · Sector 128, Noida',
-  purpose:'Official organisational website for JYC 128 leadership, clubs, events, achievements, announcements, media and contact.',
-  excludedPublicProductTypes:['academic portal','student help portal','attendance/schedule portal','campus utility dashboard','social network'],
-  publicJourney:['identity','about','leadership','clubs','events','event-details','achievements','gallery','announcements','contact']
+  purpose:'Official organisational website for JYC 128 identity, leadership, clubs, events, history, gallery, recruitment, announcements and contact.',
+  excludedPublicProductTypes:['academic portal','student help portal','attendance/check-in system','event pass/certificate system','campus utility dashboard','student account area','social network'],
+  publicJourney:['identity','about','history','leadership','clubs','events','event-details','fest','gallery','recruitment','announcements','contact']
 });
 
 export const JYC_CONTENT_RULES={
