@@ -10,7 +10,7 @@ const socials=read('src/jyc-socials.js');
 const config=read('src/public-v1/config.js');
 const siteConfig=read('src/lib/site-config.js');
 const index=read('index.html');
-// Final V52 compatibility: assertions below follow canonical /team and /recruitment routes.\nconst checks=[];
+// Final V52 compatibility: assertions below follow canonical /team and /recruitment routes.\n// CI head verification: keep this contract aligned with the shipped public navigation.\nconst checks=[];
 const add=(name,ok)=>checks.push({name,ok:Boolean(ok)});
 
 const lock=JSON.parse(read('package-lock.json'));add('release package version is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
