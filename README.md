@@ -226,6 +226,10 @@ A release should be considered production-ready only after:
 12. The connected Vercel production deployment is verified separately from GitHub CI.
 13. The supplied photo archives have been safely ingested, deduplicated and optimised before being treated as the final production media set.
 
+## CI validation status
+
+The repository's final QA contract is maintained alongside the public route contract so legacy checks cannot silently reintroduce retired navigation.
+
 ## Current release status
 
 **V52 is the current code release.** The codebase is intentionally in finish-and-stabilise mode rather than feature-expansion mode.
