@@ -53,38 +53,91 @@ export function enrichSourceClubs(clubs){return (Array.isArray(clubs)?clubs:[]).
 
 export function mergeSourceGallery(gallery){
   const map=new Map();
-  SOURCE_GALLERY.forEach(item=>map.set(item.id,item));
-  (Array.isArray(gallery)?gallery:[]).forEach((item,index)=>map.set(item.id||item.url||`gallery-${index}-${normalise(item.caption||item.association||'item')}`,item));
+  SOURCE_GALLERY.forEach(item=>{
+    const enriched=enrichMediaItem(item);
+    if(enriched)map.set(enriched.id||enriched.url,enriched);
+  });
+  (Array.isArray(gallery)?gallery:[]).forEach((item,index)=>{
+    const enriched=enrichMediaItem(item);
+    if(enriched)map.set(enriched.id||enriched.url||`gallery-${index}-${normalise(enriched.caption||enriched.association||'item')}`,enriched);
+  });
   return [...map.values()];
 }
 
-export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length};
+export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length};
 
 const EVENT_ALIASES={
-  'Converge':['Converge','annual fest','convergence'],
-  'Ebullience':['Ebullience','freshers','welcome'],
-  'Dron-O-War':['Dron-O-War','Dronotics','drone'],
-  'Induction':['Induction','orientation','welcome'],
-  'Ethnic Day':['Ethnic Day','ethnic'],
+  'Converge':['Converge'],
+  'Ebullience':['Ebullience'],
+  'Dron-O-War':['Dron-O-War'],
+  'Induction':['Induction','orientation'],
+  'Ethnic Day':['Ethnic Day'],
   'Farewell':['Farewell'],
   'Hackathons':['Hackathons','hackathon']
 };
 const token=v=>normalise(v);
-const aliasMatch=(item,alias)=>[item?.association,item?.caption,item?.id].some(v=>EVENT_ALIASES[alias]?.some(a=>token(v).includes(token(a))||token(a).includes(token(v))));
+const EVENT_ASSOCIATIONS=new Map(Object.entries(EVENT_ALIASES).flatMap(([event,aliases])=>aliases.map(alias=>[normalise(alias),event])));
+const sourceEventAlias=name=>{
+  const key=normalise(name);
+  return Object.keys(EVENT_ALIASES).find(event=>normalise(event)===key)||EVENT_ASSOCIATIONS.get(key)||Object.keys(EVENT_ALIASES).find(event=>EVENT_ALIASES[event].some(alias=>normalise(alias)===key))||'';
+};
+const mediaRole=item=>{
+  const association=String(item?.association||'');
+  if(EVENT_ASSOCIATIONS.has(normalise(association)))return 'event';
+  if(/archive/i.test(association))return 'archive';
+  if(/team/i.test(association))return 'leadership';
+  return 'club';
+};
+const enrichMediaItem=item=>{
+  if(!item?.url)return null;
+  const association=String(item.association||'JYC Archive').trim()||'JYC Archive';
+  const role=mediaRole({...item,association});
+  const year=String(item.year||item.date||'').slice(0,4);
+  return {
+    ...item,
+    association,
+    year:year||item.year||'',
+    role,
+    sourceType:item.page?'presentation-export':item.sourceType||'maintained-jyc-media',
+    sourceLabel:item.sourceLabel||'JYC maintained source archive',
+    alt:item.alt||item.caption||`${association} · JYC visual archive`,
+    published:item.published!==false
+  };
+};
 export function sourceEventMedia(eventOrName){
   const name=typeof eventOrName==='string'?eventOrName:eventOrName?.title||'';
+  const alias=sourceEventAlias(name);
   const exact=SOURCE_GALLERY.filter(item=>normalise(item.association)===normalise(name));
-  const alias=Object.keys(EVENT_ALIASES).find(k=>normalise(k)===normalise(name)||EVENT_ALIASES[k].some(a=>normalise(name).includes(normalise(a))||normalise(a).includes(normalise(name))));
-  const related=alias?SOURCE_GALLERY.filter(item=>aliasMatch(item,alias)):[];
-  const club=typeof eventOrName==='object'?eventOrName?.club:'';
-  const clubMedia=club?sourceHubMedia(club).photos.map((url,i)=>({id:'club-'+normalise(club)+'-'+i,url,caption:String(club)+' · related JYC source visual',association:club,year:eventOrName?.year||eventOrName?.date?.slice?.(0,4)})):[];
-  const items=[...exact,...related,...clubMedia];
+  const related=alias?SOURCE_GALLERY.filter(item=>{
+    const association=normalise(item.association);
+    return association===normalise(alias)||EVENT_ALIASES[alias]?.some(a=>association===normalise(a));
+  }):[];
+  const items=[...exact,...related].map(enrichMediaItem).filter(Boolean);
   const seen=new Set();
-  return {name:name||alias||'JYC',collection:alias||name||'JYC Archive',items:items.filter(item=>{if(seen.has(item.url))return false;seen.add(item.url);return true})};
+  return {
+    name:name||alias||'JYC',
+    collection:alias||name||'JYC Archive',
+    items:items.filter(item=>{if(seen.has(item.url))return false;seen.add(item.url);return true})
+  };
 }
 export function buildJycMediaManifest(gallery=[]){
   const merged=mergeSourceGallery(gallery);
   const communities=[...new Set(merged.map(x=>String(x.association||'JYC Archive')).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
   const years=[...new Set(merged.map(x=>String(x.year||'').slice(0,4)).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
-  return {total:merged.length,communities,years,collections:communities.map(association=>({association,count:merged.filter(x=>String(x.association||'')===association).length,items:merged.filter(x=>String(x.association||'')===association)}))};
+  const roles=[...new Set(merged.map(x=>String(x.role||'club')).filter(Boolean))].sort();
+  const sourceTypes=[...new Set(merged.map(x=>String(x.sourceType||'maintained-jyc-media')).filter(Boolean))].sort();
+  const byRole=roles.map(role=>({role,count:merged.filter(x=>x.role===role).length}));
+  return {
+    total:merged.length,
+    communities,
+    years,
+    roles,
+    sourceTypes,
+    byRole,
+    collections:communities.map(association=>({
+      association,
+      count:merged.filter(x=>String(x.association||'')===association).length,
+      items:merged.filter(x=>String(x.association||'')===association)
+    }))
+  };
 }
