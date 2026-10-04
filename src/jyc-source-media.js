@@ -254,7 +254,7 @@ export function sourceEventMedia(eventOrName){
     'CodeAI Hackathon':item=>item.category==='clubs/innovation'&&/p[34]-image70[3-7]|p5-DSC03/i.test(item.sourcePath||''),
     'RIDE Hack\'26':item=>item.category==='clubs/innovation'&&/p5-DSC03/i.test(item.sourcePath||'')
   };
-  const archiveRelated=alias&&archiveEventRules[alias]?JYC_SOURCE_ARCHIVE_CATALOG.filter(archiveEventRules[alias]):[];
+  const archiveRelated=alias&&archiveEventRules[alias]?JYC_SOURCE_ARCHIVE_CATALOG.filter(archiveEventRules[alias]).map(item=>({...item,association:alias,caption:item.caption||`${alias} · source archive photograph`})):[];
   const items=[...exact,...related,...archiveRelated].map(enrichMediaItem).filter(Boolean);
   const seen=new Set();
   return {
