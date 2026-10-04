@@ -49,6 +49,8 @@ const adminManagement=read('supabase/functions/admin-management/index.ts');
 if(!adminManagement.includes("new TextEncoder().encode(raw).byteLength > 20000")) failures.push('admin-management must bound the raw request body before JSON parsing');
 const grants=read('supabase/migrations/202610040020_revoke_api_truncate_privileges.sql');
 if(!grants.includes('revoke truncate on all tables in schema public from anon, authenticated')||!grants.includes('revoke truncate on all tables in schema storage from anon, authenticated')) failures.push('browser TRUNCATE privileges must be revoked from public and storage tables');
+const internalRateLimits=read('supabase/migrations/202610040021_revoke_internal_rate_limit_api_access.sql');
+if(!internalRateLimits.includes('revoke all on table public.jyc_ai_rate_limits, public.jyc_error_rate_limits, public.jyc_public_submission_rate_limits, public.jyc_registration_rate_limits from anon, authenticated')) failures.push('internal rate-limit tables must not be exposed to API roles');
 
 const main=read('src/main.jsx');
 const project=read('src/v14-final-platform.jsx');
