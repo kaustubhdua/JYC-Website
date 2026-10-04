@@ -866,3 +866,74 @@ html[data-theme="dark"] .public-app .card:hover,html[data-theme="dark"] .public-
 .event-source-gallery-grid figcaption small{opacity:.55}
 @media(max-width:900px){.event-source-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.event-source-gallery .section-inline-head{display:block}.event-source-count{display:block;margin-top:8px}.event-source-gallery-grid{grid-template-columns:1fr 1fr;gap:8px}}
+
+/* PHOTO ARCHIVE + CENTERED LAYOUT FINAL OVERRIDES */
+.public-app .gallery-controls{justify-content:center;text-align:center;align-items:center}
+.public-app .gallery-controls .gallery-active-filter{width:100%;text-align:center}
+.public-app .gallery-filter{width:min(1120px,100%);margin-inline:auto}
+.public-app .gallery-years,.public-app .gallery-filter-groups,.public-app .gallery-albums{justify-content:center;text-align:center}
+.public-app .gallery-filter-groups{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.public-app .gallery-filter-groups>div{justify-content:center;text-align:center}
+.public-app .gallery-filter-groups small{display:block;text-align:center}
+.public-app .gallery-grid{justify-items:center}
+.public-app .gallery-grid .gallery-item{width:100%;text-align:center}
+.public-app .feature-hero,
+.public-app .feature-page>.feature-hero,
+.public-app .page>.feature-hero,
+.public-app .section-head,
+.public-app .compact-page-head,
+.public-app .reference-section-head,
+.public-app .team-layer-head,
+.public-app .hub-directory-head,
+.public-app .event-timeline-head,
+.public-app .today-head,
+.public-app .detail-section-head{justify-items:center;text-align:center}
+.public-app .feature-hero>p,
+.public-app .section-head>p,
+.public-app .compact-page-head>p,
+.public-app .reference-section-head>p,
+.public-app .detail-section-head>p{margin-inline:auto}
+.public-app .feature-grid,
+.public-app .feature-grid-compact,
+.public-app .team-grid,
+.public-app .club-grid,
+.public-app .activity-grid,
+.public-app .event-grid,
+.public-app .gallery-grid,
+.public-app .archive-grid,
+.public-app .contact-grid{justify-items:center}
+.public-app .feature-grid>*,
+.public-app .feature-grid-compact>*,
+.public-app .team-grid>*,
+.public-app .club-grid>*,
+.public-app .activity-grid>*,
+.public-app .event-grid>*,
+.public-app .gallery-grid>*,
+.public-app .archive-grid>*,
+.public-app .contact-grid>*{width:100%}
+.public-app .club-hero-actions,
+.public-app .detail-actions,
+.public-app .feature-actions,
+.public-app .hero-actions,
+.public-app .social-row,
+.public-app .about-inline-links{justify-content:center!important;align-items:center!important}
+.public-app .club-detail-v41 .club-hero-actions{justify-content:center!important}
+.public-app .event-directory-row,
+.public-app .event-timeline-row,
+.public-app .today-row{text-align:center}
+.public-app .event-directory-row>*,
+.public-app .event-timeline-row>*,
+.public-app .today-row>*{justify-self:center}
+.public-app .contact-form,
+.public-app .contact-form label{text-align:center}
+.public-app .contact-form input,
+.public-app .contact-form textarea,
+.public-app .contact-form select{text-align:center}
+.public-app .contact-form select{text-align-last:center}
+@media(max-width:760px){
+  .public-app .gallery-filter-groups{grid-template-columns:1fr}
+  .public-app .gallery-filter-groups>div{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .public-app *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
