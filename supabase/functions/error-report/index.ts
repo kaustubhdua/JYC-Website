@@ -36,7 +36,7 @@ Deno.serve(async req=>{
   if(req.method==='OPTIONS') return new Response('ok',{headers:{...json({},200,origin).headers}});
   if(req.method!=='POST') return json({error:'POST only.'},405,origin);
   const configuredOrigins=(Deno.env.get('SITE_ORIGINS') || Deno.env.get('SITE_ORIGIN') || '').split(',').map(x=>x.trim()).filter(Boolean);
-  const originAllowed=origin && (configuredOrigins.includes(origin) || /^https?:\\/\\/(localhost|127\\.0\\.0\\.1)(:\\d+)?$/.test(origin));
+  const originAllowed=origin && (configuredOrigins.includes(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin));
   if(!originAllowed) return json({error:'Origin not allowed.'},403,origin);
 
   const contentLength=Number(req.headers.get('content-length')||0);
