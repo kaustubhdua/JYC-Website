@@ -1,6 +1,6 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current direction: V51 — final club-only public website**
+> **Current direction: V52 — final club-only production release**
 
 The official public website for **JIIT Youth Club (JYC), JIIT Wish Town Campus, Sector 128, Noida**.
 
@@ -245,15 +245,18 @@ Provider credentials must never use a `VITE_` prefix or appear in browser code.
 
 ## Current release
 
-**V49 — Production Finish** is the current release candidate. It adds the final interaction layer, mobile resilience, fail-closed JYC Now synchronization, connector versioning, and the production-finish QA contract.
-
-See RELEASE-V49-PRODUCTION-FINISH.md.
+**V52 is the final club-only production release.** It consolidates the senior-approved visual system, canonical public routes, source-first media, mobile/accessibility contracts, and the final club-scope QA gate.
 
 
-## V51 final product boundary
+## V52 final product boundary
 
 The public product is intentionally limited to the JYC organisational website: **Home, About, History, Clubs/Hubs, Club detail, Events, Event detail, Fest experiences, Gallery, Leadership/Team, Archive, Recruitment, Announcements/JYC Now and Contact**. A small **JYC Event Calendar** is retained only as an event-discovery view; it contains JYC events, not academic dates or campus utilities.
 
 Legacy student-platform destinations such as My JYC, account sign-in, planner, notifications, QR utilities, projects, settings and native event-registration flows are no longer part of the public journey and redirect to the appropriate club website destination. The private Control Center remains available only for authorised JYC publishing operations.
 
 The visual direction is deliberately editorial: JYC beige, black and white, real supplied JYC photography, compact layouts, strong typography and restrained motion. Decorative starfields, assistant/chat surfaces, intrusive event popups and portal-style UI are not mounted in the public shell.
+
+
+## V52 release contract
+
+V52 is intentionally a finish-and-stabilise release: no new student-platform utilities are being added. The public site is the JYC organisational website only. Future work should improve verified content, photography, event records, accessibility, performance and editorial tooling without widening the public product boundary.
