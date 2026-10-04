@@ -21,7 +21,8 @@
     "prebuild": "node scripts/generate-sitemap.mjs",
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
-    "qa:hygiene": "node scripts/qa-final-hygiene.mjs"
+    "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
+    "qa:media": "node scripts/qa-media-architecture.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
