@@ -12,6 +12,11 @@ const checks=[
  ['event gallery is responsive',css.includes('.event-source-gallery-grid')],
  ['source archive remains deduplicated',source.includes('const seen=new Set()')],
  ['source media avoids synthetic imagery',source.includes('SOURCE_GALLERY')],
+ ['event aliases avoid shared welcome bucket',!source.includes("'Ebullience','freshers','welcome'")&&!source.includes("'Induction','orientation','welcome'")],
+ ['media provenance taxonomy exists',source.includes('sourceType:')&&source.includes('sourceLabel:')&&source.includes('role')],
+ ['media alt metadata exists',source.includes('alt:item.alt||item.caption')],
+ ['external media is classified',source.includes('official-external-media')],
+ ['gallery uses role filters',main.includes("buildJycMediaManifest")||main.includes('visual type')],
 ];
 let failed=0; for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failed++}
 if(failed)process.exit(1);
