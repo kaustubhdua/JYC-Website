@@ -35,13 +35,18 @@ Deno.serve(async req=>{
   const origin=req.headers.get('Origin');
   if(req.method==='OPTIONS') return new Response('ok',{headers:{...json({},200,origin).headers}});
   if(req.method!=='POST') return json({error:'POST only.'},405,origin);
-  if(allowedOrigin(origin)==='null') return json({error:'Origin not allowed.'},403,origin);
+  const configuredOrigins=(Deno.env.get('SITE_ORIGINS') || Deno.env.get('SITE_ORIGIN') || '').split(',').map(x=>x.trim()).filter(Boolean);
+  const originAllowed=origin && (configuredOrigins.includes(origin) || /^https?:\\/\\/(localhost|127\\.0\\.0\\.1)(:\\d+)?$/.test(origin));
+  if(!originAllowed) return json({error:'Origin not allowed.'},403,origin);
 
   const contentLength=Number(req.headers.get('content-length')||0);
   if(contentLength>18000) return json({error:'Request is too large.'},413,origin);
 
+  let raw='';
+  try{raw=await req.text()}catch{return json({error:'Invalid request body.'},400,origin)}
+  if(new TextEncoder().encode(raw).byteLength>18000) return json({error:'Request is too large.'},413,origin);
   let body:any;
-  try{body=await req.json()}catch{return json({error:'Invalid JSON request.'},400,origin)}
+  try{body=JSON.parse(raw)}catch{return json({error:'Invalid JSON request.'},400,origin)}
 
   const message=typeof body?.message==='string'?body.message.slice(0,2000):'';
   if(!message) return json({error:'Error message is required.'},400,origin);
