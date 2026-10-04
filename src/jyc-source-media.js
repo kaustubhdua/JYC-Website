@@ -64,8 +64,6 @@ export function mergeSourceGallery(gallery){
   return [...map.values()];
 }
 
-export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length};
-
 const EVENT_ALIASES={
   'Converge':['Converge'],
   'Ebullience':['Ebullience'],
@@ -120,6 +118,8 @@ export function sourceEventMedia(eventOrName){
     items:items.filter(item=>{if(seen.has(item.url))return false;seen.add(item.url);return true})
   };
 }
+export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length};
+
 export function buildJycMediaManifest(gallery=[]){
   const merged=mergeSourceGallery(gallery);
   const communities=[...new Set(merged.map(x=>String(x.association||'JYC Archive')).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
