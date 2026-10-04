@@ -132,6 +132,51 @@
       "source": "/map",
       "destination": "/events",
       "permanent": true
+    },
+    {
+      "source": "/my-jyc",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/login",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/notifications",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/settings",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/agenda",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/download",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/clubs",
+      "permanent": true
+    },
+    {
+      "source": "/projects/submit",
+      "destination": "/clubs",
+      "permanent": true
+    },
+    {
+      "source": "/qr/:path*",
+      "destination": "/events",
+      "permanent": true
     }
   ]
 }
