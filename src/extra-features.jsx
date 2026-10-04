@@ -4,7 +4,7 @@ import {supabase} from './lib/supabase';
 import {jycToast,jycConfirm} from './lib/ui';
 import {JYC_CONTACTS} from './lib/site-config.js';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
-import {buildJycMediaManifest,sourceHubMedia,sourceEventMedia,JYC_SOURCE_ARCHIVE_PHOTO_ITEMS} from './jyc-source-media.js';
+import {buildJycMediaManifest,sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {hasLocalReminder,scheduleEventReminder,clearLocalReminder,subscribeSaved,isSaved,setSaved,googleCalendarUrl} from './v15-functional.js';
 
 const savedKeys={club:'jyc-saved-club-',event:'jyc-saved-event-'};
