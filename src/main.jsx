@@ -155,7 +155,9 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
    const img=e.target;
    if(!(img instanceof HTMLImageElement)||img.dataset.jycFallbackApplied==='1')return;
    img.dataset.jycFallbackApplied='1';
-   const fallback=img.dataset.fallbackSrc||'/jyc-logo-circle.png';
+   const descriptor=`${img.className||''} ${img.alt||''}`.toLowerCase();
+   const isLogo=/logo|brand|jyc 128/.test(descriptor);
+   const fallback=img.dataset.fallbackSrc||(isLogo?'/jyc-logo-circle.png':'/assets/hub-photos/jyc-06.webp');
    if(img.src!==new URL(fallback,window.location.origin).href) img.src=fallback;
   };
   document.addEventListener('error',onImageError,true);
