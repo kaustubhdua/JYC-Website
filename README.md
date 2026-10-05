@@ -266,3 +266,4 @@ The highest-value remaining production work is operational rather than architect
 5. Run a final performance pass after the real production image set is known.
 
 No new student-platform features should be added to the public site unless the JYC product scope is explicitly changed.
+
