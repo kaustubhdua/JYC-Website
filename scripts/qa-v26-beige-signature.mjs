@@ -80,6 +80,10 @@ check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes
 check('GLB click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("const openAssistant=")&&read('src/jyc-bot.jsx').includes('triggerMotion(next[0],next[1],next[2])')&&read('src/jyc-bot.jsx').includes('availableAnimations'));
 check('GLB click path does not double-trigger pointer and keyboard animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes("onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap'"));
 check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
+check('GLB playback is throttled and reduced-motion safe',read('src/jyc-bot.jsx').includes('lastAnimationAt')&&read('src/jyc-bot.jsx').includes('performance.now()')&&read('src/jyc-bot.jsx').includes("prefers-reduced-motion: reduce"));
+check('public stability stylesheet contract is present',read('src/styles/public-system.css').includes('V57.1 — public visual stability contract')&&read('src/styles/public-system.css').includes('overflow-x:clip')&&read('src/styles/public-system.css').includes('object-position:center center'));
+check('browser QA includes normal-flow overlap coverage',read('scripts/browser-smoke.spec.js').includes('public sections never overlap in normal document flow'));
+
 check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
 check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
 check('homepage impact counters are exact rather than plus-suffixed estimates',editorialHome.includes('<strong>{s.value}</strong>')&&!editorialHome.includes('<strong>{s.value}+</strong>'));
