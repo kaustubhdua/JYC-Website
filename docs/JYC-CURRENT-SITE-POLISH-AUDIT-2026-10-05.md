@@ -4,7 +4,7 @@
 
 This pass is deliberately **not a feature-expansion pass**. The goal is to improve the current JYC public website by tightening correctness, consistency, performance, accessibility, SEO, maintainability and visual restraint without introducing new public product capabilities.
 
-Current baseline: V56.7 on `main`, with the deeper security hardening pass already merged before this polish branch.
+Current baseline: V56.15.1 on `main`, including the editorial homepage consolidation, source-media hardening and Supabase migration-version cleanup.
 
 ## Changes implemented in this pass
 
@@ -20,10 +20,17 @@ Current baseline: V56.7 on `main`, with the deeper security hardening pass alrea
 - This keeps sitemap signals aligned with canonical URLs and actual content changes.
 
 ### 3. Public copy consistency
-- The homepage recruitment CTA no longer says “Coming Soon” while routing to the existing Recruitment surface. It now reads “Join JYC ↗”.
+- The public Join JYC CTA consistently points to `/join-jyc`, the official Coming Soon experience. Recruitment remains available as its own public destination.
 - Existing QA contracts were updated to protect the current behavior.
 
-### 4. Repository terminology
+### 4. Visual/media stability pass
+- Public media containers now have a stronger centered-crop and overflow contract.
+- Long event/community labels are protected from horizontal collisions.
+- Runtime image failures have a deterministic local fallback so broken-image glyphs do not create dead media frames.
+- GLB animation playback is throttled and disabled under reduced-motion; touch-first/constrained devices use the safe branded fallback to avoid unnecessary GPU/network cost.
+- Browser QA now checks empty media frames and normal-flow section overlaps across the public route matrix.
+
+### 5. Repository terminology
 - The media documentation now distinguishes the 873 archive entries from the 872 raster images plus one SVG.
 
 ## What the current codebase already does well
