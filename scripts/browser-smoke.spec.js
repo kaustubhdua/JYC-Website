@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const base = process.env.JYC_BASE_URL || 'http://127.0.0.1:5173';
-const routes = ['/', '/about', '/history', '/clubs', '/events', '/gallery', '/team', '/calendar', '/archive', '/recruitment', '/contact', '/fests', '/updates', '/announcements'];
+const routes = ['/', '/about', '/history', '/clubs', '/events', '/team', '/gallery', '/achievements', '/announcements', '/recruitment', '/calendar', '/archive', '/updates', '/contact', '/fests'];
 
 test('public app mounts with no runtime errors', async ({ page }) => {
   const errors = [];
@@ -108,7 +108,7 @@ test('brand text contrast stays readable in both themes', async ({ page }) => {
       }
       return parse(getComputedStyle(document.documentElement).backgroundColor)||[250,247,239,1];
     };
-    const selectors=['.hero h1','.hero p','.hero-context-rail span','.nav a'];
+    const selectors=['.jyc-v1-hero h1','.jyc-v1-hero-copy>p','.jyc-v1-eyebrow','.nav a'];
     return selectors.map(selector=>{
       const el=document.querySelector(selector);
       if(!el)return {selector,ratio:null};
@@ -250,4 +250,95 @@ test('homepage remains inside viewport at common phone widths', async ({ page })
     const result = await page.evaluate(() => [...document.querySelectorAll('.jyc-editorial-home > section')].map(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: r.right, width: r.width }; }).filter(x => x.width > 0));
     for (const rect of result) { expect(Math.round(rect.left), 'left edge at '+width).toBeGreaterThanOrEqual(0); expect(Math.round(rect.right), 'right edge at '+width).toBeLessThanOrEqual(width); }
   }
+});
+
+test('all public routes keep images loaded, centered and inside the viewport', async ({ page }) => {
+  test.setTimeout(120000);
+  for (const route of routes) {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(base + route, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(async () => {
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(350);
+    const result = await page.evaluate(() => {
+      const vw = document.documentElement.clientWidth;
+      const images = [...document.querySelectorAll('main img, .public-app img')];
+      const broken = images.filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src);
+      const outside = images.filter(img => {
+        const r = img.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && (r.left < -1 || r.right > vw + 1);
+      }).map(img => ({src:img.currentSrc||img.src,left:img.getBoundingClientRect().left,right:img.getBoundingClientRect().right}));
+      const badlyPositioned = images.filter(img => {
+        const r = img.getBoundingClientRect();
+        if (!r.width || !r.height) return false;
+        const style = getComputedStyle(img);
+        return style.objectFit === 'cover' && !/50%\\s+50%/.test(style.objectPosition);
+      }).map(img => ({src:img.currentSrc||img.src,position:getComputedStyle(img).objectPosition}));
+      return {count:images.length,broken,outside,badlyPositioned};
+    });
+    expect(result.count).toBeGreaterThan(0);
+    expect(result.broken).toEqual([]);
+    expect(result.outside).toEqual([]);
+    expect(result.badlyPositioned).toEqual([]);
+  }
+});
+
+test('homepage has no large empty media frames and no horizontal overflow', async ({ page }) => {
+  for (const width of [320, 360, 390, 430, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(base, { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(500);
+    const result = await page.evaluate(() => {
+      const vw = document.documentElement.clientWidth;
+      const media = [...document.querySelectorAll('.jyc-editorial-home .jyc-v1-hero-photo,.jyc-editorial-home .jyc-v1-event-image,.jyc-editorial-home .jyc-v1-family-media,.jyc-editorial-home .jyc-v1-activity-image,.jyc-editorial-home .jyc-v1-gallery-photo,.jyc-editorial-home .jyc-v1-person>div')];
+      const empty = media.filter(box => {
+        const r=box.getBoundingClientRect();
+        return r.width>80 && r.height>80 && !box.querySelector('img,.jyc-v1-empty');
+      }).length;
+      const overflow=document.documentElement.scrollWidth>vw+1;
+      const offscreen=[...document.querySelectorAll('.jyc-editorial-home > section')].filter(el=>{const r=el.getBoundingClientRect();return r.left<-1||r.right>vw+1}).length;
+      return {empty,overflow,offscreen};
+    });
+    expect(result.empty).toBe(0);
+    expect(result.overflow).toBe(false);
+    expect(result.offscreen).toBe(0);
+  }
+});
+
+test('V1 homepage remains readable in dark theme', async ({ page }) => {
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => {
+    document.documentElement.setAttribute('data-theme','dark');
+    const root=document.querySelector('.jyc-editorial-home');
+    const parse=v=>{const m=String(v).match(/rgba?\\((\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);return m?[+m[1],+m[2],+m[3]]:null};
+    const lum=rgb=>{const c=rgb.map(v=>{const x=v/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+    const ratio=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+    const pick=sel=>{const el=root?.querySelector(sel);if(!el)return null;const fg=parse(getComputedStyle(el).color);const bg=parse(getComputedStyle(root).backgroundColor)||[17,16,20];return fg?ratio(fg,bg):null};
+    return {background:getComputedStyle(root).backgroundColor,h1:pick('.jyc-v1-hero h1'),body:pick('.jyc-v1-hero-copy>p')};
+  });
+  expect(result.background).not.toBe('rgb(245, 241, 230)');
+  if(result.h1!==null) expect(result.h1).toBeGreaterThanOrEqual(4.5);
+  if(result.body!==null) expect(result.body).toBeGreaterThanOrEqual(4.5);
+});
+
+test('JYC assistant GLB remains fixed and interaction-driven', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  const bot=page.locator('.jyc-bot-shell');
+  await expect(bot).toBeVisible();
+  const model=page.locator('.jyc-bot-glb');
+  if(await model.count()){
+    await expect(model).toHaveAttribute('src','/models/jyc-spatial.glb');
+    await expect(model).not.toHaveAttribute('camera-controls');
+    await expect(model).not.toHaveAttribute('onpointermove');
+  }
+  await bot.locator('button').click();
+  await expect(page.locator('.jyc-assistant-panel')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1);
+  expect(overflow).toBe(false);
 });
