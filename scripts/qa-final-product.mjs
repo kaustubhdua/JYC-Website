@@ -22,6 +22,8 @@ const checks=[
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jyc-v1-hero-media'),'editorial hero image is prioritized for first paint'],
+  [editorialHome.includes('DepthCarousel')&&fs.existsSync('src/components/react-bits/DepthCarousel.jsx')&&fs.readFileSync('src/components/react-bits/DepthCarousel.css','utf8').includes('object-position:center center'),'club photography carousel is source-backed and centred'],
+  [editorialHome.includes('CountUp')&&fs.existsSync('src/components/react-bits/CountUp.jsx'),'homepage impact metrics use the lightweight CountUp component'],
   [editorialHome.includes('data-fallback-src="/jyc-logo-official.webp"')&&main.includes('dataset.jycFallback'),'homepage media has a deterministic local image fallback'],
   [editorialHome.includes('new IntersectionObserver')&&editorialHome.includes('editorial-reveal')&&editorialHome.includes('is-visible'),'homepage reveal states cannot remain permanently transparent'],
   [fs.readFileSync('src/jyc-editorial-home.css','utf8').includes('object-position:center center')&&fs.readFileSync('src/jyc-editorial-home.css','utf8').includes('overflow:clip'),'V1 media is explicitly centred and horizontally overflow-safe'],
