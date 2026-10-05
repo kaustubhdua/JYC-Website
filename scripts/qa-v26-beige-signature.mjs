@@ -78,6 +78,11 @@ const lock=JSON.parse(read('package-lock.json'));check('public image failure fal
 check('public image presentation is centered',read('src/jyc-logo-final-theme.css').includes('object-position:center')&&editorialCss.includes('object-position:center'));
 check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/jyc-spatial.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
 check('GLB tap/click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("triggerMotion('is-tap',520,'tap')")&&read('src/jyc-bot.jsx').includes('availableAnimations'));
+check('GLB click path does not double-trigger pointer and click animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes('onKeyDown={e=>{if(e.key===\'Enter\'||e.key===\' \'){triggerMotion(\'is-tap\''));
+check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
+check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
+check('homepage impact counters remain exact rather than fabricating plus-suffix counts',editorialHome.includes('<strong>{s.value}</strong>')&&!editorialHome.includes('<strong>{s.value}+</strong>'));
+
 check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
 check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
