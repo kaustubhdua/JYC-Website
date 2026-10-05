@@ -4,16 +4,19 @@ import {PDF_HUB_STORIES} from './pdf-hub-content.js';
 
 const slug=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
+const mediaUrl=item=>item?.url||item?.src||item?.image||item?.imageUrl||'';
+
 const photoFor=(gallery,clubName,event)=>{
   const rows=Array.isArray(gallery)?gallery:[];
   const eventId=String(event?.id||'');
   const eventTitle=String(event?.title||'').toLowerCase();
   const club=String(clubName||'').toLowerCase();
-  return rows.find(g=>String(g.eventId||'')===eventId)?.url
-    || rows.find(g=>{
+  return mediaUrl(rows.find(g=>String(g.eventId||'')===eventId))
+    || mediaUrl(rows.find(g=>{
       const hay=String(g.association||g.caption||'').toLowerCase();
       return (club&&hay.includes(club))||(eventTitle&&hay.includes(eventTitle));
-    })?.url
+    }))
+    || mediaUrl(rows.find(g=>g.url||g.src||g.image||g.imageUrl))
     || PDF_HUB_STORIES.find(s=>String(s.name||'').toLowerCase()===club)?.image
     || '';
 };
@@ -25,12 +28,14 @@ export function JYCSpotlight({data}){
   const gallery=Array.isArray(data?.gallery)?data.gallery:[];
   const spotlight=useMemo(()=>{
     const live=events.find(e=>String(e.publicStatus||'').toLowerCase()==='live');
-    const next=[...events].sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))||String(a.start||'').localeCompare(String(b.start||'')))[0];
+    const today=new Date(); today.setHours(0,0,0,0);
+    const upcoming=events.filter(e=>{const d=e?.date?new Date(`${e.date}T23:59:59`):null;return d&&!Number.isNaN(d.getTime())&&d>=today;});
+    const next=[...upcoming].sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))||String(a.start||'').localeCompare(String(b.start||'')))[0];
     const event=live||next||null;
     const eventClub=event?.clubId?clubs.find(c=>String(c.id)===String(event.clubId)):clubs.find(c=>String(c.name||'').toLowerCase()===String(event?.club||'').toLowerCase());
     const community=eventClub||clubs.find(c=>c.pinned)||clubs[0]||null;
     const communityPhoto=photoFor(gallery,community?.name,event);
-    const archive=gallery.find(g=>g.url&&(!event?.id||String(g.eventId||'')===String(event.id)))||gallery.find(g=>g.url);
+    const archive=gallery.find(g=>mediaUrl(g)&&(!event?.id||String(g.eventId||'')===String(event.id)))||gallery.find(g=>mediaUrl(g));
     return {event,community,communityPhoto,archive};
   },[clubs,events,gallery]);
 
@@ -72,7 +77,7 @@ export function JYCSpotlight({data}){
       </button>
       <button type="button" className="jyc-living-spotlight-card is-photo" onClick={()=>nav('/gallery')}>
         <div className="jyc-living-spotlight-media">
-          {spotlight.archive?.url?<img src={spotlight.archive.url} alt="" loading="lazy"/>:<div className="jyc-living-spotlight-fallback">ARCHIVE</div>}
+          {mediaUrl(spotlight.archive)?<img src={mediaUrl(spotlight.archive)} alt="" loading="lazy"/>:<div className="jyc-living-spotlight-fallback">ARCHIVE</div>}
           <span>03 · VISUAL MEMORY</span>
         </div>
         <div className="jyc-living-spotlight-copy">
