@@ -22,7 +22,7 @@ const checks=[
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jyc-v1-hero-media'),'editorial hero image is prioritized for first paint'],
-  [editorialHome.includes('jyc-v1-hero')&&read('src/jyc-editorial-home.css').includes('--v1-accent:var(--jyc-final-gold,#a47b43)')&&read('src/jyc-editorial-home.css').includes('html[data-theme="dark"] .jyc-editorial-home'),'V1 homepage follows the logo palette in light and dark mode'],
+  [editorialHome.includes('jyc-v1-hero')&&read('src/jyc-editorial-home.css').includes('--v1-accent:var(--jyc-bronze,#a47b43)')&&read('src/jyc-editorial-home.css').includes('html[data-theme="dark"] .jyc-editorial-home'),'V1 homepage follows the logo palette in light and dark mode'],
   [read('src/jyc-innovation-motion.jsx').includes('Public card tilt was intentionally retired')&&!read('src/jyc-innovation-motion.css').includes('perspective(1100px) rotateX(var(--tilt-x))'),'public card tilt is retired for V1 stability'],
   [main.includes('dataset.jycFallback')&&main.includes('dataset.fallbackSrc')&&main.includes("'/jyc-logo-official.webp'"),'runtime image fallback prevents broken media glyphs'],
   [main.includes('PDF_HUB_PROGRAMME.map')&&main.includes('supplied-event-programme'),'All Hubs programme material remains surfaced'],
