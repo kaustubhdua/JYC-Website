@@ -7,6 +7,7 @@
  --v1-line:var(--jyc-border,rgba(17,19,24,.14));
  --v1-accent:var(--jyc-bronze,#a47b43);
  --v1-navy:var(--jyc-navy,#18161d);
+ --v1-red:var(--accent-red,#a82420);
  --v1-ivory:var(--jyc-ivory,#fffdf8);
  background:var(--v1-paper);
  color:var(--v1-ink);
@@ -475,4 +476,37 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{
  .jyc-v1-section-head>div,.jyc-v1-section-head>div>p,.jyc-v1-head-note{margin-inline:auto}
  .jyc-v1-link{margin-inline:auto}
  .jyc-v1-final-actions,.jyc-v1-impact-actions{justify-items:stretch}
+}
+
+
+/* Explicit theme bridge: the homepage never introduces a second colour system. */
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-paper:#0f0e11;
+ --v1-card:#18161d;
+ --v1-ink:#fff8e1;
+ --v1-muted:#a8a3b0;
+ --v1-line:rgba(210,180,140,.25);
+ --v1-accent:#bf9c6f;
+ --v1-navy:#18161d;
+ --v1-ivory:#fff8e1;
+ background:var(--v1-paper);
+ color:var(--v1-ink);
+}
+.jyc-editorial-home :where(img,video){max-width:100%}
+.jyc-editorial-home .jyc-v1-section-head,
+.jyc-editorial-home .jyc-v1-about>div:last-child,
+.jyc-editorial-home .jyc-v1-activities .jyc-v1-section-head>div,
+.jyc-editorial-home .jyc-v1-gallery .jyc-v1-section-head>div,
+.jyc-editorial-home .jyc-v1-team .jyc-v1-section-head>div{
+ text-align:center;
+ margin-inline:auto;
+}
+.jyc-editorial-home .jyc-v1-section-head>div>p{margin-inline:auto}
+.jyc-editorial-home .jyc-v1-section-head .jyc-v1-link{justify-self:center}
+@media(max-width:1000px){
+ .jyc-editorial-home .jyc-v1-section-head{justify-items:center}
+ .jyc-editorial-home .jyc-v1-section-head>div{width:100%}
+}
+@media(max-width:680px){
+ .jyc-editorial-home .jyc-v1-section-head{text-align:center}
 }
