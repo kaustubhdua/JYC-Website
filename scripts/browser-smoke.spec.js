@@ -332,3 +332,33 @@ test('Join JYC exposes the public coming-soon experience', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Join JYC.' })).toBeVisible();
   await expect(page.getByText('The next JYC recruitment cycle is being prepared.')).toBeVisible();
 });
+
+
+test('public sections never overlap in normal document flow', async ({ page }) => {
+  test.setTimeout(90000);
+  for (const width of [320, 390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/about', '/clubs', '/events', '/gallery', '/team', '/contact']) {
+      await page.goto(base + route, { waitUntil: 'domcontentloaded' });
+      await page.waitForTimeout(250);
+      const overlaps = await page.evaluate(() => {
+        const sections = [...document.querySelectorAll('main > section, .route-stage > section')]
+          .filter(el => {
+            const r = el.getBoundingClientRect(), s = getComputedStyle(el);
+            return r.width > 0 && r.height > 0 && !['fixed','absolute'].includes(s.position);
+          })
+          .map(el => ({el, top: el.getBoundingClientRect().top + window.scrollY, bottom: el.getBoundingClientRect().bottom + window.scrollY}));
+        const hits = [];
+        for (let i = 0; i < sections.length; i++) {
+          for (let j = i + 1; j < sections.length; j++) {
+            if (sections[i].bottom > sections[j].top + 8 && sections[j].bottom > sections[i].top + 8) {
+              hits.push([String(sections[i].el.className || sections[i].el.tagName), String(sections[j].el.className || sections[j].el.tagName)]);
+            }
+          }
+        }
+        return hits.slice(0, 8);
+      });
+      expect(overlaps, 'section overlap ' + width + 'px ' + route).toEqual([]);
+    }
+  }
+});
