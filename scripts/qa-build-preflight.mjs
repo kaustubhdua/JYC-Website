@@ -12,7 +12,7 @@ const cssText=cssFiles.map(f=>fs.readFileSync(f,'utf8')).join('\n');
 const checks=[
  ['featured/event navigation contract is present', /function EventCard\([\s\S]*?events\//.test(main) || /<EventCard key=\{e\.id\} e=\{e\}/.test(main)],
  ['canonical URL is not root-directory asset syntax', !html.includes('<link rel="canonical" href="/" />')],
- ['canonical URL is absolute', /<link rel="canonical" href="https?:\/\//.test(html)],
+ ['canonical URL is absolute or uses the deploy-time origin placeholder', /<link rel="canonical" href="(?:https?:\/\/|%VITE_SITE_URL%\/)\//.test(html)],
  ['GalleryItems is not redeclared locally', !/function GalleryItems\(\{items\}\)/.test(main)],
  ['AdminErrorBoundary import does not collide with local class', !(/class AdminErrorBoundary extends/.test(admin) && /import[^;]*\bAdminErrorBoundary\b[^;]*from ['\"]\.\/admin-extra\.jsx['\"]/.test(admin))],
  ['CSS keyframe identifiers are valid', !/@keyframes\s+[0-9]/.test(cssText) && !/animation(?:-name)?\s*:\s*[0-9]/.test(cssText)],
