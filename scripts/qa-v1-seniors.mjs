@@ -4,6 +4,7 @@ import path from 'node:path';
 const root=process.cwd();
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const main=read('src/main.jsx');
+const editorialHome=read('src/jyc-editorial-home.jsx');
 const extra=read('src/extra-features.jsx');
 const pkg=JSON.parse(read('package.json'));
 const socials=read('src/jyc-socials.js');
@@ -23,8 +24,8 @@ add('Senior navigation includes About, Clubs, Events, Gallery, Leadership and Co
 add('Leadership canonical route exists',main.includes("clean==='/team'||clean==='/leadership'")||main.includes("clean==='/team'?'team':clean==='/leadership'?'team'")&&main.includes("'/leadership':'JYC 128 Leadership"));
 add('Event Calendar canonical alias exists',main.includes("clean==='/calendar'||clean==='/event-calendar'")&&main.includes("'/event-calendar':'JYC 128 Event Calendar"));
 add('Join JYC recruitment CTA is clear',main.includes("nav('/recruitment')")&&main.includes('Join JYC ↗'));
-add('Home hero has required participation CTAs',main.includes("nav('/events')")&&main.includes("nav('/clubs')")&&main.includes('heroPrimaryCta'));
-add('Home hero uses senior-approved statement',main.includes('THE VOICE. THE TALENT. THE SPIRIT.'));
+add('Home hero has required participation CTAs',editorialHome.includes("nav('/events')")&&editorialHome.includes("nav('/clubs')")&&editorialHome.includes("nav('/recruitment')"));
+add('Home hero uses senior-approved statement',editorialHome.includes('<span>The campus.</span>')&&editorialHome.includes('<span>In motion.</span>')&&editorialHome.includes('<em>Together.</em>'));
 add('JYC 128 scope is explicit',main.includes('JIIT · SECTOR 128 · NOIDA')&&main.includes('JIIT YOUTH CLUB'));
 add('Events expose upcoming/live/past states',main.includes("['upcoming','Upcoming',upcoming.length]")&&main.includes("['live','Ongoing',live.length]")&&main.includes("['past','Completed',past.length]"));
 add('Events expose senior-requested categories',config.includes("JYC_EVENT_CATEGORIES")&&config.includes("'Social'"));
