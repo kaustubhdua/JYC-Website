@@ -24,31 +24,12 @@ export function JYCBot({data}){
   script.onerror=()=>setModelFailed(true);
   document.head.appendChild(script);
  };
- const preloadModelAsset=()=>{
-  if(typeof document==='undefined'||modelPreloadRef.current||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches)return;
-  modelPreloadRef.current=true;
-  if(document.querySelector('link[data-jyc-glb-preload]'))return;
-  const link=document.createElement('link');link.rel='preload';link.as='fetch';link.href='/models/jyc-spatial.glb';link.crossOrigin='anonymous';link.dataset.jycGlbPreload='true';document.head.appendChild(link);
- };
  const checkAsset=()=>{if(assetCheckRef.current)return assetCheckRef.current;assetCheckRef.current=fetch('/models/jyc-spatial.glb',{method:'HEAD',cache:'force-cache'}).then(r=>{setModelAvailable(r.ok);return r.ok}).catch(()=>{setModelAvailable(false);return false});return assetCheckRef.current};
  const triggerMotion=(name='is-wave',duration=850,intent='wave')=>{window.clearTimeout(motionTimer.current);setMotion(name);playModelAnimation(intent);motionTimer.current=window.setTimeout(()=>setMotion(''),duration)};
  const playModelAnimation=(intent='wave')=>{const viewer=modelRef.current;if(!viewer||!Array.isArray(viewer.availableAnimations)||!viewer.availableAnimations.length)return;const names=viewer.availableAnimations;const patterns={wave:/wave|hello|greet|hand/i,idle:/idle|breath|stand|rest/i,bounce:/bounce|jump|hop/i,dance:/dance|move|walk/i,tap:/tap|nod|blink/i,think:/think|look|search|curious/i,celebrate:/celebrate|cheer|victory|happy/i,peek:/peek|turn|look/i};const pool=names.filter(n=>(patterns[intent]||patterns.wave).test(n));const selected=(pool.length?pool:names)[modelAnimationCursor.current%Math.max(1,(pool.length?pool:names).length)];modelAnimationCursor.current+=1;try{viewer.animationName=selected;viewer.currentTime=0;if(typeof viewer.play==='function'){const result=viewer.play({repetitions:1});if(result?.catch)result.catch(()=>viewer.play())}else viewer.play();window.setTimeout(()=>{try{viewer.pause()}catch{}},1800)}catch{}};
  const runContextAnimation=()=>{const map={home:['wave','peek'],clubs:['idle','think'],events:['tap','celebrate'],gallery:['dance','peek'],team:['wave','think']};const intents=map[context]||['idle'];const intent=intents[animationCursor.current%intents.length];animationCursor.current+=1;triggerMotion(`is-${intent}`,760,intent)};
  const openAssistant=()=>{loadModelViewer();checkAsset();const sequence=[['is-wave',900,'wave'],['is-bounce',820,'bounce'],['is-tap',520,'tap'],['is-celebrate',900,'celebrate'],['is-dance',980,'dance'],['is-peek',760,'peek']];const next=sequence[animationCursor.current%sequence.length];animationCursor.current+=1;triggerMotion(next[0],next[1],next[2]);setAssistantOpen(true)};
- useEffect(()=>{
-  let cancelled=false;
-  const start=()=>{
-   if(cancelled||typeof window==='undefined')return;
-   preloadModelAsset();
-   loadModelViewer();
-   checkAsset();
-  };
-  if(document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches){setModelFailed(true);return undefined;}
-  if(customElements?.get('model-viewer')) start();
-  else if('requestIdleCallback' in window) window.requestIdleCallback(start,{timeout:2400});
-  else window.setTimeout(start,1800);
-  return()=>{cancelled=true;window.clearTimeout(motionTimer.current);window.clearTimeout(idleTimer.current)};
- },[]);
+ useEffect(()=>()=>{window.clearTimeout(motionTimer.current);window.clearTimeout(idleTimer.current)},[]);
  useEffect(()=>()=>{window.clearTimeout(motionTimer.current);window.clearInterval(idleTimer.current)},[]);
  useEffect(()=>{if(modelReady&&modelAvailable&&!modelFailed&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)triggerMotion('is-wave',760,'wave')},[modelReady,modelAvailable,modelFailed]);
  return <div className={`jyc-bot-shell ${assistantOpen?'is-open':''}`} data-context={context}>
