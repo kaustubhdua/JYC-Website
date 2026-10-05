@@ -14,6 +14,8 @@ const pkg=JSON.parse(read('package.json'));
 const sw=read('public/sw.js');
 const hubContent=read('src/v21-hub-content.js');
 const sourceMedia=read('src/jyc-source-media.js');
+const bot=read('src/jyc-bot.jsx');
+const logoTheme=read('src/jyc-logo-final-theme.css');
 const hubRegistry=read('src/jyc-hub-registry.js');
 
 const hasExactUrl=(content,{protocol,hostname,pathname})=>{
@@ -53,6 +55,11 @@ check('verified leadership content remains source-grounded',fallbacks.includes('
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
 check('JYC logo remains the public hero identity',editorialHome.includes('jyc-v1-hero-photo')&&editorialHome.includes('REAL PEOPLE.')&&editorialHome.includes('JYC 128 · OFFICIAL ARCHIVE'));
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"'));
+check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
+check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&bot.includes('requestIdleCallback'));
+check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
+check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
+check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
 check('service worker cache is current',read('public/sw.js').includes('jyc-cache-v56-15-1'));
 const maintainedHubCount=(hubContent.match(/^\s{2}(?:'[^']+'|[A-Za-z][^:]+):\{/gm)||[]).length;
 check('orientation source count stays internally consistent',main.includes('JYC_HUB_CONTENT')&&main.includes("Object.keys(JYC_HUB_CONTENT).length")&&maintainedHubCount===23&&hubRegistry.match(/\{name:/g)?.length===23);
