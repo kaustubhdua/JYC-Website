@@ -2,11 +2,11 @@ import React,{useEffect,useRef} from 'react';
 import {Renderer,Program,Mesh,Triangle,Texture} from 'ogl';
 import './DitherVeil.css';
 
-const vertex=\`#version 300 es
+const vertex=`#version 300 es
 in vec2 position; in vec2 uv; out vec2 vUv;
 void main(){vUv=uv;gl_Position=vec4(position,0.,1.);}
-\`;
-const fragment=\`#version 300 es
+`;
+const fragment=`#version 300 es
 precision highp float;
 uniform sampler2D tImage; uniform vec2 uResolution,uCover,uPointer;
 uniform float uRadius,uSoftness,uPixel,uIntro,uTime;
@@ -27,7 +27,7 @@ void main(){
  vec3 color=mix(ink,raw,1.-reveal);color=mix(uInk,color,framed);color=mix(uInk,color,intro);color+=shimmer*(1.-reveal);
  fragColor=vec4(color,1.);
 }
-\`;
+`;
 const fit=(w,h,iw,ih)=>{const r=w/h/(iw/ih);return r>1?[1,1/r]:[r,1];};
 const rgb=h=>{let s=String(h||'').replace('#','');if(s.length===3)s=s.split('').map(x=>x+x).join('');const n=parseInt(s.slice(0,6),16);return Number.isFinite(n)?[((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255]:[0,0,0];};
 
@@ -59,5 +59,5 @@ export default function DitherVeil({src='/jyc-logo-official.webp',pixelSize=2,in
    return()=>{alive=false;cancelAnimationFrame(raf);ro?.disconnect();io?.disconnect();img.onload=null;img.onerror=null;el.removeEventListener('pointermove',move);el.removeEventListener('pointerenter',move);el.removeEventListener('pointerleave',leave);gl.getExtension('WEBGL_lose_context')?.loseContext();canvas.remove();};
   }catch(error){console.warn('DitherVeil fallback:',error);fallback();}
  },[src,pixelSize,inkColor,paperColor,revealRadius,softness]);
- return <div ref={ref} className={\`dither-veil \${className}\`.trim()} style={style} aria-hidden="true"><img ref={fallbackRef} className="dither-veil-fallback" src={src} alt="" data-visible="false"/></div>;
+ return <div ref={ref} className={`dither-veil \${className}`.trim()} style={style} aria-hidden="true"><img ref={fallbackRef} className="dither-veil-fallback" src={src} alt="" data-visible="false"/></div>;
 }
