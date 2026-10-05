@@ -184,7 +184,7 @@ test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   test.setTimeout(60000);
   const redirects = {
     '/leadership': '/team',
-    '/join-jyc': '/recruitment',
+    '/join-jyc': '/join-jyc',
     '/event-calendar': '/calendar',
     '/moments': '/gallery',
     '/planner': '/events',
@@ -301,4 +301,11 @@ test('mobile fixed controls have separation and never overlap the navigation doc
       Math.max(0, Math.min(boxes.dock.right,boxes.bot.right)-Math.max(boxes.dock.left,boxes.bot.left));
     expect(overlap).toBe(0);
   }
+});
+
+
+test('Join JYC exposes the public coming-soon experience', async ({ page }) => {
+  await page.goto(base + '/join-jyc', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { name: 'Join JYC.' })).toBeVisible();
+  await expect(page.getByText('The next JYC recruitment cycle is being prepared.')).toBeVisible();
 });
