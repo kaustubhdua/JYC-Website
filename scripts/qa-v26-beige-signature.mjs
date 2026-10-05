@@ -39,6 +39,7 @@ check('logo beige is the final public brand anchor',css.includes('--jyc-champagn
 check('light/dark theme contracts are explicit',css.includes('html[data-theme="light"]')&&css.includes('html[data-theme="dark"]')&&css.includes('--jyc-text:var(--jyc-ink)')&&css.includes('--jyc-muted-live:var(--jyc-muted)'));
 check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
 check('homepage hierarchy and motion layer are present',editorialCss.includes('.jyc-v1-hero{')&&editorialCss.includes('.jyc-v1-hero-media')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
+check('V1 homepage inherits the active JYC colour theme',editorialCss.includes('--v1-paper:var(--jyc-bg')&&editorialCss.includes('--v1-card:var(--jyc-surface')&&editorialCss.includes('--v1-ink:var(--jyc-text')&&editorialCss.includes('--v1-navy:var(--jyc-navy'));
 check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3}/>'));
 check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC / Get Involved'));
 check('Team hierarchy is explicit',main.includes('Faculty → Apex → Core → Clubs & Hubs')&&main.includes('team-command-strip')&&main.includes('JYC Apex'));
