@@ -268,3 +268,24 @@
 .nav-join-cta span{margin-left:5px}
 .nav-join-cta:hover{transform:translateY(-1px);box-shadow:0 8px 20px color-mix(in srgb,var(--v1-navy) 14%,transparent)}
 @media(max-width:980px){.nav-join-cta{display:none}}
+
+/* Theme inheritance: the V1 editorial surface must follow the site's active theme. */
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-ink:#fff8e1;
+ --v1-paper:#0f0e11;
+ --v1-card:#18161d;
+ --v1-muted:#b8b0a5;
+ --v1-line:rgba(210,180,140,.24);
+ --v1-accent:#d2b48c;
+}
+html[data-theme="dark"] .jyc-v1-hero-photo,
+html[data-theme="dark"] .jyc-v1-event-image,
+html[data-theme="dark"] .jyc-v1-family-media,
+html[data-theme="dark"] .jyc-v1-activity-image,
+html[data-theme="dark"] .jyc-v1-gallery-photo,
+html[data-theme="dark"] .jyc-v1-person>div{background:#26232a}
+html[data-theme="dark"] .jyc-v1-stat-strip,
+html[data-theme="dark"] .jyc-v1-event-card,
+html[data-theme="dark"] .jyc-v1-family-card,
+html[data-theme="dark"] .jyc-v1-activity-card{background:var(--v1-card);color:var(--v1-ink)}
+html[data-theme="dark"] .jyc-v1-live-notice{border-color:var(--v1-line)}
