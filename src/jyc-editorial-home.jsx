@@ -11,6 +11,7 @@ import CountUp from './components/react-bits/CountUp.jsx';
 import Particles from './components/react-bits/Particles.jsx';
 import JYCModelViewer from './components/JYCModelViewer.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
+import CountUp from './components/react-bits/CountUp.jsx';
 import {BellToggle,JellyRadio,FlipCard} from './components/react-bits-lite.jsx';
 import './jyc-editorial-home.css';
 
