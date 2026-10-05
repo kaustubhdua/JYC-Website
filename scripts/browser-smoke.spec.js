@@ -350,6 +350,25 @@ test('JYC assistant remains interactive with GLB or safe fallback', async ({ pag
   await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
 });
 
+test('GLB stays on capable desktop hardware and falls back on touch-first mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
+  await page.waitForTimeout(1800);
+  const desktopState=await page.evaluate(()=>({
+    hasModel:Boolean(document.querySelector('.jyc-bot-glb')),
+    src:document.querySelector('.jyc-bot-glb')?.getAttribute('data-jyc-glb-src')||null
+  }));
+  if(desktopState.hasModel) expect(desktopState.src).toBe('/models/jyc-spatial.glb');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
+  await page.waitForTimeout(500);
+  await expect(page.locator('.jyc-bot-model-fallback')).toBeVisible();
+  await expect(page.locator('.jyc-bot-glb')).toHaveCount(0);
+});
+
 test('mobile fixed controls have separation and never overlap the navigation dock', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
