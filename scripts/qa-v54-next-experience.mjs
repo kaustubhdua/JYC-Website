@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 const read=p=>fs.readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const main=read('src/main.jsx');
+const editorialHome=read('src/jyc-editorial-home.jsx');
 const next=read('src/jyc-next-experience.jsx');
 const bot=read('src/jyc-bot.jsx');
 const assistant=read('src/jyc-assistant.jsx');
