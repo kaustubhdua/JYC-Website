@@ -164,7 +164,7 @@ export function JYCEditorialHome({data}){
    </div>
    <div className="jyc-v1-hero-media">
     <div className="jyc-v1-hero-photo">
-     <img src={gallery[0]?.url||FALLBACK_PHOTO} alt={gallery[0]?.caption||'JIIT Youth Club campus moment'} fetchPriority="high"/>
+     <img src={gallery[0]?.url||FALLBACK_PHOTO} alt={gallery[0]?.caption||'JIIT Youth Club campus moment'} fetchPriority="high" data-fallback-src="/jyc-logo-official.webp"/>
      <div className="jyc-v1-photo-overlay"/>
      <span className="jyc-v1-photo-credit">JYC 128 · OFFICIAL ARCHIVE</span>
      <span className="jyc-v1-photo-index">01 / CAMPUS</span>
@@ -192,7 +192,7 @@ export function JYCEditorialHome({data}){
     const registration=externalUrl(event.registrationUrl);
     return <article className="jyc-v1-event-card" key={event.id||event.title}>
      <button className="jyc-v1-event-main" onClick={()=>nav('/events/'+slug(event.title))} aria-label={'View '+event.title}>
-      <div className="jyc-v1-event-image"><img src={eventMedia(event,index)} alt="" loading="lazy"/><span>0{index+1}</span></div>
+      <div className="jyc-v1-event-image"><img src={eventMedia(event,index)} alt="" loading="lazy" data-fallback-src="/jyc-logo-official.webp"/><span>0{index+1}</span></div>
       <div className="jyc-v1-event-body">
        <div className="jyc-v1-event-meta"><span>{event.eventType||'JYC EXPERIENCE'}</span><b className={'status-'+status.tone}>{status.label}</b></div>
        <h3>{event.title}</h3>
@@ -254,14 +254,14 @@ export function JYCEditorialHome({data}){
     <div><span className="jyc-v1-eyebrow">GALLERY · MEMORIES</span><h2 id="jyc-v1-gallery-title">Campus moments,<br/><em>kept visible.</em></h2><p>Browse published JYC photography by event, community and year.</p></div>
     <button className="jyc-v1-link" onClick={()=>nav('/gallery')}>Open full gallery →</button>
    </div>
-   <div className="jyc-v1-gallery-mosaic">{gallery.slice(0,9).map((g,index)=><button key={g.id||index} className={'jyc-v1-gallery-photo gallery-photo-'+index} onClick={()=>nav('/gallery')} aria-label={'Open JYC gallery: '+(g.caption||g.title||'archive photo')}><img src={g.url} alt={g.caption||g.title||'JIIT Youth Club archive photograph'} loading={index<3?'eager':'lazy'}/><span>{g.association||g.title||'JYC Archive'}</span></button>)}</div>
+   <div className="jyc-v1-gallery-mosaic">{gallery.slice(0,9).map((g,index)=><button key={g.id||index} className={'jyc-v1-gallery-photo gallery-photo-'+index} onClick={()=>nav('/gallery')} aria-label={'Open JYC gallery: '+(g.caption||g.title||'archive photo')}><img src={g.url} alt={g.caption||g.title||'JIIT Youth Club archive photograph'} loading={index<3?'eager':'lazy'} data-fallback-src="/jyc-logo-official.webp"/><span>{g.association||g.title||'JYC Archive'}</span></button>)}</div>
   </section>
 
   <PhotoChapters/>
 
   <section id="team" className="jyc-v1-section jyc-v1-team editorial-reveal" aria-labelledby="jyc-v1-team-title">
    <div className="jyc-v1-section-head"><div><span className="jyc-v1-eyebrow">LEADERSHIP</span><h2 id="jyc-v1-team-title">Meet the people<br/><em>behind JYC.</em></h2><p>Faculty guidance, student leadership and core responsibilities form the people layer behind the ecosystem.</p></div><button className="jyc-v1-link" onClick={()=>nav('/team')}>Meet the full team →</button></div>
-   <div className="jyc-v1-team-grid">{team.length?team.map((member,index)=><button key={member.id||index} className="jyc-v1-person" onClick={()=>nav('/team')}><div><img src={member.photo||member.image||TEAM_PHOTOS[String(member.name||'').trim().toLowerCase()]||'/jyc-logo-official.webp'} alt={member.name||'JYC team member'} loading="lazy"/></div><small>{member.role||member.position||'JYC Team'}</small><strong>{member.name||'JYC Team Member'}</strong></button>):<div className="jyc-v1-empty">Official team profiles will appear here when JYC publishes them.</div>}</div>
+   <div className="jyc-v1-team-grid">{team.length?team.map((member,index)=><button key={member.id||index} className="jyc-v1-person" onClick={()=>nav('/team')}><div><img src={member.photo||member.image||TEAM_PHOTOS[String(member.name||'').trim().toLowerCase()]||'/jyc-logo-official.webp'} alt={member.name||'JYC team member'} loading="lazy" data-fallback-src="/jyc-logo-official.webp"/></div><small>{member.role||member.position||'JYC Team'}</small><strong>{member.name||'JYC Team Member'}</strong></button>):<div className="jyc-v1-empty">Official team profiles will appear here when JYC publishes them.</div>}</div>
   </section>
 
   <section id="achievements" className="jyc-v1-impact editorial-reveal" aria-labelledby="jyc-v1-impact-title">
