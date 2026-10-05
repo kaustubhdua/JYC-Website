@@ -8,7 +8,7 @@ const css=fs.readFileSync(path.join(root,'src/styles/public-system.css'),'utf8')
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const livingPhoto=fs.readFileSync(path.join(root,'src/jyc-living-photo.jsx'),'utf8');
 const checks=[
- ['release version is current V56.12 line',pkg.version==='56.12.0'],
+ ['release version is current V56.13 line',pkg.version==='56.13.0'],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
  ['public home has closing CTA contract',main.includes('key="cta"')&&main.includes('READY TO SOAR')],
  ['Club navigation links include clubs/events/team/contact',main.includes("nav('/clubs')")&&main.includes("nav('/events')")&&main.includes("nav('/team')")&&main.includes("nav('/contact')")],
@@ -17,7 +17,7 @@ const checks=[
  ['detail canonical URLs use slugs',main.includes('const canonicalPath=club?`/clubs/${slug(club.name)}`')&&main.includes('`/events/${slug(event.title)}'),],
  ['breadcrumb styling exists',main.includes('className="visible-breadcrumbs reveal"')],
  ['SEO topic link styling exists',main.includes('.search-topic-links')],
- ['service worker cache matches V56.12 release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v56-12-0')],
+ ['service worker cache matches V56.13 release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v56-13-0')],
  ['footer gates Fests by fest mode',main.includes("isFestMode(data)&&<button onClick={()=>nav('/fests')}>Fests</button>")],
  ['club logo alt text is descriptive',main.includes('alt={\`\${c.name} logo\`}'),],
  ['homepage does not expose gallery image count as a hero metric',!main.includes('Published gallery images')&&!main.includes('gallery memories')],
