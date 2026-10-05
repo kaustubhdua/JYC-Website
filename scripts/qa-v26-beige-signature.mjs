@@ -66,7 +66,11 @@ check('source-first hub media helper exists',sourceMedia.includes('enrichSourceC
 check('event identity fallback is deterministic',read('src/hub-identities.js').includes('EVENT_VISUALS')&&read('src/hub-identities.js').includes('hashEvent')&&read('src/hub-identities.js').includes('eventSeed'));
 check('hub directory editorial preview exists',main.includes('hub-directory-stage')&&main.includes('hub-directory-preview')&&main.includes('onMouseEnter={()=>setActive(name)}'));
 check('event timeline preview exists',main.includes('EventTimelinePreview')&&main.includes('event-timeline-row'));
-const lock=JSON.parse(read('package-lock.json'));check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
+const lock=JSON.parse(read('package-lock.json'));check('public image failure fallback prevents broken-image gaps',main.includes("dataset.jycFallback==='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
+check('public image presentation is centered',read('src/jyc-logo-final-theme.css').includes('object-position:center')&&editorialCss.includes('object-position:center'));
+check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/jyc-spatial.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
+check('GLB tap/click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("triggerMotion('is-tap',520,'tap')")&&read('src/jyc-bot.jsx').includes('availableAnimations'));
+check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
 if(fail)process.exit(1);
 console.log(`Public visual QA: ${pass}/${pass+fail} passed.`);
