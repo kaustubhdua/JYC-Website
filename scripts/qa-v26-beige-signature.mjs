@@ -38,6 +38,7 @@ check('final JYC logo theme remains inside consolidated stylesheet stack',read('
 check('logo beige is the final public brand anchor',css.includes('--jyc-champagne:#bf9c6f')&&css.includes('--jyc-cream:#f5f1e6')&&css.includes('--jyc-navy:#18161d')&&css.includes('--accent-red:#a82420'));
 check('light/dark theme contracts are explicit',css.includes('html[data-theme="light"]')&&css.includes('html[data-theme="dark"]')&&css.includes('--jyc-text:var(--jyc-ink)')&&css.includes('--jyc-muted-live:var(--jyc-muted)'));
 check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
+check('V1 homepage inherits the active JYC colour theme',editorialCss.includes('--v1-paper:var(--jyc-bg')&&editorialCss.includes('--v1-card:var(--jyc-surface')&&editorialCss.includes('--v1-ink:var(--jyc-text')&&editorialCss.includes('--v1-navy:var(--jyc-navy')));
 check('homepage hierarchy and motion layer are present',editorialCss.includes('.jyc-v1-hero{')&&editorialCss.includes('.jyc-v1-hero-media')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
 check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3}/>'));
 check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC / Get Involved'));
@@ -55,6 +56,7 @@ check('verified leadership content remains source-grounded',fallbacks.includes('
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
 check('JYC logo remains the public hero identity',editorialHome.includes('jyc-v1-hero-photo')&&editorialHome.includes('REAL PEOPLE.')&&editorialHome.includes('JYC 128 · OFFICIAL ARCHIVE'));
 check('SEO/social preview remains logo-led',index.includes('og:image" content="%VITE_SITE_URL%/jyc-logo-official.webp"')&&index.includes('twitter:image" content="%VITE_SITE_URL%/jyc-logo-official.webp"'));
+check('homepage dark theme has explicit readable tokens',editorialCss.includes('html[data-theme="dark"] .jyc-editorial-home')&&editorialCss.includes('--v1-paper:#0f0e11')&&editorialCss.includes('--v1-ink:#fff8e1'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&bot.includes('requestIdleCallback'));
 check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
