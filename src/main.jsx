@@ -21,6 +21,7 @@ import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
 import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoChapters,HubSignalRail} from './jyc-next-experience.jsx';
 import {JYCWebGLIdentity} from './jyc-webgl-identity.jsx';
+import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
 
 
@@ -712,10 +713,10 @@ function Home({data}){
  <section id="hero" className="hero v40-hero">
   <div className="v40-hero-copy hero-copy">
    <div className="v40-hero-kicker"><span className="eyebrow">{h.heroEyebrow||'JIIT · SECTOR 128 · NOIDA'}</span><span className="v40-live-dot"><i/>{data.events.some(e=>e.published&&!e.archived&&eventState(e)==='live')?'LIVE ON CAMPUS':'STUDENT LED'}</span></div>
-   <h1><span>THE VOICE.</span><span>THE TALENT.</span><em>THE SPIRIT.</em></h1>
+   <h1><span>THE CAMPUS.</span><span>IN MOTION.</span><em>TOGETHER.</em></h1>
    <div className="v40-hero-rule"/>
    <h4>{h.heroSubtitle||'JIIT YOUTH CLUB'}</h4>
-   <p>{h.heroLead||'The student-led ecosystem connecting communities, events, creativity, technology, sport and campus spirit at JIIT Sector 128.'}</p>
+   <p>{h.heroLead||'Communities. Events. Performances. Technology. Sport. Culture. One student ecosystem at JIIT Sector 128.'}</p>
    <div className="hero-actions v40-hero-actions"><Button onClick={()=>nav('/clubs')}>Explore JYC ↗</Button><Button secondary onClick={()=>nav('/events')}>What’s next →</Button><button className="btn hero-join-soon" type="button" onClick={()=>nav('/recruitment')} title="JYC recruitment">Join JYC ↗</button></div>
    <div className="v40-hero-micro"><span>01 <b>COMMUNITIES</b></span><span>02 <b>EXPERIENCES</b></span><span>03 <b>MEMORIES</b></span></div>
    <HeroStats communities={clubs.length} families={JYC_HUB_FAMILIES.length} programmes={PDF_HUB_PROGRAMME.length} campus="128"/>
@@ -732,7 +733,7 @@ function Home({data}){
    </div>
    <div className="v40-visual-caption"><strong>JIIT YOUTH CLUB</strong><span>Student communities · campus experiences · Sector 128</span></div>
   </div>
- </section>{data.announcement.on&&data.announcement.text&&<div className="announcement reveal"><span>JYC UPDATE</span><p>{data.announcement.text}</p>{safeExternalUrl(data.announcement.link)&&<a href={safeExternalUrl(data.announcement.link)} target="_blank" rel="noopener noreferrer">Open ↗</a>}</div>}<JYCPulse data={data}/><JYCNowStrip data={data}/><ImpactStats data={data}/><HistoryTeaser/><div className="home-layout">{visibleLayout.map(k=>render[k])}</div></div>
+ </section>{data.announcement.on&&data.announcement.text&&<div className="announcement reveal"><span>JYC UPDATE</span><p>{data.announcement.text}</p>{safeExternalUrl(data.announcement.link)&&<a href={safeExternalUrl(data.announcement.link)} target="_blank" rel="noopener noreferrer">Open ↗</a>}</div>}<JYCPulse data={data}/><JYCNowStrip data={data}/><JYCSpotlight data={data}/><ImpactStats data={data}/><HistoryTeaser/><div className="home-layout">{visibleLayout.map(k=>render[k])}</div></div>
 }
 function JoinJYC(){
  const nav=useNavigate();
