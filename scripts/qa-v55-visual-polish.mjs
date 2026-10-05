@@ -16,7 +16,7 @@ const checks=[
  ['gallery has mobile single-column fallback',css.includes('@media(max-width:480px)')&&css.includes('.public-app .gallery-grid{column-count:1}')],
  ['club pages expose source photo strip',main.includes('club-living-photo')&&main.includes('sourceHubMedia(c.name).photoItems')&&main.includes('LivingPhoto')],
  ['homepage photo story uses source hub photos',editorialHome.includes('<PhotoChapters/>')&&next.includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')&&next.includes('sourceBuckets=JYC_HUB_SOURCE_REGISTRY.map')],
- ['homepage photo wall uses source photography',editorialHome.includes('jyc-editorial-archive')&&next.includes('sourceHubMedia(meta.name).photoItems')],
+ ['homepage photo wall uses source photography',editorialHome.includes('jyc-v1-gallery-mosaic')&&editorialHome.includes('gallery.slice(0,9)')&&editorialHome.includes('<img src={g.url}')&&sourceMedia.includes('sourceHubMedia')],
  ['club source rail uses metadata-aware captions',main.includes('club-living-photo')&&read('src/jyc-living-photo.jsx').includes('current.caption||current.title||current.association')&&read('src/jyc-living-photo.jsx').includes('jyc-living-photo-meta')],
  ['gallery mounts source hub photography',read('src/extra-features.jsx').includes('sourcePhotoItems=useMemo')&&read('src/extra-features.jsx').includes('sourceHubMedia(name).photoItems')],
  ['maintained hub photo mapping has no duplicate URLs',(()=>{const refs=[...sourceMedia.matchAll(/QUALITY_OVERRIDES=[\s\S]*?};/g)][0]?.[0]||'';const urls=[...refs.matchAll(/['\"](\/assets\/[^'\"]+)['\"]/g)].map(m=>m[1]);return new Set(urls).size===urls.length})()],
