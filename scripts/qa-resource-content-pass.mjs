@@ -18,6 +18,6 @@ check(details.includes('Grand Conclave 2026'),'Eloquence source programme missin
 check(team.includes('Dr. Vinay Anand Tikkiwal')&&team.includes('Dr. Pankaj Kumar Srivastava'),'faculty advisors missing');
 check(team.includes('Harisha')&&team.includes('Dhruv Choudhary'),'core heads missing');
 check(next.includes('PhotoChapters')&&next.includes('23 COMMUNITIES'),'community photo chapter layer missing');
-check(main.includes('photoChapters:<PhotoChapters/>'),'photo chapter layer not mounted');
+check(read('src/jyc-editorial-home.jsx').includes('<PhotoChapters/>'),'photo chapter layer not mounted');
 if(failures.length){failures.forEach(x=>console.error('FAIL:',x));process.exit(1)}
 console.log('Resource content QA PASS: source-derived hub, achievement, leadership and photo-story contracts are present.');
