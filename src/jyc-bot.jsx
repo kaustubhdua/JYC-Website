@@ -6,7 +6,7 @@ export function JYCBot({data}){
  const loc=useLocation(),[assistantOpen,setAssistantOpen]=useState(false),[modelReady,setModelReady]=useState(false),[modelAvailable,setModelAvailable]=useState(false),[modelFailed,setModelFailed]=useState(false),[motion,setMotion]=useState('');
  const modelRef=useRef(null); const motionTimer=useRef(null); const animationStopTimer=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0); const modelLoadAttempted=useRef(false); const lastAnimationAt=useRef(0);
  const context=loc.pathname.startsWith('/events')?'events':loc.pathname.startsWith('/clubs')?'clubs':loc.pathname.startsWith('/gallery')?'gallery':loc.pathname.startsWith('/team')||loc.pathname.startsWith('/leadership')?'team':'home';
- const glbAllowed=()=>typeof window!=='undefined'&&document.documentElement.dataset.performance!=='lite'&&!navigator.connection?.saveData&&!window.matchMedia?.('(hover: none), (pointer: coarse), (max-width: 700px)').matches;
+ const glbAllowed=()=>typeof window!=='undefined'&&document.documentElement.dataset.performance!=='lite'&&!navigator.connection?.saveData;
  const loadModelViewer=()=>{
   if(!glbAllowed()){setModelFailed(true);return;}
   if(modelLoadAttempted.current)return;
