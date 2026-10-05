@@ -342,3 +342,34 @@ test('JYC assistant GLB remains fixed and interaction-driven', async ({ page }) 
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1);
   expect(overflow).toBe(false);
 });
+
+
+test('JYC assistant GLB loads efficiently on desktop and falls back on touch devices', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  const model = page.locator('.jyc-bot-glb');
+  await expect.poll(async () => await model.count(), { timeout: 10000 }).toBeGreaterThanOrEqual(0);
+  if (await model.count()) {
+    await expect(model).toHaveAttribute('src', '/models/jyc-spatial.glb');
+    await expect.poll(async () => await model.evaluate(el => Boolean(el.loaded)), { timeout: 12000 }).toBe(true);
+    const state = await model.evaluate(el => ({
+      loaded: Boolean(el.loaded),
+      hasCameraControls: el.hasAttribute('camera-controls'),
+      hasAutoRotate: el.hasAttribute('auto-rotate'),
+      width: el.getBoundingClientRect().width,
+      height: el.getBoundingClientRect().height
+    }));
+    expect(state.loaded).toBe(true);
+    expect(state.hasCameraControls).toBe(false);
+    expect(state.hasAutoRotate).toBe(false);
+    expect(state.width).toBeGreaterThan(40);
+    expect(state.height).toBeGreaterThan(40);
+  }
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(2500);
+  await expect(page.locator('.jyc-bot-shell')).toBeVisible();
+  await expect(page.locator('.jyc-bot-glb')).toHaveCount(0);
+  await expect(page.locator('.jyc-bot-model-fallback')).toBeVisible();
+});
