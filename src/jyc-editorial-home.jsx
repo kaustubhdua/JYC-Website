@@ -1,4 +1,4 @@
-import React,{useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
@@ -81,6 +81,25 @@ function activityPhoto(activity,index,gallery){
 export function JYCEditorialHome({data}){
  const nav=useNavigate();
  const [activeFamily,setActiveFamily]=useState('All');
+ useEffect(()=>{
+  const nodes=[...document.querySelectorAll('.jyc-editorial-home .editorial-reveal')];
+  if(!nodes.length)return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   nodes.forEach(node=>node.classList.add('is-visible'));
+   return;
+  }
+  const observer=new IntersectionObserver(entries=>{
+   entries.forEach(entry=>{
+    if(entry.isIntersecting){
+     entry.target.classList.add('is-visible');
+     observer.unobserve(entry.target);
+    }
+   });
+  },{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+  nodes.forEach(node=>observer.observe(node));
+  return()=>observer.disconnect();
+ },[]);
+
  const publishedClubs=useMemo(()=>(
   (data?.clubs||[]).filter(c=>c?.published&&c?.status!=='archived')
    .sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')))
@@ -215,7 +234,7 @@ export function JYCEditorialHome({data}){
     <p className="jyc-v1-head-note">From culture and sport to technical communities, outreach, workshops and competitions, JYC creates places for students to participate.</p>
    </div>
    <div className="jyc-v1-activity-grid">{activities.map((activity,index)=><article className="jyc-v1-activity-card" key={activity.title}>
-    <button className="jyc-v1-activity-image" onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy"/><span>0{index+1}</span></button>
+    <button className="jyc-v1-activity-image" aria-label={"Explore "+activity.title+" through JYC"} onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy"/><span>0{index+1}</span></button>
     <div><h3>{activity.title}</h3><p>{activity.text}</p><button onClick={()=>nav(activity.link||'/clubs')}>Explore →</button></div>
    </article>)}</div>
   </section>
