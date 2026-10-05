@@ -7,7 +7,15 @@ export function JYCBot({data}){
  const modelRef=useRef(null); const modelPreloadRef=useRef(false); const motionTimer=useRef(null); const idleTimer=useRef(null); const assetCheckRef=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0);
  const context=loc.pathname.startsWith('/events')?'events':loc.pathname.startsWith('/clubs')?'clubs':loc.pathname.startsWith('/gallery')?'gallery':loc.pathname.startsWith('/team')||loc.pathname.startsWith('/leadership')?'team':'home';
  const loadModelViewer=()=>{
-  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches||customElements?.get('model-viewer')||document.querySelector('script[data-jyc-model-viewer]'))return;
+  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches)return;
+  if(customElements?.get('model-viewer')){setModelReady(true);return;}
+  const existing=document.querySelector('script[data-jyc-model-viewer]');
+  if(existing){
+   const settle=()=>setModelReady(Boolean(customElements?.get('model-viewer')));
+   existing.addEventListener('load',settle,{once:true});
+   existing.addEventListener('error',()=>setModelFailed(true),{once:true});
+   return;
+  }
   const script=document.createElement('script');
   script.type='module';
   script.src='https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js';
