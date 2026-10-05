@@ -184,7 +184,7 @@ test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   test.setTimeout(60000);
   const redirects = {
     '/leadership': '/team',
-    '/join-jyc': '/recruitment',
+    '/join-jyc': '/join-jyc',
     '/event-calendar': '/calendar',
     '/moments': '/gallery',
     '/planner': '/events',
@@ -259,6 +259,20 @@ test('public images load, stay inside the viewport, and use centered focal posit
   }
   expect(failures).toEqual([]);
 });
+test('V1 homepage sections become visible and do not remain transparent', async ({ page }) => {
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-editorial-home').waitFor({ state: 'visible', timeout: 10000 });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(500);
+  const hidden = await page.locator('.jyc-editorial-home .editorial-reveal').evaluateAll(nodes =>
+    nodes.filter(node => {
+      const r=node.getBoundingClientRect(), s=getComputedStyle(node);
+      return r.width>0 && r.height>0 && (s.opacity==='0' || s.visibility==='hidden');
+    }).length
+  );
+  expect(hidden).toBe(0);
+});
+
 test('V1 homepage keeps the JYC palette and readable dark mode', async ({ page }) => {
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   const light = await page.locator('.jyc-editorial-home').evaluate(el => {
@@ -309,4 +323,11 @@ test('mobile fixed controls have separation and never overlap the navigation doc
       Math.max(0, Math.min(boxes.dock.right,boxes.bot.right)-Math.max(boxes.dock.left,boxes.bot.left));
     expect(overlap).toBe(0);
   }
+});
+
+
+test('Join JYC exposes the public coming-soon experience', async ({ page }) => {
+  await page.goto(base + '/join-jyc', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { name: 'Join JYC.' })).toBeVisible();
+  await expect(page.getByText('The next JYC recruitment cycle is being prepared.')).toBeVisible();
 });
