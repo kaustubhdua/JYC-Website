@@ -23,6 +23,7 @@ import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoCha
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {JYCInnovationMotion} from './jyc-innovation-motion.jsx';
 import {RubberSegment} from './components/react-bits-lite.jsx';
+import ChromaGrid from './components/react-bits/ChromaGrid.jsx';
 const LazyJYCEditorialHome=lazy(()=>import('./jyc-editorial-home.jsx').then(m=>({default:m.JYCEditorialHome})));
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
 
@@ -253,13 +254,7 @@ function Team({data}){
  const faculty=members.filter(m=>/faculty|advisor|coordinator/i.test(String(m.role||m.position||'')));
  const apex=members.filter(m=>/president|vice president|general secretary|joint secretary|finance secretary|treasurer/i.test(String(m.role||m.position||''))&&!/faculty/i.test(String(m.role||'')));
  const core=members.filter(m=>!faculty.includes(m)&&!apex.includes(m));
- const MemberCard=({m,index})=><article className="team-layer-card reveal" key={m.id||m.name||index}>
-   <div className="team-photo-editorial">{teamPhotoFor(m)?<img src={teamPhotoFor(m)} alt={m.name||'JYC team member'} loading="lazy"/>:<LogoImage alt="JIIT Youth Club logo"/>}</div>
-   <span className="tag">{m.role||m.position||'JYC Team'}</span>
-   <h3>{m.name||'JYC Team Member'}</h3>
-   {(m.bio||m.description)&&<p>{m.bio||m.description}</p>}
-   <div className="team-social-row">{safeExternalUrl(m.linkedin)&&<a href={safeExternalUrl(m.linkedin)} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>}{safeExternalUrl(m.instagram)&&<a href={safeExternalUrl(m.instagram)} target="_blank" rel="noopener noreferrer">Instagram ↗</a>}</div>
-  </article>;
+ const chromaItems=rows=>rows.map(m=>({id:m.id||m.name,image:teamPhotoFor(m)||'/jyc-logo-official.webp',title:m.name||'JYC Team Member',subtitle:m.role||m.position||'JYC Team',handle:m.department||m.year||'',location:m.department||m.year||'',url:safeExternalUrl(m.linkedin)||safeExternalUrl(m.instagram)||''}));
  const roleFallback=members.length?null:<State title="The JYC team is being prepared." text="Official team profiles will appear here when JYC publishes them from the Control Center."><Button secondary onClick={()=>nav('/about')}>Learn about JYC →</Button></State>;
  return <section className="section page team-page jyc-team-page unified-public-page">
   <Breadcrumbs items={[{label:'Team'}]}/><EcosystemContextRail/>
@@ -274,9 +269,9 @@ function Team({data}){
    <article><b>{JYC_HUB_FAMILIES.length}</b><span>Community families</span></article>
   </div>
   <section className="team-structure-visual reveal"><span className="eyebrow">ORGANIZATIONAL STRUCTURE</span><h2>Faculty → Apex → Core → Clubs & Hubs.</h2><div className="team-structure-flow"><div><b>01</b><strong>Faculty Coordinators</strong><span>Guidance & institutional support</span></div><i>↓</i><div><b>02</b><strong>JYC Apex</strong><span>Student leadership & coordination</span></div><i>↓</i><div><b>03</b><strong>Core Team</strong><span>Committee heads & operations</span></div><i>↓</i><div><b>04</b><strong>Clubs & Hubs</strong><span>Communities · coordinators · volunteers</span></div></div></section>
-  {faculty.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">01 · FACULTY COORDINATORS</span><h2>Institutional guidance.</h2><p>Faculty advisors provide guidance and institutional support to the student ecosystem.</p></div><div className="team-layer-grid">{faculty.map((m,i)=><MemberCard m={m} index={i} key={m.id||m.name||i}/>)}</div></section>}
-  {apex.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">02 · JYC APEX</span><h2>Student leadership.</h2><p>The apex body coordinates the wider JYC ecosystem and its campus-facing execution.</p></div><div className="team-layer-grid">{apex.map((m,i)=><MemberCard m={m} index={i} key={m.id||m.name||i}/>)}</div></section>}
-  {core.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">03 · CORE TEAM</span><h2>Heads who make programmes happen.</h2><p>Media, creative, PR, hospitality, security, management, digital and executive responsibilities sit here.</p></div><div className="team-layer-grid">{core.map((m,i)=><MemberCard m={m} index={i} key={m.id||m.name||i}/>)}</div></section>}
+  {faculty.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">01 · FACULTY COORDINATORS</span><h2>Institutional guidance.</h2><p>Faculty advisors provide guidance and institutional support to the student ecosystem.</p></div><ChromaGrid items={chromaItems(faculty)} radius={260} damping={0.45} fadeOut={0.45} columns={3}/></section>}
+  {apex.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">02 · JYC APEX</span><h2>Student leadership.</h2><p>The apex body coordinates the wider JYC ecosystem and its campus-facing execution.</p></div><ChromaGrid items={chromaItems(apex)} radius={260} damping={0.45} fadeOut={0.45} columns={3}/></section>}
+  {core.length>0&&<section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">03 · CORE TEAM</span><h2>Heads who make programmes happen.</h2><p>Media, creative, PR, hospitality, security, management, digital and executive responsibilities sit here.</p></div><ChromaGrid items={chromaItems(core)} radius={260} damping={0.45} fadeOut={0.45} columns={3}/></section>}
   <section className="team-layer reveal"><div className="team-layer-head"><span className="eyebrow">04 · CLUBS & HUBS</span><h2>One leadership layer. {Object.keys(JYC_HUB_CONTENT).length} named communities.</h2><p>Explore the five JYC families and open any community to see its profile, activities, events and official links.</p></div><div className="team-hub-directory">{Object.entries(JYC_HUB_CONTENT).map(([name,p])=><a href={'/clubs/'+slug(name)} key={name}><small>{p.family}</small><strong>{name}</strong></a>)}</div></section>
   {roleFallback}
   <div className="team-closeout reveal"><div className="team-closeout-mark"><LogoImage alt="JIIT Youth Club logo"/></div><div><span className="eyebrow">DIFFERENT ROLES · DIFFERENT COMMUNITIES</span><h2>One JYC.</h2><p>Explore the people, communities and experiences that make the JYC ecosystem visible on campus.</p><div className="hero-actions"><Button onClick={()=>nav('/clubs')}>Find your community ↗</Button><Button secondary onClick={()=>nav('/events')}>See events →</Button></div></div></div>
