@@ -171,7 +171,7 @@ export function JYCEditorialHome({data}){
    </div>
    <div className="jyc-v1-hero-media">
     <div className="jyc-v1-hero-photo">
-     <img src={gallery[0]?.url||FALLBACK_PHOTO} alt={gallery[0]?.caption||'JIIT Youth Club campus moment'} fetchPriority="high" data-fallback-src="/jyc-logo-official.webp"/>
+     <img src={gallery[0]?.url||FALLBACK_PHOTO} alt={gallery[0]?.caption||'JIIT Youth Club campus moment'} data-fallback-src="/jyc-logo-official.webp" fetchPriority="high" data-fallback-src="/jyc-logo-official.webp"/>
      <div className="jyc-v1-photo-overlay"/>
      <span className="jyc-v1-photo-credit">JYC 128 · OFFICIAL ARCHIVE</span>
      <span className="jyc-v1-photo-index">01 / CAMPUS</span>
