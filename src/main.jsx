@@ -789,9 +789,9 @@ function HubDirectory({data}){
    <div><span className="eyebrow">JYC HUB DIRECTORY · SOURCE MEDIA</span><h2>Twenty-three communities. Source-grounded identities.</h2><p className="small-copy">Move through the maintained All Hubs archive. Brochure-verified and source-material communities remain visibly distinguished, while real supplied photography is used wherever it exists.</p></div>
    <div className="hub-directory-stats"><span><b>{entries.length}</b> communities</span><span><b>{photoBacked}</b> photo-backed</span><span><b>{entries.length-photoBacked}</b> profile-led</span></div>
   </div>
-  <div className="hub-family-row" role="tablist" aria-label="Filter communities by family">
-   <button type="button" className={family==='All'?'is-active':''} onClick={()=>setFamily('All')}>All <b>{entries.length}</b></button>
-   {JYC_HUB_FAMILIES.map(x=><button type="button" className={family===x?'is-active':''} key={x} onClick={()=>setFamily(x)}>{x} <b>{entries.filter(([,p])=>p.family===x).length}</b></button>)}
+  <div className="hub-family-row" role="group" aria-label="Filter communities by family">
+   <button type="button" className={family==='All'?'is-active':''} aria-pressed={family==='All'} onClick={()=>setFamily('All')}>All <b>{entries.length}</b></button>
+   {JYC_HUB_FAMILIES.map(x=><button type="button" className={family===x?'is-active':''} aria-pressed={family===x} key={x} onClick={()=>setFamily(x)}>{x} <b>{entries.filter(([,p])=>p.family===x).length}</b></button>)}
   </div>
   <div className="hub-directory-stage">
    <div className="hub-directory-list" role="list">
