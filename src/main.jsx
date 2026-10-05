@@ -20,7 +20,6 @@ import {JYC_SOCIALS,festSocialProfile,socialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
 import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoChapters,HubSignalRail} from './jyc-next-experience.jsx';
-import {JYCWebGLIdentity} from './jyc-webgl-identity.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {JYCInnovationMotion} from './jyc-innovation-motion.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
