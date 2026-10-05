@@ -526,3 +526,6 @@ html[data-theme="dark"] .jyc-editorial-home{
  .jyc-v1-about-mark{width:100%;max-width:240px;min-height:240px}
  .jyc-v1-about-mark .jyc-model-viewer{min-height:240px}
 }
+
+/* V1 media containment: no horizontal bleed from transforms or 3D stages. */
+.jyc-editorial-home{overflow:clip}.jyc-v1-hero-media,.jyc-v1-event-image,.jyc-v1-family-media,.jyc-v1-activity-image,.jyc-v1-gallery-mosaic,.jyc-v1-gallery-photo,.jyc-v1-person>div{overflow:hidden}.jyc-v1-hero-photo img,.jyc-v1-event-image img,.jyc-v1-family-media img,.jyc-v1-activity-image img,.jyc-v1-gallery-photo img,.jyc-v1-person img{object-position:center center}
