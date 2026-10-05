@@ -11,7 +11,7 @@ const livingPhoto=fs.readFileSync(path.join(root,'src/jyc-living-photo.jsx'),'ut
 const checks=[
  ['release version is current V56.15 line',pkg.version==='56.15.1'],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
- ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jyc-editorial-final')],
+ ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jyc-v1-final')],
  ['Club navigation links include clubs/events/team/contact',main.includes("nav('/clubs')")&&main.includes("nav('/events')")&&main.includes("nav('/team')")&&main.includes("nav('/contact')")],
  ['public club URLs use slugs',main.includes("nav('/clubs/'+slug(c.name))")],
  ['public event URLs use slugs',main.includes("nav('/events/'+slug(e.title))")],
