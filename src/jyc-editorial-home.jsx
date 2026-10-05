@@ -8,6 +8,7 @@ import DitherVeil from './components/DitherVeil.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
+import {BellToggle,JellyRadio,FlipCard} from './components/react-bits-lite.jsx';
 import './jyc-editorial-home.css';
 
 const FALLBACK_PHOTO='/assets/hub-photos/jyc-06.webp';
@@ -220,9 +221,8 @@ export function JYCEditorialHome({data}){
     <div><span className="jyc-v1-eyebrow">CLUBS & COMMUNITIES</span><h2 id="jyc-v1-families-title">Find your <em>community.</em></h2><p>Explore the five community families documented in the JYC orientation material.</p></div>
     <button className="jyc-v1-link" onClick={()=>nav('/clubs')}>View full directory →</button>
    </div>
-   <div className="jyc-v1-family-tabs" role="tablist" aria-label="JYC community families">
-    <button className={activeFamily==='All'?'active':''} onClick={()=>setActiveFamily('All')}>All</button>
-    {JYC_HUB_FAMILIES.map(f=><button key={f} className={activeFamily===f?'active':''} onClick={()=>setActiveFamily(f)}>{f}</button>)}
+   <div className="jyc-v1-family-tabs">
+    <JellyRadio items={['All',...JYC_HUB_FAMILIES]} value={activeFamily} onChange={value=>setActiveFamily(value)} ariaLabel="JYC community families"/>
    </div>
    <div className="jyc-v1-family-grid">{visibleFamilies.map((group,index)=><article className="jyc-v1-family-card" key={group.family}>
     <button onClick={()=>nav('/clubs')} className="jyc-v1-family-media"><img src={hubMedia(group.hubs[0]?.name,index)} alt={group.family+' JYC community'} loading="lazy"/><span>0{index+1}</span></button>
@@ -244,7 +244,7 @@ export function JYCEditorialHome({data}){
   <section className="jyc-v1-section jyc-v1-updates editorial-reveal" aria-labelledby="jyc-v1-updates-title">
    <div className="jyc-v1-section-head">
     <div><span className="jyc-v1-eyebrow">LATEST UPDATES</span><h2 id="jyc-v1-updates-title">Know what needs<br/><em>your attention.</em></h2></div>
-    <button className="jyc-v1-link" onClick={()=>nav('/announcements')}>View announcements →</button>
+    <div className="jyc-v1-update-actions"><BellToggle offLabel="Notify me" onLabel="Updates saved" onChange={pressed=>{try{localStorage.setItem('jyc-updates-preference',pressed?'1':'0')}catch{}}}/><button className="jyc-v1-link" onClick={()=>nav('/announcements')}>View announcements →</button></div>
    </div>
    {updates.length?<div className="jyc-v1-update-list">{updates.map((item,index)=><button key={item.title+index} onClick={()=>nav(item.link?.startsWith('/')?item.link:'/announcements')}><span>{String(index+1).padStart(2,'0')}</span><small>{item.kind}</small><strong>{item.title}</strong><p>{item.text}</p><b>Open →</b></button>)}</div>:<div className="jyc-v1-empty">No new public announcements are currently published.</div>}
   </section>
@@ -268,7 +268,7 @@ export function JYCEditorialHome({data}){
 
   <section id="achievements" className="jyc-v1-impact editorial-reveal" aria-labelledby="jyc-v1-impact-title">
    <div><span className="jyc-v1-eyebrow">HIGHLIGHTS · IMPACT</span><h2 id="jyc-v1-impact-title">Built by students.<br/><em>Remembered by campus.</em></h2><p>Published achievements and milestones are kept source-first. The public record currently includes an SIH Finalist achievement from supplied JYC material.</p><div className="jyc-v1-impact-actions"><button className="jyc-v1-btn primary" onClick={()=>nav('/achievements')}>View achievements →</button><button className="jyc-v1-btn" onClick={()=>nav('/archive')}>Open archive</button></div></div>
-   <div className="jyc-v1-impact-card"><span>01 · WALL OF FAME</span><strong>SIH Finalist</strong><p>Recorded in the supplied JYC hub material. New outcomes should be published with their event, year and supporting source.</p></div>
+   <div className="jyc-v1-impact-card"><FlipCard ariaLabel="Flip SIH achievement card" front={<div className="rb-achievement-face"><span>01 · WALL OF FAME</span><strong>SIH Finalist</strong><small>Tap to see the source note →</small></div>} back={<div className="rb-achievement-face rb-achievement-back"><span>SOURCE NOTE</span><p>Recorded in the supplied JYC hub material. New outcomes should be published with their event, year and supporting source.</p><b>Tap to return</b></div>}/></div>
   </section>
 
   <section className="jyc-v1-social editorial-reveal" aria-labelledby="jyc-v1-social-title">
