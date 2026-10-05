@@ -4,7 +4,7 @@ const main=read('src/main.jsx'),now=read('src/jyc-now.jsx'),api=read('api/jyc-up
 const fail=[];const check=(ok,name)=>{if(!ok)fail.push(name);console.log((ok?'PASS':'FAIL')+': '+name)};
 check(/^56\.\d+\.\d+$/.test(pkg.version),'package remains on current 56.x release line');
 check(lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version,'lockfile matches package release');
-check(main.includes("from './jyc-now.jsx'")&&main.includes('<JYCNowStrip data={data}/>'),'JYC Now homepage layer is mounted');
+check(main.includes("from './jyc-now.jsx'")&&now.includes('JYCNowStrip')&&fs.readFileSync(path.join(root,'src/jyc-editorial-home.jsx'),'utf8').includes('<JYCNowStrip limit={3}/>'),'JYC Now homepage layer is mounted');
 check(main.includes("clean==='/updates'")&&main.includes('<JYCNowPage data={data}/>'),'JYC Now route is mounted');
 check(main.includes("'/updates','JYC Now'"),'JYC Now is discoverable from More');
 check(now.includes('What JYC is creating now')&&now.includes('COMMUNITY SPOTLIGHT')&&now.includes('HubLatestUpdates'),'editorial JYC Now experience exists');
