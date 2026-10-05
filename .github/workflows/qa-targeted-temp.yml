@@ -1,0 +1,22 @@
+name: Targeted QA Isolation
+on:
+  push:
+    branches: [fix/v56-15-1-full-qa]
+permissions:
+  contents: read
+jobs:
+  qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        script: [qa-v1-seniors.mjs, qa-v55-visual-polish.mjs, qa-v54-next-experience.mjs, qa-final-product.mjs]
+    name: QA ${{ matrix.script }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/${{ matrix.script }}
