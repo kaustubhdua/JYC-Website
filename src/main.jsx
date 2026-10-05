@@ -542,7 +542,7 @@ const explore=[
    ['/achievements','Achievements','Wall of Fame and community outcomes'],
    ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
    ['/announcements','Announcements','Registrations, notices and JYC updates'],
-   ['/recruitment','Join JYC','Official recruitment destination'],
+   ['/join-jyc','Join JYC · Coming Soon','Official JYC recruitment will appear here when the next cycle opens'],
    ['/archive','Archive','The published JYC story by year'],
    ['/contact','Contact','Official public channels and query form']
   ];
