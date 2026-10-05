@@ -70,13 +70,11 @@ test('JYC calendar contains only event content', async ({ page }) => {
   await expect(page.getByText('Academic Calendar')).toHaveCount(0);
 });
 
-test('reduced-motion mode disables hero animation', async ({ page }) => {
+test('reduced-motion mode disables homepage motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
-  const animationNames = await page.locator('.hero-logo-stage img').evaluateAll(nodes =>
-    nodes.map(node => getComputedStyle(node).animationName)
-  );
-  expect(animationNames.every(name => name === 'none')).toBe(true);
+  const motion = await page.locator('.jyc-editorial-home').evaluate(root => [...root.querySelectorAll('*')].map(node => getComputedStyle(node).animationName).filter(name => name && name !== 'none'));
+  expect(motion).toEqual([]);
 });
 
 
@@ -171,11 +169,14 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
 });
 
 test('photo-led pages render real image content', async ({ page }) => {
-  for (const route of ['/clubs', '/events', '/gallery']) {
+  for (const route of ['/', '/clubs', '/events', '/gallery']) {
     await page.goto(base + route, { waitUntil: 'domcontentloaded' });
     const images = page.locator('img');
-    await expect(images.first()).toBeVisible();
     expect(await images.count(), route).toBeGreaterThan(0);
+    await expect(images.first()).toBeVisible();
+    await expect.poll(async () => images.evaluateAll(nodes => nodes.filter(img => img.complete && img.naturalWidth > 0).length), { timeout: 5000 }).toBeGreaterThan(0);
+    const broken = await images.evaluateAll(nodes => nodes.filter(img => img.complete && img.naturalWidth === 0).map(img => img.getAttribute('src')));
+    expect(broken, 'broken images on '+route).toEqual([]);
   }
 });
 
@@ -184,7 +185,7 @@ test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   test.setTimeout(60000);
   const redirects = {
     '/leadership': '/team',
-    '/join-jyc': '/recruitment',
+    '/join-jyc': '/join-jyc',
     '/event-calendar': '/calendar',
     '/moments': '/gallery',
     '/planner': '/events',
@@ -224,4 +225,29 @@ test('keyboard can reach the skip link and primary navigation', async ({ page })
   await page.keyboard.press('Tab');
   await expect(page.locator('.skip-link')).toBeFocused();
   await expect(page.locator('.skip-link')).toHaveAttribute('href', '#main-content');
+});
+
+test('homepage media stays inside the viewport and has no empty image boxes', async ({ page }) => {
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(300);
+  const result = await page.evaluate(() => {
+    const vw = document.documentElement.clientWidth;
+    const imgs = [...document.querySelectorAll('.jyc-editorial-home img')];
+    const badImages = imgs.filter(img => img.complete && img.naturalWidth === 0).map(img => img.getAttribute('src'));
+    const badRects = imgs.filter(img => { const r = img.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.left < -1 || r.right > vw + 1); }).map(img => img.getAttribute('src'));
+    const emptyMedia = [...document.querySelectorAll('.jyc-editorial-home [class*="image"],.jyc-editorial-home [class*="photo"]')].filter(el => { const r = el.getBoundingClientRect(); return r.width > 40 && r.height > 40 && !el.querySelector('img,.jyc-v1-empty'); }).length;
+    return { badImages, badRects, emptyMedia };
+  });
+  expect(result.badImages).toEqual([]);
+  expect(result.badRects).toEqual([]);
+  expect(result.emptyMedia).toBe(0);
+});
+
+test('homepage remains inside viewport at common phone widths', async ({ page }) => {
+  for (const width of [320, 360, 390, 430]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(base, { waitUntil: 'domcontentloaded' });
+    const result = await page.evaluate(() => [...document.querySelectorAll('.jyc-editorial-home > section')].map(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: r.right, width: r.width }; }).filter(x => x.width > 0));
+    for (const rect of result) { expect(Math.round(rect.left), 'left edge at '+width).toBeGreaterThanOrEqual(0); expect(Math.round(rect.right), 'right edge at '+width).toBeLessThanOrEqual(width); }
+  }
 });
