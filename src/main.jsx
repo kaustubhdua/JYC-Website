@@ -155,7 +155,9 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
    const img=e.target;
    if(!(img instanceof HTMLImageElement)||img.dataset.jycFallbackApplied==='1')return;
    img.dataset.jycFallbackApplied='1';
-   const fallback=img.dataset.fallbackSrc||'/jyc-logo-circle.png';
+   const descriptor=`${img.className||''} ${img.alt||''}`.toLowerCase();
+   const isLogo=/logo|brand|jyc 128/.test(descriptor);
+   const fallback=img.dataset.fallbackSrc||(isLogo?'/jyc-logo-circle.png':'/assets/hub-photos/jyc-06.webp');
    if(img.src!==new URL(fallback,window.location.origin).href) img.src=fallback;
   };
   document.addEventListener('error',onImageError,true);
@@ -195,17 +197,6 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
  useEffect(()=>{if(!('serviceWorker' in navigator))return; if(import.meta.env.DEV){navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))).catch(()=>{}); if('caches' in window)caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))).catch(()=>{}); return;} navigator.serviceWorker.register('/sw.js').catch(()=>{})},[]);
  useEffect(()=>{try{const key='jyc-pageviews';const views=JSON.parse(storageGet(key,'{}'));views[loc.pathname]=(views[loc.pathname]||0)+1;views.total=(views.total||0)+1;storageSet(key,JSON.stringify(views))}catch{}},[loc.pathname]);
  useEffect(()=>{if(import.meta.env.VITE_ENABLE_ANALYTICS!=='true'||!data.flags?.analytics)return;let sessionKey=storageGet('jyc-analytics-session');if(!sessionKey){sessionKey=uid();storageSet('jyc-analytics-session',sessionKey)}supabase.from('jyc_page_views').insert({path:loc.pathname,referrer:document.referrer||null,session_key:sessionKey}).then(()=>{}).catch(()=>{})},[loc.pathname,data.flags?.analytics]);
- useEffect(()=>{
-   const onImageError=e=>{
-     const img=e.target;
-     if(!(img instanceof HTMLImageElement)||img.dataset.jycFallback==='1')return;
-     img.dataset.jycFallback='1';
-     img.removeAttribute('srcset');
-     img.src='/jyc-logo-official.webp';
-   };
-   document.addEventListener('error',onImageError,true);
-   return()=>document.removeEventListener('error',onImageError,true);
- },[]);
  useEffect(()=>{const report=(message,stack)=>{supabase.functions.invoke('error-report',{body:{message:String(message||'Unknown error').slice(0,2000),stack:stack||null,path:location.pathname,user_agent:navigator.userAgent}}).catch(()=>{})};const onError=e=>report(e.message,e.error?.stack);const onReject=e=>report(e.reason?.message||e.reason,e.reason?.stack);window.addEventListener('error',onError);window.addEventListener('unhandledrejection',onReject);return()=>{window.removeEventListener('error',onError);window.removeEventListener('unhandledrejection',onReject)}},[]);
  useEffect(()=>{if(loading)return;const minimum=readSiteCache()?1450:1800;const id=setTimeout(()=>setBootReady(true),minimum);return()=>clearTimeout(id)},[loading]);
   if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;
