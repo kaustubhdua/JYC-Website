@@ -426,10 +426,16 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{background:#050506}
  object-fit:cover;
  object-position:center;
 }
-.jyc-editorial-home .jyc-v1-logo,
+.jyc-editorial-home .jyc-v1-logo{
+ width:58px;
+ height:58px;
+ max-width:100%;
+ object-fit:contain;
+ object-position:center;
+}
 .jyc-editorial-home .jyc-v1-about-mark img{
- width:auto;
- height:auto;
+ width:68%;
+ height:68%;
  max-width:100%;
  object-fit:contain;
  object-position:center;
