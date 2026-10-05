@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const base = process.env.JYC_BASE_URL || 'http://127.0.0.1:5173';
-const routes = ['/', '/about', '/history', '/clubs', '/events', '/gallery', '/team', '/calendar', '/archive', '/recruitment', '/contact', '/fests', '/updates', '/announcements'];
+const routes = ['/', '/about', '/history', '/clubs', '/events', '/gallery', '/team', '/calendar', '/archive', '/recruitment', '/achievements', '/announcements', '/contact', '/fests', '/updates'];
 
 test('public app mounts with no runtime errors', async ({ page }) => {
   const errors = [];
@@ -70,13 +70,15 @@ test('JYC calendar contains only event content', async ({ page }) => {
   await expect(page.getByText('Academic Calendar')).toHaveCount(0);
 });
 
-test('reduced-motion mode disables hero animation', async ({ page }) => {
+test('reduced-motion mode disables homepage motion and reveals all content', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
-  const animationNames = await page.locator('.hero-logo-stage img').evaluateAll(nodes =>
-    nodes.map(node => getComputedStyle(node).animationName)
-  );
-  expect(animationNames.every(name => name === 'none')).toBe(true);
+  const result = await page.locator('.jyc-editorial-home').evaluate(root => ({
+    animations:[...root.querySelectorAll('*')].map(node=>getComputedStyle(node).animationName).filter(name=>name&&name!=='none'),
+    hidden:[...root.querySelectorAll('.editorial-reveal')].filter(node=>getComputedStyle(node).opacity==='0').length
+  }));
+  expect(result.animations).toEqual([]);
+  expect(result.hidden).toBe(0);
 });
 
 
@@ -301,4 +303,22 @@ test('mobile fixed controls have separation and never overlap the navigation doc
       Math.max(0, Math.min(boxes.dock.right,boxes.bot.right)-Math.max(boxes.dock.left,boxes.bot.left));
     expect(overlap).toBe(0);
   }
+});
+
+
+test('homepage editorial sections become visible as they enter the viewport', async ({ page }) => {
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(1200);
+  const hidden = await page.locator('.jyc-editorial-home .editorial-reveal').evaluateAll(nodes =>
+    nodes.filter(node => getComputedStyle(node).opacity === '0').map(node => node.className)
+  );
+  expect(hidden).toEqual([]);
+});
+
+test('event detail route renders the public event record', async ({ page }) => {
+  await page.goto(base + '/events/agentic-ai-2026', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#root')).not.toBeEmpty();
+  await expect(page.locator('body')).toBeVisible();
+  await expect(page.locator('h1').first()).toBeVisible();
 });
