@@ -7,6 +7,9 @@ import {JYC_CONTACTS} from './lib/site-config.js';
 import DitherVeil from './components/DitherVeil.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
+import CountUp from './components/react-bits/CountUp.jsx';
+import Particles from './components/react-bits/Particles.jsx';
+import JYCModelViewer from './components/JYCModelViewer.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
 import {BellToggle,JellyRadio,FlipCard} from './components/react-bits-lite.jsx';
 import './jyc-editorial-home.css';
@@ -212,7 +215,7 @@ export function JYCEditorialHome({data}){
   </section>
 
   <section id="about" className="jyc-v1-section jyc-v1-about editorial-reveal" aria-labelledby="jyc-v1-about-title">
-   <div className="jyc-v1-about-mark"><img src="/jyc-logo-official.webp" alt="JYC 128"/></div>
+   <div className="jyc-v1-about-mark"><JYCModelViewer/></div>
    <div><span className="jyc-v1-eyebrow">ABOUT JYC</span><h2 id="jyc-v1-about-title">A student-governed organisation with room to <em>participate, create, lead and belong.</em></h2><p>JYC gives students a platform to display their talents, organises inter- and intra-institutional activities, and helps first-year students acclimatise to campus life.</p><button className="jyc-v1-link" onClick={()=>nav('/about')}>Read about JYC →</button></div>
   </section>
 
