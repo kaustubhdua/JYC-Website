@@ -973,4 +973,5 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
   .public-app :where(.gallery-grid,.card-grid,.club-grid,.event-grid-premium,.activity-grid,.home-team-preview,.hub-story-grid,.jyc-journal-grid){
     align-items:stretch;
   }
+  .public-app :where(.gallery-item img,.gallery-photo img,.moment-tile img){object-position:center center}
 }
