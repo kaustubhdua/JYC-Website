@@ -139,10 +139,10 @@ export function JYCEditorialHome({data}){
  },[allPublishedEvents,data?.announcement]);
 
  const stats=[
-  {value:publishedClubs.length||Object.keys(JYC_HUB_CONTENT).length,label:'Published communities'},
+  {value:publishedClubs.length||Object.keys(JYC_HUB_CONTENT).length,label:'JYC communities'},
   {value:JYC_HUB_FAMILIES.length,label:'Community families'},
   {value:allPublishedEvents.length,label:'Published events'},
-  {value:data?.team?.filter(m=>m?.published===true).length||0,label:'Published team profiles'}
+  {value:data?.team?.filter(m=>m?.published===true).length||0,label:'Published leadership profiles'}
  ];
 
  return <main className="jyc-editorial-home">
@@ -174,7 +174,7 @@ export function JYCEditorialHome({data}){
   </section>
 
   <section className="jyc-v1-stat-strip" aria-label="JYC at a glance">
-   {stats.map((s,i)=><article key={s.label}><span>0{i+1}</span><strong>{s.value}+</strong><small>{s.label}</small></article>)}
+   {stats.map((s,i)=><article key={s.label}><span>0{i+1}</span><strong>{s.value}</strong><small>{s.label}</small></article>)}
   </section>
 
   {data?.announcement?.on&&data?.announcement?.text&&<section className="jyc-v1-live-notice" aria-label="JYC announcement"><b>JYC NOW</b><p>{data.announcement.text}</p>{data.announcement.link&&<a href={externalUrl(data.announcement.link)||data.announcement.link}>Open ↗</a>}</section>}
