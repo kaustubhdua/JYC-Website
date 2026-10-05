@@ -208,6 +208,35 @@
 
 .editorial-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.2,.8,.2,1),transform .65s cubic-bezier(.2,.8,.2,1)}
 .editorial-reveal.is-visible{opacity:1;transform:none}
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-ink:#f6efe3;
+ --v1-paper:#111014;
+ --v1-card:#19171b;
+ --v1-muted:#b8b0a5;
+ --v1-line:rgba(214,190,153,.22);
+ --v1-accent:#d2b48c;
+ background:var(--v1-paper);
+ color:var(--v1-ink);
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn{color:var(--v1-ink);border-color:var(--v1-line)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn.primary{background:#f6efe3;color:#111014;border-color:#f6efe3}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-stat-strip,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-card,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-card,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-activity-card{background:var(--v1-card)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-live-notice,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-stat-strip{border-color:var(--v1-line)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{background:#09090b}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-impact{background:#09090b}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn.light{background:#f6efe3;color:#111014;border-color:#f6efe3}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn.outline-light{color:#fff;border-color:rgba(255,255,255,.28)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button.active{background:#f6efe3;border-color:#f6efe3;color:#111014}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b{background:#27231f;color:#d7cec1}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-open{background:#17351f;color:#9ed0a8}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-live{background:#1b2b43;color:#abc7ee}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-soon{background:#3a2c1d;color:#e4c58e}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button{color:var(--v1-muted);border-color:var(--v1-line)}
+
 @media(max-width:1000px){
  .jyc-v1-hero{grid-template-columns:1fr;gap:42px;padding-top:38px}
  .jyc-v1-hero-copy{max-width:850px}
