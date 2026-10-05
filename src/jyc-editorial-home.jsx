@@ -65,6 +65,8 @@ export function JYCEditorialHome({data}){
   const visibleFamilies=activeFamily==='All'?familyEntries:familyEntries.filter(x=>x.family===activeFamily);
   const team=(data?.team||[]).filter(x=>x?.published===true).slice(0,6);
 
+  React.useEffect(()=>{const nodes=[...document.querySelectorAll('.jyc-editorial-home .editorial-reveal')];if(!nodes.length)return;const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;if(reduce){nodes.forEach(n=>n.classList.add('is-visible'));return;}const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{rootMargin:'0px 0px -8% 0px',threshold:.08});nodes.forEach(n=>observer.observe(n));return()=>observer.disconnect();},[]);
+
   return <main className="jyc-editorial-home">
     <section className="jyc-editorial-hero" aria-labelledby="jyc-editorial-title">
       <div className="jyc-editorial-hero-copy">
@@ -92,7 +94,22 @@ export function JYCEditorialHome({data}){
     <JYCNowStrip limit={3}/>
     <JYCSpotlight data={data}/>
 
-    <section className="jyc-editorial-section jyc-editorial-families" aria-labelledby="jyc-families-title">
+    <section className="jyc-editorial-section jyc-editorial-purpose editorial-reveal" aria-labelledby="jyc-purpose-title">
+      <div className="jyc-editorial-section-head">
+        <div><span className="jyc-editorial-eyebrow">WHAT JYC DOES</span><h2 id="jyc-purpose-title">A student-governed campus<br/><em>with room to belong.</em></h2></div>
+        <div className="jyc-editorial-head-copy"><p>The supplied JYC orientation material describes JYC as a student-governed organisation that gives students a platform to display their talents, organises inter- and intra-institutional activities, and helps first-year students acclimatise to campus life.</p></div>
+      </div>
+      <div className="jyc-editorial-purpose-grid">
+        {[
+          ['01','Discover','A platform for students to display talent, interests and creativity.'],
+          ['02','Experience','Inter- and intra-institutional activities that bring the campus together.'],
+          ['03','Belong','Communities across Cultural, Literary, Technical, Creative and Sports.'],
+          ['04','Arrive','A bridge for first-year students finding their place in the campus ecosystem.']
+        ].map(([n,title,copy])=><article key={n} className="jyc-editorial-purpose-card"><span>{n}</span><h3>{title}</h3><p>{copy}</p></article>)}
+      </div>
+    </section>
+
+    <section className="jyc-editorial-section jyc-editorial-families editorial-reveal" aria-labelledby="jyc-families-title">
       <div className="jyc-editorial-section-head">
         <div><span className="jyc-editorial-eyebrow">FIND YOUR COMMUNITY</span><h2 id="jyc-families-title">Five families.<br/><em>Twenty-three communities.</em></h2></div>
         <div className="jyc-editorial-head-copy"><p>The supplied JYC orientation material groups the ecosystem into Cultural, Technical, Creative, Literary and Sports communities.</p><button onClick={()=>nav('/clubs')}>Open the full directory →</button></div>
@@ -114,7 +131,7 @@ export function JYCEditorialHome({data}){
       </div>
     </section>
 
-    <section className="jyc-editorial-section jyc-editorial-events" aria-labelledby="jyc-events-title">
+    <section className="jyc-editorial-section jyc-editorial-events editorial-reveal" aria-labelledby="jyc-events-title">
       <div className="jyc-editorial-section-head">
         <div><span className="jyc-editorial-eyebrow">WHAT'S NEXT</span><h2 id="jyc-events-title">Events with a reason<br/><em>to show up.</em></h2></div>
         <button className="jyc-editorial-head-link" onClick={()=>nav('/events')}>View all events →</button>
@@ -130,7 +147,7 @@ export function JYCEditorialHome({data}){
 
     <FlagshipExperience data={data}/>
 
-    <section className="jyc-editorial-section jyc-editorial-archive" aria-labelledby="jyc-archive-title">
+    <section className="jyc-editorial-section jyc-editorial-archive editorial-reveal" aria-labelledby="jyc-archive-title">
       <div className="jyc-editorial-section-head">
         <div><span className="jyc-editorial-eyebrow">THE LIVING ARCHIVE</span><h2 id="jyc-archive-title">Don't just browse JYC.<br/><em>Remember it.</em></h2></div>
         <div className="jyc-editorial-head-copy"><p>Real photography turns the archive into a record of people, stages, teams, workshops and campus life.</p><button onClick={()=>nav('/gallery')}>Open the full gallery →</button></div>
@@ -143,7 +160,7 @@ export function JYCEditorialHome({data}){
       </div>
     </section>
 
-    <PhotoChapters/>\n\n    <section className="jyc-editorial-section jyc-editorial-people" aria-labelledby="jyc-people-title">
+    <PhotoChapters/>\n\n    <section className="jyc-editorial-section jyc-editorial-people editorial-reveal" aria-labelledby="jyc-people-title">
       <div className="jyc-editorial-section-head">
         <div><span className="jyc-editorial-eyebrow">THE PEOPLE</span><h2 id="jyc-people-title">The campus is made<br/><em>by people.</em></h2></div>
         <button className="jyc-editorial-head-link" onClick={()=>nav('/team')}>Meet the team →</button>
