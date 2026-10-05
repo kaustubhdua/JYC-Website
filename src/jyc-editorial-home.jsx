@@ -58,7 +58,7 @@ export function JYCEditorialHome({data}){
         <p>JIIT Youth Club brings communities, events, creativity, technology, sport and campus memories into one student-led ecosystem.</p>
         <div className="jyc-editorial-actions">
           <button className="jyc-editorial-btn" onClick={()=>nav('/clubs')}>Explore communities <span>↗</span></button>
-          <button className="jyc-editorial-btn secondary" onClick={()=>nav('/events')}>See what's next <span>→</span></button>
+          <button className="jyc-editorial-btn secondary" onClick={()=>nav('/events')}>See what's next <span>→</span></button><button className="jyc-editorial-join" onClick={()=>nav('/recruitment')}>Join JYC ↗</button>
         </div>
         <div className="jyc-editorial-proof"><span><b>01</b> COMMUNITIES</span><span><b>02</b> EXPERIENCES</span><span><b>03</b> MEMORIES</span></div>
       </div>
