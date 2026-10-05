@@ -4,6 +4,7 @@ import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {JYC_CONTACTS} from './lib/site-config.js';
+import DitherVeil from './components/DitherVeil.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
@@ -130,7 +131,7 @@ export function JYCEditorialHome({data}){
   <section id="hero" className="jyc-v1-hero" aria-labelledby="jyc-v1-title">
    <div className="jyc-v1-hero-copy">
     <div className="jyc-v1-brand-row">
-     <img src="/jyc-logo-official.webp" alt="JIIT Youth Club 128" className="jyc-v1-logo" onError={e=>{e.currentTarget.src='/jyc-logo-circle.png'}}/>
+     <span className="jyc-v1-logo-dither"><DitherVeil src="/jyc-logo-official.webp" pixelSize={2} revealRadius={78} softness={0.7} inkColor="#18161d" paperColor="#f5f1e6"/></span>
      <div><b>JIIT YOUTH CLUB 128</b><span>JIIT WISH TOWN CAMPUS · SECTOR 128 · NOIDA</span></div>
     </div>
     <span className="jyc-v1-kicker">STUDENT-LED · CAMPUS COMMUNITY</span>
