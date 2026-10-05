@@ -12,14 +12,14 @@ const sourceMedia=read('src/jyc-source-media.js');
 const gallery=read('src/extra-features.jsx');
 const hubContent=read('src/v21-hub-content.js');
 const checks=[
- ['brand editorial module exists',next.includes('export function JYCBrandEditorial')&&main.includes('brandEditorial:<JYCBrandEditorial/>')],
- ['next experience module exists',next.includes('export function ChooseYourRoute')&&next.includes('export function PhotoStory')&&next.includes('export function PhotoChapters')&&next.includes('export function HubSignalRail')],
- ['homepage imports next experience',main.includes("from './jyc-next-experience.jsx'")],
- ['route discovery is mounted',main.includes('routes:<ChooseYourRoute data={data}/>')],
- ['photo story is mounted',main.includes('photoStory:<PhotoStory data={data}/>')],
- ['photo chapters are mounted',main.includes('photoChapters:<PhotoChapters/>')&&visualPolish.includes('jyc-photo-chapters-section')],
- ['hub signal rail is mounted',main.includes('hubSignal:<HubSignalRail data={data}/>')],
- ['homepage ordering is route-first',main.includes("const defaultLayout=['intro','brandEditorial','ecosystem','routes','hubSignal','updates','events','flagship','activities','clubs','moments','photoStory','photoChapters','journal','hubPhotoWall','hubStories','team','cta'")&&main.includes("orderedLayout=normalizedLayout.includes('flagship')?normalizedLayout:normalizedLayout.flatMap(x=>x==='events'?[x,'flagship']:[x])")],
+ ['brand editorial module remains available for secondary public surfaces',next.includes('export function JYCBrandEditorial')&&next.includes('jyc-brand-editorial')],
+ ['next experience module remains available',next.includes('export function ChooseYourRoute')&&next.includes('export function PhotoStory')&&next.includes('export function PhotoChapters')&&next.includes('export function HubSignalRail')],
+ ['homepage imports next experience layer',main.includes("from './jyc-next-experience.jsx'")&&main.includes("from './jyc-editorial-home.jsx'")],
+ ['editorial homepage provides community discovery',editorialHome.includes('JYC_HUB_FAMILIES.map')&&editorialHome.includes('Open the full directory')],
+ ['editorial homepage mounts current updates',editorialHome.includes('<JYCNowStrip limit={3}/>')],
+ ['editorial homepage mounts photo chapters',editorialHome.includes('<PhotoChapters/>')&&visualPolish.includes('jyc-photo-chapters-section')],
+ ['editorial homepage mounts living spotlight',editorialHome.includes('<JYCSpotlight data={data}/>')],
+ ['editorial homepage ordering is content-first',(()=>{const order=['<JYCNowStrip limit={3}/>','<JYCSpotlight data={data}/>','JYC_HUB_FAMILIES.map','<FlagshipExperience data={data}/>','<PhotoChapters/>','jyc-editorial-people','jyc-editorial-final'];return order.every(token=>editorialHome.includes(token))})()],
  ['bot context labels exist',bot.includes('Explore hubs')&&bot.includes('Find an event')&&bot.includes('Explore archive')],
  ['bot stays above mobile dock',bot.includes('bottom:calc(78px + env(safe-area-inset-bottom))')],
  ['assistant quick routes are contextual',assistant.includes("context==='clubs'")&&assistant.includes("context==='events'")&&assistant.includes("context==='gallery'")],
