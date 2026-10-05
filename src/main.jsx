@@ -20,7 +20,6 @@ import {JYC_SOCIALS,festSocialProfile,socialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
 import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoChapters,HubSignalRail} from './jyc-next-experience.jsx';
-import {JYCWebGLIdentity} from './jyc-webgl-identity.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {JYCInnovationMotion} from './jyc-innovation-motion.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
@@ -35,11 +34,11 @@ const LazyJYCBot=lazy(()=>import('./jyc-bot.jsx').then(m=>({default:m.JYCBot})))
 const PUBLIC_ACTIVITIES=JYC_PUBLIC_ACTIVITIES;
 function mergePublicFallback(d,{allowContentFallback=true}={}){
  const x=norm(d||{});
- const fallbackClubs=enrichSourceClubs(Object.entries(JYC_HUB_CONTENT).map(([name,p],i)=>({id:'hub-'+slug(name),name,type:p.family==='Technical'?'Technical':'Non-Technical',category:p.focus,description:p.summary,about:p.detail,interests:[p.family,p.focus],published:true,status:'published',pinned:i<5,theme:'jyc'})));
+ const fallbackClubs=enrichSourceClubs(Object.entries(JYC_HUB_CONTENT).map(([name,p],i)=>({id:'hub-'+slug(name),name,type:p.family==='Technical'?'Technical':'Non-Technical',category:p.focus,description:p.summary,about:p.detail,interests:[...new Set([p.family,p.focus].filter(Boolean))],published:true,status:'published',pinned:i<5,theme:'jyc'})));
  const baseClubs=allowContentFallback&&x.clubs?.length===0?fallbackClubs:x.clubs;
  const enrichedClubs=enrichSourceClubs(baseClubs).map(club=>{const social=socialProfile(club.name);return social?{...club,socials:{...(club.socials||{}),instagram:club.socials?.instagram||social.instagram||'',linkedin:club.socials?.linkedin||social.linkedin||'',website:club.socials?.website||social.website||'',instagramHandle:club.socials?.instagramHandle||social.instagramHandle||'',socialVerifiedBy:social.verifiedBy||'',socialVerifiedOn:social.verifiedOn||''}}:club});
  const existingClubNames=new Set(enrichedClubs.map(c=>String(c.name||'').trim().toLowerCase()));
- const sourceOnlyClubs=JYC_HUB_SOURCE_ONLY.filter(meta=>!existingClubNames.has(meta.name.toLowerCase())).map(meta=>{const p=JYC_HUB_CONTENT[meta.name]||{};return enrichSourceClubs([{id:`hub-${slug(meta.name)}`,name:meta.name,type:p.family==='Technical'?'Technical':'Non-Technical',category:p.focus||p.family,description:p.summary||`${meta.name} is retained in the JYC source ecosystem.`,about:p.detail||'',interests:[p.family,p.focus].filter(Boolean),published:true,status:'source-material',sourceVerification:'source-material',sourceLabel:meta.source,theme:'jyc'}])[0]});
+ const sourceOnlyClubs=JYC_HUB_SOURCE_ONLY.filter(meta=>!existingClubNames.has(meta.name.toLowerCase())).map(meta=>{const p=JYC_HUB_CONTENT[meta.name]||{};return enrichSourceClubs([{id:`hub-${slug(meta.name)}`,name:meta.name,type:p.family==='Technical'?'Technical':'Non-Technical',category:p.focus||p.family,description:p.summary||`${meta.name} is retained in the JYC source ecosystem.`,about:p.detail||'',interests:[...new Set([p.family,p.focus].filter(Boolean))],published:true,status:'source-material',sourceVerification:'source-material',sourceLabel:meta.source,theme:'jyc'}])[0]});
  const clubs=[...enrichedClubs,...sourceOnlyClubs];
  const sourceGallery=mergeSourceGallery(x.gallery);
  const gallery=[...sourceGallery,...JAI_OFFICIAL_MEDIA,...(allowContentFallback?[...PDF_HUB_GALLERY,...PDF_HUB_EXTRA_GALLERY,...PUBLIC_GALLERY_FALLBACK]:[])].filter((g,i,a)=>a.findIndex(x=>x.id===g.id)===i);
@@ -147,20 +146,6 @@ function SiteAtmosphere(){
 }
 
 function App(){const loc=useLocation();const nav=useNavigate();const [data,setData]=useState(()=>import.meta.env.DEV?publicDemoData():norm(empty));const [loading,setLoading]=useState(true);const [bootReady,setBootReady]=useState(false);const [bootStage,setBootStage]=useState('INITIALIZING');const [error,setError]=useState('');const [online,setOnline]=useState(()=>navigator.onLine!==false);const [theme,setTheme]=useState(()=>storageGet('jyc-theme','light')==='dark'?'dark':'light');const [session,setSession]=useState(null);const [admin,setAdmin]=useState(null);const [toast,setToast]=useState(null);const [confirm,setConfirm]=useState(null);
-
- useEffect(()=>{
-  // Prevent a broken media URL from creating a visible dead rectangle or broken-image glyph.
-  // The first failure gets one deterministic local fallback; the fallback itself is never retried.
-  const onImageError=e=>{
-   const img=e.target;
-   if(!(img instanceof HTMLImageElement)||img.dataset.jycFallbackApplied==='1')return;
-   img.dataset.jycFallbackApplied='1';
-   const fallback=img.dataset.fallbackSrc||'/jyc-logo-circle.png';
-   if(img.src!==new URL(fallback,window.location.origin).href) img.src=fallback;
-  };
-  document.addEventListener('error',onImageError,true);
-  return()=>document.removeEventListener('error',onImageError,true);
- },[]);
  useEffect(()=>{const onToast=e=>notify(e.detail?.message||'',e.detail?.type||'success');const onConfirm=e=>setConfirm(e.detail||null);window.addEventListener('jyc-toast',onToast);window.addEventListener('jyc-confirm',onConfirm);return()=>{window.removeEventListener('jyc-toast',onToast);window.removeEventListener('jyc-confirm',onConfirm)}},[]);
  useEffect(()=>{const on=()=>setOnline(true),off=()=>setOnline(false);window.addEventListener('online',on);window.addEventListener('offline',off);return()=>{window.removeEventListener('online',on);window.removeEventListener('offline',off)}},[]);
  useEffect(()=>{document.documentElement.dataset.theme=theme;storageSet('jyc-theme',theme);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#0f0e11':'#f5f1e6');},[theme]);
@@ -172,7 +157,7 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
  const notify=(m,type='success')=>{setToast({message:m,type});setTimeout(()=>setToast(null),2800)};
  useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'})},[loc.pathname]);
  useEffect(()=>{
-   const nodes=[...document.querySelectorAll('.reveal,.editorial-reveal')];
+   const nodes=[...document.querySelectorAll('.reveal')];
    if(!nodes.length)return;
    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
      nodes.forEach(n=>n.classList.add('is-visible'));
@@ -456,7 +441,7 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  if(clean==='/gallery')return <>{schema}<Gallery data={data}/></>;if(clean==='/leadership')return <Navigate to="/team" replace/>;if(clean==='/team')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <ArchivePage data={data}/>;
  if(clean==='/announcements')return <Announcements data={data}/>;
  if(clean==='/updates')return <><JYCNowPage data={data}/></>;
- if(clean==='/achievements')return <Achievements data={data}/>;if(clean==='/join-jyc')return <>{schema}<JoinJYC/></>;if(clean==='/recruitment')return <>{schema}{recruitmentEnabled(data)?<RecruitmentHub data={data}/>:<JoinJYC/>}</>;if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;if(clean==='/calendar')return <>{schema}<JYCCalendarPage data={data}/></>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/my-jyc'||clean==='/login'||clean==='/notifications')return <Navigate to="/" replace/>;if(clean==='/planner'||clean==='/agenda')return <Navigate to="/events" replace/>;if(clean==='/settings'||clean==='/download')return <Navigate to="/about" replace/>;if(clean==='/projects'||clean==='/projects/submit')return <Navigate to="/clubs" replace/>;if(clean.startsWith('/qr/'))return <Navigate to="/events" replace/>;if(clean==='/admin')return <Suspense fallback={<section className="section page"><span className="eyebrow">JYC CONTROL CENTER</span><h1>Loading Control Center…</h1><p>Preparing the administrative workspace.</p></section>}><Admin data={data} admin={admin} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
+ if(clean==='/achievements')return <Achievements data={data}/>;if(clean==='/join-jyc')return <JoinJYC/>;if(clean==='/recruitment')return <>{schema}{recruitmentEnabled(data)?<RecruitmentHub data={data}/>:<JoinJYC/>}</>;if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;if(clean==='/calendar')return <>{schema}<JYCCalendarPage data={data}/></>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/my-jyc'||clean==='/login'||clean==='/notifications')return <Navigate to="/" replace/>;if(clean==='/planner'||clean==='/agenda')return <Navigate to="/events" replace/>;if(clean==='/settings'||clean==='/download')return <Navigate to="/about" replace/>;if(clean==='/projects'||clean==='/projects/submit')return <Navigate to="/clubs" replace/>;if(clean.startsWith('/qr/'))return <Navigate to="/events" replace/>;if(clean==='/admin')return <Suspense fallback={<section className="section page"><span className="eyebrow">JYC CONTROL CENTER</span><h1>Loading Control Center…</h1><p>Preparing the administrative workspace.</p></section>}><Admin data={data} admin={admin} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
 }
 function NavIcon({kind}){const paths={home:'M3 10.5 12 3l9 7.5M5.5 9.5V21h13V9.5M9 21v-6h6v6',clubs:'M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8-1.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20a5.5 5.5 0 0 1 11 0M14 20a6 6 0 0 1 7.5 0',events:'M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z',gallery:'M4 5h16v14H4zM4 16l4-4 3 3 2-2 5 5M15 9h.01',team:'M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8-1.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20a5.5 5.5 0 0 1 11 0M14 20a6 6 0 0 1 7.5 0',more:'M5 7h14M5 12h14M5 17h14',search:'M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Zm5.5-2 5 5'};return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={paths[kind]||paths.more}/></svg>}
 
@@ -542,7 +527,7 @@ const explore=[
    ['/achievements','Achievements','Wall of Fame and community outcomes'],
    ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
    ['/announcements','Announcements','Registrations, notices and JYC updates'],
-   ['/join-jyc','Join JYC · Coming Soon','Official JYC recruitment will appear here when the next cycle opens'],
+   ['/recruitment','Join JYC','Official recruitment destination'],
    ['/archive','Archive','The published JYC story by year'],
    ['/contact','Contact','Official public channels and query form']
   ];
@@ -803,9 +788,9 @@ function HubDirectory({data}){
    <div><span className="eyebrow">JYC HUB DIRECTORY · SOURCE MEDIA</span><h2>Twenty-three communities. Source-grounded identities.</h2><p className="small-copy">Move through the maintained All Hubs archive. Brochure-verified and source-material communities remain visibly distinguished, while real supplied photography is used wherever it exists.</p></div>
    <div className="hub-directory-stats"><span><b>{entries.length}</b> communities</span><span><b>{photoBacked}</b> photo-backed</span><span><b>{entries.length-photoBacked}</b> profile-led</span></div>
   </div>
-  <div className="hub-family-row" role="group" aria-label="Filter communities by family">
-   <button type="button" aria-pressed={family==='All'} className={family==='All'?'is-active':''} onClick={()=>setFamily('All')}>All <b>{entries.length}</b></button>
-   {JYC_HUB_FAMILIES.map(x=><button type="button" aria-pressed={family===x} className={family===x?'is-active':''} key={x} onClick={()=>setFamily(x)}>{x} <b>{entries.filter(([,p])=>p.family===x).length}</b></button>)}
+  <div className="hub-family-row" role="tablist" aria-label="Filter communities by family">
+   <button type="button" className={family==='All'?'is-active':''} onClick={()=>setFamily('All')}>All <b>{entries.length}</b></button>
+   {JYC_HUB_FAMILIES.map(x=><button type="button" className={family===x?'is-active':''} key={x} onClick={()=>setFamily(x)}>{x} <b>{entries.filter(([,p])=>p.family===x).length}</b></button>)}
   </div>
   <div className="hub-directory-stage">
    <div className="hub-directory-list" role="list">
