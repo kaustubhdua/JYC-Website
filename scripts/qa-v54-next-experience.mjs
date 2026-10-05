@@ -21,7 +21,7 @@ const checks=[
  ['editorial homepage mounts living spotlight',editorialHome.includes('<JYCSpotlight data={data}/>')],
  ['editorial homepage ordering is content-first',(()=>{const order=['<JYCNowStrip limit={3}/>','<JYCSpotlight data={data}/>','jyc-v1-event-grid','jyc-v1-family-grid','jyc-v1-activity-grid','jyc-v1-update-list','<FlagshipExperience data={data}/>','<PhotoChapters/>','id="team"','id="achievements"','jyc-v1-social','jyc-v1-final'];const positions=order.map(token=>editorialHome.indexOf(token));return positions.every(i=>i>=0)&&positions.every((i,n)=>n===0||i>positions[n-1])})()],
  ['bot context labels exist',bot.includes('Explore hubs')&&bot.includes('Find an event')&&bot.includes('Explore archive')],
- ['bot stays above mobile dock',bot.includes('bottom:calc(78px + env(safe-area-inset-bottom))')],
+ ['bot stays above mobile dock',bot.includes('bottom:calc(94px + env(safe-area-inset-bottom))')],
  ['assistant quick routes are contextual',assistant.includes("context==='clubs'")&&assistant.includes("context==='events'")&&assistant.includes("context==='gallery'")],
  ['assistant indexes gallery and source photography',assistant.includes("type:'GALLERY'")&&assistant.includes('JYC_HUB_SOURCE_REGISTRY')&&assistant.includes('sourceHubMedia')],
  ['photo story preserves source-photo metadata',next.includes('sourceBuckets=JYC_HUB_SOURCE_REGISTRY.map')&&next.includes('item.caption||item.title')],
