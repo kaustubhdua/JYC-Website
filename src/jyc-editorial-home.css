@@ -512,3 +512,17 @@ html[data-theme="dark"] .jyc-editorial-home{
 }
 
 .jyc-v1-update-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}.jyc-v1-impact-card .rb-flip{min-height:220px}.rb-achievement-face{height:100%;min-height:220px;display:flex;flex-direction:column;justify-content:center;padding:28px;background:var(--v1-card);color:var(--v1-ink);border:1px solid var(--v1-line)}.rb-achievement-face span{font-size:9px;letter-spacing:.16em;color:var(--v1-accent)}.rb-achievement-face strong{display:block;font:400 48px/1 Georgia,'Times New Roman',serif;margin:28px 0 10px}.rb-achievement-face small,.rb-achievement-face p{color:var(--v1-muted);font-size:13px;line-height:1.6}.rb-achievement-back b{margin-top:20px;font-size:11px}.jyc-v1-family-tabs .rb-jelly-radio{justify-content:flex-start}.jyc-v1-family-tabs .rb-jelly-radio button{font-size:10px}.jyc-v1-family-tabs .rb-jelly-radio button[aria-checked=true]{background:var(--v1-ink);color:var(--v1-paper)}@media(max-width:680px){.jyc-v1-update-actions{justify-content:center;width:100%}.jyc-v1-update-actions>*{max-width:100%}.jyc-v1-family-tabs .rb-jelly-radio{justify-content:center}.jyc-v1-family-tabs .rb-jelly-radio button{min-height:40px}.jyc-v1-impact-card .rb-flip{min-height:210px}.rb-achievement-face{min-height:210px;padding:24px}.rb-achievement-face strong{font-size:40px}}
+
+/* V1 visual safety: model viewer fits its editorial frame; particle layer never blocks copy. */
+.jyc-v1-about-mark{overflow:hidden;min-width:0}
+.jyc-v1-about-mark .jyc-model-viewer{width:100%;height:100%;min-height:0;border:0;border-radius:0}
+.jyc-v1-about-mark .jyc-model-fallback{min-height:0;height:100%;padding:18px}
+.jyc-v1-about-mark .jyc-model-fallback img{width:58%;max-width:150px}
+.jyc-v1-impact{position:relative;isolation:isolate;overflow:hidden}
+.jyc-v1-impact>.particles-container{z-index:0}
+.jyc-v1-impact>div,.jyc-v1-impact>article{position:relative;z-index:1}
+.jyc-v1-stat-strip strong{display:flex;align-items:baseline;min-width:4ch}
+@media(max-width:680px){
+ .jyc-v1-about-mark{width:100%;max-width:240px;min-height:240px}
+ .jyc-v1-about-mark .jyc-model-viewer{min-height:240px}
+}
