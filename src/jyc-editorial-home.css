@@ -407,3 +407,66 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{background:#050506}
 }
 .jyc-v1-logo-dither .dither-veil{width:100%;height:100%}
 @media(max-width:680px){.jyc-v1-logo-dither{width:52px;height:52px}}
+
+
+/* Cross-page media hardening: preserve complete frames and eliminate layout jumps. */
+.jyc-editorial-home img,
+.jyc-editorial-home video{
+ display:block;
+ max-width:100%;
+}
+.jyc-editorial-home .jyc-v1-hero-photo img,
+.jyc-editorial-home .jyc-v1-event-image img,
+.jyc-editorial-home .jyc-v1-family-media img,
+.jyc-editorial-home .jyc-v1-activity-image img,
+.jyc-editorial-home .jyc-v1-gallery-photo img,
+.jyc-editorial-home .jyc-v1-person img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center;
+}
+.jyc-editorial-home .jyc-v1-logo,
+.jyc-editorial-home .jyc-v1-about-mark img{
+ width:auto;
+ height:auto;
+ max-width:100%;
+ object-fit:contain;
+ object-position:center;
+}
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-paper:#0f0e11;
+ --v1-card:#18161d;
+ --v1-ink:#fff8e1;
+ --v1-muted:#a8a3b0;
+ --v1-line:rgba(210,180,140,.25);
+ --v1-accent:#d2b48c;
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b{
+ background:#24212a;
+ color:#c9c0b5;
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn{
+ color:var(--v1-ink);
+ border-color:var(--v1-line);
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button.active,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn.primary{
+ background:#fff8e1;
+ color:#151419;
+ border-color:#fff8e1;
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-impact,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{
+ background:#08080a;
+ color:#fff8e1;
+}
+@media(max-width:680px){
+ .jyc-editorial-home{width:100%;margin:0}
+ .jyc-v1-hero,.jyc-v1-section,.jyc-v1-social{margin-inline:auto}
+ .jyc-v1-section-head,.jyc-v1-about,.jyc-v1-impact,.jyc-v1-social,.jyc-v1-final{justify-items:center;text-align:center}
+ .jyc-v1-section-head>div,.jyc-v1-section-head>div>p,.jyc-v1-head-note{margin-inline:auto}
+ .jyc-v1-link{margin-inline:auto}
+ .jyc-v1-final-actions,.jyc-v1-impact-actions{justify-items:stretch}
+}
