@@ -4,7 +4,7 @@ import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
-import {FlagshipExperience} from './jyc-next-experience.jsx';
+import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
 import './jyc-editorial-home.css';
 
 const FALLBACK_PHOTO='/assets/hub-photos/jyc-06.webp';
@@ -128,7 +128,7 @@ export function JYCEditorialHome({data}){
       </div>
     </section>
 
-    <section className="jyc-editorial-section jyc-editorial-people" aria-labelledby="jyc-people-title">
+    <PhotoChapters/>\n\n    <section className="jyc-editorial-section jyc-editorial-people" aria-labelledby="jyc-people-title">
       <div className="jyc-editorial-section-head">
         <div><span className="jyc-editorial-eyebrow">THE PEOPLE</span><h2 id="jyc-people-title">The campus is made<br/><em>by people.</em></h2></div>
         <button className="jyc-editorial-head-link" onClick={()=>nav('/team')}>Meet the team →</button>
