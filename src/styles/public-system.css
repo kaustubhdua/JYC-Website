@@ -100,3 +100,40 @@ html[data-theme="dark"] .public-app textarea {
 }
 html[data-theme="dark"] .public-app input::placeholder,
 html[data-theme="dark"] .public-app textarea::placeholder { color: #a9a092; }
+
+
+/* V57.1 — public visual stability contract.
+   Keeps media centred, prevents flex/grid children from creating horizontal overflow,
+   and gives unloaded/broken media a stable frame before the runtime fallback resolves. */
+.public-app,
+.public-app main,
+.public-app section,
+.public-app article,
+.public-app div{min-width:0}
+.public-app{overflow-x:clip}
+.public-app :where(img,video,iframe){max-width:100%}
+.public-app img{display:block}
+.public-app :where(.gallery-item img,.gallery-grid img,.event-source-gallery-grid img,.hub-source-photo-strip img,.club-card-visual img,.team-photo-editorial img,.home-team-photo img,.jyc-feature-poster img,.archive-story-photo img){
+  object-position:center center;
+}
+.public-app :where(.gallery-item,.gallery-grid a,.event-source-gallery-grid>* ,.hub-source-photo-strip>* ,.club-card-visual,.team-photo-editorial,.home-team-photo,.jyc-feature-poster,.archive-story-photo){
+  min-width:0;
+  overflow:hidden;
+}
+.public-app :where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,a,button,span,strong,small){
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.public-app :where(.section,.page,.feature-page,.unified-public-page){
+  margin-inline:auto;
+}
+@media(max-width:700px){
+  .public-app :where(.section,.page,.feature-page,.unified-public-page){width:min(calc(100% - 20px),1280px)}
+  .public-app :where(.section-head,.reference-section-head){min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .public-app :where(img,video){scroll-behavior:auto}
+}
+@media(forced-colors:active){
+  .public-app :where(a,button){forced-color-adjust:auto}
+}
