@@ -48,6 +48,10 @@ Current baseline: V56.15.1 on `main`, including the editorial homepage consolida
 - SEO includes Organization, WebSite, Breadcrumb, CollectionPage, Event and image metadata.
 - The site explicitly avoids the previously rejected custom cursor, orbit-ring and neon/AI-dashboard direction.
 
+## Production deployment verification blocker
+
+The repository's canonical metadata targets `https://www.jiityouthclub128.in/`, but an external verification of that public hostname currently returns a standalone JAI 2026 site rather than this repository's JYC V1 application. The repository `vercel.json` does not rewrite the root to JAI. This must be resolved in the Vercel/domain project configuration before the JYC V1 homepage can be considered production-verified.
+
 ## Highest-value improvements that do not add features
 
 ### P0 — real-world verification
