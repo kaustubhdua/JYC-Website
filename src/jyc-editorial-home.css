@@ -1,11 +1,13 @@
 /* V1 public homepage — source-first editorial system */
 .jyc-editorial-home{
- --v1-ink:#18161d;
- --v1-paper:#f5f1e6;
- --v1-card:#ffffff;
- --v1-muted:#686660;
- --v1-line:rgba(17,19,24,.14);
- --v1-accent:#bf9c6f;
+ --v1-ink:var(--jyc-text,#18161d);
+ --v1-paper:var(--jyc-bg,#f5f1e6);
+ --v1-card:var(--jyc-surface,#ffffff);
+ --v1-muted:var(--jyc-muted-live,#686660);
+ --v1-line:var(--jyc-border,rgba(17,19,24,.14));
+ --v1-accent:var(--jyc-bronze,#bf9c6f);
+ --v1-navy:var(--jyc-navy,#18161d);
+ --v1-ivory:var(--jyc-ivory,#fffdf8);
  background:var(--v1-paper);
  color:var(--v1-ink);
  overflow:hidden;
@@ -178,7 +180,7 @@
 .jyc-v1-person:hover img{transform:scale(1.035)}
 .jyc-v1-person small{display:block;margin-top:9px;color:var(--v1-accent);font-size:8px;letter-spacing:.11em;text-transform:uppercase}
 .jyc-v1-person strong{display:block;font-size:14px;margin-top:4px}
-.jyc-v1-impact{width:100%;padding:110px max(32px,calc((100% - 1280px)/2));display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center;background:#15161a;color:#fff}
+.jyc-v1-impact{width:100%;padding:110px max(32px,calc((100% - 1280px)/2));display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center;background:var(--v1-navy);color:var(--v1-ivory)}
 .jyc-v1-impact .jyc-v1-eyebrow,.jyc-v1-social .jyc-v1-eyebrow,.jyc-v1-final .jyc-v1-eyebrow{color:#c7a56d}
 .jyc-v1-impact h2{max-width:800px}
 .jyc-v1-impact p{max-width:690px;color:rgba(255,255,255,.66);line-height:1.7;margin:22px 0}
@@ -196,7 +198,7 @@
 .jyc-v1-social-links span{font-size:9px;color:var(--v1-accent)}
 .jyc-v1-social-links strong{font-size:17px}
 .jyc-v1-social-links small{font-size:10px;color:var(--v1-muted)}
-.jyc-v1-final{background:var(--v1-ink);color:#fff;padding:110px max(32px,calc((100% - 1280px)/2));display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:end}
+.jyc-v1-final{background:var(--v1-navy);color:var(--v1-ivory);padding:110px max(32px,calc((100% - 1280px)/2));display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:end}
 .jyc-v1-final h2{max-width:850px}
 .jyc-v1-final p{max-width:430px;color:rgba(255,255,255,.63);line-height:1.7;margin:0 0 24px}
 .jyc-v1-final-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -288,4 +290,35 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-gallery-photo{background:#29
 @media(max-width:680px){
  .jyc-editorial-home .jyc-v1-event-body>p{font-size:15px;line-height:1.62}
  .jyc-editorial-home .jyc-v1-event-body dl dd{overflow-wrap:anywhere}
+}
+
+
+/* Final media/overflow/theme hardening. */
+.jyc-editorial-home,.jyc-editorial-home *{box-sizing:border-box}
+.jyc-editorial-home{overflow:clip}
+.jyc-editorial-home img{display:block;max-width:100%;object-position:center center}
+.jyc-editorial-home .jyc-v1-hero-photo img,
+.jyc-editorial-home .jyc-v1-event-image img,
+.jyc-editorial-home .jyc-v1-family-media img,
+.jyc-editorial-home .jyc-v1-activity-image img,
+.jyc-editorial-home .jyc-v1-gallery-photo img,
+.jyc-editorial-home .jyc-v1-person img{object-position:center center}
+.jyc-editorial-home .jyc-v1-hero-copy,
+.jyc-editorial-home .jyc-v1-hero-media,
+.jyc-editorial-home .jyc-v1-section-head>div,
+.jyc-editorial-home .jyc-v1-section-head>p,
+.jyc-editorial-home .jyc-v1-about>div,
+.jyc-editorial-home .jyc-v1-impact>div,
+.jyc-editorial-home .jyc-v1-social>div,
+.jyc-editorial-home .jyc-v1-final>div{min-width:0}
+.jyc-editorial-home p,.jyc-editorial-home h1,.jyc-editorial-home h2,.jyc-editorial-home h3,
+.jyc-editorial-home dt,.jyc-editorial-home dd,.jyc-editorial-home strong,.jyc-editorial-home span,
+.jyc-editorial-home small{overflow-wrap:anywhere}
+.jyc-v1-btn.primary{background:var(--v1-navy);border-color:var(--v1-navy);color:var(--v1-ivory)}
+.jyc-v1-impact .jyc-v1-btn.primary{background:var(--v1-ivory);border-color:var(--v1-ivory);color:var(--v1-navy)}
+.jyc-v1-final{background:var(--v1-navy);color:var(--v1-ivory)}
+.jyc-v1-btn.light{background:var(--v1-ivory);color:var(--v1-navy);border-color:var(--v1-ivory)}
+@media(max-width:680px){
+ .jyc-editorial-home .jyc-v1-hero-media{margin-inline:auto}
+ .jyc-editorial-home .jyc-v1-hero-photo{width:100%;max-width:720px;margin-inline:auto}
 }
