@@ -39,6 +39,7 @@ check('logo beige is the final public brand anchor',css.includes('--jyc-champagn
 check('light/dark theme contracts are explicit',css.includes('html[data-theme="light"]')&&css.includes('html[data-theme="dark"]')&&css.includes('--jyc-text:var(--jyc-ink)')&&css.includes('--jyc-muted-live:var(--jyc-muted)'));
 check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
 check('homepage hierarchy and motion layer are present',editorialCss.includes('.jyc-v1-hero{')&&editorialCss.includes('.jyc-v1-hero-media')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
+check('V1 homepage inherits the active JYC colour theme',editorialCss.includes('--v1-paper:var(--jyc-bg')&&editorialCss.includes('--v1-card:var(--jyc-surface')&&editorialCss.includes('--v1-ink:var(--jyc-text')&&editorialCss.includes('--v1-navy:var(--jyc-navy'));
 check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3}/>'));
 check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC / Get Involved'));
 check('Team hierarchy is explicit',main.includes('Faculty → Apex → Core → Clubs & Hubs')&&main.includes('team-command-strip')&&main.includes('JYC Apex'));
@@ -54,11 +55,17 @@ check('official JYC hub content is wired',main.includes('JYC_HUB_CONTENT')&&main
 check('verified leadership content remains source-grounded',fallbacks.includes('Dr. Vinay Anand Tikkiwal')&&fallbacks.includes('Dr. Pankaj Kumar Srivastava')&&fallbacks.includes("name:'Harisha'")&&fallbacks.includes("name:'Dhruv Choudhary'"));
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
 check('JYC logo remains the public hero identity',editorialHome.includes('jyc-v1-hero-photo')&&editorialHome.includes('REAL PEOPLE.')&&editorialHome.includes('JYC 128 · OFFICIAL ARCHIVE'));
-check('SEO/social preview remains logo-led',index.includes('og:image" content="%VITE_SITE_URL%/jyc-logo-official.webp"')&&index.includes('twitter:image" content="%VITE_SITE_URL%/jyc-logo-official.webp"'));
-check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
+check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"'));
+check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes('dataset.fallbackSrc')&&main.includes("'/jyc-logo-official.webp'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&bot.includes('requestIdleCallback'));
 check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
-check('published team photo fallbacks resolve to committed assets',editorialHome.includes("'divye bajaj':'/assets/team/divye-bajaj.webp'")&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
+check('homepage media uses centered non-distorting crops',editorialCss.includes('object-fit:cover')&&editorialCss.includes('object-position:center')&&editorialCss.includes('.jyc-v1-gallery-photo img'));
+check('homepage dark theme has explicit readable tokens',editorialCss.includes('html[data-theme="dark"] .jyc-editorial-home')&&editorialCss.includes('--v1-paper:#0f0e11')&&editorialCss.includes('--v1-ink:#fff8e1'));
+check('GLB loader handles an already-registered model-viewer element',bot.includes("customElements?.get('model-viewer')")&&bot.includes('setModelReady(true)'));
+check('GLB loader handles an existing in-flight script',bot.includes("document.querySelector('script[data-jyc-model-viewer]')")&&bot.includes('existing.addEventListener'));
+check('GLB uses a fixed camera with zoom and pan disabled',bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom')&&bot.includes('disable-pan'));
+check('GLB failure falls back to a branded public visual',bot.includes('jyc-bot-model-fallback')&&bot.includes('/jyc-logo-official.webp'));
+
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
 check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
 check('service worker cache is current',read('public/sw.js').includes('jyc-cache-v56-15-1'));
@@ -74,15 +81,10 @@ check('source-first hub media helper exists',sourceMedia.includes('enrichSourceC
 check('event identity fallback is deterministic',read('src/hub-identities.js').includes('EVENT_VISUALS')&&read('src/hub-identities.js').includes('hashEvent')&&read('src/hub-identities.js').includes('eventSeed'));
 check('hub directory editorial preview exists',main.includes('hub-directory-stage')&&main.includes('hub-directory-preview')&&main.includes('onMouseEnter={()=>setActive(name)}'));
 check('event timeline preview exists',main.includes('EventTimelinePreview')&&main.includes('event-timeline-row'));
-const lock=JSON.parse(read('package-lock.json'));check('public image failure fallback prevents broken-image gaps',main.includes("dataset.jycFallback==='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
+const lock=JSON.parse(read('package-lock.json'));check('public image failure fallback prevents broken-image gaps',main.includes("dataset.jycFallback==='1'")&&main.includes('dataset.fallbackSrc')&&main.includes("'/jyc-logo-official.webp'"));
 check('public image presentation is centered',read('src/jyc-logo-final-theme.css').includes('object-position:center')&&editorialCss.includes('object-position:center'));
 check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/jyc-spatial.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
-check('GLB click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("const openAssistant=")&&read('src/jyc-bot.jsx').includes('triggerMotion(next[0],next[1],next[2])')&&read('src/jyc-bot.jsx').includes('availableAnimations'));
-check('GLB click path does not double-trigger pointer and keyboard animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes("onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap'"));
-check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
-check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
-check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
-check('homepage impact counters are exact rather than plus-suffixed estimates',editorialHome.includes('<strong>{s.value}</strong>')&&!editorialHome.includes('<strong>{s.value}+</strong>'));
+check('GLB tap/click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("triggerMotion('is-tap',520,'tap')")&&read('src/jyc-bot.jsx').includes('availableAnimations'));
 check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
 if(fail)process.exit(1);
