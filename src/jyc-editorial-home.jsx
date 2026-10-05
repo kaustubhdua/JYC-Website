@@ -140,7 +140,7 @@ export function JYCEditorialHome({data}){
  },[allPublishedEvents,data?.announcement]);
 
  const stats=[
-  {value:publishedClubs.length||Object.keys(JYC_HUB_CONTENT).length,label:'JYC communities'},
+  {value:publishedClubs.length||Object.keys(JYC_HUB_CONTENT).length,label:'Published communities'},
   {value:JYC_HUB_FAMILIES.length,label:'Community families'},
   {value:allPublishedEvents.length,label:'Published events'},
   {value:data?.team?.filter(m=>m?.published===true).length||0,label:'Published leadership profiles'}
