@@ -23,6 +23,7 @@ const checks=[
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jyc-v1-hero-media'),'editorial hero image is prioritized for first paint'],
   [editorialHome.includes('data-fallback-src="/jyc-logo-official.webp"')&&main.includes('dataset.jycFallback'),'homepage media has a deterministic local image fallback'],
+  [editorialHome.includes('new IntersectionObserver')&&editorialHome.includes('editorial-reveal')&&editorialHome.includes('is-visible'),'homepage reveal states cannot remain permanently transparent'],
   [fs.readFileSync('src/jyc-editorial-home.css','utf8').includes('object-position:center center')&&fs.readFileSync('src/jyc-editorial-home.css','utf8').includes('overflow:clip'),'V1 media is explicitly centred and horizontally overflow-safe'],
   [fs.readFileSync('src/jyc-editorial-home.css','utf8').includes('html[data-theme="dark"] .jyc-editorial-home'),'V1 homepage has an explicit dark-theme surface contract'],
   [fs.readFileSync('src/jyc-bot.jsx','utf8').includes("dataset.performance==='lite'")&&fs.readFileSync('src/jyc-bot.jsx','utf8').includes('jyc-glb-preload'),'GLB avoids constrained-device cost and preloads on capable devices'],
