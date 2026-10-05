@@ -181,6 +181,44 @@ test('photo-led pages render real image content', async ({ page }) => {
 });
 
 
+test('public pages have no empty media frames or normal-flow section overlaps', async ({ page }) => {
+  test.setTimeout(120000);
+  for (const route of routes) {
+    for (const width of [390, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(base + route, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(async () => {
+        window.scrollTo(0, document.body.scrollHeight);
+        await new Promise(resolve => setTimeout(resolve, 700));
+        window.scrollTo(0, 0);
+      });
+      await page.waitForTimeout(200);
+      const result = await page.evaluate(() => {
+        const root=document.querySelector('.public-app');
+        if(!root)return {empty:[],overlaps:[]};
+        const empty=[...root.querySelectorAll('[class*="image"],[class*="photo"],[class*="media"],[class*="poster"]')].filter(el=>{
+          const r=el.getBoundingClientRect(),s=getComputedStyle(el);
+          if(r.width<90||r.height<90||s.display==='none'||s.visibility==='hidden')return false;
+          if(el.querySelector('img,video,iframe,svg,canvas'))return false;
+          return !s.backgroundImage||s.backgroundImage==='none';
+        }).slice(0,8).map(el=>({tag:el.tagName,cls:String(el.className||'').slice(0,120)}));
+        const sections=[...root.querySelectorAll('main > section,.route-stage > section')].filter(el=>{
+          const r=el.getBoundingClientRect(),s=getComputedStyle(el);
+          return r.width>0&&r.height>0&&!['fixed','absolute'].includes(s.position);
+        }).map(el=>({el,top:el.getBoundingClientRect().top+window.scrollY,bottom:el.getBoundingClientRect().bottom+window.scrollY}));
+        const overlaps=[];
+        for(let i=0;i<sections.length;i++)for(let j=i+1;j<sections.length;j++){
+          const a=sections[i],b=sections[j];
+          if(a.bottom>b.top+8&&b.bottom>a.top+8)overlaps.push({a:String(a.el.className||a.el.tagName),b:String(b.el.className||b.el.tagName)});
+        }
+        return {empty,overlaps:overlaps.slice(0,8)};
+      });
+      expect(result.empty,'empty media '+route+' @ '+width).toEqual([]);
+      expect(result.overlaps,'normal-flow section overlap '+route+' @ '+width).toEqual([]);
+    }
+  }
+});
+
 test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   test.setTimeout(60000);
   const redirects = {
@@ -310,6 +348,25 @@ test('JYC assistant remains interactive with GLB or safe fallback', async ({ pag
   }
   await page.keyboard.press('Escape');
   await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
+});
+
+test('GLB stays on capable desktop hardware and falls back on touch-first mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
+  await page.waitForTimeout(1800);
+  const desktopState=await page.evaluate(()=>({
+    hasModel:Boolean(document.querySelector('.jyc-bot-glb')),
+    src:document.querySelector('.jyc-bot-glb')?.getAttribute('data-jyc-glb-src')||null
+  }));
+  if(desktopState.hasModel) expect(desktopState.src).toBe('/models/jyc-spatial.glb');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
+  await page.waitForTimeout(500);
+  await expect(page.locator('.jyc-bot-model-fallback')).toBeVisible();
+  await expect(page.locator('.jyc-bot-glb')).toHaveCount(0);
 });
 
 test('mobile fixed controls have separation and never overlap the navigation dock', async ({ page }) => {
