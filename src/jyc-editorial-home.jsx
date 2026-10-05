@@ -5,6 +5,7 @@ import {sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
+import CountUp from './components/react-bits/CountUp.jsx';
 import './jyc-editorial-home.css';
 
 const FALLBACK_PHOTO='/assets/hub-photos/jyc-06.webp';
