@@ -185,8 +185,9 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
      const img=e.target;
      if(!(img instanceof HTMLImageElement)||img.dataset.jycFallback==='1')return;
      img.dataset.jycFallback='1';
+     img.dataset.fallbackSrc='/jyc-logo-official.webp';
      img.removeAttribute('srcset');
-     img.src='/jyc-logo-official.webp';
+     img.src=img.dataset.fallbackSrc;
    };
    document.addEventListener('error',onImageError,true);
    return()=>document.removeEventListener('error',onImageError,true);
