@@ -27,7 +27,7 @@ add('Robots publishes canonical sitemap',robots.includes('Sitemap: https://www.j
 add('Sitemap generator includes maintained source hubs',fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('jyc-hub-registry.js')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/clubs/${slug(name)}'));
 add('Sitemap carries maintained hub photography',fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('slugToHubImages')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('xmlns:image'));
 add('LLMs discovery file',llms.includes('JIIT Youth Club') && llms.includes('/clubs') && llms.includes('/events'));
-add('Sitemap excludes permanent redirect /join-jyc',!sitemap.includes("'/join-jyc'"));
+add('Sitemap includes the public Join JYC coming-soon page',sitemap.includes('/join-jyc'));
 add('Sitemap does not fabricate build-date lastmod values',!sitemap.includes('fallbackDate')&&!sitemap.includes('dynamicDates.get(u)||fallbackDate'));
 add('Flagship event URLs are seeded into sitemap',fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/agentic-ai-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/ride-hack-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/converge-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/drono-o-war-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/codeai-hackathon'));
 add('Sitemap generator exists',fs.existsSync(path.join(root,'scripts/generate-sitemap.mjs')));
