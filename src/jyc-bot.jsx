@@ -4,10 +4,10 @@ import {JYCAssistant} from './jyc-assistant.jsx';
 
 export function JYCBot({data}){
  const loc=useLocation(),[assistantOpen,setAssistantOpen]=useState(false),[modelReady,setModelReady]=useState(false),[modelAvailable,setModelAvailable]=useState(false),[modelFailed,setModelFailed]=useState(false),[motion,setMotion]=useState('');
- const modelRef=useRef(null); const motionTimer=useRef(null); const idleTimer=useRef(null); const assetCheckRef=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0);
+ const modelRef=useRef(null); const modelPreloadRef=useRef(false); const motionTimer=useRef(null); const idleTimer=useRef(null); const assetCheckRef=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0);
  const context=loc.pathname.startsWith('/events')?'events':loc.pathname.startsWith('/clubs')?'clubs':loc.pathname.startsWith('/gallery')?'gallery':loc.pathname.startsWith('/team')||loc.pathname.startsWith('/leadership')?'team':'home';
  const loadModelViewer=()=>{
-  if(typeof window==='undefined'||customElements?.get('model-viewer')||document.querySelector('script[data-jyc-model-viewer]'))return;
+  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||customElements?.get('model-viewer')||document.querySelector('script[data-jyc-model-viewer]'))return;
   const script=document.createElement('script');
   script.type='module';
   script.src='https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js';
@@ -15,6 +15,12 @@ export function JYCBot({data}){
   script.onload=()=>setModelReady(Boolean(customElements?.get('model-viewer')));
   script.onerror=()=>setModelFailed(true);
   document.head.appendChild(script);
+ };
+ const preloadModelAsset=()=>{
+  if(typeof document==='undefined'||modelPreloadRef.current||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData)return;
+  modelPreloadRef.current=true;
+  if(document.querySelector('link[data-jyc-glb-preload]'))return;
+  const link=document.createElement('link');link.rel='preload';link.as='fetch';link.href='/models/jyc-spatial.glb';link.crossOrigin='anonymous';link.dataset.jycGlbPreload='true';document.head.appendChild(link);
  };
  const checkAsset=()=>{if(assetCheckRef.current)return assetCheckRef.current;assetCheckRef.current=fetch('/models/jyc-spatial.glb',{method:'HEAD',cache:'force-cache'}).then(r=>{setModelAvailable(r.ok);return r.ok}).catch(()=>{setModelAvailable(false);return false});return assetCheckRef.current};
  const triggerMotion=(name='is-wave',duration=850,intent='wave')=>{window.clearTimeout(motionTimer.current);setMotion(name);playModelAnimation(intent);motionTimer.current=window.setTimeout(()=>setMotion(''),duration)};
@@ -25,9 +31,11 @@ export function JYCBot({data}){
   let cancelled=false;
   const start=()=>{
    if(cancelled||typeof window==='undefined')return;
+   preloadModelAsset();
    loadModelViewer();
    checkAsset();
   };
+  if(document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData){setModelFailed(true);return undefined;}
   if(customElements?.get('model-viewer')) start();
   else if('requestIdleCallback' in window) window.requestIdleCallback(start,{timeout:2400});
   else window.setTimeout(start,1800);
@@ -36,7 +44,7 @@ export function JYCBot({data}){
  useEffect(()=>{window.clearInterval(idleTimer.current);if(typeof window==='undefined'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return undefined;idleTimer.current=window.setInterval(()=>{if(!assistantOpen)runContextAnimation()},11000);return()=>window.clearInterval(idleTimer.current)},[assistantOpen,context]);
  useEffect(()=>{if(modelReady&&modelAvailable&&!modelFailed)runContextAnimation()},[context,modelReady,modelAvailable,modelFailed]);
  return <div className={`jyc-bot-shell ${assistantOpen?'is-open':''}`} data-context={context}>
-  <button className={`jyc-bot-orb ${motion}`} type="button" aria-label="Open JYC Assistant" aria-expanded={assistantOpen} onPointerEnter={()=>triggerMotion('is-hover',520,'idle')} onFocus={loadModelViewer} onPointerDown={()=>triggerMotion('is-tap',520,'tap')} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap',520,'tap')}}} onClick={openAssistant}><span className="jyc-bot-status" aria-hidden="true"/><span className="jyc-bot-model-wrap">{modelReady&&modelAvailable&&!modelFailed?<model-viewer ref={modelRef} className="jyc-bot-glb" src="/models/jyc-spatial.glb" poster="/jyc-logo-circle.png" camera-orbit="0deg 75deg auto" loading="lazy" reveal="auto" disable-zoom disable-pan interaction-prompt="none" shadow-intensity="0.55" shadow-softness="0.8" exposure="1" alt="Interactive JYC assistant bot" onLoad={playModelAnimation} onError={()=>setModelFailed(true)}></model-viewer>:<span className="jyc-bot-model-fallback" aria-hidden="true"><img src="/jyc-logo-official.webp" alt=""/><span className="bot-orbit-dot"/></span>}</span><span className="jyc-bot-label">{context==='clubs'?'Explore hubs':context==='events'?'Find an event':context==='gallery'?'Explore archive':context==='team'?'Meet JYC':'Ask JYC'}</span></button>
+  <button className={`jyc-bot-orb ${motion}`} type="button" aria-label="Open JYC Assistant" aria-expanded={assistantOpen} onPointerEnter={()=>triggerMotion('is-hover',520,'idle')} onFocus={loadModelViewer} onPointerDown={()=>triggerMotion('is-tap',520,'tap')} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap',520,'tap')}}} onClick={openAssistant}><span className="jyc-bot-status" aria-hidden="true"/><span className="jyc-bot-model-wrap">{modelReady&&modelAvailable&&!modelFailed?<model-viewer ref={modelRef} className="jyc-bot-glb" src="/models/jyc-spatial.glb" poster="/jyc-logo-circle.png" camera-orbit="0deg 75deg auto" loading="eager" reveal="auto" disable-zoom disable-pan interaction-prompt="none" shadow-intensity="0.55" shadow-softness="0.8" exposure="1" alt="Interactive JYC assistant bot" onLoad={playModelAnimation} onError={()=>setModelFailed(true)}></model-viewer>:<span className="jyc-bot-model-fallback" aria-hidden="true"><img src="/jyc-logo-official.webp" alt=""/><span className="bot-orbit-dot"/></span>}</span><span className="jyc-bot-label">{context==='clubs'?'Explore hubs':context==='events'?'Find an event':context==='gallery'?'Explore archive':context==='team'?'Meet JYC':'Ask JYC'}</span></button>
   <div className="jyc-bot-hint" aria-hidden="true">JYC Assistant · click to explore</div>
   {assistantOpen&&<JYCAssistant data={data} onClose={()=>setAssistantOpen(false)}/>}
   <style>{`
