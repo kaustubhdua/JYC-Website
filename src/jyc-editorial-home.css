@@ -363,3 +363,7 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-gallery-photo{background:#29
 @media(prefers-reduced-motion:reduce){
  .jyc-editorial-home .jyc-v1-stat-strip article,.jyc-editorial-home .jyc-v1-family-card,.jyc-editorial-home .jyc-v1-event-card,.jyc-editorial-home .jyc-v1-update-list>button{transition:none}
 }
+
+.jyc-v1-logo-dither{width:62px;height:62px;display:block;flex:none;position:relative;border:1px solid var(--v1-line);background:var(--v1-card)}
+.jyc-v1-logo-dither .dither-veil{width:100%;height:100%}
+@media(max-width:680px){.jyc-v1-logo-dither{width:52px;height:52px}}
