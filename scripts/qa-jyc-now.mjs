@@ -3,7 +3,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const main=read('src/main.jsx'),now=read('src/jyc-now.jsx'),api=read('api/jyc-updates.js'),pkg=JSON.parse(read('package.json'));
 const checks=[
  [pkg.version==='56.7.0','package is V56.7'],
- [main.includes("from './jyc-now.jsx'")&&main.includes('<JYCNowStrip data={data}/>'),'JYC Now homepage layer is mounted'],
+ [main.includes("from './jyc-now.jsx'")&&now.includes('JYCNowStrip')&&fs.readFileSync(path.join(root,'src/jyc-editorial-home.jsx'),'utf8').includes('<JYCNowStrip limit={3}/>'),'JYC Now homepage layer is mounted'],
  [main.includes("clean==='/updates'")&&main.includes('<JYCNowPage data={data}/>'),'JYC Now route is public and wired'],
  [main.includes("['/updates','JYC Now'"),'JYC Now is discoverable in More navigation'],
  [now.includes('What JYC is creating now')&&now.includes('Community Spotlight'),'editorial JYC Now experience exists'],
