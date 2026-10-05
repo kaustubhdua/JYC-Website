@@ -8,6 +8,21 @@ import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
 import './jyc-editorial-home.css';
 
 const FALLBACK_PHOTO='/assets/hub-photos/jyc-06.webp';
+const TEAM_PHOTOS={
+ 'devansh tripathi':'/assets/team/campaign/devansh-tripathi.webp',
+ 'amrit kumar':'/assets/team/campaign/amrit-kumar.webp',
+ 'daksh sachdeva':'/assets/team/campaign/daksh-sachdeva.webp',
+ 'saksham kotia':'/assets/team/campaign/saksham-kotia.webp',
+ 'asmi srivastava':'/assets/team/campaign/asmi-srivastava.webp',
+ 'juhi hatuka':'/assets/team/campaign/juhi-hatuka.webp',
+ 'pratik kumar':'/assets/team/campaign/pratik-kumar.webp',
+ 'divye bajaj':'/assets/team/divye-bajaj.webp',
+ 'revant srivastava':'/assets/team/campaign/revant-srivastava.webp',
+ 'aradhyaa singh':'/assets/team/campaign/aradhyaa-singh.webp',
+ 'vansh mahajan':'/assets/team/campaign/vansh-mahajan.webp',
+ 'shriya singh':'/assets/team/campaign/shriya-singh.webp'
+};
+
 
 function dateValue(e){
   const raw=String(e?.date||'');
@@ -134,7 +149,7 @@ export function JYCEditorialHome({data}){
         <button className="jyc-editorial-head-link" onClick={()=>nav('/team')}>Meet the team →</button>
       </div>
       <div className="jyc-editorial-people-grid">
-        {team.map((member,index)=><article key={member.id||index}><div className="person-photo"><img src={member.photo||member.image||'/jyc-logo-official.webp'} alt={member.name||'JYC team member'} loading="lazy"/></div><div><small>{member.role||member.position||'JYC Team'}</small><h3>{member.name||'JYC Team Member'}</h3></div></article>)}
+        {team.map((member,index)=><article key={member.id||index}><div className="person-photo"><img src={member.photo||member.image||TEAM_PHOTOS[String(member.name||'').trim().toLowerCase()]||'/jyc-logo-official.webp'} alt={member.name||'JYC team member'} loading="lazy"/></div><div><small>{member.role||member.position||'JYC Team'}</small><h3>{member.name||'JYC Team Member'}</h3></div></article>)}
       </div>
     </section>
 
