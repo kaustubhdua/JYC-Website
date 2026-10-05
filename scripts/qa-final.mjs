@@ -76,7 +76,7 @@ checks.push(['flagship experience follows configured-home fallback ordering',edi
 checks.push(['current flagship events have dedicated identities',(()=>{const id=fs.readFileSync(path.join(root,'src/hub-identities.js'),'utf8');return ['JAI 2026','DRONO-O-WAR','RIDE Hack','CodeAI Hackathon','TechTonic 2.0','Code Clash 25.1','Code Clash 25.2'].every(n=>id.includes(n))})()]);
 checks.push(['source photo relationship backfill migration exists',fs.existsSync(path.join(root,'supabase/migrations/202610040014_v56_4_source_photo_relationships.sql'))]);
 checks.push(['GLB bot assistant sequence uses declared animation state',(()=>{const b=fs.readFileSync(path.join(root,'src/jyc-bot.jsx'),'utf8');return b.includes('animationCursor.current%sequence.length')&&b.includes('animationCursor.current+=1')&&!b.includes('motionCursor')})()]);
-checks.push(['source-backed team bridge migration exists',fs.existsSync(path.join(root,'supabase/migrations/202610040017_v56_7_team_source_bridge.sql'))]);
+checks.push(['source-backed team bridge migration exists',fs.existsSync(path.join(root,'supabase/migrations/202610040018_v56_7_team_source_bridge.sql'))]);
 checks.push(['production runtime preserves source-material hubs',main.includes('JYC_HUB_SOURCE_ONLY')&&main.includes("status:'source-material'")&&main.includes('existingClubNames')]);
 checks.push(['normalized event read bridge migration exists',fs.existsSync(path.join(root,'supabase/migrations/202610040019_v56_9_normalized_event_read_bridge.sql'))]);
 const publicAssets=path.join(root,'public','assets');
