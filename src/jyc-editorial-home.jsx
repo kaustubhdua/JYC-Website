@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
-import {JYC_CONTACTS} from './jyc-socials.js';
+import {JYC_CONTACTS} from './lib/site-config.js';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
