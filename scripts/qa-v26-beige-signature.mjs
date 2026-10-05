@@ -54,6 +54,10 @@ check('official JYC hub content is wired',main.includes('JYC_HUB_CONTENT')&&main
 check('verified leadership content remains source-grounded',fallbacks.includes('Dr. Vinay Anand Tikkiwal')&&fallbacks.includes('Dr. Pankaj Kumar Srivastava')&&fallbacks.includes("name:'Harisha'")&&fallbacks.includes("name:'Dhruv Choudhary'"));
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
 check('JYC logo remains the public hero identity',editorialHome.includes('jyc-v1-hero-photo')&&editorialHome.includes('REAL PEOPLE.')&&editorialHome.includes('JYC 128 · OFFICIAL ARCHIVE'));
+check('homepage editorial reveals have a runtime visibility path',editorialHome.includes('new IntersectionObserver')&&editorialHome.includes('editorial-reveal')&&editorialHome.includes('is-visible'));
+check('homepage media has deterministic local fallbacks',editorialHome.includes('data-fallback-src="/jyc-logo-official.webp"')&&main.includes('dataset.jycFallbackApplied'));
+check('V1 media frames explicitly centre images',editorialCss.includes('object-position:center center')&&editorialCss.includes('overflow:clip'));
+check('GLB loader avoids constrained-device cost and preloads capable-device asset',bot.includes("dataset.performance==='lite'")&&bot.includes('jyc-glb-preload')&&bot.includes('modelLoadAttempted'));
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/jyc-logo-official.webp"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/jyc-logo-official.webp'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&bot.includes('requestIdleCallback'));
