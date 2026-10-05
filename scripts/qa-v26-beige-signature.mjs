@@ -81,7 +81,7 @@ check('GLB click animation remains enabled',read('src/jyc-bot.jsx').includes("on
 check('GLB click path does not double-trigger pointer and keyboard animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes("onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap'"));
 check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
 check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
-check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
+check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance!=='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
 check('homepage impact counters are exact rather than plus-suffixed estimates',editorialHome.includes('<strong>{s.value}</strong>')&&!editorialHome.includes('<strong>{s.value}+</strong>'));
 check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
