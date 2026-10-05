@@ -6,8 +6,10 @@ export function JYCBot({data}){
  const loc=useLocation(),[assistantOpen,setAssistantOpen]=useState(false),[modelReady,setModelReady]=useState(false),[modelAvailable,setModelAvailable]=useState(false),[modelFailed,setModelFailed]=useState(false),[motion,setMotion]=useState('');
  const modelRef=useRef(null); const motionTimer=useRef(null); const animationStopTimer=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0); const modelLoadAttempted=useRef(false); const lastAnimationAt=useRef(0);
  const context=loc.pathname.startsWith('/events')?'events':loc.pathname.startsWith('/clubs')?'clubs':loc.pathname.startsWith('/gallery')?'gallery':loc.pathname.startsWith('/team')||loc.pathname.startsWith('/leadership')?'team':'home';
+ const glbAllowed=()=>typeof window!=='undefined'&&document.documentElement.dataset.performance!=='lite'&&!navigator.connection?.saveData&&!window.matchMedia?.('(hover: none), (pointer: coarse), (max-width: 700px)').matches;
  const loadModelViewer=()=>{
-  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||modelLoadAttempted.current)return;
+  if(!glbAllowed()){setModelFailed(true);return;}
+  if(modelLoadAttempted.current)return;
   if(customElements?.get('model-viewer')){setModelReady(true);setModelAvailable(true);return;}
   modelLoadAttempted.current=true;
   const script=document.createElement('script');
@@ -23,6 +25,7 @@ export function JYCBot({data}){
  const openAssistant=()=>{loadModelViewer();const sequence=[['is-wave',900,'wave'],['is-bounce',820,'bounce'],['is-tap',520,'tap'],['is-celebrate',900,'celebrate'],['is-dance',980,'dance'],['is-peek',760,'peek']];const next=sequence[animationCursor.current%sequence.length];animationCursor.current+=1;triggerMotion(next[0],next[1],next[2]);setAssistantOpen(true)};
  useEffect(()=>{
   let cancelled=false;
+  if(!glbAllowed()){setModelFailed(true);return undefined;}
   const start=()=>{
    if(cancelled||typeof window==='undefined')return;
    loadModelViewer();
