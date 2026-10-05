@@ -120,6 +120,7 @@ export function JYCEditorialHome({data}){
  }));
  const visibleFamilies=activeFamily==='All'?familyEntries:familyEntries.filter(x=>x.family===activeFamily);
  const activities=JYC_PUBLIC_ACTIVITIES;
+ const officialSocials=JYC_SOCIALS.JYC||{};
  const updates=useMemo(()=>{
   const rows=[];
   if(data?.announcement?.on&&data?.announcement?.text){
@@ -272,9 +273,9 @@ export function JYCEditorialHome({data}){
   <section className="jyc-v1-social editorial-reveal" aria-labelledby="jyc-v1-social-title">
    <div><span className="jyc-v1-eyebrow">FOLLOW JYC</span><h2 id="jyc-v1-social-title">The website is the source of truth.<br/><em>Social keeps you close.</em></h2><p>Follow official channels for timely updates without making the website dependent on a social feed.</p></div>
    <div className="jyc-v1-social-links">
-    <a href={JYC_CONTACTS.instagram} target="_blank" rel="noopener noreferrer"><span>01</span><strong>Instagram</strong><small>@jiityouthclub ↗</small></a>
-    <a href={JYC_CONTACTS.linkedin} target="_blank" rel="noopener noreferrer"><span>02</span><strong>LinkedIn</strong><small>JIIT Youth Club ↗</small></a>
-    <a href={JYC_CONTACTS.whatsapp} target="_blank" rel="noopener noreferrer"><span>03</span><strong>WhatsApp</strong><small>JYC Community ↗</small></a>
+    <a href={officialSocials.instagram||'#'} target="_blank" rel="noopener noreferrer"><span>01</span><strong>Instagram</strong><small>@jiityouthclub ↗</small></a>
+    <a href={officialSocials.linkedin||'#'} target="_blank" rel="noopener noreferrer"><span>02</span><strong>LinkedIn</strong><small>JIIT Youth Club ↗</small></a>
+    <a href={officialSocials.instagram||'#'} target="_blank" rel="noopener noreferrer"><span>03</span><strong>Official JYC channel</strong><small>Follow current updates ↗</small></a>
    </div>
   </section>
 
