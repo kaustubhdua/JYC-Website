@@ -59,6 +59,13 @@ check('SEO/social preview remains logo-led',index.includes('og:image" content="h
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes('dataset.fallbackSrc')&&main.includes("'/jyc-logo-official.webp'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&bot.includes('requestIdleCallback'));
 check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
+check('homepage media uses centered non-distorting crops',editorialCss.includes('object-fit:cover')&&editorialCss.includes('object-position:center')&&editorialCss.includes('.jyc-v1-gallery-photo img'));
+check('homepage dark theme has explicit readable tokens',editorialCss.includes('html[data-theme="dark"] .jyc-editorial-home')&&editorialCss.includes('--v1-paper:#0f0e11')&&editorialCss.includes('--v1-ink:#fff8e1'));
+check('GLB loader handles an already-registered model-viewer element',bot.includes("customElements?.get('model-viewer')")&&bot.includes('setModelReady(true)'));
+check('GLB loader handles an existing in-flight script',bot.includes("document.querySelector('script[data-jyc-model-viewer]')")&&bot.includes('existing.addEventListener'));
+check('GLB uses a fixed camera with zoom and pan disabled',bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom')&&bot.includes('disable-pan'));
+check('GLB failure falls back to a branded public visual',bot.includes('jyc-bot-model-fallback')&&bot.includes('/jyc-logo-official.webp'));
+
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
 check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
 check('service worker cache is current',read('public/sw.js').includes('jyc-cache-v56-15-1'));
