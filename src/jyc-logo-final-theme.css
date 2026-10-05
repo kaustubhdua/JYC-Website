@@ -938,3 +938,39 @@ html[data-theme="dark"] .public-app .card:hover,html[data-theme="dark"] .public-
 @media(prefers-reduced-motion:reduce){
   .public-app *{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
+
+/* V56.15.2 visual resilience: media is always centred and contained by its frame. */
+.public-app :where(.gallery-item,.gallery-photo,.moment-tile,.archive-story-photo,.club-card-visual,.team-photo-editorial,.home-team-photo,.event-poster,.jyc-feature-poster,.event-timeline-media,.hub-source-photo,.hub-source-photo-strip,.jyc-now-media,.jyc-spotlight-grid button>div,.supplied-programme-card>img){
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  min-width:0;
+  background:var(--jyc-surface,#fff);
+}
+.public-app :where(.gallery-item img,.gallery-photo img,.moment-tile img,.archive-story-photo img,.club-card-visual img,.team-photo-editorial img,.home-team-photo img,.event-poster img,.jyc-feature-poster img,.event-timeline-media img,.hub-source-photo img,.hub-source-photo-strip img,.jyc-now-media img,.jyc-spotlight-grid button>div img,.supplied-programme-card>img){
+  display:block;
+  max-width:100%;
+  object-position:center center;
+}
+.public-app :where(.gallery-item,.gallery-photo,.moment-tile,.archive-story-photo,.club-card-visual,.team-photo-editorial,.home-team-photo,.event-poster,.jyc-feature-poster,.event-timeline-media,.hub-source-photo,.jyc-now-media,.jyc-spotlight-grid button>div,.supplied-programme-card>img) > img{
+  margin-inline:auto;
+}
+.public-app :where(p,li,.card p,.activity-card p,.club-card p,.event-card p,.contact-card p,.announcement-card p){
+  font-size:max(15px,1em);
+  line-height:1.6;
+}
+.public-app :where(.eyebrow,.tag,.card-topline,.club-index,.latest-index,.gallery-meta,.gallery-provenance){
+  font-size:max(10px,.68rem);
+  line-height:1.35;
+}
+.public-app :where(.card,.activity-card,.club-card,.event-card,.contact-card,.announcement-card,.archive-story-card,.home-team-card){
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width:0;overflow-x:hidden}
+@media(max-width:640px){
+  .public-app{padding-bottom:96px}
+  .public-app :where(.gallery-grid,.card-grid,.club-grid,.event-grid-premium,.activity-grid,.home-team-preview,.hub-story-grid,.jyc-journal-grid){
+    align-items:stretch;
+  }
+}
