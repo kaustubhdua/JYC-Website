@@ -673,7 +673,8 @@ function ArchivePage({data}){
 
 function Home({data}){
  return <JYCEditorialHome data={data}/>;
-}\nfunction JoinJYC(){
+}
+function JoinJYC(){
  const nav=useNavigate();
  return <section className="section page unified-public-page join-jyc-page">
   <Breadcrumbs items={[{label:'Join JYC'}]}/><EcosystemContextRail/>
