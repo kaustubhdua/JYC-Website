@@ -400,3 +400,42 @@ html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{background:#050506}
 .jyc-editorial-home *,.jyc-editorial-home *::before,.jyc-editorial-home *::after{box-sizing:border-box}
 .jyc-editorial-home img{max-width:100%;display:block}
 .jyc-v1-section-head>div,.jyc-v1-section-head>p,.jyc-v1-impact>div,.jyc-v1-social>div,.jyc-v1-final>div{min-width:0}
+
+
+/* V1 homepage theme bridge — keeps the editorial surface inside the global JYC palette. */
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-ink:#fff8e1;
+ --v1-paper:#0f0e11;
+ --v1-card:#18161d;
+ --v1-muted:#b8b0a5;
+ --v1-line:rgba(210,180,140,.24);
+ --v1-accent:#d2b48c;
+ background:var(--v1-paper);
+ color:var(--v1-ink);
+}
+html[data-theme="dark"] .jyc-v1-hero-photo,
+html[data-theme="dark"] .jyc-v1-event-image,
+html[data-theme="dark"] .jyc-v1-family-media,
+html[data-theme="dark"] .jyc-v1-activity-image,
+html[data-theme="dark"] .jyc-v1-gallery-photo,
+html[data-theme="dark"] .jyc-v1-person>div{background:#211f25}
+html[data-theme="dark"] .jyc-v1-event-meta b{background:#242127;color:#cfc5b8}
+html[data-theme="dark"] .jyc-v1-event-meta b.status-open{background:#193321;color:#9bd3a5}
+html[data-theme="dark"] .jyc-v1-event-meta b.status-live{background:#1b2740;color:#a9c0e8}
+html[data-theme="dark"] .jyc-v1-event-meta b.status-soon{background:#352c20;color:#dfc28d}
+html[data-theme="dark"] .jyc-v1-btn{border-color:var(--v1-line);color:var(--v1-ink)}
+html[data-theme="dark"] .jyc-v1-btn.primary{background:#fff8e1;border-color:#fff8e1;color:#18161d}
+html[data-theme="dark"] .jyc-v1-family-tabs button.active,
+html[data-theme="dark"] .jyc-v1-family-tabs button:hover{background:#fff8e1;border-color:#fff8e1;color:#18161d}
+html[data-theme="dark"] .jyc-v1-impact{background:#18161d}
+html[data-theme="dark"] .jyc-v1-final{background:#09090b}
+html[data-theme="dark"] .jyc-v1-social-links a,
+html[data-theme="dark"] .jyc-v1-update-list>button,
+html[data-theme="dark"] .jyc-v1-link,
+html[data-theme="dark"] .jyc-v1-text-btn{color:var(--v1-ink)}
+html[data-theme="dark"] .jyc-v1-stat-strip,
+html[data-theme="dark"] .jyc-v1-event-card,
+html[data-theme="dark"] .jyc-v1-family-card,
+html[data-theme="dark"] .jyc-v1-activity-card{background:var(--v1-card)}
+html[data-theme="dark"] .jyc-v1-social-links small,
+html[data-theme="dark"] .jyc-v1-photo-caption span{color:var(--v1-muted)}
