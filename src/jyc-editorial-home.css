@@ -1,0 +1,97 @@
+/* V56.15 editorial consolidation — inspired by reference principles, not copied visual systems */
+.jyc-editorial-home{--je-ink:#111318;--je-paper:#f5f1e6;--je-card:#fffdf8;--je-line:rgba(17,19,24,.15);--je-muted:#686660;--je-accent:#a47b43;background:var(--je-paper);color:var(--je-ink);overflow:hidden}
+.jyc-editorial-home button,.jyc-editorial-home a{font:inherit}
+.jyc-editorial-hero{width:min(1400px,calc(100% - 64px));margin:auto;min-height:calc(100vh - 96px);display:grid;grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);gap:70px;align-items:center;padding:62px 0 82px}
+.jyc-editorial-hero-copy{max-width:760px}
+.jyc-editorial-kicker{display:flex;align-items:center;gap:12px;color:var(--je-muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.jyc-editorial-kicker i{width:5px;height:5px;border-radius:50%;background:var(--je-accent)}
+.jyc-editorial-kicker b{color:var(--je-ink)}
+.jyc-editorial-hero h1{font:700 clamp(70px,9.2vw,146px)/.82 'Segoe UI',system-ui,sans-serif;letter-spacing:-.085em;margin:38px 0 34px;max-width:850px}
+.jyc-editorial-hero h1 span,.jyc-editorial-hero h1 em{display:block;font-style:normal}
+.jyc-editorial-hero h1 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.075em}
+.jyc-editorial-hero p{max-width:650px;margin:0;color:var(--je-muted);font-size:19px;line-height:1.75}
+.jyc-editorial-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.jyc-editorial-btn{border:1px solid var(--je-ink);background:var(--je-ink);color:#fff;padding:14px 19px;border-radius:999px;font-weight:750;min-height:46px;transition:transform .28s ease,box-shadow .28s ease}
+.jyc-editorial-btn.secondary{background:transparent;color:var(--je-ink);border-color:var(--je-line)}
+.jyc-editorial-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(17,19,24,.12)}
+.jyc-editorial-btn span{margin-left:8px}
+.jyc-editorial-proof{display:flex;gap:26px;flex-wrap:wrap;margin-top:36px;padding-top:18px;border-top:1px solid var(--je-line);font-size:10px;letter-spacing:.14em;color:var(--je-muted)}
+.jyc-editorial-proof b{color:var(--je-accent);margin-right:6px}
+.jyc-editorial-hero-media{position:relative}
+.jyc-editorial-photo-frame{position:relative;aspect-ratio:4/5;background:#ddd;overflow:hidden}
+.jyc-editorial-photo-frame:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.42))}
+.jyc-editorial-photo-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.jyc-editorial-hero-media:hover img{transform:scale(1.025)}
+.jyc-editorial-photo-label,.jyc-editorial-photo-index{position:absolute;z-index:1;color:#fff;font-size:10px;letter-spacing:.15em;text-transform:uppercase}
+.jyc-editorial-photo-label{left:18px;bottom:18px}
+.jyc-editorial-photo-index{right:18px;top:18px}
+.jyc-editorial-photo-note{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--je-line);font-size:10px;letter-spacing:.12em}
+.jyc-editorial-photo-note span{color:var(--je-muted)}
+.jyc-editorial-announcement{width:min(1400px,calc(100% - 64px));margin:0 auto 26px;border-top:1px solid var(--je-line);border-bottom:1px solid var(--je-line);display:flex;align-items:center;gap:18px;padding:14px 0}
+.jyc-editorial-announcement b{font-size:10px;letter-spacing:.18em;color:var(--je-accent)}
+.jyc-editorial-announcement p{margin:0;flex:1;color:var(--je-muted)}
+.jyc-editorial-announcement a{font-weight:700}
+.jyc-editorial-section{width:min(1280px,calc(100% - 64px));margin:auto;padding:110px 0}
+.jyc-editorial-section-head{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:end;margin-bottom:40px}
+.jyc-editorial-eyebrow{display:block;color:var(--je-accent);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+.jyc-editorial-section h2{font:700 clamp(48px,6vw,86px)/.93 'Segoe UI',system-ui,sans-serif;letter-spacing:-.065em;margin:13px 0 0}
+.jyc-editorial-section h2 em,.jyc-editorial-final h2 em{font-family:Georgia,'Times New Roman',serif;font-weight:400}
+.jyc-editorial-head-copy{max-width:480px;margin-left:auto}
+.jyc-editorial-head-copy p{color:var(--je-muted);font-size:17px;line-height:1.7;margin:0 0 18px}
+.jyc-editorial-head-copy button,.jyc-editorial-head-link{border:0;background:none;padding:0;font-weight:800;text-align:left}
+.jyc-editorial-family-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:10px;margin-bottom:24px;scrollbar-width:none}
+.jyc-editorial-family-tabs::-webkit-scrollbar{display:none}
+.jyc-editorial-family-tabs button{flex:none;border:1px solid var(--je-line);background:transparent;padding:10px 15px;border-radius:999px;color:var(--je-muted);min-height:42px}
+.jyc-editorial-family-tabs button.active,.jyc-editorial-family-tabs button:hover{background:var(--je-ink);color:#fff;border-color:var(--je-ink)}
+.jyc-editorial-family-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.jyc-editorial-family{display:grid;grid-template-columns:.95fr 1.05fr;border:1px solid var(--je-line);background:var(--je-card);min-height:290px}
+.jyc-editorial-family-media{position:relative;overflow:hidden}
+.jyc-editorial-family-media img{width:100%;height:100%;min-height:290px;object-fit:cover;display:block;transition:transform .7s ease}
+.jyc-editorial-family:hover img{transform:scale(1.035)}
+.jyc-editorial-family-media span{position:absolute;top:14px;left:14px;color:#fff;background:rgba(17,19,24,.72);padding:5px 7px;font-size:10px}
+.jyc-editorial-family-copy{padding:28px;display:flex;flex-direction:column;align-items:flex-start}
+.jyc-editorial-family-copy h3{font-size:30px;letter-spacing:-.04em;margin:12px 0 8px}
+.jyc-editorial-family-copy p{color:var(--je-muted);line-height:1.65;margin:0 0 24px}
+.jyc-editorial-family-copy button{margin-top:auto;border:0;background:none;font-weight:800;padding:0}
+.jyc-editorial-events{border-top:1px solid var(--je-line)}
+.jyc-editorial-event-list{border-top:1px solid var(--je-line)}
+.jyc-editorial-event{width:100%;display:grid;grid-template-columns:58px 115px 104px 1fr 32px;gap:18px;align-items:center;text-align:left;border:0;border-bottom:1px solid var(--je-line);background:transparent;padding:15px 0;cursor:pointer}
+.jyc-editorial-event:hover{background:rgba(255,255,255,.38)}
+.jyc-editorial-event .event-no{font-size:11px;color:var(--je-accent)}
+.jyc-editorial-event .event-date{font-size:12px;font-weight:700}
+.jyc-editorial-event .event-photo{width:104px;height:72px;overflow:hidden;background:#ddd}
+.jyc-editorial-event .event-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.jyc-editorial-event .event-copy{display:grid;gap:5px}
+.jyc-editorial-event .event-copy small,.jyc-editorial-event .event-copy em{font-size:10px;font-style:normal;color:var(--je-muted);letter-spacing:.08em;text-transform:uppercase}
+.jyc-editorial-event .event-copy strong{font-size:22px;letter-spacing:-.03em}
+.jyc-editorial-event .event-arrow{font-size:20px}
+.jyc-editorial-empty{border:1px dashed var(--je-line);padding:30px;color:var(--je-muted)}
+.jyc-editorial-archive{border-top:1px solid var(--je-line)}
+.jyc-editorial-mosaic{display:grid;grid-template-columns:1.2fr .8fr .8fr;grid-template-rows:260px 260px;gap:10px}
+.archive-photo{position:relative;border:0;padding:0;overflow:hidden;background:#ddd;cursor:pointer}
+.archive-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s ease}
+.archive-photo:hover img{transform:scale(1.04)}
+.archive-photo:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.48))}
+.archive-photo span{position:absolute;left:14px;bottom:12px;color:#fff;z-index:1;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.archive-photo-0{grid-row:1/3}.archive-photo-3{grid-column:2/4}
+.jyc-editorial-people{border-top:1px solid var(--je-line)}
+.jyc-editorial-people-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.jyc-editorial-people-grid article{min-width:0}
+.person-photo{aspect-ratio:3/4;overflow:hidden;background:#ddd}
+.person-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.jyc-editorial-people-grid article:hover .person-photo img{transform:scale(1.035)}
+.jyc-editorial-people-grid small{display:block;color:var(--je-accent);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px}
+.jyc-editorial-people-grid h3{font-size:15px;margin:5px 0 0}
+.jyc-editorial-final{background:var(--je-ink);color:#fff;padding:110px max(32px,calc((100% - 1280px)/2));display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:end}
+.jyc-editorial-final h2{font:700 clamp(52px,7vw,96px)/.9 'Segoe UI',system-ui,sans-serif;letter-spacing:-.065em;margin:14px 0 0}
+.jyc-editorial-final p{color:rgba(255,255,255,.65);line-height:1.7;max-width:400px;margin:0 0 22px}
+.jyc-editorial-final .jyc-editorial-btn{background:#fff;color:var(--je-ink);border-color:#fff}
+@media(max-width:900px){
+ .jyc-editorial-hero{grid-template-columns:1fr;gap:40px;padding-top:40px}.jyc-editorial-hero-media{max-width:620px}.jyc-editorial-section-head,.jyc-editorial-final{grid-template-columns:1fr;gap:22px}.jyc-editorial-head-copy{margin:0}.jyc-editorial-family-grid{grid-template-columns:1fr}.jyc-editorial-people-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+ .jyc-editorial-hero,.jyc-editorial-section,.jyc-editorial-announcement{width:min(100% - 32px,1280px)}.jyc-editorial-hero{min-height:auto;padding:34px 0 48px}.jyc-editorial-hero h1{font-size:clamp(58px,17vw,92px);margin:26px 0}.jyc-editorial-hero p{font-size:16px;line-height:1.65}.jyc-editorial-proof{gap:14px;font-size:9px}.jyc-editorial-section{padding:76px 0}.jyc-editorial-section h2{font-size:clamp(42px,13vw,64px)}.jyc-editorial-event{grid-template-columns:28px 1fr 28px;gap:10px;padding:13px 0}.jyc-editorial-event .event-date,.jyc-editorial-event .event-photo{display:none}.jyc-editorial-event .event-copy strong{font-size:18px}.jyc-editorial-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:210px 160px 160px}.archive-photo-0{grid-row:1/3}.archive-photo-3{grid-column:auto}.jyc-editorial-people-grid{grid-template-columns:repeat(2,1fr);gap:18px}.jyc-editorial-final{padding:78px 16px}.jyc-editorial-final h2{font-size:clamp(46px,13vw,70px)}.jyc-editorial-announcement{align-items:flex-start;flex-wrap:wrap;gap:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .jyc-editorial-home *,.jyc-editorial-home *:before,.jyc-editorial-home *:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
