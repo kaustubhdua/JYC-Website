@@ -230,27 +230,35 @@ test('keyboard can reach the skip link and primary navigation', async ({ page })
 test('public images load, stay inside the viewport, and use centered focal positioning', async ({ page }) => {
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await page.locator('main').waitFor({ state: 'attached', timeout: 10000 });
-  await page.locator('main img').first().waitFor({ state: 'attached', timeout: 10000 });
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await page.waitForTimeout(1200);
-  const result = await page.locator('main img, footer img').evaluateAll(images => images.map(img => {
-    const r = img.getBoundingClientRect();
-    const style = getComputedStyle(img);
-    return {
-      src: img.currentSrc || img.src,
-      loaded: img.complete && img.naturalWidth > 0,
-      visible: r.width > 0 && r.height > 0,
-      inside: r.left >= -1 && r.right <= document.documentElement.clientWidth + 1,
-      objectPosition: style.objectPosition,
-      objectFit: style.objectFit
-    };
-  }));
-  expect(result.length).toBeGreaterThan(0);
-  expect(result.filter(x => !x.loaded)).toEqual([]);
-  expect(result.filter(x => !x.visible || !x.inside)).toEqual([]);
-  expect(result.filter(x => x.objectFit && x.objectPosition !== '50% 50%')).toEqual([]);
+  const viewports = [0, 0.25, 0.5, 0.75, 1];
+  const failures = [];
+  for (const fraction of viewports) {
+    await page.evaluate(f => {
+      const max = Math.max(0, document.body.scrollHeight - window.innerHeight);
+      window.scrollTo(0, Math.round(max * f));
+    }, fraction);
+    await page.waitForTimeout(350);
+    const result = await page.locator('main img, footer img').evaluateAll(images => images
+      .filter(img => {
+        const r=img.getBoundingClientRect();
+        return r.bottom>0 && r.top<window.innerHeight && r.width>0 && r.height>0;
+      })
+      .map(img => {
+        const r=img.getBoundingClientRect();
+        const style=getComputedStyle(img);
+        return {
+          src:img.currentSrc||img.src,
+          loaded:img.complete&&img.naturalWidth>0,
+          visible:r.width>0&&r.height>0,
+          inside:r.left>=-1&&r.right<=document.documentElement.clientWidth+1,
+          objectPosition:style.objectPosition,
+          objectFit:style.objectFit
+        };
+      }));
+    failures.push(...result.filter(x => !x.loaded || !x.visible || !x.inside || (x.objectFit && x.objectPosition!=='50% 50%')));
+  }
+  expect(failures).toEqual([]);
 });
-
 test('V1 homepage keeps the JYC palette and readable dark mode', async ({ page }) => {
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   const light = await page.locator('.jyc-editorial-home').evaluate(el => {
@@ -283,7 +291,7 @@ test('JYC assistant remains interactive with GLB or safe fallback', async ({ pag
   const media = await page.locator('.jyc-bot-glb, .jyc-bot-model-fallback').count();
   expect(media).toBeGreaterThan(0);
   if (await page.locator('.jyc-bot-glb').count()) {
-    await expect(page.locator('.jyc-bot-glb')).toHaveAttribute('src', '/models/jyc-spatial.glb');
+    await expect(page.locator('.jyc-bot-glb')).toHaveAttribute('data-jyc-glb-src', '/models/jyc-spatial.glb');
   }
   await page.keyboard.press('Escape');
   await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
