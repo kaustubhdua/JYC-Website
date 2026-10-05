@@ -2,8 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 const root=process.cwd();
 const failures=[];
+const migrationDir=path.join(root,'supabase','migrations');
+const migrationFiles=fs.readdirSync(migrationDir).filter(f=>/^\d{12}_[a-z0-9_-]+\.sql$/.test(f)).sort();
+const migrationVersions=migrationFiles.map(f=>f.split('_')[0]);
+const duplicateVersions=migrationVersions.filter((v,i,a)=>a.indexOf(v)!==i);
+if(duplicateVersions.length) failures.push('duplicate Supabase migration version(s): '+[...new Set(duplicateVersions)].join(', '));
 const req=(file, needles)=>{const text=fs.readFileSync(path.join(root,'supabase','migrations',file),'utf8');for(const n of needles)if(!text.includes(n))failures.push(file+': missing '+n)};
-req('202610040017_v56_7_team_source_bridge.sql',['jyc_site_data','team','JYC 2026–27 orientation material']);
+req('202610040018_v56_7_team_source_bridge.sql',['jyc_site_data','team','JYC 2026–27 orientation material']);
 req('202610040019_v56_9_normalized_event_read_bridge.sql',['jyc_read_site_data','jyc_events','status in (\'published\',\'ongoing\',\'past\')']);
 
 req('202610040011_v56_2_gallery_read_bridge.sql',['jyc_gallery_items','status=\'published\'','public_url','mediaKind']);
