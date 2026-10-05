@@ -6,6 +6,7 @@ const system=read('src/styles/public-system.css');
 const index=read('index.html');
 const manifest=read('public/manifest.json');
 const main=read('src/main.jsx');
+const editorialHome=read('src/jyc-editorial-home.jsx');
 const admin=read('src/admin-chunk.jsx');
 const adminExtra=read('src/admin-extra.jsx');
 
@@ -20,7 +21,7 @@ const checks=[
   [theme.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'),'body copy has an explicit readable theme color'],
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
-  [main.includes('fetchPriority="high"')&&main.includes('decoding="async"'),'hero identity image is prioritized for first paint'],
+  [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jyc-editorial-hero-media'),'editorial hero image is prioritized for first paint'],
   [main.includes('PDF_HUB_PROGRAMME.map')&&main.includes('supplied-event-programme'),'All Hubs programme material remains surfaced'],
   [main.includes('PDF_HUB_EXTRA_GALLERY')&&main.includes('PDF_HUB_STORIES'),'source archive remains wired into the public experience'],
   [admin.includes('AdminVerification')&&admin.includes("tab==='verification'"),'admin verification workflow is wired into the control center'],
