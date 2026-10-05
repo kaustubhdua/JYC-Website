@@ -215,7 +215,7 @@ export function JYCEditorialHome({data}){
     <p className="jyc-v1-head-note">From culture and sport to technical communities, outreach, workshops and competitions, JYC creates places for students to participate.</p>
    </div>
    <div className="jyc-v1-activity-grid">{activities.map((activity,index)=><article className="jyc-v1-activity-card" key={activity.title}>
-    <button className="jyc-v1-activity-image" onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy"/><span>0{index+1}</span></button>
+    <button className="jyc-v1-activity-image" aria-label={"Explore "+activity.title+" through JYC"} onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy"/><span>0{index+1}</span></button>
     <div><h3>{activity.title}</h3><p>{activity.text}</p><button onClick={()=>nav(activity.link||'/clubs')}>Explore →</button></div>
    </article>)}</div>
   </section>
