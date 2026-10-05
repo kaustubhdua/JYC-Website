@@ -14,7 +14,7 @@
 .jyc-editorial-btn{border:1px solid var(--je-ink);background:var(--je-ink);color:#fff;padding:14px 19px;border-radius:999px;font-weight:750;min-height:46px;transition:transform .28s ease,box-shadow .28s ease}
 .jyc-editorial-btn.secondary{background:transparent;color:var(--je-ink);border-color:var(--je-line)}
 .jyc-editorial-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(17,19,24,.12)}
-.jyc-editorial-btn span{margin-left:8px}
+.jyc-editorial-btn span{margin-left:8px}.jyc-editorial-join{border:0;background:none;color:var(--je-muted);font-weight:800;padding:12px 4px;min-height:46px}.jyc-editorial-join:hover{color:var(--je-ink)}
 .jyc-editorial-proof{display:flex;gap:26px;flex-wrap:wrap;margin-top:36px;padding-top:18px;border-top:1px solid var(--je-line);font-size:10px;letter-spacing:.14em;color:var(--je-muted)}
 .jyc-editorial-proof b{color:var(--je-accent);margin-right:6px}
 .jyc-editorial-hero-media{position:relative}
