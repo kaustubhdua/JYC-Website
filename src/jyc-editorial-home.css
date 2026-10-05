@@ -327,12 +327,13 @@ html[data-theme="dark"] .jyc-v1-live-notice{border-color:var(--v1-line)}
 .jyc-editorial-home .jyc-v1-gallery-photo{overflow:hidden}
 
 html[data-theme="dark"] .jyc-editorial-home{
- --v1-ink:#f5f1e6;
- --v1-paper:#0f0e11;
- --v1-card:#18161d;
- --v1-muted:#c8c0b5;
- --v1-line:rgba(245,241,230,.17);
- --v1-accent:#c7a56d;
+ --v1-ink:var(--jyc-text,#f5f1e6);
+ --v1-paper:var(--jyc-bg,#0f0e11);
+ --v1-card:var(--jyc-surface,#18161d);
+ --v1-muted:var(--jyc-muted,#c8c0b5);
+ --v1-line:var(--jyc-border,rgba(245,241,230,.17));
+ --v1-accent:var(--jyc-champagne,#c7a56d);
+ --v1-navy:var(--jyc-navy,#18161d);
 }
 html[data-theme="dark"] .jyc-editorial-home .jyc-v1-hero-photo,
 html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-image,
