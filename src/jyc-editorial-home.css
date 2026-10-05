@@ -289,3 +289,79 @@ html[data-theme="dark"] .jyc-v1-event-card,
 html[data-theme="dark"] .jyc-v1-family-card,
 html[data-theme="dark"] .jyc-v1-activity-card{background:var(--v1-card);color:var(--v1-ink)}
 html[data-theme="dark"] .jyc-v1-live-notice{border-color:var(--v1-line)}
+
+
+/* Final reliability contract: every public V1 media frame is centred and overflow-safe. */
+.jyc-editorial-home,
+.jyc-editorial-home *{box-sizing:border-box}
+.jyc-editorial-home{overflow:clip}
+.jyc-editorial-home .jyc-v1-hero-copy,
+.jyc-editorial-home .jyc-v1-hero-media,
+.jyc-editorial-home .jyc-v1-section-head>div,
+.jyc-editorial-home .jyc-v1-section-head>p,
+.jyc-editorial-home .jyc-v1-about>div,
+.jyc-editorial-home .jyc-v1-impact>div,
+.jyc-editorial-home .jyc-v1-social>div,
+.jyc-editorial-home .jyc-v1-final>div{min-width:0}
+.jyc-editorial-home img{display:block;max-width:100%;object-position:center center}
+.jyc-editorial-home .jyc-v1-hero-photo img,
+.jyc-editorial-home .jyc-v1-event-image img,
+.jyc-editorial-home .jyc-v1-family-media img,
+.jyc-editorial-home .jyc-v1-activity-image img,
+.jyc-editorial-home .jyc-v1-gallery-photo img,
+.jyc-editorial-home .jyc-v1-person img{object-position:center center}
+.jyc-editorial-home p,
+.jyc-editorial-home h1,
+.jyc-editorial-home h2,
+.jyc-editorial-home h3,
+.jyc-editorial-home dt,
+.jyc-editorial-home dd,
+.jyc-editorial-home strong,
+.jyc-editorial-home span,
+.jyc-editorial-home small{overflow-wrap:anywhere}
+.jyc-editorial-home button,
+.jyc-editorial-home a{max-width:100%}
+.jyc-editorial-home .jyc-v1-event-main,
+.jyc-editorial-home .jyc-v1-family-media,
+.jyc-editorial-home .jyc-v1-activity-image,
+.jyc-editorial-home .jyc-v1-gallery-photo{overflow:hidden}
+
+html[data-theme="dark"] .jyc-editorial-home{
+ --v1-ink:#f5f1e6;
+ --v1-paper:#0f0e11;
+ --v1-card:#18161d;
+ --v1-muted:#c8c0b5;
+ --v1-line:rgba(245,241,230,.17);
+ --v1-accent:#c7a56d;
+}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-hero-photo,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-image,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-media,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-activity-image,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-gallery-photo,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-person>div{background:#242229}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn:not(.primary){border-color:rgba(245,241,230,.24);color:var(--v1-ink)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button{border-color:rgba(245,241,230,.24);color:var(--v1-muted)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button.active,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-tabs button:hover{background:#f5f1e6;border-color:#f5f1e6;color:#111318}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-stat-strip,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-card,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-family-card,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-activity-card{background:var(--v1-card)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-update-list>button:hover{background:rgba(255,255,255,.045)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b{background:#29262e;color:#ddd3c5}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-open{background:#18341f;color:#b8e0bf}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-live{background:#202d46;color:#c9d8f3}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-event-meta b.status-soon{background:#3a3020;color:#e3c895}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-about-mark{background:var(--v1-card)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-btn.primary{background:#f5f1e6;border-color:#f5f1e6;color:#111318}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-link,
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-text-btn{color:var(--v1-ink)}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-impact{background:#08080a}
+html[data-theme="dark"] .jyc-editorial-home .jyc-v1-final{background:#050506}
+
+@media(max-width:680px){
+ .jyc-editorial-home .jyc-v1-hero-media{min-width:0}
+ .jyc-editorial-home .jyc-v1-gallery-photo{min-width:0}
+ .jyc-editorial-home .jyc-v1-social-links a{min-width:0}
+}
