@@ -27,6 +27,8 @@ const TEAM_PHOTOS={
 
 const slug=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const mediaUrl=item=>item?.url||item?.src||item?.image||item?.imageUrl||'';
+const safeImageError=e=>{const img=e.currentTarget;if(img.dataset.fallbackApplied==='true')return;img.dataset.fallbackApplied='true';img.src=FALLBACK_PHOTO;};
+const logoImageError=e=>{const img=e.currentTarget;if(img.dataset.fallbackApplied==='true')return;img.dataset.fallbackApplied='true';img.src='/jyc-logo-circle.png';};
 
 function dateValue(e){
  const raw=String(e?.date||'');
@@ -224,7 +226,7 @@ export function JYCEditorialHome({data}){
     {JYC_HUB_FAMILIES.map(f=><button key={f} className={activeFamily===f?'active':''} onClick={()=>setActiveFamily(f)}>{f}</button>)}
    </div>
    <div className="jyc-v1-family-grid">{visibleFamilies.map((group,index)=><article className="jyc-v1-family-card" key={group.family}>
-    <button onClick={()=>nav('/clubs')} className="jyc-v1-family-media"><img src={hubMedia(group.hubs[0]?.name,index)} alt={group.family+' JYC community'} loading="lazy"/><span>0{index+1}</span></button>
+    <button onClick={()=>nav('/clubs')} className="jyc-v1-family-media"><img src={hubMedia(group.hubs[0]?.name,index)} alt={group.family+' JYC community'} loading="lazy" onError={safeImageError}/><span>0{index+1}</span></button>
     <div className="jyc-v1-family-copy"><span className="jyc-v1-eyebrow">{group.family}</span><h3>{group.hubs.length} communities</h3><p>{group.hubs.slice(0,4).map(x=>x.name).join(' · ')}</p><button onClick={()=>nav('/clubs')}>Explore {group.family} →</button></div>
    </article>)}</div>
   </section>
@@ -235,7 +237,7 @@ export function JYCEditorialHome({data}){
     <p className="jyc-v1-head-note">From culture and sport to technical communities, outreach, workshops and competitions, JYC creates places for students to participate.</p>
    </div>
    <div className="jyc-v1-activity-grid">{activities.map((activity,index)=><article className="jyc-v1-activity-card" key={activity.title}>
-    <button className="jyc-v1-activity-image" aria-label={"Explore "+activity.title+" through JYC"} onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy"/><span>0{index+1}</span></button>
+    <button className="jyc-v1-activity-image" aria-label={"Explore "+activity.title+" through JYC"} onClick={()=>nav(activity.link||'/clubs')}><img src={activityPhoto(activity,index,gallery)} alt="" loading="lazy" onError={safeImageError}/><span>0{index+1}</span></button>
     <div><h3>{activity.title}</h3><p>{activity.text}</p><button onClick={()=>nav(activity.link||'/clubs')}>Explore →</button></div>
    </article>)}</div>
   </section>
