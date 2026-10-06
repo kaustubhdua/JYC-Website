@@ -13,6 +13,13 @@ import './jyc-editorial-home.css';
 const LazyDitherVeil=lazy(()=>import('./react-bits/DitherVeil.jsx'));
 const LazyFlexCarousel=lazy(()=>import('./components/react-bits/FlexCarousel.jsx'));
 const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
+const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
+
+const DRIFT_WALL_PRESETS={
+ '1':{columns:4,tileWidth:220,tileHeight:140,gap:16,tilt:8,turn:-6,perspective:1250,depth:60,speed:2.4,direction:'up',variance:.1,parallax:.08,lift:20,fade:.62,dim:.52},
+ '2':{columns:3,tileWidth:250,tileHeight:160,gap:20,tilt:12,turn:7,perspective:1350,depth:90,speed:1.8,direction:'down',variance:.18,parallax:.06,lift:28,fade:.52,dim:.48},
+ '4':{columns:5,tileWidth:190,tileHeight:126,gap:12,tilt:6,turn:-10,perspective:1200,depth:45,speed:3.1,direction:'up',variance:.08,parallax:.1,lift:18,fade:.68,dim:.58}
+};
 
 function ViewportDeferred({children,fallback,rootMargin='700px'}){
  const ref=useRef(null);
@@ -100,6 +107,7 @@ function activityPhoto(activity,index,gallery){
 export function JYCEditorialHome({data}){
  const nav=useNavigate();
  const [activeFamily,setActiveFamily]=useState('All');
+ const [driftPreset,setDriftPreset]=useState('1');
  const publishedClubs=useMemo(()=>(
   (data?.clubs||[]).filter(c=>c?.published&&c?.status!=='archived')
    .sort((a,b)=>String(a.name||'').localeCompare(String(b.name||'')))
@@ -114,6 +122,8 @@ export function JYCEditorialHome({data}){
   mergeSourceGallery(data?.gallery||[]).filter(g=>g?.url)
  ),[data?.gallery]);
  const team=(data?.team||[]).filter(x=>x?.published===true).slice(0,6);
+ const driftItems=useMemo(()=>gallery.slice(0,18).map((g,index)=>({id:g.id||index,image:g.url,title:[g.caption||g.title||'JYC archive',g.association,g.year].filter(Boolean).join(' · '),alt:g.alt||g.caption||g.title||'JYC archive image'})),[gallery]);
+ const drift=DRIFT_WALL_PRESETS[driftPreset]||DRIFT_WALL_PRESETS['1'];
  const familyEntries=JYC_HUB_FAMILIES.map(family=>({
   family,
   hubs:Object.entries(JYC_HUB_CONTENT).filter(([,p])=>p.family===family).map(([name,p])=>({name,...p}))
@@ -247,6 +257,15 @@ export function JYCEditorialHome({data}){
 
   <FlagshipExperience data={data}/>
 
+  <section className="jyc-v1-section jyc-v1-drift editorial-reveal" aria-labelledby="jyc-v1-drift-title">
+   <div className="jyc-v1-section-head">
+    <div><span className="jyc-v1-eyebrow">VISUAL RHYTHM · DRIFT WALL</span><h2 id="jyc-v1-drift-title">JYC, <em>in motion.</em></h2><p>Three restrained DriftWall treatments keep the homepage visual, source-backed and interactive without running multiple animation engines at once.</p></div>
+    <div className="jyc-v1-drift-presets" role="tablist" aria-label="DriftWall presentation presets">{['1','2','4'].map(p=><button key={p} type="button" role="tab" aria-selected={driftPreset===p} className={driftPreset===p?'active':''} onClick={()=>setDriftPreset(p)}>DRIFT {p.padStart(2,'0')}</button>)}</div>
+   </div>
+   {driftItems.length?<ViewportDeferred fallback={<div className="drift-wall-home-loading" aria-hidden="true"/>}><Suspense fallback={<div className="drift-wall-home-loading" aria-hidden="true"/>}><LazyDriftWall items={driftItems} {...drift} ariaLabel={`JYC homepage DriftWall preset ${driftPreset}`} pauseOnHover lift={drift.lift} /></Suspense></ViewportDeferred>:<div className="jyc-v1-empty">The visual archive is ready for published JYC photography.</div>}
+   <div className="jyc-v1-drift-note"><span><strong>{driftItems.length}</strong> source-backed frames available</span><button className="jyc-v1-link" type="button" onClick={()=>nav('/gallery')}>Open full gallery →</button></div>
+  </section>
+
   <section id="gallery" className="jyc-v1-section jyc-v1-gallery editorial-reveal" aria-labelledby="jyc-v1-gallery-title">
    <div className="jyc-v1-section-head">
     <div><span className="jyc-v1-eyebrow">VISUAL ARCHIVE · GALLERY</span><h2 id="jyc-v1-gallery-title">The JYC archive,<br/><em>always in motion.</em></h2><p>Move through a curated set of published JYC photographs. The depth stack keeps the archive visual, tactile and easy to scan; the full Gallery holds the complete metadata record.</p></div>
@@ -262,9 +281,9 @@ export function JYCEditorialHome({data}){
    <div className="jyc-v1-team-grid">{team.length?team.map((member,index)=><button key={member.id||index} className="jyc-v1-person" onClick={()=>nav('/team')}><div><img src={member.photo||member.image||TEAM_PHOTOS[String(member.name||'').trim().toLowerCase()]||'/jyc-logo-official.webp'} alt={member.name||'JYC team member'} loading="lazy"/></div><small>{member.role||member.position||'JYC Team'}</small><strong>{member.name||'JYC Team Member'}</strong></button>):<div className="jyc-v1-empty">Official team profiles will appear here when JYC publishes them.</div>}</div>
   </section>
 
-  <section id="achievements" className="jyc-v1-impact editorial-reveal" aria-labelledby="jyc-v1-impact-title">
-   <div><span className="jyc-v1-eyebrow">HIGHLIGHTS · IMPACT</span><h2 id="jyc-v1-impact-title">Built by students.<br/><em>Remembered by campus.</em></h2><p>Published achievements and milestones are kept source-first. The public record currently includes an SIH Finalist achievement from supplied JYC material.</p><div className="jyc-v1-impact-actions"><button className="jyc-v1-btn primary" onClick={()=>nav('/achievements')}>View achievements →</button><button className="jyc-v1-btn" onClick={()=>nav('/archive')}>Open archive</button></div></div>
-   <div className="jyc-v1-impact-card"><span>01 · WALL OF FAME</span><strong>SIH Finalist</strong><p>Recorded in the supplied JYC hub material. New outcomes should be published with their event, year and supporting source.</p></div>
+  <section id="achievements" className="jyc-v1-achievements editorial-reveal" aria-labelledby="jyc-v1-achievements-title">
+   <div><span className="jyc-v1-eyebrow">ACHIEVEMENTS · WALL OF FAME</span><h2 id="jyc-v1-achievements-title">Built by students.<br/><em>Remembered by campus.</em></h2><p>Published achievements and milestones stay source-first. The public record currently includes an SIH Finalist achievement from supplied JYC material.</p><div className="jyc-v1-achievements-actions"><button className="jyc-v1-btn primary" onClick={()=>nav('/achievements')}>View achievements →</button><button className="jyc-v1-btn" onClick={()=>nav('/archive')}>Open archive</button></div></div>
+   <div className="jyc-v1-achievements-card"><span>01 · WALL OF FAME</span><strong>SIH Finalist</strong><p>Recorded in the supplied JYC hub material. New outcomes should be published with their event, year and supporting source.</p></div>
   </section>
 
   <section className="jyc-v1-social editorial-reveal" aria-labelledby="jyc-v1-social-title">
