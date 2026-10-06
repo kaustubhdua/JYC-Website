@@ -87,5 +87,5 @@ const assetRefs=new Set([...assetTextFiles.matchAll(/\/assets\/[^'"\s)]+/g)].map
 const assetRel=new Set(assetFiles.map(p=>p.slice(path.join(root,'public').length).replaceAll('\\\\','/')));
 const missingReferencedAssets=[...assetRefs].filter(ref=>!assetRel.has(ref));
 checks.push(['all explicitly referenced public assets exist',missingReferencedAssets.length===0]);
-let failed=0; for(const [name,ok] of checks){console.log(`${ok?'PASS':'FAIL'}: ${name}`); if(!ok)failed++;}
+checks.push(['homepage counters remain exact after animation',editorialHome.includes('<CountUp to={Number(s.value)||0}')&&!editorialHome.includes('{s.value}+')]);checks.push(['club carousel is wired from source-backed photos',main.includes('DepthCarousel')&&main.includes('sourceHubMedia(c.name).photoItems')]);let failed=0; for(const [name,ok] of checks){console.log(`${ok?'PASS':'FAIL'}: ${name}`); if(!ok)failed++;}
 if(failed)process.exit(1); console.log('Final product QA complete.');
