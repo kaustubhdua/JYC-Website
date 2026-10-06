@@ -22,6 +22,8 @@ const checks=[
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jyc-v1-hero-media'),'editorial hero image is prioritized for first paint'],
+  [main.includes('DepthCarousel')&&fs.existsSync('src/components/react-bits/DepthCarousel.jsx')&&fs.readFileSync('src/components/react-bits/DepthCarousel.css','utf8').includes('object-position:center center'),'club photography carousel is source-backed and centred'],
+  [editorialHome.includes('CountUp')&&fs.existsSync('src/components/react-bits/CountUp.jsx'),'homepage impact metrics use the lightweight CountUp component'],
   [editorialHome.includes('jyc-v1-hero')&&read('src/jyc-editorial-home.css').includes('--v1-accent:#bf9c6f')&&read('src/jyc-editorial-home.css').includes('html[data-theme="dark"] .jyc-editorial-home'),'V1 homepage follows the logo palette in light and dark mode'],
   [read('src/jyc-innovation-motion.jsx').includes('Public card tilt was intentionally retired')&&!read('src/jyc-innovation-motion.css').includes('perspective(1100px) rotateX(var(--tilt-x))'),'public card tilt is retired for V1 stability'],
   [main.includes('dataset.jycFallbackApplied')&&main.includes("'/jyc-logo-circle.png'"),'runtime image fallback prevents broken media glyphs'],
