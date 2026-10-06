@@ -453,9 +453,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/gallery':'Browse the JYC 128 visual archive by event, year and published source media.',
   '/leadership':'Meet the JYC 128 faculty advisors, apex leadership and core team.',
   '/achievements':'JYC 128 achievements, Wall of Fame, community milestones and published outcomes.',
-  '/projects':'Source-backed JYC club projects, technical builds and innovation experiences.',
-  '/impact':'Verified JYC outreach, awareness and community initiatives.',
-  '/faq':'Answers about JYC, clubs, events, recruitment and the public archive.',
   '/join-jyc':'Join JYC 128 is currently coming soon. Recruitment and application opportunities will be published here when the next official cycle opens.'
  };
  const privateRoute=clean==='/admin';
