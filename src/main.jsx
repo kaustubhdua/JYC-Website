@@ -20,14 +20,13 @@ import {JYC_SOCIALS,festSocialProfile,socialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
 import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoChapters,HubSignalRail} from './jyc-next-experience.jsx';
-import {JYCWebGLIdentity} from './jyc-webgl-identity.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
-import {JYCInnovationMotion} from './jyc-innovation-motion.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
 
 
 const LazyJYCBot=lazy(()=>import('./jyc-bot.jsx').then(m=>({default:m.JYCBot})));
+const LazyJYCInnovationMotion=lazy(()=>import('./jyc-innovation-motion.jsx').then(m=>({default:m.JYCInnovationMotion})));
 const LazyRubberSegment=lazy(()=>import('./react-bits/JYCMicro.jsx').then(m=>({default:m.RubberSegment})));
 const LazyBorderGlow=lazy(()=>import('./react-bits/JYCMicro.jsx').then(m=>({default:m.BorderGlow})));
 const LazyBellToggle=lazy(()=>import('./react-bits/JYCMicro.jsx').then(m=>({default:m.BellToggle})));
@@ -154,19 +153,6 @@ function AgenticAIPopup({visible,onClose}){if(!visible)return null;return <div c
 function App(){const loc=useLocation();const nav=useNavigate();const [data,setData]=useState(()=>import.meta.env.DEV?publicDemoData():norm(empty));const [loading,setLoading]=useState(true);const [bootReady,setBootReady]=useState(false);const [bootStage,setBootStage]=useState('INITIALIZING');const [error,setError]=useState('');const [online,setOnline]=useState(()=>navigator.onLine!==false);const [theme,setTheme]=useState(()=>storageGet('jyc-theme','light')==='dark'?'dark':'light');const [session,setSession]=useState(null);const [admin,setAdmin]=useState(null);const [toast,setToast]=useState(null);const [confirm,setConfirm]=useState(null);
  const [agenticOpen,setAgenticOpen]=useState(false);
 
- useEffect(()=>{
-  // Prevent a broken media URL from creating a visible dead rectangle or broken-image glyph.
-  // The first failure gets one deterministic local fallback; the fallback itself is never retried.
-  const onImageError=e=>{
-   const img=e.target;
-   if(!(img instanceof HTMLImageElement)||img.dataset.jycFallbackApplied==='1')return;
-   img.dataset.jycFallbackApplied='1';
-   const fallback=img.dataset.fallbackSrc||'/jyc-logo-circle.png';
-   if(img.src!==new URL(fallback,window.location.origin).href) img.src=fallback;
-  };
-  document.addEventListener('error',onImageError,true);
-  return()=>document.removeEventListener('error',onImageError,true);
- },[]);
  useEffect(()=>{const onToast=e=>notify(e.detail?.message||'',e.detail?.type||'success');const onConfirm=e=>setConfirm(e.detail||null);window.addEventListener('jyc-toast',onToast);window.addEventListener('jyc-confirm',onConfirm);return()=>{window.removeEventListener('jyc-toast',onToast);window.removeEventListener('jyc-confirm',onConfirm)}},[]);
  useEffect(()=>{const on=()=>setOnline(true),off=()=>setOnline(false);window.addEventListener('online',on);window.addEventListener('offline',off);return()=>{window.removeEventListener('online',on);window.removeEventListener('offline',off)}},[]);
  useEffect(()=>{document.documentElement.dataset.theme=theme;storageSet('jyc-theme',theme);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#0f0e11':'#f5f1e6');},[theme]);
@@ -176,7 +162,7 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
  const resolve=async s=>{setSession(s);if(!s?.user){setAdmin(null);return}let q=await supabase.from('jyc_admins').select('role,display_name,is_active,club_id').eq('user_id',s.user.id).eq('is_active',true).maybeSingle();if(q.error){q=await supabase.from('jyc_admins').select('role,display_name,is_active').eq('user_id',s.user.id).eq('is_active',true).maybeSingle()}if(q.data)setAdmin({userId:s.user.id,email:s.user.email||'',name:q.data.display_name||'JYC Administrator',role:q.data.role||'jyc_admin',clubId:q.data.club_id||null});else setAdmin(null)};
  const commit=async(next,action,entity,id)=>{if(!admin?.userId)throw Error('Administrator session expired. Please log in again.');const saved=await saveData(next,admin.userId,action,entity,id);setData(saved);writeSiteCache(saved);try{const latest=await supabase.from('jyc_content_versions').select('version_number').eq('entity_type',entity||'site').eq('entity_id',String(id||'main')).order('version_number',{ascending:false}).limit(1).maybeSingle();const version=(latest.data?.version_number||0)+1;await supabase.from('jyc_content_versions').insert({entity_type:entity||'site',entity_id:String(id||'main'),version_number:version,snapshot:next,changed_by:admin.userId,change_summary:action})}catch{}try{if(admin.role==='club_admin'&&(entity==='club'||entity==='event'))await supabase.from('jyc_content_reviews').insert({entity_type:entity,entity_id:String(id||'main'),submitted_by:admin.userId,status:'submitted',review_note:'Submitted from Club Admin Control Center.'})}catch{}notify('Saved successfully');return saved};
  const notify=(m,type='success')=>{setToast({message:m,type});setTimeout(()=>setToast(null),2800)};
- useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'})},[loc.pathname]);
+ useEffect(()=>{window.scrollTo({top:0,behavior:'auto'})},[loc.pathname]);
  useEffect(()=>{
    const nodes=[...document.querySelectorAll('.reveal,.editorial-reveal')];
    if(!nodes.length)return;
@@ -217,7 +203,7 @@ function App(){const loc=useLocation();const nav=useNavigate();const [data,setDa
   if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;
   const connectionNotice=(!online||error)?<div className={`connection-notice ${readSiteCache()?'cached':'offline'} ${error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'setup-needed':''}`} role="status"><span>{!online?'You are offline. JYC will keep using cached content until the connection returns.':error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'JYC data service needs setup.':readSiteCache()?`Showing the last saved JYC snapshot · ${formatCacheAge(siteCacheAge())}.`:'JYC content is currently offline.'}</span><button onClick={()=>window.dispatchEvent(new CustomEvent('jyc-refresh-data'))}>Refresh</button></div>:null;
  const isAdmin=loc.pathname.startsWith('/admin');
- const content=<div className="app-frame"><ScrollProgress/><BackToTop/><SkipLink/>{!isAdmin&&<JYCInnovationMotion/>}{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {!isAdmin&&<Suspense fallback={null}><LazyJYCBot data={data}/></Suspense>} {!isAdmin&&(loc.pathname==='/'||loc.pathname.startsWith('/events'))&&<button className="agentic-launcher" type="button" onClick={()=>setAgenticOpen(true)} aria-label="Open JAI 2026 Agentic AI experience"><span>JAI 2026</span><b>Agentic AI ↗</b></button>} <AgenticAIPopup visible={agenticOpen} onClose={()=>setAgenticOpen(false)}/> {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<InstallPrompt/></div>;
+ const content=<div className="app-frame"><ScrollProgress/><BackToTop/><SkipLink/>{!isAdmin&&<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>}{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {!isAdmin&&<Suspense fallback={null}><LazyJYCBot data={data}/></Suspense>} {!isAdmin&&(loc.pathname==='/'||loc.pathname.startsWith('/events'))&&<button className="agentic-launcher" type="button" onClick={()=>setAgenticOpen(true)} aria-label="Open JAI 2026 Agentic AI experience"><span>JAI 2026</span><b>Agentic AI ↗</b></button>} <AgenticAIPopup visible={agenticOpen} onClose={()=>setAgenticOpen(false)}/> {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<InstallPrompt/></div>;
  return <MaintenanceGate data={isAdmin?{maintenance:{on:false}}:data}>{content}</MaintenanceGate>}
 
 function ClubDetail({data,id,virtualName}){
