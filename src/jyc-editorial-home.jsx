@@ -7,6 +7,7 @@ import {JYC_CONTACTS} from './lib/site-config.js';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYCSpotlight} from './jyc-spotlight.jsx';
 import {FlagshipExperience,PhotoChapters} from './jyc-next-experience.jsx';
+import CountUp from './components/react-bits/CountUp.jsx';
 import './jyc-editorial-home.css';
 
 const LazyDitherVeil=lazy(()=>import('./react-bits/DitherVeil.jsx'));
@@ -147,7 +148,7 @@ export function JYCEditorialHome({data}){
    </div>
    <div className="jyc-v1-hero-media">
     <div className="jyc-v1-hero-dither" aria-label="JYC official logo interactive dither reveal">
-     <Suspense fallback={<div className="jyc-v1-dither-fallback"><img src="/jyc-logo-official.webp" alt="JIIT Youth Club 128" fetchPriority="high"/></div>}>
+     <Suspense fallback={<div className="jyc-v1-dither-fallback"><img src="/jyc-logo-official.webp" alt="JIIT Youth Club 128" data-fallback-src="/jyc-logo-official.webp" fetchPriority="high"/></div>}>
       <LazyDitherVeil src="/jyc-logo-official.webp" fit="contain" pattern="floyd" pixelSize={2} levels={2} palette="duotone" inkColor="#101a2d" paperColor="#f4f1e6" contrast={1.15} revealRadius={180} softness={0.6} linger={1} rim={0} clickBurst wander={false}/>
      </Suspense>
      <span className="jyc-v1-photo-credit">JYC 128 · OFFICIAL IDENTITY</span>
@@ -158,7 +159,7 @@ export function JYCEditorialHome({data}){
   </section>
 
   <section className="jyc-v1-stat-strip" aria-label="JYC at a glance">
-   {stats.map((s,i)=><article key={s.label}><span>0{i+1}</span><strong>{s.value}</strong><small>{s.label}</small></article>)}
+   {stats.map((s,i)=><article key={s.label}><span>0{i+1}</span><strong><CountUp to={Number(s.value)||0} separator="," duration={1.2}/>{Number(s.value)||0>0?'+':''}</strong><small>{s.label}</small></article>)}
   </section>
 
   {data?.announcement?.on&&data?.announcement?.text&&<section className="jyc-v1-live-notice" aria-label="JYC announcement"><b>JYC NOW</b><p>{data.announcement.text}</p>{data.announcement.link&&<a href={externalUrl(data.announcement.link)||data.announcement.link}>Open ↗</a>}</section>}
