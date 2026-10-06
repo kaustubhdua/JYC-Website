@@ -30,8 +30,8 @@ const checks=[
  ['public motion layer is lazy-loaded',main.includes('LazyJYCInnovationMotion')&&main.includes('<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>')],
  ['route changes do not animate the whole document scroll',main.includes("window.scrollTo({top:0,behavior:'auto'})")&&!main.includes("window.scrollTo({top:0,behavior:'smooth'})},[loc.pathname])")],
  ['single global image-error fallback listener is canonical',
-  (main.match(/document\\.addEventListener\\('error',onImageError,true\\)/g)||[]).length===1&&
-  (main.match(/document\\.removeEventListener\\('error',onImageError,true\\)/g)||[]).length===1&&
+  (main.match(/document\.addEventListener\('error',onImageError,true\)/g)||[]).length===1&&
+  (main.match(/document\.removeEventListener\('error',onImageError,true\)/g)||[]).length===1&&
   main.includes("img.dataset.jycFallback='1'")&&main.includes("img.dataset.jycFallbackApplied='1'")&&main.includes("img.src='/jyc-logo-official.webp'")],
  ['no public Control Center launcher added',!main.includes('Control Center</button>')&&!main.includes('Control Center ↗')]
 ];
