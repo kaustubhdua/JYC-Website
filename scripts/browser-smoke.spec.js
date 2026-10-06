@@ -5,7 +5,7 @@ const routes = ['/', '/about', '/history', '/clubs', '/events', '/team', '/galle
 
 async function waitForAppMount(page, label='page') {
   try {
-    await page.waitForFunction(() => Boolean(document.querySelector('#root')?.children.length), { timeout: 30000 });
+    await page.waitForFunction(() => Boolean(document.querySelector('#root .app-frame, #root .app, #root .public-app')), { timeout: 30000 });
   } catch (error) {
     const diagnostics = await page.evaluate(() => ({
       readyState: document.readyState,
