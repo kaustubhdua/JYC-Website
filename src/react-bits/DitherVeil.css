@@ -1,2 +1,7 @@
-.dither-veil{position:relative;width:100%;height:100%;overflow:hidden;touch-action:pan-y;background:#f4f1e6}.dither-veil canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-@media (prefers-reduced-motion: reduce){.dither-veil{touch-action:auto}}
+.dither-veil {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
