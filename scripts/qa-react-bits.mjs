@@ -1,24 +1,39 @@
 import fs from 'node:fs';
-import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const pkg=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
 const main=read('src/main.jsx');
 const now=read('src/jyc-now.jsx');
-const bits=read('src/react-bits/JYCMicro.jsx');
-const css=read('src/react-bits/JYCMicro.css');
+const micro=read('src/react-bits/JYCMicro.jsx');
+const microCss=read('src/react-bits/JYCMicro.css');
+const dither=read('src/react-bits/DitherVeil.jsx');
+const ditherCss=read('src/react-bits/DitherVeil.css');
+const home=read('src/jyc-editorial-home.jsx');
+
 const checks=[
- ['React Bits dependency declared',pkg.dependencies.motion==='12.23.22'&&pkg.dependencies['@hugeicons/react']==='1.1.10'&&pkg.dependencies['@hugeicons/core-free-icons']==='4.3.5'],
- ['lockfile root matches',lock.packages[''].dependencies.motion==='12.23.22'&&lock.packages[''].dependencies['@hugeicons/react']==='1.1.10'],
- ['React Bits components present',/BellToggle|JellyRadio|RubberSegment|BorderGlow/.test(bits)],
- ['Motion is lazy-loaded',main.includes("LazyRubberSegment")&&main.includes("LazyBorderGlow")&&main.includes("LazyBellToggle")],
+ ['React Bits dependencies declared',pkg.dependencies.motion==='12.23.22'&&pkg.dependencies['@hugeicons/react']==='1.1.10'&&pkg.dependencies['@hugeicons/core-free-icons']==='4.3.5'&&pkg.dependencies.ogl==='1.0.11'],
+ ['lockfile root matches React Bits/runtime dependencies',lock.packages[''].dependencies.motion==='12.23.22'&&lock.packages[''].dependencies.ogl==='1.0.11'&&lock.packages['node_modules/ogl']?.version==='1.0.11'],
+ ['React Bits micro components present',/BellToggle|JellyRadio|RubberSegment|BorderGlow/.test(micro)],
+ ['React Bits motion controls are lazy-loaded',main.includes('LazyRubberSegment')&&main.includes('LazyBorderGlow')&&main.includes('LazyBellToggle')],
  ['JYC Now uses JellyRadio',now.includes('LazyJellyRadio')&&now.includes('Filter JYC Now by community')],
  ['event view uses RubberSegment',main.includes('LazyRubberSegment')&&main.includes('Event view')],
  ['event reminders use BellToggle',main.includes('EventReminderControl')&&main.includes('scheduleEventReminder')],
- ['Agentic AI popup uses BorderGlow',main.includes('AgenticAIPopup')&&main.includes('LazyBorderGlow')&&main.includes('demo-agentic-ai-website.vercel.app')],
- ['React Bits reduced motion styles exist',css.includes('prefers-reduced-motion')],
+ ['Agentic AI popup uses BorderGlow',main.includes('AgenticAIPopup')&&main.includes('LazyBorderGlow')],
+ ['DitherVeil is the current React Bits implementation',dither.includes('const KERNELS =')&&dither.includes('const getBlueNoise')&&dither.includes('const diffuse')&&dither.includes('RenderTarget')&&dither.includes('measureEdge')],
+ ['DitherVeil is lazy-loaded on the homepage',home.includes("lazy(()=>import('./react-bits/DitherVeil.jsx'))")&&home.includes('<LazyDitherVeil')],
+ ['DitherVeil has reduced-motion/visibility lifecycle support',dither.includes("prefers-reduced-motion")&&dither.includes('IntersectionObserver')&&dither.includes('ResizeObserver')],
+ ['DitherVeil CSS is minimal and scoped',ditherCss.includes('.dither-veil')&&!ditherCss.includes('body{')],
+ ['public motion layer is lazy-loaded',main.includes('LazyJYCInnovationMotion')&&main.includes('<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>')],
+ ['route changes do not animate the whole document scroll',main.includes("window.scrollTo({top:0,behavior:'auto'})")&&!main.includes("window.scrollTo({top:0,behavior:'smooth'})},[loc.pathname])")],
+ ['duplicate global image-error listener was removed',!main.includes('jycFallbackApplied')],
  ['no public Control Center launcher added',!main.includes('Control Center</button>')&&!main.includes('Control Center ↗')]
 ];
-let failed=0;for(const[c,ok]of checks){console.log((ok?'PASS':'FAIL')+' · '+c);if(!ok)failed++}process.exit(failed?1:0);
+
+let failed=0;
+for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+' · '+name);if(!ok)failed++}
+if(failed)process.exit(1);
+console.log('React Bits + interaction/performance QA PASS');
