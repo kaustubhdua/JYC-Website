@@ -14,8 +14,8 @@ const checks=[];
 const add=(name,ok,detail='')=>checks.push({name,ok:Boolean(ok),detail});
 
 add('package release is current 56.x line',/^56\.\d+\.\d+$/.test(pkg.version));
-add('README names current release',readme.includes('Current release: V56.15'));
-add('README current release status is V56.15.0',readme.includes('**V56.15.2 is the current code release.**'));
+add('README names current release',readme.includes('Current release: V56.16'));
+add('README current release status is V56.15.0',readme.includes('**V56.16.0 is the current code release.**'));
 add('README does not carry superseded V45/V47 product sections',!readme.includes('## V45 product upgrades')&&!readme.includes('## V47 product upgrades'));
 add('README does not advertise retired public utilities',!readme.includes('Standalone JYC Assistant')&&!readme.includes('Featured JAI 2026 popup')&&!readme.includes('public academic calendar'));
 add('club-only public boundary is explicit',config.includes('Official organisational website for JYC 128 identity')&&config.includes('student account area'));
@@ -27,6 +27,8 @@ add('student-platform UI is not mounted',!/<(MyJYC|AccountLogin|QRSharePage|Feat
 add('academic/campus utility UI is not mounted',!main.includes('JIIT Academic Calendar')&&!main.includes('Campus Map')&&!main.includes('<CampusMap'));
 add('legacy public aliases redirect',vercel.redirects.some(x=>x.source==='/my-jyc'&&x.destination==='/')&&vercel.redirects.some(x=>x.source==='/map'&&x.destination==='/events'));
 add('visual contract is present',theme.includes('V56.8 FINAL VISUAL QA CONTRACT')&&theme.includes('overflow-wrap:anywhere')&&theme.includes('text-wrap:pretty'));
+add('homepage keeps Projects/Impact/FAQ out of navigation',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'"));
+add('homepage does not mount the retired Impact block',!main.includes('jyc-v1-impact')&&!main.includes('HIGHLIGHTS · IMPACT'));
 add('reduced motion contract is present',theme.includes('@media (prefers-reduced-motion:reduce)')&&theme.includes('animation:none!important'));
 
 for(const c of checks) console.log((c.ok?'PASS: ':'FAIL: ')+c.name+(c.detail?' — '+c.detail:''));
