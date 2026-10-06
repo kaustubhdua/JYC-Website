@@ -32,7 +32,11 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1',
+    // CI has already built the production bundle; exercise that exact artifact instead of
+    // paying Vite's cold dev-transform cost on every parallel browser project.
+    command: process.env.CI
+      ? 'npm run preview -- --host 127.0.0.1 --port 5173'
+      : 'npm run dev -- --host 127.0.0.1',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120000
