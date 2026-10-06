@@ -36,6 +36,7 @@ req('202610060017_v57_8_verified_technical_hubs.sql',['cypherx','dronotics','gdg
 req('202610060018_v57_9_team_role_source_alignment.sql',['Daksh Sachdeva','Finance Secretary']);
 req('202610060019_v57_10_final_hub_event_gallery_promotions.sql',['arcadia','neural-nexus','innovate-3-0-2026','bitbox-6-0-2026','drono-o-war-2026','sih-college-internals-26','ride-hack-2026','jai-2026-jaypee-agentic-ai-hackathon','g-dronowar-1','g-jai-summit','set local role authenticated']);
 req('202610060020_v57_11_approve_additional_supplied_gallery_photos.sql',['jyc_gallery_items','/assets/hub-photos/jyc-01.webp','/assets/hub-photos/neural-01.webp','status','approved','source-archive']);
+req('202610060021_v57_12_verify_jyc_function_2026.sql',['jyc-function-2026','official-JIIT-academic-calendar','06–08 Feb 2026','JIIT Wish Town Campus · Sector 128, Noida']);
 req('202610030005_publication_verification_guard.sql',['jyc_guard_json_publication','jyc_guard_json_publication on public.jyc_site_data','cannot be published before verification']);
 req('202610050007_normalized_publication_verification_guard.sql',['jyc_guard_normalized_publication','jyc_guard_normalized_club_publication','jyc_guard_normalized_event_publication','source_url']);
 if(failures.length){console.error('SQL CONTRACT QA FAIL');failures.forEach(x=>console.error('FAIL:',x));process.exit(1)}
