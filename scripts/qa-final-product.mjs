@@ -37,6 +37,8 @@ const checks=[
   [fs.existsSync('supabase/tests/database/jyc_security_rls.test.sql'),'database RLS regression suite exists'],
   [fs.existsSync('supabase/migrations/202610040010_v56_1_public_registration_acl.sql'),'retired public registration RPC is explicitly removed from client execute ACL']
 ];
+checks.push([main.includes('DepthCarousel')&&fs.existsSync('src/components/react-bits/DepthCarousel.jsx'),'club photography carousel is centred and contained']);
+checks.push([editorialHome.includes('<CountUp to={Number(s.value)||0}')&&fs.existsSync('src/components/react-bits/CountUp.jsx'),'homepage impact counters use lightweight CountUp']);
 let failed=false;
 for(const [ok,label] of checks){console.log(ok?'PASS':'FAIL',label);if(!ok)failed=true}
 process.exit(failed?1:0);
