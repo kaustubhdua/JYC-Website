@@ -10,7 +10,7 @@ const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const livingPhoto=fs.readFileSync(path.join(root,'src/jyc-living-photo.jsx'),'utf8');
 const extraFeatures=fs.readFileSync(path.join(root,'src/extra-features.jsx'),'utf8');
 const checks=[
- ['release version is current V56.15 line',pkg.version==='56.15.2'],
+ ['release version is current V56.15 line',pkg.version==='56.16.0'],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
  ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jyc-v1-final')],
  ['Club navigation links include clubs/events/team/contact',main.includes("nav('/clubs')")&&main.includes("nav('/events')")&&main.includes("nav('/team')")&&main.includes("nav('/contact')")],
@@ -19,10 +19,12 @@ const checks=[
  ['detail canonical URLs use slugs',main.includes('const canonicalPath=club?`/clubs/${slug(club.name)}`')&&main.includes('`/events/${slug(event.title)}'),],
  ['breadcrumb styling exists',main.includes('className="visible-breadcrumbs reveal"')],
  ['SEO topic link styling exists',main.includes('.search-topic-links')],
- ['service worker cache matches V56.15 release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v56-15-2')],
+ ['service worker cache matches V56.16 release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v56-16-0')],
  ['footer gates Fests by fest mode',main.includes("isFestMode(data)&&<button onClick={()=>nav('/fests')}>Fests</button>")],
  ['club logo alt text is descriptive',main.includes('alt={\`\${c.name} logo\`}'),],
  ['homepage does not expose gallery image count as a hero metric',!main.includes('Published gallery images')&&!main.includes('gallery memories')],
+ ['homepage DriftWall presets 1, 2 and 4 are available',editorialHome.includes('DRIFT_WALL_PRESETS')&&editorialHome.includes("['1','2','4']")&&editorialHome.includes('LazyDriftWall')],
+ ['homepage mounts only one DriftWall engine at a time',editorialHome.includes('driftPreset')&&editorialHome.includes('const drift=DRIFT_WALL_PRESETS[driftPreset]')&&!editorialHome.includes('DRIFT_WALL_PRESETS.map')],
  ['homepage metric counters use exact live values',editorialHome.includes('jyc-v1-stat-strip')&&editorialHome.includes('Published communities')&&editorialHome.includes('Community families')&&editorialHome.includes('Published events')&&editorialHome.includes('<CountUp to={Number(s.value)||0}')&&!editorialHome.includes('<strong>{s.value}+</strong>')],
  ['reduced-motion count-up resolves directly to the current value',editorialHome.includes('jyc-v1-stat-strip')&&fs.readFileSync(path.join(root,'src/jyc-editorial-home.css'),'utf8').includes('prefers-reduced-motion:reduce')],
  ['native event registration route is reachable',main.includes('RegistrationPage')&&main.includes("parts[2]==='register'")&&!main.includes("parts[2]==='register')return <Navigate")],['living photo engine uses decoded related transitions',livingPhoto.includes('scoreRelatedPhoto')&&livingPhoto.includes('preloadAndDecode')&&livingPhoto.includes('img.decode')&&livingPhoto.includes('setOutgoing')],
@@ -30,7 +32,7 @@ const checks=[
  ['gallery defaults to DriftWall presentation',extraFeatures.includes("const [viewMode,setViewMode]=useState('wall')")&&extraFeatures.includes('LazyDriftWall')&&extraFeatures.includes('items.slice(0,24)')&&extraFeatures.includes('Drift wall')],
  
  ['club detail has source-safe leadership fallback',main.includes('club-leadership-pending')&&main.includes('Current club leadership is not publicly published yet.')&&main.includes('sourcePeople')],
- ['Projects, Impact and FAQ are not public pages',!main.includes("function ProjectsPage")&&!main.includes("function ImpactPage")&&!main.includes("function FAQPage")&&!main.includes("JYC Student Projects")&&!main.includes("JYC Community Impact")&&!main.includes("JYC FAQ")&&!main.includes("nav('/projects')")&&!main.includes("nav('/impact')")&&!main.includes("nav('/faq')")],
+ ['Projects, Impact and FAQ are not public surfaces',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'")&&!editorialHome.includes('jyc-v1-impact')&&!editorialHome.includes('HIGHLIGHTS · IMPACT')],
  ['legacy event-calendar route redirects to canonical calendar',main.includes("if(clean==='/event-calendar')return <Navigate to=\"/calendar\" replace/>")],
 ];
 
