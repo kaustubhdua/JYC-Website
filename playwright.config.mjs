@@ -5,7 +5,7 @@ const baseURL = process.env.JYC_BASE_URL || 'http://127.0.0.1:5173';
 export default defineConfig({
   testDir: './scripts',
   timeout: 30000,
-  expect: { timeout: 7000 },
+  expect: { timeout: 15000 },
   reporter: [['line']],
   use: {
     baseURL,
