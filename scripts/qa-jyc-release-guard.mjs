@@ -16,7 +16,7 @@ const checks=[
  ['homepage retired Impact section is absent',!home.includes('jyc-v1-impact')&&!home.includes('HIGHLIGHTS · IMPACT')],
  ['homepage achievements section remains available',home.includes('jyc-v1-achievements')&&home.includes("nav('/achievements')")],
  ['DriftWall presets 1, 2 and 4 are wired',home.includes("['1','2','4']")&&home.includes('DRIFT_WALL_PRESETS')&&home.includes('LazyDriftWall')],
- ['only one DriftWall instance is mounted on the homepage',home.split('LazyDriftWall').length-1===2],
+ ['only one DriftWall instance is mounted on the homepage',(home.match(/<LazyDriftWall/g)||[]).length===1],
  ['DriftWall surface has desktop/tablet/mobile height reservations',homeCss.includes('.jyc-v1-drift .drift-wall{width:100%;height:560px')&&homeCss.includes('max-width:800px')&&homeCss.includes('max-width:680px')],
  ['public layout has min-width and wrapping guards',publicCss.includes('min-width:0')&&publicCss.includes('overflow-wrap:anywhere')],
  ['reduced motion remains explicit',publicCss.includes('prefers-reduced-motion')],
