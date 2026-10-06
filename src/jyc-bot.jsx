@@ -40,16 +40,10 @@ export function JYCBot({data}){
  const openAssistant=()=>{loadModelViewer();preloadModelAsset();const sequence=[['is-wave',900,'wave'],['is-bounce',820,'bounce'],['is-tap',520,'tap'],['is-celebrate',900,'celebrate'],['is-dance',980,'dance'],['is-peek',760,'peek']];const next=sequence[animationCursor.current%sequence.length];animationCursor.current+=1;triggerMotion(next[0],next[1],next[2]);setAssistantOpen(true)};
  useEffect(()=>{
   let cancelled=false;
-  const start=()=>{
-   if(cancelled||typeof window==='undefined')return;
-   preloadModelAsset();
-   loadModelViewer();
-   setModelAvailable(true);
-  };
-  if(document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches){setModelFailed(true);return undefined;}
-  if(customElements?.get('model-viewer')) start();
-  else if('requestIdleCallback' in window) window.requestIdleCallback(start,{timeout:2400});
-  else window.setTimeout(start,1800);
+  const start=()=>{if(!cancelled)preloadModelAsset()};
+  if(document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(hover: none), (pointer: coarse)').matches)return undefined;
+  if('requestIdleCallback' in window) window.requestIdleCallback(start,{timeout:4500});
+  else window.setTimeout(start,3500);
   return()=>{cancelled=true;window.clearTimeout(motionTimer.current);window.clearTimeout(animationStopTimer.current);window.clearTimeout(idleTimer.current)};
  },[]);
  useEffect(()=>()=>{window.clearTimeout(motionTimer.current);window.clearTimeout(animationStopTimer.current);window.clearInterval(idleTimer.current)},[]);
