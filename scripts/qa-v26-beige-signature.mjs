@@ -85,5 +85,5 @@ check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/
 check('homepage impact counters are exact rather than plus-suffixed estimates',editorialHome.includes('<strong>{s.value}</strong>')&&!editorialHome.includes('<strong>{s.value}+</strong>'));
 check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
-if(fail)process.exit(1);
+check('CountUp and DepthCarousel stay local and lightweight',editorialHome.includes('<CountUp to={Number(s.value)||0}')&&main.includes('DepthCarousel')&&!read('src/components/react-bits/DepthCarousel.jsx').includes("from'gsap'"));if(fail)process.exit(1);
 console.log(`Public visual QA: ${pass}/${pass+fail} passed.`);
