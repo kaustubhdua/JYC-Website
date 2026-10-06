@@ -35,7 +35,8 @@ const scripts = [
   'qa-final-hygiene.mjs',
   'qa-react-bits.mjs',
   'qa-animation-performance.mjs',
-  'qa-final.mjs'
+  'qa-final.mjs',
+  'qa-jyc-release-guard.mjs'
 ];
 
 for (const script of scripts) {
