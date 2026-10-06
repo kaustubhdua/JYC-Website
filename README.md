@@ -1,6 +1,6 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current release: V56.15.2 — stabilisation, performance and maintainer cleanup**
+> **Current release: V56.16.0 — public polish, media UX and final QA hardening**
 
 [![Quality](https://github.com/coolbandariya/JYC-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/coolbandariya/JYC-Website/actions/workflows/ci.yml) [![CodeQL](https://github.com/coolbandariya/JYC-Website/actions/workflows/codeql.yml/badge.svg)](https://github.com/coolbandariya/JYC-Website/actions/workflows/codeql.yml) [![JYC Quality](https://github.com/coolbandariya/JYC-Website/actions/workflows/jyc-quality.yml/badge.svg)](https://github.com/coolbandariya/JYC-Website/actions/workflows/jyc-quality.yml)
 
@@ -293,14 +293,14 @@ The remaining production gates are operational: configure required third-party E
 
 ## Current release status
 
-**V56.15.2 is the current code release.** The codebase is intentionally in finish-and-stabilise mode rather than feature-expansion mode.
+**V56.16.0 is the current code release.** The codebase is intentionally in final public polish and production-QA mode rather than feature expansion.
 
 The release boundary is aligned across `package.json`, `package-lock.json`, the service-worker cache, final product QA, final hygiene QA, `public/llms.txt`, and the latest public-surface hardening commits.
 
 The highest-value remaining production work is operational rather than architectural:
 
 1. Keep the complete 873-file source archive catalogued and maintain editorial review when promoting new material into official event/club records.
-2. CI now enforces the production JS/CSS/image budget and expanded browser smoke suite; run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
+2. CI now enforces the production JS/CSS/image budget, public-route hygiene and expanded browser smoke suite; run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
 3. Verify live Supabase content and every published club/event record.
 4. Verify the Vercel production deployment and its redirects/headers.
 5. Run a final performance pass after the real production image set is known.
