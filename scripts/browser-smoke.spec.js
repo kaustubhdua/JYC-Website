@@ -73,7 +73,7 @@ test('homepage accessibility and responsive guardrails', async ({ page }) => {
 test('retired student-platform routes resolve to safe public destinations', async ({ page }) => {
   for (const route of ['/my-jyc','/login','/planner','/notifications','/settings','/agenda','/projects','/download']) {
     await page.goto(base + route, { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('#root')).not.toBeEmpty();
+    await waitForAppMount(page, 'redirect');
     await expect.poll(() => new URL(page.url()).pathname, { timeout: 3000 }).not.toBe(route);
   }
 });
@@ -256,7 +256,7 @@ test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   }
 
   await page.goto(base + '/this-route-should-not-exist-404', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#root')).not.toBeEmpty();
+  await waitForAppMount(page, 'unknown route');
   await expect(page.locator('body')).toBeVisible();
 });
 
