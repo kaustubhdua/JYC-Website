@@ -19,8 +19,7 @@ import {JYC_EVENT_CATEGORIES,JYC_COMMUNITY_DISCOVERY,JYC_PUBLIC_ACTIVITIES} from
 import {JYC_SOCIALS,festSocialProfile,socialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
-import {ChooseYourRoute,JYCBrandEditorial,FlagshipExperience,PhotoStory,PhotoChapters,HubSignalRail} from './jyc-next-experience.jsx';
-import {JYCSpotlight} from './jyc-spotlight.jsx';
+import {JYCBrandEditorial} from './jyc-next-experience.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
 
