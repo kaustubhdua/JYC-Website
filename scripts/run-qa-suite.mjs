@@ -40,7 +40,8 @@ const scripts = [
   'qa-jyc-release-guard.mjs',
   'qa-jyc-social-scope.mjs',
   'qa-trust-contract.mjs',
-  'qa-supplied-material.mjs'
+  'qa-supplied-material.mjs',
+  'qa-v59-smoothness.mjs'
 ];
 
 for (const script of scripts) {
