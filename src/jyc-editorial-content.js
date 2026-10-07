@@ -1,19 +1,4 @@
-// Source-first public editorial records for JYC 128.
-// Only records with an attributable public/source reference belong here.
-
-export const JYC_EDITORIAL_ACHIEVEMENTS = [
-  {
-    id:'sih-finalist',
-    title:'Smart India Hackathon finalist',
-    organisation:'JYC / supplied hub material',
-    year:'2026',
-    category:'Competition',
-    status:'Finalist',
-    summary:'The supplied JYC material records an SIH finalist achievement in the Wall of Fame material.',
-    sourceLabel:'Supplied JYC Wall of Fame material',
-    sourceType:'supplied-material'
-  }
-];
+// Verified public social mappings used by leadership cards and public profiles.
 
 export const JYC_TEAM_SOCIALS = {
   'Devansh Tripathi':{linkedin:'https://in.linkedin.com/in/devansh-tripathi2004',verifiedBy:'public LinkedIn profile',verifiedOn:'2026-10-06'},
