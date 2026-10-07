@@ -2,7 +2,7 @@
 
 JIIT Youth Club 128 is the student-led central coordinating body for major college events, fests and inter-society activities at JIIT Wish Town Campus, Sector 128, Noida.
 
-The public website is the official organisational source for published JYC information. Public search covers published pages, clubs, events, people and visual records; staff publishing tools are intentionally not exposed as a public navigation surface. The public information surface includes identity, leadership, history, clubs and hubs, events, fests, achievements, announcements, gallery/memories, archive, recruitment and contact.
+The public website is the official organisational source for published JYC information. Public search covers published pages, clubs, events, people and visual records; staff publishing tools are intentionally not exposed as a public navigation surface. The public information surface includes identity, About JYC, leadership, clubs and hubs, events, event details, gallery, announcements, Join JYC, calendar and contact.
 
 ## Core public pages
 
@@ -26,7 +26,7 @@ Current records should be sourced and, where applicable, carry a last-verified d
 
 ## Organisation vocabulary
 
-JIIT Youth Club 128, JYC 128, JIIT Youth Club, JIIT Wish Town Campus, Sector 128, Noida, JYC leadership, JYC clubs, JYC hubs, JYC events, JYC fests, JYC achievements, JYC gallery, JYC announcements.
+JIIT Youth Club 128, JYC 128, JIIT Youth Club, JIIT Wish Town Campus, Sector 128, Noida, JYC leadership, JYC clubs, JYC hubs, JYC events, JYC gallery, JYC announcements, Join JYC.
 
 
 ## JYC 128 community index
@@ -67,7 +67,7 @@ Instagram: https://www.instagram.com/jiityouthclub128/
 LinkedIn: https://in.linkedin.com/in/jyc128
 
 
-Public website: Home, About, History, Clubs, Events, Event Calendar, Fests, Gallery, Leadership, Archive, Achievements, Recruitment, Announcements/JYC Now and Contact. Academic utilities, My JYC, student accounts, attendance, passes, certificates and campus utilities are outside scope.
+Public website: Home, About JYC, Leadership, Clubs, Events, Event Details, Gallery, Announcements, Join JYC, Event Calendar and Contact. Academic utilities, My JYC, student accounts, attendance, passes, certificates and campus utilities are outside scope.
 
 
 ## Release boundary
