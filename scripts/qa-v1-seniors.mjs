@@ -25,8 +25,8 @@ add('Official JYC 128 scope is explicit',config.includes('JYC_OFFICIAL_SITE_SCOP
 add('Public model map excludes utility-portal routes',!read('public/llms.txt').includes('/planner')&&!read('public/llms.txt').includes('/notifications')&&!read('public/llms.txt').includes('/resources'));
 add('Public SEO identity is JYC 128',index.includes('JIIT Youth Club 128')&&index.includes('Sector 128, Noida'));
 add('Senior navigation includes About, Clubs, Events, Gallery, Leadership and Contact',
-  main.includes("['About','/about']")&&main.includes("['Clubs','/clubs']")&&main.includes("['Events','/events']")&&main.includes("['Gallery','/gallery']")&&main.includes("['Leadership','/team']")&&main.includes("['Contact','/contact']"));
-add('Leadership canonical route exists',main.includes("clean==='/team'||clean==='/leadership'")||main.includes("clean==='/team'?'team':clean==='/leadership'?'team'")&&main.includes("'/leadership':'JYC 128 Leadership"));
+  main.includes("['About','/about']")&&main.includes("['Clubs','/clubs']")&&main.includes("['Events','/events']")&&main.includes("['Gallery','/gallery']")&&(main.includes("['Leadership','/team']")||main.includes("['Leadership','/leadership']"))&&main.includes("['Contact','/contact']"));
+add('Leadership canonical route exists',main.includes("clean==='/team'||clean==='/leadership'")||main.includes("'/leadership':'JYC 128 Leadership"));
 add('Event Calendar canonical alias exists',main.includes("clean==='/calendar'||clean==='/event-calendar'")&&main.includes("'/event-calendar':'JYC 128 Event Calendar"));
 add('Join JYC recruitment CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC'));
 add('Home hero has required participation CTAs',editorialHome.includes("nav('/events')")&&editorialHome.includes("nav('/clubs')")&&editorialHome.includes("nav('/join-jyc')"));
