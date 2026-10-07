@@ -4,7 +4,7 @@ export const JYC_PUBLIC_ROUTES=[
   ['About JYC','/about'],['Leadership','/leadership'],['Events','/events'],['Clubs','/clubs'],['Gallery','/gallery'],['Announcements','/announcements'],['Join JYC','/join-jyc'],['Event Calendar','/calendar'],['Contact','/contact']
 ];
 
-export const JYC_EVENT_CATEGORIES=['All','Orientation','Fests & Celebrations','Cultural','Theatre & Culture','Music & Performance','Technical','Literary','Sports','Management','Social','Creative'];
+export const JYC_EVENT_CATEGORIES=['All','Cultural','Technical','Literary','Sports','Management','Social'];
 
 export const JYC_COMMUNITY_DISCOVERY={
   'Build & code':['coding','programming','development','open source','competitive programming','code'],
