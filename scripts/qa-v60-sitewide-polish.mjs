@@ -6,12 +6,15 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const checks=[];
 const check=(name,ok,detail='')=>{checks.push({name,ok,detail});console.log((ok?'PASS':'FAIL')+': '+name+(detail?' — '+detail:''));};
 
+const main=read('src/main.jsx');
 const gallery=read('src/jyc57-experience.jsx');
 const editorial=read('src/jyc-editorial-home.jsx');
 const flagship=read('src/jyc-next-experience.jsx');
 const css=read('src/styles/public-system.css');
 const browser=read('scripts/browser-smoke.spec.js');
 
+check('search event links prefer stored event slugs',main.includes("slug(e.slug||e.title)"));
+check('search club links use canonical slugs',main.includes("encodeURIComponent(slug(c.name))"));
 check('gallery event links prefer stored event slugs',gallery.includes("e?.slug||slugify(e?.title)||e?.id"));
 check('gallery initial archive images are mostly lazy',gallery.includes("loading={i<2?'eager':'lazy'}"));
 check('gallery featured images cap eager loading at two',gallery.includes("fetchPriority={i<2?'high':undefined}"));
