@@ -46,7 +46,7 @@ export const JYC_PUBLIC_ACTIVITIES=[
   {title:'Technical',text:'Coding, robotics, AI, open source and hands-on technology communities.',link:'/clubs'},
   {title:'Literary',text:'Writing, debate, speaking, quizzing, anchoring and ideas in motion.',link:'/clubs'},
   {title:'Sports',text:'Competition, teamwork, fitness and student representation through sport.',link:'/clubs'},
-  {title:'Management',text:'Planning, hospitality, public relations, security and event execution.',link:'/team'},
+  {title:'Management',text:'Planning, hospitality, public relations, security and event execution.',link:'/leadership'},
   {title:'Social Outreach',text:'Community initiatives, awareness programmes and campus impact.',link:'/events'},
   {title:'Workshops',text:'Practical learning through workshops, mentorship and skill-building sessions.',link:'/events'},
   {title:'Competitions',text:'Hackathons, contests, challenges and inter-community experiences.',link:'/events'}
