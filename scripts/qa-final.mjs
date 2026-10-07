@@ -24,7 +24,7 @@ const checks=[
  ['footer gates Fests by fest mode',main.includes("...(isFestMode(data)?[['/fests','Fests']]:[])")&&main.includes("['/fests','Fests']")],
  ['club logo alt text is descriptive',main.includes('alt={\`\${c.name} logo\`}'),],
  ['homepage does not expose gallery image count as a hero metric',!main.includes('Published gallery images')&&!main.includes('gallery memories')],
- ['homepage DriftWall presets 1, 2 and 4 are available',editorialHome.includes('<PhotoChapters/>')&&editorialHome.includes('jh-photo-story')],
+ ['homepage uses restrained React Bits signatures',editorialHome.includes('LazyMagicBento')&&editorialHome.includes('LazyDitherVeil')&&!editorialHome.includes('LazyDriftWall')&&!editorialHome.includes('<PhotoChapters/>')],
  ['homepage mounts only one DriftWall engine at a time',editorialHome.includes('LazyMagicBento')&&editorialHome.includes('LazyDitherVeil')],
  ['homepage metric counters use exact live values',editorialHome.includes('jh-proof')&&!editorialHome.includes('Published communities')],
  ['reduced-motion count-up resolves directly to the current value',fs.readFileSync(path.join(root,'src/jyc-editorial-home.css'),'utf8').includes('prefers-reduced-motion:reduce')],
