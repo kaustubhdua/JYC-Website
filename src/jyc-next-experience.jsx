@@ -81,7 +81,7 @@ export function FlagshipExperience({data}){
   ['03','BUILD TOGETHER',event.teamSize?'Work with a '+event.teamSize+' team and turn the idea into a working experience.':'Build with your team, tools and community.'],
   ['04','PRESENT & CONNECT','Show what you built, meet the ecosystem and take the work beyond the event.']
  ];
- const open=()=>nav('/events/'+String(event.title||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
+ const open=()=>nav('/events/'+String(event.slug||event.title||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
  const register=safeExternal(event.registrationUrl);
  return <section className="section jyc-flagship-section reveal" aria-labelledby="jyc-flagship-title">
   <div className="jyc-flagship-head"><div><span className="eyebrow">FLAGSHIP EXPERIENCE · JYC 128</span><h2 id="jyc-flagship-title">{event.title}</h2><p>{event.summitTitle||event.description||'A major JYC experience with a clear path from idea to participation.'}</p></div><span className="jyc-flagship-date">{event.date?(event.dateEnd?event.date+' — '+event.dateEnd:event.date):''}</span></div>
