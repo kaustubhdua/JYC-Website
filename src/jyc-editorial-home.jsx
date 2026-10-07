@@ -4,6 +4,7 @@ import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {JYCNowStrip} from './jyc-now.jsx';
+import {JYC_SOCIALS} from './jyc-socials.js';
 import './jyc-editorial-home.css';
 
 const LazyDitherVeil=lazy(()=>import('./react-bits/DitherVeil.jsx'));
@@ -40,8 +41,9 @@ export function JYCEditorialHome({data}){
        <h1 id="jh-title"><span>THE VOICE.</span><span>THE TALENT.</span><em>THE SPIRIT.</em></h1>
        <p className="jh-lead">The student-powered layer connecting the communities, events, culture, competition and campus life of JIIT 128.</p>
        <div className="jh-actions">
-         <button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button>
-         <button type="button" className="jh-btn" onClick={()=>nav('/events')}>What’s Happening <span>→</span></button>
+         <button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/events')}>Explore Events <span>↗</span></button>
+         <button type="button" className="jh-btn" onClick={()=>nav('/clubs')}>View Clubs <span>→</span></button>
+         <button type="button" className="jh-btn" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button>
        </div>
        <div className="jh-proof"><span><b>01</b> DISCOVER</span><span><b>02</b> PARTICIPATE</span><span><b>03</b> BELONG</span></div>
      </div>
@@ -104,13 +106,28 @@ export function JYCEditorialHome({data}){
 
    <JYCNowStrip limit={3}/>
 
-   <section className="jh-history">
-     <div className="jh-container jh-history-grid"><div><div className="jh-section-number">07 / THROUGH THE YEARS</div><h2>JYC is not a moment.<br/><em>It is a continuity.</em></h2><p>Official reports, events and campus photography give JYC a history worth remembering.</p><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/history')}>Explore History <span>→</span></button><button type="button" className="jh-btn" onClick={()=>nav('/achievements')}>Explore Achievements <span>→</span></button></div><div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div>
+   <section className="jh-snapshot jh-container" aria-labelledby="jh-snapshot-title">
+     <div className="jh-section-head"><div><div className="jh-section-number">07 / LIVE SNAPSHOT</div><h2 id="jh-snapshot-title">The JYC ecosystem,<br/><em>right now.</em></h2></div><p>Useful, source-backed signals instead of inflated vanity numbers.</p></div>
+     <div className="jh-snapshot-grid">
+       <article><b>{Object.keys(JYC_HUB_CONTENT).length}</b><span>documented communities</span></article>
+       <article><b>{families.length}</b><span>community families</span></article>
+       <article><b>{events.length}</b><span>published event records</span></article>
+       <article><b>{activities.length}</b><span>ways to participate</span></article>
+     </div>
    </section>
 
    <section className="jh-people jh-container">
-     <div className="jh-section-head"><div><div className="jh-section-number">08 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button></div>
-     {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><div><Img src={m.photo||m.image} alt={m.name||'JYC team member'} loading="lazy"/></div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
+     <div className="jh-section-head"><div><div className="jh-section-number">08 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/leadership')}>Meet leadership <span>↗</span></button></div>
+     {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/leadership')}><div><Img src={m.photo||m.image} alt={m.name||'JYC team member'} loading="lazy"/></div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
+   </section>
+
+   <section className="jh-social jh-container" aria-labelledby="jh-social-title">
+     <div><div className="jh-section-number">09 / FOLLOW JYC</div><h2 id="jh-social-title">Stay close to campus life.</h2><p>Official JYC channels carry live notices and community updates. The website remains the source of truth for published event and club information.</p></div>
+     <div className="jh-social-links">
+       <a href={JYC_SOCIALS.JYC.instagram} target="_blank" rel="noopener noreferrer"><span>Instagram</span><b>{JYC_SOCIALS.JYC.instagramHandle}</b><i>↗</i></a>
+       <a href={JYC_SOCIALS.JYC.official} target="_blank" rel="noopener noreferrer"><span>Official links</span><b>JIIT Youth Club 128</b><i>↗</i></a>
+       <a href={JYC_SOCIALS.JYC.linkedin} target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><b>JYC 128</b><i>↗</i></a>
+     </div>
    </section>
 
    <section className="jh-final">
