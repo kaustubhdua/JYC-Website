@@ -36,6 +36,7 @@ const LazyDepthCarousel=lazy(()=>import('./components/react-bits/DepthCarousel.j
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
 const LazyJYCDock=lazy(()=>import('./components/react-bits/Dock.jsx'));
+const LazyMobileMoreSheet=lazy(()=>import('./components/JYCMobileMoreSheet.jsx'));
 
 
 
@@ -566,7 +567,7 @@ function Navbar({data,admin,theme,setTheme}){
  const dockActive=loc.pathname==='/'?0:loc.pathname.startsWith('/clubs')?1:loc.pathname.startsWith('/events')?2:loc.pathname.startsWith('/gallery')?3:4;
  const dockItemsRb=dockItems.map(([n,p,icon],i)=>({label:n,className:i===dockActive?'is-active':'',icon:<NavIcon kind={icon}/>,onClick:()=>p==='__more'?setMoreOpen(v=>!v):nav(p)}));
  const dock=<Suspense fallback={null}><div className="jyc-rb-dock" aria-label="Mobile navigation"><LazyJYCDock items={dockItemsRb} panelHeight={64} baseItemSize={46} magnification={58} distance={150} dockHeight={210}/></div></Suspense>;
- const more=moreOpen?<MobileMoreSheet data={data} admin={admin} close={()=>setMoreOpen(false)} openSearch={()=>{setMoreOpen(false);setSearch(true)}}/>:null;
+ const more=moreOpen?<Suspense fallback={null}><LazyMobileMoreSheet data={data} close={()=>setMoreOpen(false)} openSearch={()=>{setMoreOpen(false);setSearch(true)}}/></Suspense>:null;
  const searchView=search?<Search data={data} admin={admin} close={()=>setSearch(false)}/>:null;
  const isHome=loc.pathname==='/';
  const navButtons=isHome?homeLinks.map(([n,id])=><button type="button" key={n} className={homeSection===id?'active':''} onClick={()=>{setOpen(false);goHomeSection(id)}}>{n}</button>):routeLinks.map(([n,p])=><button type="button" key={n} className={loc.pathname===p||(p!=='/'&&loc.pathname.startsWith(p+'/'))?'active':''} onClick={()=>{setOpen(false);nav(p)}}>{n}</button>);
@@ -580,52 +581,6 @@ function Navbar({data,admin,theme,setTheme}){
  </div></header>
  {createPortal(dock,document.body)}{createPortal(more,document.body)}{searchView}</>
 }
-function MobileMoreSheet({data,admin,close,openSearch}){
- const nav=useNavigate();
- const sheetRef=React.useRef(null);
- useEffect(()=>{
-  const previous=document.body.style.overflow;
-  document.body.style.overflow='hidden';
-  const timer=setTimeout(()=>sheetRef.current?.querySelector('button,a')?.focus(),30);
-  const onKey=e=>{
-   if(e.key==='Escape'){e.preventDefault();close();return}
-   if(e.key!=='Tab')return;
-   const root=sheetRef.current;if(!root)return;
-   const focusable=[...root.querySelectorAll('button,a,input,[tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled&&el.offsetParent!==null);
-   if(!focusable.length)return;
-   const first=focusable[0],last=focusable[focusable.length-1];
-   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
-   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
-  };
-  document.addEventListener('keydown',onKey);
-  return()=>{clearTimeout(timer);document.body.style.overflow=previous;document.removeEventListener('keydown',onKey)};
- },[close]);
- const go=p=>{close();nav(p)};
-const explore=[
-   ['/about','About JYC','Vision, mission and values'],
-   ['/history','JYC History','Evidence-led milestones and the organisation’s story'],
-   ['/team','Leadership','Faculty, Apex and Core Team'],
-   ['/clubs','Clubs & Communities','Explore the official hub ecosystem'],
-   ['/events','Events','Upcoming, ongoing and completed experiences'],
-   ['/calendar','Event Calendar','Browse JYC events by date'],
-   ['/gallery','Gallery','Event memories, years and visual archive'],
-   ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
-   ['/announcements','Announcements','Registrations, notices and JYC updates'],
-   ['/join-jyc','Join JYC · Coming Soon','Official JYC recruitment will appear here when the next cycle opens'],
-   ['/archive','Archive','The published JYC story by year'],
-   ['/contact','Contact','Official public channels and query form']
-  ];
- return <div ref={sheetRef} className="more-sheet-overlay" role="dialog" aria-modal="true" aria-label="More JYC" onMouseDown={e=>{if(e.target===e.currentTarget)close()}}>
-  <div className="more-sheet jyc-more-club-sheet">
-   <div className="sheet-grabber"/>
-   <div className="more-sheet-head"><div><span className="eyebrow">MORE JYC</span><h3>Useful pages. Nothing repeated.</h3><p>About, communities, events, archive and official JYC channels live here.</p></div><button type="button" className="sheet-close" onClick={close}>×</button></div>
-   <div className="more-sheet-section"><span className="eyebrow">JYC</span><div className="more-sheet-grid jyc-more-grid">{explore.map(([path,title,text])=><button type="button" key={path} onClick={()=>go(path)}><b>{title}</b><span>{text} →</span></button>)}</div></div>
-   <div className="more-sheet-section"><span className="eyebrow">SEARCH JYC</span><div className="more-sheet-grid more-sheet-guide"><button type="button" onClick={openSearch}><b>Search JYC</b><span>Find a page, club or event →</span></button>{safeExternalUrl(data.homepage?.jtvUrl)&&<a className="more-sheet-link" href={safeExternalUrl(data.homepage.jtvUrl)} target="_blank" rel="noopener noreferrer"><b>JTV</b><span>Official JYC media ↗</span></a>}</div></div>
-   <div className="more-sheet-connect"><span className="eyebrow">CONNECT WITH JYC</span><div><a href={JYC_CONTACTS.instagram} target="_blank" rel="noreferrer">Instagram ↗</a><a href={JYC_CONTACTS.whatsapp} target="_blank" rel="noreferrer">WhatsApp ↗</a><a href={'mailto:'+data.creator.email}>Email ↗</a></div></div>
-  </div>
- </div>
-}
-
 function Search({data,admin,close}){
  const nav=useNavigate();
  const [q,setQ]=useState(()=>{try{return new URLSearchParams(window.location.search).get('q')||''}catch{return ''}});
