@@ -7,6 +7,7 @@ import {supabase} from './lib/supabase';
 import {uploadJycMedia} from './lib/media.js';
 import {jycToast} from './lib/ui';
 import './styles/public-system.css';
+import './styles/jyc-v60-reference-motion.css';
 import {JYC_HUB_CONTENT, JYC_HUB_FAMILIES, hubProfile} from './v21-hub-content.js';
 import {JYC_HUB_SOURCE_REGISTRY,JYC_HUB_SOURCE_ONLY} from './jyc-hub-registry.js';
 import {JYC_ORIENTATION_FAMILIES,JYC_ORIENTATION_LAYERS,JYC_ORIENTATION_EVENTS,JYC_ORIENTATION_AT_A_GLANCE} from './jyc-orientation-insights.js';
@@ -572,10 +573,11 @@ function Navbar({data,admin,theme,setTheme}){
  const searchView=search?<Search data={data} admin={admin} close={()=>setSearch(false)}/>:null;
  const isHome=loc.pathname==='/';
  const navButtons=isHome?homeLinks.map(([n,id])=><button type="button" key={n} className={homeSection===id?'active':''} onClick={()=>{setOpen(false);goHomeSection(id)}}>{n}</button>):routeLinks.map(([n,p])=><button type="button" key={n} className={loc.pathname===p||(p!=='/'&&loc.pathname.startsWith(p+'/'))?'active':''} onClick={()=>{setOpen(false);nav(p)}}>{n}</button>);
+ useEffect(()=>{const host=document.querySelector('.nav nav');const active=host?.querySelector('button.active');if(!host||!active)return;const h=host.getBoundingClientRect(),r=active.getBoundingClientRect();host.style.setProperty('--nav-indicator-left',`${r.left-h.left-5}px`);host.style.setProperty('--nav-indicator-top',`${r.top-h.top-2}px`);host.style.setProperty('--nav-indicator-width',`${r.width+10}px`);host.style.setProperty('--nav-indicator-height',`${r.height+4}px`);},[loc.pathname,homeSection,moreOpen,open]);
  return <>
  <header className="nav"><div className="nav-inner">
    <button type="button" className="brand" onClick={()=>{setOpen(false);nav('/')}}><span className="brand-mark"><LogoImage alt="JIIT Youth Club logo"/></span><span>JIIT YOUTH CLUB</span></button>
-   <nav className={open?'open':''}>{navButtons}<button type="button" className={`nav-more-trigger ${moreOpen?'active':''}`} onClick={()=>{setOpen(false);setMoreOpen(v=>!v)}} aria-expanded={moreOpen}>More <span aria-hidden="true">⌄</span></button></nav>
+   <nav className={open?'open':''}>{navButtons}<button type="button" className={`nav-more-trigger ${moreOpen?'active':''}`} onClick={()=>{setOpen(false);setMoreOpen(v=>!v)}} aria-expanded={moreOpen}>More <span aria-hidden="true">⌄</span></button><i className="nav-active-indicator" aria-hidden="true"/></nav>
    <button type="button" className="nav-join-cta" onClick={()=>nav('/join-jyc')}>Join JYC <span>↗</span></button>
    <Theme theme={theme} setTheme={setTheme}/><button type="button" className="search-trigger" onClick={()=>setSearch(true)} aria-label="Search JYC" title="Search JYC (Ctrl/Cmd + K)"><span className="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><span className="search-label">Search</span><kbd>Ctrl K</kbd></button>
  </div></header>
