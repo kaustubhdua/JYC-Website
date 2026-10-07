@@ -16,9 +16,9 @@ const add=(name,ok,detail='')=>checks.push({name,ok:Boolean(ok),detail});
 
 add('release metadata is synchronized for the current major release',/^57\.\d+\.\d+$/.test(pkg.version)&&lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version);
 add('canonical public routes are declared',[
-  ['/about','/history','/clubs','/events','/gallery','/team','/archive','/recruitment','/announcements','/calendar','/contact']
+  ['/about','/leadership','/clubs','/events','/gallery','/announcements','/calendar','/contact','/join-jyc']
 ].every(group=>group.every(route=>config.includes("'" + route + "'"))));
-add('leadership points to canonical team page',config.includes("['Leadership','/team']"));
+add('leadership points to canonical team page',config.includes("['Leadership','/leadership']"));
 add('public shell does not mount student-platform UI',!/<(MyJYC|AccountLogin|RegistrationPage|QRSharePage|FeaturedEventPopup|SiteAtmosphere)\\b/.test(main));
 add('public shell does not mount academic calendar UI',!main.includes('JIIT Academic Calendar')&&!main.includes('Academic Calendar 2026'));
 add('public shell does not mount campus-map UI',!main.includes('Campus Map')&&!main.includes('<CampusMap'));
