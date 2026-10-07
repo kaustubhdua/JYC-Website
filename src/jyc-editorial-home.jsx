@@ -4,6 +4,7 @@ import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {JYCWebGLShowcase} from './jyc-webgl-showcase.jsx';
+import {JYCNetwork} from './jyc-network.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import {JYC_SOCIALS} from './jyc-socials.js';
 import './jyc-editorial-home.css';
@@ -114,7 +115,11 @@ export function JYCEditorialHome({data}){
      <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:photoGallery[i%Math.max(1,photoGallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="168,36,32" clickEffect/></Suspense>
    </section>
 
-   <JYCWebGLShowcase/>\n\n   <JYCNowStrip limit={3}/>
+   <JYCWebGLShowcase/>\n\n   <JYCNetwork data={data}/>
+
+   <JYCWebGLShowcase/>
+
+   <JYCNowStrip limit={3}/>
 
    <section className="jh-snapshot jh-container editorial-reveal" aria-labelledby="jh-snapshot-title">
      <div className="jh-section-head"><div><div className="jh-section-number">07 / LIVE SNAPSHOT</div><h2 id="jh-snapshot-title">The JYC ecosystem,<br/><em>right now.</em></h2></div><p>Useful, source-backed signals instead of inflated vanity numbers.</p></div>
