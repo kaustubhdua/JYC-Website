@@ -19,7 +19,7 @@ const checks=[
  ['editorial homepage mounts current updates',editorialHome.includes('<JYCNowStrip limit={3}/>')],
  ['editorial homepage mounts the streamlined photo story',editorialHome.includes('jh-photo-story')&&editorialHome.includes('photoGallery.slice(0,6)')],
  ['editorial homepage mounts living spotlight',editorialHome.includes('LazyMagicBento')&&editorialHome.includes('LazyDitherVeil')],
- ['editorial homepage ordering is content-first',(()=>{const order=['jh-hero','jh-intro','jh-dark-section','jh-events','jh-photo-story','jh-activities','<JYCNowStrip limit={3}/>','jh-history','jh-people','jh-final'];const positions=order.map(token=>editorialHome.indexOf(token));return positions.every(i=>i>=0)&&positions.every((i,n)=>n===0||i>positions[n-1])})()],
+ ['editorial homepage ordering is content-first',(()=>{const order=['jh-hero','jh-intro','jh-dark-section','jh-events','jh-photo-story','jh-activities','<JYCNowStrip limit={3}/>','jh-snapshot','jh-people','jh-social','jh-final'];const positions=order.map(token=>editorialHome.indexOf(token));return positions.every(i=>i>=0)&&positions.every((i,n)=>n===0||i>positions[n-1])})()],
  ['bot context labels exist',bot.includes('Explore hubs')&&bot.includes('Find an event')&&bot.includes('Explore archive')],
  ['bot stays above mobile dock',bot.includes('bottom:calc(94px + env(safe-area-inset-bottom))')],
  ['assistant quick routes are contextual',assistant.includes("context==='clubs'")&&assistant.includes("context==='events'")&&assistant.includes("context==='gallery'")],
