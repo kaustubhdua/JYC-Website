@@ -15,7 +15,7 @@ const checks=[
  ['retired Projects/Impact/FAQ navigation is absent',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'"),],
  ['homepage retired Impact section is absent',!home.includes('jyc-v1-impact')&&!home.includes('HIGHLIGHTS · IMPACT')],
  ['homepage achievements section remains available',home.includes("nav('/achievements')")&&home.includes('Explore Achievements')],
- ['DriftWall presets 1, 2 and 4 are wired',home.includes('<PhotoChapters/>')&&home.includes('jh-photo-story')],
+ ['homepage uses restrained React Bits signatures',home.includes('LazyMagicBento')&&home.includes('LazyDitherVeil')&&!home.includes('LazyDriftWall')&&!home.includes('<PhotoChapters/>')],
  ['only one DriftWall instance is mounted on the homepage',home.includes('LazyMagicBento')&&home.includes('LazyDitherVeil')],
  ['DriftWall surface has desktop/tablet/mobile height reservations',homeCss.includes('.jh-photo-grid')&&homeCss.includes('@media(max-width:680px)')],
  ['public layout has min-width and wrapping guards',publicCss.includes('min-width:0')&&publicCss.includes('overflow-wrap:anywhere')],
