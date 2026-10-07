@@ -36,8 +36,7 @@ export function JYCWebGLShowcase(){
          ref={ref}
          class="jyc-webgl-model"
          src={MODEL}
-         alt="Interactive humanoid android representing the technical spirit of JIIT Youth Club 128"
-         interaction-prompt="auto"
+         alt="3D humanoid android representing the technical spirit of JIIT Youth Club 128"
          shadow-intensity="0.7"
          shadow-softness="0.8"
          exposure="0.95"
@@ -45,7 +44,7 @@ export function JYCWebGLShowcase(){
          field-of-view="26deg"
          loading="lazy"
          reveal="auto"
-         aria-label="Interactive JYC 128 campus bot"
+         aria-label="JYC 128 technical spirit 3D visual"
        />
        <div className="jyc-webgl-crosshair" aria-hidden="true"><span/><span/></div>
        <div className="jyc-webgl-fallback" aria-hidden={ready||failed?'true':'false'}>
