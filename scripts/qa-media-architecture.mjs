@@ -34,6 +34,8 @@ const checks=[
  ['public gallery supports shareable photo URLs',read('src/jyc57-experience.jsx').includes("/gallery?photo=")&&read('src/jyc57-experience.jsx').includes('params.get(\'photo\')')],
  ['public gallery has published album routes',main.includes("clean.startsWith('/gallery/')")&&read('src/jyc57-experience.jsx').includes("/gallery/'+encodeURIComponent(value)")&&read('src/jyc57-experience.jsx').includes("JYC_SOURCE_ARCHIVE_ALBUMS")&&source.includes('JYC_SOURCE_ARCHIVE_ALBUMS')],
  ['source archive exposes deterministic album slugs',source.includes('albumSlugify')&&source.includes('albumSlug:item.albumSlug||albumSlugify(association)')],
+ ['production build generates real image dimensions',read('package.json').includes('generate-image-manifest.mjs')&&read('scripts/generate-image-manifest.mjs').includes('readUInt32BE(16)')&&read('scripts/generate-image-manifest.mjs').includes("RIFF")],
+ ['gallery consumes generated image dimensions',read('src/jyc57-experience.jsx').includes("fetch('/image-manifest.json'")&&read('src/jyc57-experience.jsx').includes('imageManifest[g.url]?.width')],
  ['public gallery supports mobile swipe and zoom',read('src/jyc57-experience.jsx').includes('onTouchStart')&&read('src/jyc57-experience.jsx').includes('setZoom')],
  ['public gallery uses metadata filters and progressive rendering',read('src/jyc57-experience.jsx').includes('visibleCount')&&read('src/jyc57-experience.jsx').includes("setFilter('club'")],
 ];
