@@ -122,8 +122,8 @@
       "permanent": true
     },
     {
-      "source": "/leadership",
-      "destination": "/team",
+      "source": "/team",
+      "destination": "/leadership",
       "permanent": true
     },
     {
