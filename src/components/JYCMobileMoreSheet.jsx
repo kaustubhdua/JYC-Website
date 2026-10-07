@@ -1,6 +1,6 @@
 import React,{useEffect,useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {JYC_CONTACTS} from '../jyc-socials.js';
+import {JYC_CONTACTS} from '../lib/site-config.js';
 
 const safeUrl=value=>{try{const u=new URL(String(value||''),window.location.origin);return ['http:','https:'].includes(u.protocol)?u.href:''}catch{return ''}};
 
