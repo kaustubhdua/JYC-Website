@@ -20,7 +20,7 @@ add('README does not carry superseded V45/V47 product sections',!readme.includes
 add('README does not advertise retired public utilities',!readme.includes('Standalone JYC Assistant')&&!readme.includes('Featured JAI 2026 popup')&&!readme.includes('public academic calendar'));
 add('club-only public boundary is explicit',config.includes('Official organisational website for JYC 128 identity')&&config.includes('student account area'));
 add('canonical public routes remain JYC-only',[
-  '/about','/history','/clubs','/events','/gallery','/team','/archive','/recruitment','/announcements','/calendar','/contact'
+  '/about','/leadership','/clubs','/events','/gallery','/announcements','/calendar','/contact','/join-jyc'
 ].every(route=>config.includes(route)));
 add('public staff surface is not exposed',!main.includes('footer-admin-link')&&!main.includes('more-sheet-staff')&&!main.includes('search-admin-tools'));
 add('student-platform UI is not mounted',!/<(MyJYC|AccountLogin|QRSharePage|SiteAtmosphere)\b/.test(main));
