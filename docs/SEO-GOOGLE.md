@@ -38,7 +38,7 @@ The website's own search remains a fast client-side discovery tool for published
 
 Google Search should discover the official organisational website:
 
-Identity → Leadership → Clubs/Hubs → Events → Achievements → Memories → Announcements → Contact
+Identity → About → Leadership → Clubs/Hubs → Events → Gallery → Announcements → Contact
 
 It must not expose or promote the private Control Center, student accounts, academic utilities, attendance, passes, certificates or other excluded V1 surfaces.
 
