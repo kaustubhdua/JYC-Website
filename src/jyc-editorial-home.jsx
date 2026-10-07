@@ -54,13 +54,21 @@ export function JYCEditorialHome({data}){
          <span className="jh-photo-label">JYC 128 / CAMPUS LIFE</span>
          <span className="jh-photo-index">01 — MOMENTS</span>
        </div>
+       {photoGallery[1]&&<div className="jh-hero-secondary jh-hero-secondary-a editorial-reveal" aria-hidden="true">
+         <Img src={photoGallery[1].url} alt="" width="720" height="520" loading="lazy"/>
+         <span>02 / COMMUNITY</span>
+       </div>}
+       {photoGallery[2]&&<div className="jh-hero-secondary jh-hero-secondary-b editorial-reveal" aria-hidden="true">
+         <Img src={photoGallery[2].url} alt="" width="640" height="480" loading="lazy"/>
+         <span>03 / MOMENT</span>
+       </div>}
        <div className="jh-dither" aria-hidden="true">
          <Suspense fallback={null}><LazyDitherVeil src="/jyc-logo-official.webp" fit="contain" pattern="floyd" pixelSize={3} levels={2} palette="duotone" inkColor="#a82420" paperColor="#f5f1e6" contrast={1.05} revealRadius={130} softness={0.7} linger={0.8} rim={0} wander={false}/></Suspense>
        </div>
      </div>
    </section>
 
-   <section className="jh-intro jh-container">
+   <section className="jh-intro jh-container editorial-reveal">
      <div className="jh-section-number">01 / THE ORGANISATION</div>
      <div className="jh-intro-grid">
        <h2>The student organisation behind the experiences that make <em>campus life move.</em></h2>
@@ -69,7 +77,7 @@ export function JYCEditorialHome({data}){
      <div className="jh-word-rail"><span>CLUBS</span><i>×</i><span>EVENTS</span><i>×</i><span>CULTURE</span><i>×</i><span>COMPETITION</span><i>×</i><span>COMMUNITY</span></div>
    </section>
 
-   <section className="jh-dark-section">
+   <section className="jh-dark-section editorial-reveal">
      <div className="jh-container">
        <div className="jh-section-head light"><div><div className="jh-section-number">02 / FIND YOUR SPACE</div><h2>Many communities.<br/><em>One campus.</em></h2></div><button type="button" className="jh-text-link light" onClick={()=>nav('/clubs')}>Explore all clubs <span>↗</span></button></div>
        <div className="jh-family-grid">
@@ -81,7 +89,7 @@ export function JYCEditorialHome({data}){
      </div>
    </section>
 
-   <section className="jh-container jh-events">
+   <section className="jh-container jh-events editorial-reveal">
      <div className="jh-section-head"><div><div className="jh-section-number">03 / WHAT’S NEXT</div><h2>What’s happening<br/><em>at JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/events')}>View all events <span>↗</span></button></div>
      {featured ? <div className="jh-featured-event" onClick={()=>nav('/events/'+slug(featured.title))}>
        <div className="jh-event-image"><Img src={eventImage(featured)} alt={featured.title+' event poster'} loading="lazy"/><span>FEATURED EVENT</span></div>
@@ -90,7 +98,7 @@ export function JYCEditorialHome({data}){
      {upcoming.slice(1).length>0&&<div className="jh-event-list">{upcoming.slice(1).map((e,i)=><button type="button" key={e.id||e.title} onClick={()=>nav('/events/'+slug(e.title))}><span>{dateLabel(e.date)}</span><strong>{e.title}</strong><small>{e.club||'JYC'} · {e.venue||'JIIT 128'}</small><b>→</b></button>)}</div>}
    </section>
 
-   <section className="jh-photo-story">
+   <section className="jh-photo-story editorial-reveal">
      <div className="jh-container">
        <div className="jh-section-head"><div><div className="jh-section-number">04 / CAMPUS IN MOTION</div><h2>Real people.<br/><em>Real moments.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/gallery')}>Open gallery <span>↗</span></button></div>
        <div className="jh-photo-grid">
@@ -99,14 +107,14 @@ export function JYCEditorialHome({data}){
      </div>
    </section>
 
-   <section className="jh-activities jh-container">
+   <section className="jh-activities jh-container editorial-reveal">
      <div className="jh-section-head"><div><div className="jh-section-number">05 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>From culture and sport to technical communities, performances, workshops and competitions, JYC creates places to take part.</p></div>
      <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:photoGallery[i%Math.max(1,photoGallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="168,36,32" clickEffect/></Suspense>
    </section>
 
    <JYCNowStrip limit={3}/>
 
-   <section className="jh-snapshot jh-container" aria-labelledby="jh-snapshot-title">
+   <section className="jh-snapshot jh-container editorial-reveal" aria-labelledby="jh-snapshot-title">
      <div className="jh-section-head"><div><div className="jh-section-number">07 / LIVE SNAPSHOT</div><h2 id="jh-snapshot-title">The JYC ecosystem,<br/><em>right now.</em></h2></div><p>Useful, source-backed signals instead of inflated vanity numbers.</p></div>
      <div className="jh-snapshot-grid">
        <article><b>{Object.keys(JYC_HUB_CONTENT).length}</b><span>documented communities</span></article>
@@ -116,12 +124,12 @@ export function JYCEditorialHome({data}){
      </div>
    </section>
 
-   <section className="jh-people jh-container">
+   <section className="jh-people jh-container editorial-reveal">
      <div className="jh-section-head"><div><div className="jh-section-number">08 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/leadership')}>Meet leadership <span>↗</span></button></div>
      {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/leadership')}><div><Img src={m.photo||m.image} alt={m.name||'JYC team member'} loading="lazy"/></div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
    </section>
 
-   <section className="jh-social jh-container" aria-labelledby="jh-social-title">
+   <section className="jh-social jh-container editorial-reveal" aria-labelledby="jh-social-title">
      <div><div className="jh-section-number">09 / FOLLOW JYC</div><h2 id="jh-social-title">Stay close to campus life.</h2><p>Official JYC channels carry live notices and community updates. The website remains the source of truth for published event and club information.</p></div>
      <div className="jh-social-links">
        <a href={JYC_SOCIALS.JYC.instagram} target="_blank" rel="noopener noreferrer"><span>Instagram</span><b>{JYC_SOCIALS.JYC.instagramHandle}</b><i>↗</i></a>
@@ -130,7 +138,7 @@ export function JYCEditorialHome({data}){
      </div>
    </section>
 
-   <section className="jh-final">
+   <section className="jh-final editorial-reveal">
      <div className="jh-container jh-final-grid"><div><div className="jh-section-number">10 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
    </section>
  </main>;
