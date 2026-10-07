@@ -19,7 +19,7 @@ const checks=[
  ['calendar supports saved events',extra.includes('jyc-saved-event-')&&extra.includes('My saved')],
  ['admin menu uses readable labels',admin.includes('admin-nav-label')&&admin.includes("['calendar','Academic Calendar']")&&admin.includes("['platform','Campus Map']")],
  ['student platform tools removed from public shell',!main.includes('STUDENT TOOLS · SUPPORTING JYC')&&!main.includes('student-tools-strip reveal')&&!main.includes('JIIT Shelf + Pulse')&&!main.includes('student guide')],
- ['legacy utility pages are redirects',main.includes("if(clean==='/achievements'||clean==='/settings')return <Navigate to=\"/about\" replace/>")],
+ ['retired achievement route redirects away',main.includes("if(clean==='/achievements')return <Navigate to=\"/about\" replace/>")],
  ['JYC story is clickable',main.includes('club-story-button')&&main.includes("nav('/about')")],
  ['map has campus summary controls',map.includes('campus-map-summary')&&map.includes('Search JYC venue')],
  ['Edge health check exists',fs.readFileSync(path.join(root,'supabase/functions/admin-management/index.ts'),'utf8').includes("body.action === 'health'")],
