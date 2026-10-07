@@ -131,7 +131,7 @@ export function JYCEditorialHome({data}){
    </section>
 
    <section className="jh-final">
-     <div className="jh-container jh-final-grid"><div><div className="jh-section-number">09 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
+     <div className="jh-container jh-final-grid"><div><div className="jh-section-number">10 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
    </section>
  </main>;
 }
