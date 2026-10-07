@@ -1,3 +1,4 @@
+/* Adapted from the official React Bits Dock styles; JYC theme overrides are below. */
 .dock-outer {
   margin: 0 0.5rem;
   display: flex;
