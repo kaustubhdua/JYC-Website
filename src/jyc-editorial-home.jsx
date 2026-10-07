@@ -14,6 +14,7 @@ const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
 const DRIFT_WALL_PRESETS=['1','2','4'];
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const eventPath=e=>`/events/${slug(e?.slug||e?.title)}`;
 const media=v=>v?.url||v?.src||v?.image||v?.imageUrl||'';
 const safeUrl=v=>{try{const u=new URL(String(v||''),window.location.origin);return ['http:','https:'].includes(u.protocol)?u.href:''}catch{return ''}};
 const dateMs=e=>{const d=new Date(String(e?.date||'')+'T'+String(e?.start||'00:00'));return Number.isNaN(d.getTime())?Infinity:d.getTime()};
@@ -85,11 +86,11 @@ export function JYCEditorialHome({data}){
 
    <section className="jh-container jh-events">
      <div className="jh-section-head"><div><div className="jh-section-number">03 / WHAT’S NEXT</div><h2>What’s happening<br/><em>at JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/events')}>View all events <span>↗</span></button></div>
-     {featured ? <div className="jh-featured-event" onClick={()=>nav('/events/'+slug(featured.title))}>
+     {featured ? <div className="jh-featured-event" onClick={()=>nav(eventPath(featured))}>
        <div className="jh-event-image"><Img src={eventImage(featured)} alt={featured.title+' event poster'} loading="lazy"/><span>FEATURED EVENT</span></div>
        <div className="jh-event-copy"><p className="jh-event-meta">{dateLabel(featured.date)} · JIIT 128 · {featured.club||'JYC'}</p><h3>{featured.title}</h3><p>{featured.description||'Discover the official event record, schedule and registration information.'}</p><div className="jh-event-details"><span>VENUE <b>{featured.venue||'JIIT 128'}</b></span><span>TIME <b>{featured.start||'TBA'}</b></span></div><button type="button" className="jh-btn jh-btn-primary">View Event <span>↗</span></button></div>
      </div> : <div className="jh-empty">No published upcoming events are currently available.</div>}
-     {upcoming.slice(1).length>0&&<div className="jh-event-list">{upcoming.slice(1).map((e,i)=><button type="button" key={e.id||e.title} onClick={()=>nav('/events/'+slug(e.title))}><span>{dateLabel(e.date)}</span><strong>{e.title}</strong><small>{e.club||'JYC'} · {e.venue||'JIIT 128'}</small><b>→</b></button>)}</div>}
+     {upcoming.slice(1).length>0&&<div className="jh-event-list">{upcoming.slice(1).map((e,i)=><button type="button" key={e.id||e.title} onClick={()=>nav(eventPath(e))}><span>{dateLabel(e.date)}</span><strong>{e.title}</strong><small>{e.club||'JYC'} · {e.venue||'JIIT 128'}</small><b>→</b></button>)}</div>}
    </section>
 
    <section className="jh-photo-story">
