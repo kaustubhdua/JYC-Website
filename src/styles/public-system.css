@@ -347,7 +347,7 @@ img{max-width:100%}svg{max-width:100%}.page a,.section a{text-decoration-thickne
 .jyc57-filter-group{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start}
 .jyc57-filter-group>span{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:9px}
 .jyc57-filter-group>div{display:flex;gap:7px;flex-wrap:wrap}
-.jyc57-filter-group button{min-height:38px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:600 12px "Space Grotesk";cursor:pointer}
+.jyc57-filter-group button{min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font:600 12px "Space Grotesk";cursor:pointer}
 .jyc57-filter-group button:hover,.jyc57-filter-group button.active{background:var(--ink);border-color:var(--ink);color:var(--surface)}
 .jyc57-featured{margin:30px 0 42px}
 .jyc57-section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:14px}
@@ -434,5 +434,5 @@ img{max-width:100%}svg{max-width:100%}.page a,.section a{text-decoration-thickne
 
 .jyc57-album-context{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 16px;color:var(--text-muted);font-size:.82rem}
 .jyc57-related-albums{display:flex;gap:7px;flex-wrap:wrap}
-.jyc57-related-albums button{border:1px solid var(--border-tech);background:var(--bg-card);color:var(--text-primary);border-radius:999px;padding:7px 11px;cursor:pointer}
+.jyc57-related-albums button{min-height:44px;border:1px solid var(--border-tech);background:var(--bg-card);color:var(--text-primary);border-radius:999px;padding:7px 11px;cursor:pointer}
 .jyc57-related-albums button:hover,.jyc57-related-albums button:focus-visible{border-color:var(--accent-red);color:var(--accent-red)}
