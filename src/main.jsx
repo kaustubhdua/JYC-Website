@@ -22,6 +22,7 @@ import JYCHistory,{HistoryTeaser} from './jyc-history-page.jsx';
 import {JYCBrandEditorial} from './jyc-next-experience.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
 import {FeaturedEventPopup} from './featured-event-popup.jsx';
+import {MotionConfig} from 'motion/react';
 
 
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
@@ -1036,4 +1037,4 @@ function Fest({data}){
 
 
 const rootElement=document.getElementById('root');
-if(rootElement){createRoot(rootElement).render(<ErrorBoundary><BrowserRouter><App/></BrowserRouter></ErrorBoundary>);}
+if(rootElement){createRoot(rootElement).render(<MotionConfig reducedMotion="user"><ErrorBoundary><BrowserRouter><App/></BrowserRouter></ErrorBoundary></MotionConfig>);}
