@@ -27,7 +27,8 @@
     "qa:events:128": "node scripts/qa-events-128.mjs",
     "qa:socials:128": "node scripts/qa-jyc-social-scope.mjs",
     "qa:trust": "node scripts/qa-trust-contract.mjs",
-    "qa:v58": "node scripts/qa-v58-design.mjs"
+    "qa:v58": "node scripts/qa-v58-design.mjs",
+    "qa:v59": "node scripts/qa-v59-smoothness.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
