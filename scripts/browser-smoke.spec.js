@@ -203,8 +203,12 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
 
 test('event and gallery navigation use canonical, shareable URLs', async ({ page }) => {
   await page.goto(base + '/events', { waitUntil: 'domcontentloaded' });
-  const eventLink = page.locator('a[href^="/events/"]').first();
-  if (await eventLink.count()) expect(await eventLink.getAttribute('href')).not.toMatch(/\/events\/(undefined|null|\d{4,})$/);
+  const eventCard = page.locator('.jyc57-event-card').first();
+  if (await eventCard.count()) {
+    await eventCard.click();
+    await expect.poll(() => new URL(page.url()).pathname).toMatch(/^\/events\/[a-z0-9-]+$/);
+    await expect.poll(() => new URL(page.url()).pathname).not.toMatch(/^[0-9a-f-]{20,}$/i);
+  }
   await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
   const eagerImages = await page.locator('img[loading="eager"]').count();
   expect(eagerImages).toBeLessThanOrEqual(4);
