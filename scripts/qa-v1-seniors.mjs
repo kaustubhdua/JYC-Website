@@ -39,8 +39,9 @@ add('Verified official registration can remain actionable on planned events',mai
 add('Event template contains rules, eligibility, prizes and FAQs',main.includes('rules:[]')&&main.includes('eligibility:')&&main.includes('prizes:[]')&&main.includes('faqs:[]'));
 add('Team structure follows Faculty → Apex → Core → Clubs & Hubs',main.includes('Faculty → Apex → Core → Clubs & Hubs')&&main.includes('JYC Apex'));
 add('Clubs have recruitment and social fields',main.includes("recruitment:{on:false")&&main.includes("instagram:''")&&main.includes("linkedin:''"));
-add('Announcements and achievements have dedicated public routes',main.includes("clean==='/announcements'")&&main.includes("clean==='/achievements'"));
-add('Gallery and archive remain public',main.includes("clean==='/gallery'")&&main.includes("clean==='/archive'"));
+add('Announcements and Join JYC have dedicated public routes',main.includes("clean==='/announcements'")&&main.includes("clean==='/join-jyc'"));
+add('Achievements page is intentionally retired',!main.includes('function Achievements(')&&main.includes("if(clean==='/achievements')return <Navigate to=\"/about\" replace/>;"));
+add('Gallery remains public in V1',main.includes("clean==='/gallery'"));
 add('Find Your Community discovery is present',main.includes('JYC COMMUNITY MAP')&&main.includes('Build & code')&&main.includes('Leadership & events'));
 add('Recruitment exposes deadlines and application links',extra.includes('RecruitmentHub')&&extra.includes('recruitment.deadline')&&extra.includes('recruitment.link'));
 add('Calendar exposes Google Calendar and device ICS export',extra.includes('Google Calendar ↗')&&extra.includes('Add JYC dates to device')&&extra.includes('text/calendar'));
