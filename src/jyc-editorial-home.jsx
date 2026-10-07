@@ -3,19 +3,15 @@ import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
-import {PhotoChapters} from './jyc-next-experience.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
 
 const LazyDitherVeil=lazy(()=>import('./react-bits/DitherVeil.jsx'));
 const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
-const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
-const DRIFT_WALL_PRESETS=['1','2','4'];
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const media=v=>v?.url||v?.src||v?.image||v?.imageUrl||'';
-const safeUrl=v=>{try{const u=new URL(String(v||''),window.location.origin);return ['http:','https:'].includes(u.protocol)?u.href:''}catch{return ''}};
 const dateMs=e=>{const d=new Date(String(e?.date||'')+'T'+String(e?.start||'00:00'));return Number.isNaN(d.getTime())?Infinity:d.getTime()};
 const dateLabel=v=>{const d=new Date(String(v||''));return Number.isNaN(d.getTime())?'DATE TBA':d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
 const hubImage=(name,i=0)=>sourceHubMedia(name)?.photos?.[i%Math.max(1,sourceHubMedia(name)?.photos?.length||1)]||FALLBACK;
@@ -25,11 +21,14 @@ function Img({src,alt,...props}){return <img {...props} src={src||FALLBACK} alt=
 
 export function JYCEditorialHome({data}){
  const nav=useNavigate();
- const visualArchive=useMemo(()=>mergeSourceGallery().filter(x=>media(x)).slice(0,24).map((x,i)=>({id:x.id||i,src:media(x),alt:x.alt||x.title||x.caption||'JYC campus moment'})),[]);
  const clubs=useMemo(()=>Array.isArray(data?.clubs)?data.clubs.filter(c=>c?.published&&c?.status!=='archived').slice().sort((a,b)=>String(a.name).localeCompare(String(b.name))):[],[data?.clubs]);
  const events=useMemo(()=>Array.isArray(data?.events)?data.events.filter(e=>e?.published&&!e?.archived).slice().sort((a,b)=>dateMs(a)-dateMs(b)):[],[data?.events]);
- const upcoming=events.slice(0,4);
+ const now=Date.now();
+ const eventEndMs=e=>{const endDate=e?.dateEnd||e?.date;if(!endDate)return NaN;const end=new Date(String(endDate)+'T'+String(e?.end||'23:59'));return end.getTime()};
+ const upcoming=events.filter(e=>{const start=dateMs(e);const end=eventEndMs(e);return Number.isFinite(start)&&Number.isFinite(end)&&end>=now}).slice(0,4);
  const gallery=useMemo(()=>mergeSourceGallery(data?.gallery||[]).filter(g=>g?.url),[data?.gallery]);
+ const photoGallery=useMemo(()=>gallery.filter(g=>!/(qr|logo|banner|poster|graphic|artwork|thank you|follow us|scan)/i.test(String(g?.caption||'')+' '+String(g?.alt||g?.title||''))&&(g?.mediaKind==='photo'||!g?.mediaKind)),[gallery]);
+ const heroPhoto=photoGallery[0]||gallery[0]||null;
  const team=(data?.team||[]).filter(x=>x?.published===true).slice(0,4);
  const families=JYC_HUB_FAMILIES.map(f=>({family:f,hubs:Object.entries(JYC_HUB_CONTENT).filter(([,p])=>p.family===f).map(([name,p])=>({name,...p}))}));
  const activities=JYC_PUBLIC_ACTIVITIES.slice(0,6);
@@ -49,7 +48,7 @@ export function JYCEditorialHome({data}){
      </div>
      <div className="jh-hero-visual">
        <div className="jh-photo-frame">
-         <Img src={gallery[0]?.url||FALLBACK} alt={gallery[0]?.alt||'JIIT Youth Club 128 campus moment'} fetchPriority="high"/>
+         <Img src={heroPhoto?.url||FALLBACK} alt={heroPhoto?.alt||heroPhoto?.caption||'JIIT Youth Club 128 campus moment'} width="1600" height="1000" fetchPriority="high"/>
          <div className="jh-photo-overlay"/>
          <span className="jh-photo-label">JYC 128 / CAMPUS LIFE</span>
          <span className="jh-photo-index">01 — MOMENTS</span>
@@ -68,8 +67,6 @@ export function JYCEditorialHome({data}){
      </div>
      <div className="jh-word-rail"><span>CLUBS</span><i>×</i><span>EVENTS</span><i>×</i><span>CULTURE</span><i>×</i><span>COMPETITION</span><i>×</i><span>COMMUNITY</span></div>
    </section>
-
-   <PhotoChapters/>
 
    <section className="jh-dark-section">
      <div className="jh-container">
@@ -96,29 +93,29 @@ export function JYCEditorialHome({data}){
      <div className="jh-container">
        <div className="jh-section-head"><div><div className="jh-section-number">04 / CAMPUS IN MOTION</div><h2>Real people.<br/><em>Real moments.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/gallery')}>Open gallery <span>↗</span></button></div>
        <div className="jh-photo-grid">
-         {gallery.slice(0,6).map((g,i)=><button type="button" key={g.id||i} onClick={()=>nav('/gallery')} className={'jh-gallery-tile tile-'+i}><Img src={g.url} alt={g.alt||g.caption||'JYC 128 campus moment'} loading="lazy"/><span>{g.caption||g.title||'JYC 128'}</span></button>)}
+         {photoGallery.slice(0,6).map((g,i)=><button type="button" key={g.id||i} onClick={()=>nav('/gallery')} className={'jh-gallery-tile tile-'+i}><Img src={g.url} alt={g.alt||g.caption||'JYC 128 campus moment'} loading="lazy"/><span>{g.caption||g.title||'JYC 128'}</span></button>)}
        </div>
      </div>
    </section>
 
    <section className="jh-activities jh-container">
      <div className="jh-section-head"><div><div className="jh-section-number">05 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>From culture and sport to technical communities, performances, workshops and competitions, JYC creates places to take part.</p></div>
-     <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:gallery[i%Math.max(1,gallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="168,36,32" clickEffect/></Suspense>
+     <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:photoGallery[i%Math.max(1,photoGallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="168,36,32" clickEffect/></Suspense>
    </section>
 
-   <section className="jh-archive-section" aria-labelledby="jh-archive-title"><div className="jh-section-head"><div><span className="jh-section-number">06 / MOMENTS</span><h2 id="jh-archive-title">The visual archive.</h2><p>Published JYC photography, posters and campus moments — a living record of student life at 128.</p></div><button type="button" className="jh-text-link" onClick={()=>nav("/gallery")}>Open gallery →</button></div><Suspense fallback={<div className="jh-archive-fallback" aria-hidden="true"/>}><LazyDriftWall items={gallery.slice(0,18).map((g,i)=>({id:g.id||i,src:g.url,alt:g.alt||g.caption||g.title||'JYC campus moment'}))} columns={3} tileWidth={240} tileHeight={160} gap={14} tilt={5} turn={-4} perspective={1100} depth={45} speed={1.5} direction="up" variance={.08} parallax={.05} pauseOnHover lift={10} fade={.5} dim={.25} ariaLabel="JYC visual archive"/></Suspense></section>\n\n   <JYCNowStrip limit={3}/>
+   <JYCNowStrip limit={3}/>
 
    <section className="jh-history">
-     <div className="jh-container jh-history-grid"><div><div className="jh-section-number">06 / THROUGH THE YEARS</div><h2>JYC is not a moment.<br/><em>It is a continuity.</em></h2><p>Official reports, events and campus photography give JYC a history worth remembering.</p><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/history')}>Explore History <span>→</span></button><button type="button" className="jh-btn" onClick={()=>nav('/achievements')}>Explore Achievements <span>→</span></button></div><div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div>
+     <div className="jh-container jh-history-grid"><div><div className="jh-section-number">07 / THROUGH THE YEARS</div><h2>JYC is not a moment.<br/><em>It is a continuity.</em></h2><p>Official reports, events and campus photography give JYC a history worth remembering.</p><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/history')}>Explore History <span>→</span></button><button type="button" className="jh-btn" onClick={()=>nav('/achievements')}>Explore Achievements <span>→</span></button></div><div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div>
    </section>
 
    <section className="jh-people jh-container">
-     <div className="jh-section-head"><div><div className="jh-section-number">07 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button></div>
+     <div className="jh-section-head"><div><div className="jh-section-number">08 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button></div>
      {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><div><Img src={m.photo||m.image} alt={m.name||'JYC team member'} loading="lazy"/></div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
    </section>
 
    <section className="jh-final">
-     <div className="jh-container jh-final-grid"><div><div className="jh-section-number">08 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
+     <div className="jh-container jh-final-grid"><div><div className="jh-section-number">09 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
    </section>
  </main>;
 }
