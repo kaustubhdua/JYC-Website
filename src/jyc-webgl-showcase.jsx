@@ -21,11 +21,11 @@ export function JYCWebGLShowcase(){
        <div className="jh-section-number">06 / JYC IN MOTION</div>
        <p className="jyc-webgl-kicker">INTERACTIVE WEBGL / JIIT 128</p>
        <h2 id="jyc-webgl-title">A campus that<br/><em>looks forward.</em></h2>
-       <p className="jyc-webgl-lead">A small signature WebGL moment for JYC — technical, tactile and deliberately restrained. Explore a restrained 3D campus moment while the surrounding visual system explains how JYC connects people, communities and events.</p>
+       <p className="jyc-webgl-lead">A small signature WebGL moment for JYC — technical, tactile and deliberately restrained. The model is a visual accent, while the surrounding experience explains how JYC connects people, communities and events.</p>
        <div className="jyc-webgl-meta">
          <span><b>01</b> LOOK</span>
-         <span><b>02</b> EXPLORE</span>
-         <span><b>03</b> DISCOVER</span>
+         <span><b>02</b> EXPERIENCE</span>
+         <span><b>03</b> CONNECT</span>
        </div>
        <a className="jyc-webgl-source" href="https://3dassets.dev/assets/robots-and-drones-kit-humanoid-android-88d6d911" target="_blank" rel="noopener noreferrer">Model: Humanoid Android · CC0 ↗</a>
      </div>
