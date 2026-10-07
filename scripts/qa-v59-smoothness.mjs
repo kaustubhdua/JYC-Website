@@ -13,7 +13,7 @@ const checks=[
   ['homepage selects a real-photo hero before fallback media',home.includes('photoGallery')&&home.includes('heroPhoto=photoGallery[0]||gallery[0]||null')],
   ['homepage filters upcoming events by end time',home.includes('eventEndMs')&&home.includes('end>=now')&&home.includes('events.filter')],
   ['homepage photo story excludes obvious decorative assets',home.includes('qr|logo|banner|poster|graphic|artwork')],
-  ['homepage section numbering is continuous after visual simplification',home.includes('01 / THE ORGANISATION')&&home.includes('02 / FIND YOUR SPACE')&&home.includes('03 / WHAT’S NEXT')&&home.includes('04 / CAMPUS IN MOTION')&&home.includes('05 / WHAT JYC MAKES POSSIBLE')&&home.includes('07 / LIVE SNAPSHOT')&&home.includes('08 / THE PEOPLE')&&home.includes('09 / GET INVOLVED')],
+  ['homepage section numbering is continuous after visual simplification',home.includes('01 / THE ORGANISATION')&&home.includes('02 / FIND YOUR SPACE')&&home.includes('03 / WHAT’S NEXT')&&home.includes('04 / CAMPUS IN MOTION')&&home.includes('05 / WHAT JYC MAKES POSSIBLE')&&home.includes('07 / LIVE SNAPSHOT')&&home.includes('08 / THE PEOPLE')&&home.includes('10 / GET INVOLVED')],
   ['homepage image reserves intrinsic dimensions for the hero',home.includes('width="1600" height="1000"')],
   ['existing React Bits QA script remains available',fs.existsSync(path.join(root,'scripts/qa-react-bits.mjs'))],
   ['native registration uses a real submit button',extra.includes('type="submit" className="btn" disabled={busy}>{busy?\'Submitting…\':\'Submit registration\'}')],
