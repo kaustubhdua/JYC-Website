@@ -14,7 +14,7 @@ const checks=[
  ['release version is current V57 line',/^57\.\d+\.\d+$/.test(pkg.version)],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
  ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jh-final')],
- ['Club navigation links include clubs/events/team/contact',main.includes("['/clubs','Clubs']")&&main.includes("['/events','Events']")&&main.includes("['/team','Team']")&&main.includes("['/contact','Contact']")],
+ ['Club navigation links include clubs/events/team/contact',main.includes("['/clubs','Clubs']")&&main.includes("['/events','Events']")&&(main.includes("['/leadership','Leadership']")||main.includes("['/leadership','Leadership']"))&&main.includes("['/contact','Contact']")],
  ['public club URLs use slugs',main.includes("nav('/clubs/'+slug(c.name))")],
  ['public event URLs use slugs',main.includes("nav('/events/'+slug(e.title))")],
  ['detail canonical URLs use slugs',main.includes('const canonicalPath=club?`/clubs/${slug(club.name)}`')&&main.includes('`/events/${slug(event.title)}'),],
