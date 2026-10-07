@@ -308,7 +308,7 @@ function Team({data}){
  };
  const roleFallback=members.length?null:<State title="The JYC team is being prepared." text="Official team profiles will appear here when JYC publishes them from the Control Center."><Button secondary onClick={()=>nav('/about')}>Learn about JYC →</Button></State>;
  return <section className="section page team-page jyc-team-page unified-public-page">
-  <Breadcrumbs items={[{label:'Team'}]}/><EcosystemContextRail/>
+  <Breadcrumbs items={[{label:'Leadership'}]}/><EcosystemContextRail/>
   <div className="team-hero-panel reveal">
    <div><span className="eyebrow">JYC 128 · AY 2026–27</span><h1>Meet the people<br/><em>who move JYC.</em></h1><p>Faculty guidance, student leadership and committee heads form the people layer behind JYC communities, events and campus experiences.</p></div>
    <div className="team-hero-identity" aria-hidden="true"><div className="team-hero-logo"><LogoImage alt=""/></div><b>PEOPLE · PURPOSE · PARTICIPATION</b></div>
@@ -481,7 +481,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/calendar':'JYC 128 Event Calendar | JIIT Youth Club',
   '/event-calendar':'JYC 128 Event Calendar | JIIT Youth Club',
 
-  '/achievements':'JYC Achievements & Wall of Fame | JIIT Noida',
   '/join-jyc':'Join JYC | JIIT Youth Club',
   '/announcements':'JYC Announcements & Updates | JIIT Noida',
   '/updates':'JYC Now · Recent JYC & Hub Updates | JIIT Youth Club',
@@ -506,7 +505,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
   '/updates':'Recent verified public updates from JYC and its published community channels, presented as an editorial JYC feed.',
   '/gallery':'Browse the JYC 128 visual archive by event, year and published source media.',
   '/leadership':'Meet the JYC 128 faculty advisors, apex leadership and core team.',
-  '/achievements':'JYC 128 achievements, Wall of Fame, community milestones and published outcomes.',
   '/join-jyc':'Join JYC 128 is currently coming soon. Recruitment and application opportunities will be published here when the next official cycle opens.'
  };
  const privateRoute=clean==='/admin'||clean.startsWith('/admin/');
@@ -524,7 +522,7 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  if(clean==='/history')return <>{schema}<JYCHistory data={data}/></>;
  if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
  if(clean==='/events')return <>{schema}<Events data={data}/></>;if(clean==='/fests')return isFestMode(data)?<>{schema}<FestsPage data={data}/></>:<Navigate to="/events" replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session}/></>;
- if(clean==='/gallery')return <>{schema}<Gallery data={data}/></>;if(clean==='/leadership')return <Navigate to="/team" replace/>;if(clean==='/team')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <>{schema}<ArchivePage data={data}/></>;
+ if(clean==='/gallery')return <>{schema}<Gallery data={data}/></>;if(clean==='/team')return <Navigate to="/leadership" replace/>;if(clean==='/leadership')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <>{schema}<ArchivePage data={data}/></>;
  if(clean==='/announcements')return <>{schema}<Announcements data={data}/></>;
  if(clean==='/updates')return <>{schema}<JYCNowPage data={data}/></>;if(clean==='/team')return <Navigate to="/leadership" replace/>;
  if(clean==='/achievements')return <Navigate to="/about" replace/>;if(clean==='/join-jyc')return <>{schema}<JoinJYC/></>;if(clean==='/recruitment')return <>{schema}{recruitmentEnabled(data)?<RecruitmentHub data={data}/>:<JoinJYC/>}</>;if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;if(clean==='/calendar')return <>{schema}<JYCCalendarPage data={data}/></>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/my-jyc'||clean==='/login'||clean==='/notifications')return <Navigate to="/" replace/>;;if(clean==='/settings'||clean==='/download')return <Navigate to="/about" replace/>;if(clean.startsWith('/qr/'))return <Navigate to="/events" replace/>;if(clean==='/admin'||clean.startsWith('/admin/'))return <Navigate to="/" replace/>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
@@ -536,8 +534,8 @@ function Navbar({data,admin,theme,setTheme}){
  const nav=useNavigate();const loc=useLocation();
  const [open,setOpen]=useState(false),[moreOpen,setMoreOpen]=useState(false),[search,setSearch]=useState(false),[homeSection,setHomeSection]=useState('hero');
  const shortcutRef=React.useRef('');
- const routeLinks=[['Home','/'],['About','/about'],['Clubs','/clubs'],['Events','/events'],['Gallery','/gallery'],['Leadership','/team'],['Contact','/contact']];
- const homeLinks=[['Home','hero'],['About','about'],['Clubs','clubs'],['Events','events'],['Gallery','moments'],['Team','team'],['Contact','/contact']];
+ const routeLinks=[['Home','/'],['About JYC','/about'],['Leadership','/leadership'],['Clubs','/clubs'],['Events','/events'],['Gallery','/gallery'],['Announcements','/announcements'],['Join JYC','/join-jyc'],['Calendar','/calendar'],['Contact','/contact']];
+ const homeLinks=[['Home','hero'],['About JYC','about'],['Clubs','clubs'],['Events','events'],['Gallery','moments'],['Leadership','leadership'],['Contact','/contact']];
  useEffect(()=>{
    const onKey=e=>{
      if((e.ctrlKey||e.metaKey)&&(e.key?.toLowerCase()==='k'||e.code==='KeyK')){e.preventDefault();e.stopPropagation();setSearch(true);return}
@@ -610,7 +608,6 @@ const explore=[
    ['/events','Events','Upcoming, ongoing and completed experiences'],
    ['/calendar','Event Calendar','Browse JYC events by date'],
    ['/gallery','Gallery','Event memories, years and visual archive'],
-   ['/achievements','Achievements','Wall of Fame and community outcomes'],
    ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
    ['/announcements','Announcements','Registrations, notices and JYC updates'],
    ['/join-jyc','Join JYC · Coming Soon','Official JYC recruitment will appear here when the next cycle opens'],
@@ -647,11 +644,10 @@ function Search({data,admin,close}){
   ['Clubs','Explore official JIIT student clubs, societies, communities and interests.','PAGE','/clubs'],
   ['Events','Upcoming, live and past JYC events, workshops, competitions and campus activities.','PAGE','/events'],
   ...(isFestMode(data)?[['Fests','Flagship JYC fest experiences.','PAGE','/fests']]:[]),
-  ['JYC Team','Meet the people behind JYC.','PAGE','/team'],
+  ['JYC Leadership','Meet the people behind JYC.','PAGE','/leadership'],
   ['Contact JYC','Official JYC contact information.','PAGE','/contact'],
   ['JYC Archive','Published JYC events, clubs, gallery moments and campus stories.','PAGE','/archive'],
   ['Announcements','JYC announcements, registration notices and updates.','PAGE','/announcements'],
-  ['Achievements','JYC achievements, wall of fame and published outcomes.','PAGE','/achievements'],
   ['JYC Event Calendar','Published JYC events by date.','PAGE','/calendar'],
   ['Events & venues','Find published JYC event locations.','PAGE','/events']
  ];
@@ -661,7 +657,7 @@ function Search({data,admin,close}){
   ...pageIndex.map(x=>({key:'p'+x[3],type:x[2],title:x[0],meta:x[1],searchText:`${x[0]} ${x[1]} JYC JIIT Noida`,icon:'⌘',go:()=>nav(x[3])})),
   ...clubs.map(c=>({key:'c'+c.id,type:'CLUB',title:c.name,meta:c.category||'Community',searchText:`${c.name} ${c.category||''} ${(c.interests||[]).join(' ')} ${c.description||''}`,icon:'◈',go:()=>nav('/clubs/'+encodeURIComponent(c.id||slug(c.name)))})),
   ...events.map(e=>({key:'e'+e.id,type:'EVENT',title:e.title,meta:e.club||'JYC',searchText:`${e.title} ${e.club||''} ${e.venue||''} ${e.eventType||''} ${e.date||''} ${(e.highlights||[]).join(' ')}`,icon:'◷',go:()=>nav('/events/'+encodeURIComponent(e.id||slug(e.title)))})),
-  ...team.map(m=>({key:'t'+m.id,type:'TEAM',title:m.name,meta:m.role||'JYC Team',searchText:`${m.name} ${m.role||''} ${m.bio||''}`,icon:'✦',go:()=>nav('/team')})),
+  ...team.map(m=>({key:'t'+m.id,type:'TEAM',title:m.name,meta:m.role||'JYC Team',searchText:`${m.name} ${m.role||''} ${m.bio||''}`,icon:'✦',go:()=>nav('/leadership')})),
   ...data.gallery.filter(g=>g&&g.url).map((g,i)=>({key:'g'+(g.id||i),type:'PHOTO',title:g.caption||g.title||g.association||'JYC photo',meta:[g.association,g.year].filter(Boolean).join(' · ')||'JYC visual archive',searchText:`${g.caption||''} ${g.title||''} ${g.association||''} ${g.year||''} ${g.alt||''} ${g.sourceLabel||''}`,icon:'▧',go:()=>nav('/gallery')})),
  ];
  const intentResults=term?(
@@ -703,8 +699,8 @@ function Footer({data,admin}){
   const links=[
     ['/about','About'],['/clubs','Clubs'],['/events','Events'],
     ...(isFestMode(data)?[['/fests','Fests']]:[]),
-    ['/team','Team'],['/recruitment','Join JYC'],['/calendar','Event calendar'],
-    ['/archive','Archive'],['/history','History'],['/achievements','Achievements'],['/contact','Contact']
+    ['/leadership','Leadership'],['/join-jyc','Join JYC'],['/calendar','Event calendar'],['/announcements','Announcements'],
+    ['/contact','Contact']
   ];
   return <footer className="jyc-footer jyc-footer-v6">
     <div className="footer-v6-inner">
