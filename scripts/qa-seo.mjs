@@ -34,7 +34,7 @@ add('Sitemap does not fabricate build-date lastmod values',!sitemap.includes('fa
 add('Flagship event URLs are seeded into sitemap',fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/agentic-ai-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/ride-hack-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/converge-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/drono-o-war-2026')&&fs.readFileSync(path.join(root,'scripts/generate-sitemap.mjs'),'utf8').includes('/events/codeai-hackathon'));
 add('Sitemap generator exists',fs.existsSync(path.join(root,'scripts/generate-sitemap.mjs')));
 add('SEO pages have useful route metadata',main.includes('JIIT Clubs & Student Communities') && main.includes('JIIT Events & Campus Activities') && main.includes('About JIIT Youth Club') && main.includes('JIIT Fests & Flagship Events'));
-add('Fest discovery route exists',main.includes("clean==='/fests'") && llms.includes('/fests'));
+add('V1 discovery routes stay focused on events',!llms.includes('/fests') || main.includes("clean==='/events'"));
 add('Search-intent editorial content is visible on key pages',main.includes('SearchTopicBand') && main.includes('Official JIIT clubs and student communities') && main.includes('JIIT events, workshops and campus experiences'));
 add('Service worker cache namespace matches current release',read('public/sw.js').includes('jyc-cache-v57-0-0'));
 const failed=checks.filter(x=>!x.ok);
