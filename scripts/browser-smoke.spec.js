@@ -298,6 +298,22 @@ test('production shell exposes required security headers when run against a depl
   expect(headers['content-security-policy']).toContain("frame-ancestors 'none'");
 });
 
+test('mobile React Bits dock and lazy More menu are interactive', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-home').waitFor({ state: 'visible', timeout: 15000 });
+  const dock=page.locator('.jyc-rb-dock .dock-panel');
+  await expect(dock).toBeVisible();
+  await expect(page.locator('.jyc-rb-dock .dock-item')).toHaveCount(5);
+  await page.getByRole('button', { name: 'More' }).last().click();
+  await expect(page.getByRole('dialog', { name: 'More JYC' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog', { name: 'More JYC' })).toHaveCount(0);
+  await page.setViewportSize({ width: 1280, height: 844 });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.jyc-rb-dock')).toHaveCSS('display', 'none');
+});
+ 
 test('global search opens, accepts keyboard input, and closes cleanly', async ({ page }) => {
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   await page.locator('.jyc-home').waitFor({ state: 'visible', timeout: 15000 });
