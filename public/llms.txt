@@ -8,18 +8,13 @@ The public website is the official organisational source for published JYC infor
 
 - / — JYC 128 home
 - /about — About JYC
-- /history — JYC history and documented milestones
-- /team — JYC 128 leadership and organisational structure
+- /leadership — JYC 128 leadership and organisational structure
 - /clubs — official published clubs and hubs
 - /events — official published JYC events
-- /fests — official published JYC fests and flagship events
 - /events/:id — event details, registration, rules, FAQs, results and recap
 - /gallery — official event and club memories
-- /achievements — documented JYC achievements
 - /announcements — official JYC notices, registrations, results and updates
-- /recruitment — official recruitment / Join JYC destination; published cycles appear when JYC opens them
 - /calendar — JYC event calendar only
-- /archive — JYC historical and visual archive
 - /contact — official contact channels and query form
 - /updates — JYC Now / verified recent updates
 
