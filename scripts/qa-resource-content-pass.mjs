@@ -17,7 +17,8 @@ check(details.includes('Kshitij 4.0'),'JSA source programme missing');
 check(details.includes('Grand Conclave 2026'),'Eloquence source programme missing');
 check(team.includes('Dr. Vinay Anand Tikkiwal')&&team.includes('Dr. Pankaj Kumar Srivastava'),'faculty advisors missing');
 check(team.includes('Harisha')&&team.includes('Dhruv Choudhary'),'core heads missing');
-check(next.includes('PhotoChapters')&&next.includes('23 COMMUNITIES'),'community photo chapter layer missing');
-check(read('src/jyc-editorial-home.jsx').includes('<PhotoChapters/>'),'photo chapter layer not mounted');
+check(next.includes('PhotoChapters')&&next.includes('23 COMMUNITIES'),'community photo chapter source component missing');
+const home=read('src/jyc-editorial-home.jsx');
+check(home.includes('jh-photo-story')&&home.includes('photoGallery.slice(0,6)'),'homepage photo-story layer missing');
 if(failures.length){failures.forEach(x=>console.error('FAIL:',x));process.exit(1)}
 console.log('Resource content QA PASS: source-derived hub, achievement, leadership and photo-story contracts are present.');
