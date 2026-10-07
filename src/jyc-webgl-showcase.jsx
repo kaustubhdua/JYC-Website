@@ -18,7 +18,7 @@ export function JYCWebGLShowcase(){
  return <section className="jyc-webgl-showcase editorial-reveal" aria-labelledby="jyc-webgl-title">
    <div className="jyc-webgl-shell">
      <div className="jyc-webgl-copy">
-       <div className="jh-section-number">06 / JYC IN MOTION</div>
+       <div className="jyc-webgl-overline">JYC / 128 · SIGNATURE VISUAL</div>
        <p className="jyc-webgl-kicker">INTERACTIVE WEBGL / JIIT 128</p>
        <h2 id="jyc-webgl-title">A campus that<br/><em>looks forward.</em></h2>
        <p className="jyc-webgl-lead">A small signature WebGL moment for JYC — technical, tactile and deliberately restrained. The model is a visual accent, while the surrounding experience explains how JYC connects people, communities and events.</p>
