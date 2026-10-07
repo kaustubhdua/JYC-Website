@@ -1,7 +1,7 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {useLocation,useNavigate} from 'react-router-dom';
 import {supabase} from './lib/supabase';
-import {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,rankJycPhotoItems} from './jyc-source-media.js';
+import {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,JYC_SOURCE_ARCHIVE_ALBUMS,rankJycPhotoItems} from './jyc-source-media.js';
 
 const safeDate=(e)=>{const t=Date.parse(`${e?.date||''}T${e?.start||'00:00'}`);return Number.isFinite(t)?t:Infinity};
 const stateOf=(e)=>{const start=safeDate(e),end=Date.parse(`${e?.dateEnd||e?.date||''}T${e?.end||'23:59'}`),now=Date.now();if(!Number.isFinite(start)||!e?.date)return 'draft';if(now<start)return 'upcoming';if(Number.isFinite(end)&&now<=end)return 'live';return 'past'};
@@ -69,11 +69,11 @@ export function JYC57Gallery({data}){
  const params=useMemo(()=>new URLSearchParams(loc.search),[loc.search]);
  const pathAlbum=loc.pathname.startsWith('/gallery/')?decodeURIComponent(loc.pathname.split('/').filter(Boolean)[1]||''):'';
  const [query,setQuery]=useState(params.get('q')||''),[association,setAssociation]=useState(params.get('club')||'All'),[year,setYear]=useState(params.get('year')||'All'),[album,setAlbum]=useState(pathAlbum||params.get('album')||'All');
- const [albums,setAlbums]=useState([]);
+ const [albums,setAlbums]=useState(JYC_SOURCE_ARCHIVE_ALBUMS);
  const [selected,setSelected]=useState(null),[visibleCount,setVisibleCount]=useState(36),[zoom,setZoom]=useState(1),[copied,setCopied]=useState(false);
  const dialogRef=useRef(null),triggerRef=useRef(null),touchStart=useRef(null),lastTap=useRef(0);
- useEffect(()=>{let alive=true;supabase.from('jyc_media_albums').select('id,name,slug,cover_url').eq('is_published',true).order('created_at',{ascending:false}).then(({data:rows})=>{if(alive)setAlbums(rows||[])});return()=>{alive=false}},[]);
- const albumMatches=(g)=>{if(album==='All')return true;const key=String(g.albumId||g.album_id||'');const selectedAlbum=albums.find(a=>String(a.id)===String(album)||String(a.slug)===String(album));return key===String(selectedAlbum?.id||album)||String(g.album||g.albumSlug||'')===String(album)};
+ useEffect(()=>{let alive=true;supabase.from('jyc_media_albums').select('id,name,slug,description,cover_url,is_published').eq('is_published',true).order('created_at',{ascending:false}).then(({data:rows})=>{if(alive&&Array.isArray(rows))setAlbums([...JYC_SOURCE_ARCHIVE_ALBUMS,...rows].reduce((acc,row)=>{if(!acc.some(x=>x.slug===row.slug))acc.push(row);return acc},[]))}).catch(()=>{});return()=>{alive=false}},[]);
+ const albumMatches=(g)=>{if(album==='All')return true;const selectedAlbum=albums.find(a=>String(a.id)===String(album)||String(a.slug)===String(album));const slug=String(g.albumSlug||g.album||g.album_slug||'');const selectedSlug=String(selectedAlbum?.slug||album);const key=String(g.albumId||g.album_id||'');return slug===selectedSlug||key===String(selectedAlbum?.id||album)||String(g.association||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')===selectedSlug};
  const items=useMemo(()=>{
    const incoming=Array.isArray(data?.gallery)?data.gallery:[];
    const strict=[...incoming,...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS].filter(g=>g?.url&&(!g.mediaKind||g.mediaKind==='photo')).filter(g=>g.mediaKind!=='identity'&&g.mediaKind!=='utility').map(g=>({...g,mediaKind:'photo'}));
