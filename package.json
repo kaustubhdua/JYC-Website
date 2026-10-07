@@ -18,7 +18,7 @@
     "qa:best-jyc": "npm run qa",
     "qa:mobile-first": "npm run qa",
     "qa:security": "node scripts/qa-security.mjs",
-    "prebuild": "node scripts/generate-sitemap.mjs",
+    "prebuild": "node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs",
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
     "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
