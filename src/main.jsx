@@ -35,6 +35,7 @@ const LazyBellToggle=lazy(()=>import('./react-bits/JYCMicro.jsx').then(m=>({defa
 const LazyDepthCarousel=lazy(()=>import('./components/react-bits/DepthCarousel.jsx'));
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
+const LazyJYCDock=lazy(()=>import('./components/react-bits/Dock.jsx'));
 
 
 
@@ -563,7 +564,8 @@ function Navbar({data,admin,theme,setTheme}){
  const goHomeSection=id=>{setOpen(false);setMoreOpen(false);if(String(id).startsWith('/')){nav(id);return}if(loc.pathname!=='/'){nav('/#'+id);return}document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});setHomeSection(id)};
  const dockItems=[['Home','/','home'],['Clubs','/clubs','clubs'],['Events','/events','events'],['Gallery','/gallery','gallery'],['More','__more','more']];
  const dockActive=loc.pathname==='/'?0:loc.pathname.startsWith('/clubs')?1:loc.pathname.startsWith('/events')?2:loc.pathname.startsWith('/gallery')?3:4;
- const dock=<div className="mobile-dock" style={{'--dock-index':dockActive}} aria-label="Mobile navigation"><i className="dock-active-pill" aria-hidden="true"/>{dockItems.map(([n,p,icon],i)=>{const active=i===dockActive;return <button type="button" key={n} className={active?'active':''} onClick={()=>p==='__more'?setMoreOpen(v=>!v):nav(p)} aria-current={active?'page':undefined}><span><NavIcon kind={icon}/></span><b>{n}</b></button>})}</div>;
+ const dockItemsRb=dockItems.map(([n,p,icon],i)=>({label:n,className:i===dockActive?'is-active':'',icon:<NavIcon kind={icon}/>,onClick:()=>p==='__more'?setMoreOpen(v=>!v):nav(p)}));
+ const dock=<Suspense fallback={null}><div className="jyc-rb-dock" aria-label="Mobile navigation"><LazyJYCDock items={dockItemsRb} panelHeight={64} baseItemSize={46} magnification={58} distance={150} dockHeight={210}/></div></Suspense>;
  const more=moreOpen?<MobileMoreSheet data={data} admin={admin} close={()=>setMoreOpen(false)} openSearch={()=>{setMoreOpen(false);setSearch(true)}}/>:null;
  const searchView=search?<Search data={data} admin={admin} close={()=>setSearch(false)}/>:null;
  const isHome=loc.pathname==='/';
