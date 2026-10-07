@@ -394,18 +394,21 @@ test('V1 homepage sections become visible and do not remain transparent', async 
 test('V1 homepage keeps the JYC palette and readable dark mode', async ({ page }) => {
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await page.locator('.jyc-home').waitFor({ state: 'visible', timeout: 15000 });
-  const light = await page.locator('.jyc-home').evaluate(el => {
+  const initialTheme = await page.locator('html').getAttribute('data-theme');
+  const initial = await page.locator('.jyc-home').evaluate(el => {
     const s = getComputedStyle(el);
     return { bg:s.backgroundColor, color:s.color };
   });
   await page.locator('.theme-toggle').click();
-  await page.waitForTimeout(120);
-  const dark = await page.locator('.jyc-home').evaluate(el => {
+  await page.waitForFunction(prev => document.documentElement.dataset.theme !== prev, initialTheme);
+  const nextTheme = await page.locator('html').getAttribute('data-theme');
+  const next = await page.locator('.jyc-home').evaluate(el => {
     const s = getComputedStyle(el);
     return { bg:s.backgroundColor, color:s.color };
   });
-  expect(light.bg).not.toBe(dark.bg);
-  expect(dark.color).not.toBe('rgba(0, 0, 0, 0)');
+  expect(nextTheme).not.toBe(initialTheme);
+  expect(next.bg).not.toBe(initial.bg);
+  expect(next.color).not.toBe('rgba(0, 0, 0, 0)');
 });
 
 test('public cards do not use pointer-driven 3D tilt', async ({ page }) => {
