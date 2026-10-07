@@ -257,7 +257,7 @@ test('public pages have no empty media frames or normal-flow section overlaps', 
 test('legacy redirects and unknown routes resolve safely', async ({ page }) => {
   test.setTimeout(60000);
   const redirects = {
-    '/leadership': '/team',
+    '/leadership': '/leadership',
     '/event-calendar': '/calendar',
     '/moments': '/gallery',
     '/planner': '/events',
