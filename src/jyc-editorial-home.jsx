@@ -117,7 +117,7 @@ export function JYCEditorialHome({data}){
 
    <JYCWebGLShowcase/>\n\n   <JYCNetwork data={data}/>
 
-   <JYCWebGLShowcase/>
+   
 
    <JYCNowStrip limit={3}/>
 
