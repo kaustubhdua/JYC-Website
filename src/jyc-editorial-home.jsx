@@ -21,7 +21,6 @@ function Img({src,alt,...props}){return <img {...props} src={src||FALLBACK} alt=
 
 export function JYCEditorialHome({data}){
  const nav=useNavigate();
- const clubs=useMemo(()=>Array.isArray(data?.clubs)?data.clubs.filter(c=>c?.published&&c?.status!=='archived').slice().sort((a,b)=>String(a.name).localeCompare(String(b.name))):[],[data?.clubs]);
  const events=useMemo(()=>Array.isArray(data?.events)?data.events.filter(e=>e?.published&&!e?.archived).slice().sort((a,b)=>dateMs(a)-dateMs(b)):[],[data?.events]);
  const now=Date.now();
  const eventEndMs=e=>{const endDate=e?.dateEnd||e?.date;if(!endDate)return NaN;const end=new Date(String(endDate)+'T'+String(e?.end||'23:59'));return end.getTime()};
