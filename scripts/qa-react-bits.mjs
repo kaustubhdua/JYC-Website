@@ -48,6 +48,8 @@ check('DepthCarousel is lazy-loaded on public routes',main.includes('LazyDepthCa
 
 check('DriftWall remains available for the visual archive',fs.existsSync(path.join(root,'src/components/react-bits/DriftWall.jsx'))&&extraFeaturesSafe());
 check('Heavy homepage visual engines are lazy-loaded',home.includes('LazyDitherVeil')&&home.includes('LazyMagicBento'));
+check('Official React Bits Dock is lazy-loaded for mobile navigation',fs.existsSync(path.join(root,'src/components/react-bits/Dock.jsx'))&&fs.existsSync(path.join(root,'src/components/react-bits/Dock.css'))&&main.includes('LazyJYCDock')&&main.includes('jyc-rb-dock'));
+check('Mobile More navigation is split into a lazy route-level chunk',fs.existsSync(path.join(root,'src/components/JYCMobileMoreSheet.jsx'))&&main.includes('LazyMobileMoreSheet')&&main.includes('moreOpen'));
 check('MagicBento is lazy-loaded and GSAP is declared',home.includes('LazyMagicBento')&&pkg.dependencies.gsap==='3.15.0'&&lock.packages['node_modules/gsap']?.version==='3.15.0');
 check('FlexCarousel component remains available for future archive surfaces',fs.existsSync(path.join(root,'src/components/react-bits/FlexCarousel.jsx'))&&fs.existsSync(path.join(root,'src/components/react-bits/FlexCarousel.css')));
 check('DriftWall archive surface has responsive safeguards',read('src/components/react-bits/DriftWall.css').includes('height')&&read('src/components/react-bits/DriftWall.css').includes('@media'));
