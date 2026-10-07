@@ -25,3 +25,4 @@ The live Supabase project contains 23 published JYC clubs, 8 published JYC event
 5. Continue editorial media review for rights, photographer attribution, focal points and album promotion.
 
 These are release/operations gates, not reasons to add more visual effects or another redesign.
+CI verification is intentionally exercised through the pull-request quality gates before this release is considered green.
