@@ -1,3 +1,4 @@
+/* Adapted from the official React Bits Dock source by DavidHDev; JYC styling is applied in Dock.css. */
 'use client';
 
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
