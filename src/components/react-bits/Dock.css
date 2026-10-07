@@ -1,0 +1,67 @@
+.dock-outer {
+  margin: 0 0.5rem;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+}
+
+.dock-panel {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  width: fit-content;
+  gap: 1rem;
+  border-radius: 1rem;
+  background-color: #120F17;
+  border: 1px solid #222;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #120F17;
+  border: 1px solid #222;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  outline: none;
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dock-label {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 0.375rem;
+  border: 1px solid #222;
+  background-color: #120F17;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  color: #fff;
+  transform: translateX(-50%);
+}
+
+/* JYC theme adapter: preserve React Bits mechanics while matching the official JYC identity. */
+.jyc-rb-dock .dock-panel{background:color-mix(in srgb,var(--jyc-surface) 94%,transparent);border-color:var(--jyc-line);box-shadow:0 18px 42px color-mix(in srgb,var(--jyc-ink) 14%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.jyc-rb-dock .dock-item{background:var(--jyc-surface);border-color:var(--jyc-line);color:var(--jyc-ink);box-shadow:0 4px 10px color-mix(in srgb,var(--jyc-ink) 8%,transparent)}
+.jyc-rb-dock .dock-item:focus-visible{outline:2px solid var(--jyc-red);outline-offset:3px}
+.jyc-rb-dock .dock-item.is-active{background:color-mix(in srgb,var(--jyc-red) 10%,var(--jyc-surface));border-color:color-mix(in srgb,var(--jyc-red) 45%,var(--jyc-line));color:var(--jyc-red)}
+.jyc-rb-dock .dock-label{background:var(--jyc-dark);border-color:var(--jyc-dark-line);color:var(--jyc-dark-text)}
+@media(max-width:900px){.jyc-rb-dock .dock-panel{bottom:max(10px,env(safe-area-inset-bottom));gap:.5rem;padding:.35rem}.jyc-rb-dock .dock-outer{margin:0}.jyc-rb-dock .dock-item{border-radius:12px}}
+@media(min-width:901px){.jyc-rb-dock{display:none}}
+@media(prefers-reduced-motion:reduce){.jyc-rb-dock .dock-item{transition:none!important}}
