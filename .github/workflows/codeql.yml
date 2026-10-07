@@ -38,6 +38,7 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: /language:javascript-typescript
+          upload: false
 
   analyze-actions:
     name: Analyze GitHub Actions
@@ -57,3 +58,4 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: /language:actions
+          upload: false
