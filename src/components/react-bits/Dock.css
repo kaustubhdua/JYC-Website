@@ -61,7 +61,7 @@
 .jyc-rb-dock .dock-item{background:var(--jyc-surface);border-color:var(--jyc-line);color:var(--jyc-ink);box-shadow:0 4px 10px color-mix(in srgb,var(--jyc-ink) 8%,transparent)}
 .jyc-rb-dock .dock-item:focus-visible{outline:2px solid var(--jyc-red);outline-offset:3px}
 .jyc-rb-dock .dock-item.is-active{background:color-mix(in srgb,var(--jyc-red) 10%,var(--jyc-surface));border-color:color-mix(in srgb,var(--jyc-red) 45%,var(--jyc-line));color:var(--jyc-red)}
-.jyc-rb-dock .dock-label{background:var(--jyc-dark);border-color:var(--jyc-dark-line);color:var(--jyc-dark-text)}
+.jyc-rb-dock .dock-label{background:var(--jyc-navy-deep);border-color:var(--jyc-line-dark);color:#fff8e1}
 @media(max-width:900px){.jyc-rb-dock .dock-panel{bottom:max(10px,env(safe-area-inset-bottom));gap:.5rem;padding:.35rem}.jyc-rb-dock .dock-outer{margin:0}.jyc-rb-dock .dock-item{border-radius:12px}}
 @media(min-width:901px){.jyc-rb-dock{display:none}}
 @media(prefers-reduced-motion:reduce){.jyc-rb-dock .dock-item{transition:none!important}}
