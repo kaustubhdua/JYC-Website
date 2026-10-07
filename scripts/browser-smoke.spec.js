@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const base = (process.env.JYC_BASE_URL || 'http://127.0.0.1:5173').replace(/\/$/, '');
-const routes = ['/', '/about', '/history', '/clubs', '/events', '/team', '/gallery', '/achievements', '/announcements', '/recruitment', '/calendar', '/archive', '/updates', '/contact', '/fests'];
+const routes = ['/', '/about', '/leadership', '/clubs', '/events', '/gallery', '/announcements', '/join-jyc', '/calendar', '/contact'];
 
 async function waitForAppMount(page, label='page') {
   try {
