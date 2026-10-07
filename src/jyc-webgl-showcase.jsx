@@ -23,7 +23,7 @@ export function JYCWebGLShowcase(){
        <h2 id="jyc-webgl-title">A campus that<br/><em>looks forward.</em></h2>
        <p className="jyc-webgl-lead">A small signature WebGL moment for JYC — technical, tactile and deliberately restrained. Explore a restrained 3D campus moment while the surrounding visual system explains how JYC connects people, communities and events.</p>
        <div className="jyc-webgl-meta">
-         <span><b>01</b> ORBIT</span>
+         <span><b>01</b> LOOK</span>
          <span><b>02</b> EXPLORE</span>
          <span><b>03</b> DISCOVER</span>
        </div>
@@ -40,13 +40,10 @@ export function JYCWebGLShowcase(){
          src={MODEL}
          alt="Interactive humanoid android representing the technical spirit of JIIT Youth Club 128"
          interaction-prompt="auto"
-         animation-name="tilt"
-         autoplay
          shadow-intensity="0.7"
          shadow-softness="0.8"
          exposure="0.95"
          tone-mapping="aces"
-         camera-orbit="0deg 78deg 2.6m"
          field-of-view="26deg"
          loading="lazy"
          reveal="auto"
