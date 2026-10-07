@@ -109,6 +109,9 @@ export function sourceHubMedia(name){
 export const JYC_SOURCE_ARCHIVE_GALLERY=ARCHIVE_GALLERY;
 export const JYC_SOURCE_ARCHIVE_CATALOG_STATS=JYC_SOURCE_ARCHIVE_STATS;
 
+const albumSlugify=value=>String(value||'').trim().toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'jyc-archive';
+export const JYC_SOURCE_ARCHIVE_ALBUMS=Object.values([...new Set(ARCHIVE_GALLERY.filter(item=>item.mediaKind==='photo'&&item.association).map(item=>item.association))].reduce((acc,association)=>{const slug=albumSlugify(association);if(!acc[slug]){const cover=ARCHIVE_GALLERY.find(item=>item.mediaKind==='photo'&&item.association===association);acc[slug]={id:'source-'+slug,name:association,slug,description:`Verified photography collection from the JYC supplied archive for ${association}.`,scope_type:'source-archive',cover_url:cover?.url||'',is_published:true,source:'source-archive'};}return acc},{}));
+
 // Brand assets are deliberately kept outside the photography pool, but they are still valuable
 // source material: club logos/banners can fill identity slots when a maintained club record
 // has no verified logo/banner of its own.
@@ -203,6 +206,8 @@ const enrichMediaItem=item=>{
   const year=String(item.year||item.date||'').slice(0,4);
   return {
     ...item,
+    albumSlug:item.albumSlug||albumSlugify(association),
+    albumName:item.albumName||association,
     association,
     year:year||item.year||'',
     role,
