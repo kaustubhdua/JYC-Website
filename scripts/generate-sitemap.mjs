@@ -8,7 +8,7 @@ const {JYC_SOURCE_ARCHIVE_CATALOG}=await import('../src/source-archive-index.js'
 const rawSite=(process.env.VITE_SITE_URL||process.env.SITE_URL||process.env.VERCEL_PROJECT_PRODUCTION_URL||process.env.VERCEL_URL||'https://jyc-website-eight.vercel.app').trim();
 const site=(rawSite?(/^[a-z]+:\/\//i.test(rawSite)?rawSite:`https://${rawSite}`):'').replace(/\/$/,'');
 const out=path.join(root,'public','sitemap.xml');
-const core=['/','/about','/history','/clubs','/events','/fests','/gallery','/team','/contact','/calendar','/announcements','/updates','/achievements','/join-jyc','/events/agentic-ai-2026','/events/ride-hack-2026','/events/converge-2026','/events/drono-o-war-2026','/events/codeai-hackathon'];
+const core=['/','/about','/history','/clubs','/events','/fests','/gallery','/team','/contact','/calendar','/announcements','/updates','/achievements','/join-jyc','/events/jai-2026-jaypee-agentic-ai-hackathon','/events/ride-hack-2026','/events/converge-2026','/events/drono-o-war-2026','/events/innovate-3-0-2026','/events/bitbox-6-0-2026'];
 const dynamicDates=new Map();
 const sourceHubNames=JYC_HUB_SOURCE_REGISTRY.map(item=>item.name);
 const slug=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
