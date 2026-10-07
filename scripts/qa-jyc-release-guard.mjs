@@ -12,9 +12,9 @@ const sw=read('public/sw.js');
 const checks=[
  ['release is V57.0.0',pkg.version==='57.0.0'&&lock.version==='57.0.0'&&lock.packages?.['']?.version==='57.0.0'],
  ['service worker cache is V57.0.0',sw.includes('jyc-cache-v57-0-0')],
- ['retired Projects/Impact/FAQ navigation is absent',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'"),],
+ ['retired Projects/Impact/FAQ/Achievements navigation is absent',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'")&&!main.includes("['Achievements','/achievements'"),],
  ['homepage retired Impact section is absent',!home.includes('jyc-v1-impact')&&!home.includes('HIGHLIGHTS · IMPACT')],
- ['homepage achievements section remains available',home.includes("nav('/achievements')")&&home.includes('Explore Achievements')],
+ ['homepage achievements section is retired',!home.includes("nav('/achievements')")&&!home.includes('Explore Achievements')],
  ['homepage uses restrained React Bits signatures',home.includes('LazyMagicBento')&&home.includes('LazyDitherVeil')&&!home.includes('LazyDriftWall')&&!home.includes('<PhotoChapters/>')],
  ['only one DriftWall instance is mounted on the homepage',home.includes('LazyMagicBento')&&home.includes('LazyDitherVeil')],
  ['DriftWall surface has desktop/tablet/mobile height reservations',homeCss.includes('.jh-photo-grid')&&homeCss.includes('@media(max-width:680px)')],
