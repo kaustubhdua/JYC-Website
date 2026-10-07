@@ -44,7 +44,8 @@ const scripts = [
   'qa-supplied-material.mjs',
   'qa-v58-trust-cms.mjs',
   'qa-v58-design.mjs',
-  'qa-v59-production-boundary.mjs'
+  'qa-v59-production-boundary.mjs',
+  'qa-v60-sitewide-polish.mjs'
 ];
 
 for (const script of scripts) {
