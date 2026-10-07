@@ -10,8 +10,7 @@
 6. Event Calendar
 7. Clubs & Communities
 8. Gallery
-9. Achievements
-10. Announcements
+9. Announcements
 11. Join JYC — Coming Soon
 12. Contact
 
@@ -124,7 +123,6 @@ Each published community can contain:
 - what they do
 - core team
 - major events
-- achievements
 - gallery
 - social links
 - recruitment status
