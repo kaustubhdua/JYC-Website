@@ -31,8 +31,6 @@ export function JYCWebGLShowcase(){
      </div>
      <div className="jyc-webgl-stage">
        <div className="jyc-webgl-grid" aria-hidden="true"/>
-       <div className="jyc-webgl-ring ring-one" aria-hidden="true"/>
-       <div className="jyc-webgl-ring ring-two" aria-hidden="true"/>
        <div className="jyc-webgl-status" aria-live="polite"><i className={failed?'is-error':ready?'is-ready':''}/>{failed?'3D model unavailable — visual fallback active':ready?'WEBGL ONLINE · INTERACTIVE':'INITIALISING WEBGL'}</div>
        <model-viewer
          ref={ref}
