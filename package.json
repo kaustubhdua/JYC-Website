@@ -33,7 +33,8 @@
     "qa:identifiers": "node scripts/qa-canonical-identifiers.mjs",
     "qa:v60": "node scripts/qa-v60-sitewide-polish.mjs",
     "qa:v61": "node scripts/qa-v61-finalization.mjs",
-    "qa:photo-intelligence": "node scripts/qa-photo-intelligence.mjs"
+    "qa:photo-intelligence": "node scripts/qa-photo-intelligence.mjs",
+    "media:audit": "node scripts/audit-photo-intelligence.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
