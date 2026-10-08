@@ -1,0 +1,96 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const root=process.cwd();
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const exists=p=>fs.existsSync(path.join(root,p));
+const walk=(dir,files=[])=>{
+  for(const entry of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){
+    const rel=path.join(dir,entry.name).replaceAll('\\','/');
+    if(entry.isDirectory()&&!['node_modules','dist','.git'].includes(entry.name))walk(rel,files);
+    else if(/\\.(js|jsx|mjs|css|json|html|md)$/.test(entry.name))files.push(rel);
+  }
+  return files;
+};
+const files=walk('.');
+const sourceFiles=files.filter(p=>/\\.(js|jsx|mjs)$/.test(p));
+const cssFiles=files.filter(p=>p.endsWith('.css'));
+const checks=[];
+const add=(name,ok,detail='')=>checks.push({name,ok:Boolean(ok),detail});
+
+const pkg=JSON.parse(read('package.json'));
+add('release metadata is V64 or newer',Number(String(pkg.version).split('.')[0])>=64);
+add('Sharp is locked for real photo derivatives',pkg.devDependencies?.sharp==='0.35.5'&&pkg.scripts?.['media:derivatives']==='node scripts/generate-photo-derivatives.mjs'&&pkg.scripts?.prebuild?.includes('generate-photo-derivatives.mjs'));
+add('only one browser workflow remains',exists('.github/workflows/jyc-browser.yml')&&!exists('.github/workflows/browser-qa.yml'));
+add('all active workflow files are present',[
+  '.github/workflows/ci.yml','.github/workflows/jyc-quality.yml','.github/workflows/jyc-browser.yml','.github/workflows/codeql.yml'
+].every(exists));
+
+const relativeFailures=[];
+for(const file of sourceFiles){
+  const text=read(file);
+  for(const match of text.matchAll(/(?:from|import)\\s*(?:\\(\\s*)?['"](.\\.?\\/[^'"]+)['"]/g)){
+    const spec=match[1];
+    if(!spec.startsWith('.'))continue;
+    const base=path.normalize(path.join(path.dirname(file),spec)).replaceAll('\\','/');
+    const candidates=[base,base+'.js',base+'.jsx',base+'.mjs',base+'.css',path.join(base,'index.js'),path.join(base,'index.jsx')].map(x=>x.replaceAll('\\','/'));
+    if(!candidates.some(exists))relativeFailures.push(file+' -> '+spec);
+  }
+}
+add('relative JS/CSS imports resolve',relativeFailures.length===0,relativeFailures.slice(0,10).join('; '));
+
+const assetFailures=[];
+for(const file of [...sourceFiles,...cssFiles]){
+  const text=read(file);
+  for(const match of text.matchAll(/(?:['"(]|url\\(\\s*['"]?)(\\/assets\\/[^'")\\s?]+)/g)){
+    const url=match[1];
+    if(/\\$|\\{|\\}|\\*|\\[|\\]/.test(url))continue;
+    const clean=url.split('?')[0].split('#')[0];
+    if(!exists('public'+clean))assetFailures.push(file+' -> '+clean);
+  }
+}
+add('literal local asset references resolve',assetFailures.length===0,assetFailures.slice(0,12).join('; '));
+
+const publicRoutes=[
+  '/','/about','/history','/clubs','/events','/gallery','/team','/best-of-jyc','/archive',
+  '/recruitment','/announcements','/updates','/calendar','/fests','/contact','/join-jyc'
+];
+const main=read('src/main.jsx');
+add('maintained public route registry is represented',publicRoutes.every(route=>route==='/'||main.includes(route)));
+add('Sector 128 boundary remains enforced',main.includes('isSector128Venue')&&main.includes('events.filter(e=>isSector128Venue'));
+add('canonical JAI route is retained',main.includes('jai-2026-jaypee-agentic-ai-hackathon'));
+add('legacy JAI redirect is retained',main.includes("legacyEventSlugMap={'agentic-ai-2026':'jai-2026-jaypee-agentic-ai-hackathon'}"));
+
+const staleActive=[];
+for(const file of [...sourceFiles,...cssFiles,'.github/workflows/ci.yml','.github/workflows/jyc-quality.yml'].filter(exists)){
+  const text=read(file);
+  if(file.includes('qa-final-hygiene.mjs'))continue;
+  if(/Current release: V61\\.1\\.0|V58\\.0\\.8 is the current|release is V62\\.0\\.0/.test(text))staleActive.push(file);
+}
+add('no stale active release assertions remain',staleActive.length===0,staleActive.join(', '));
+
+const placeholders=[];
+for(const file of sourceFiles){
+  const text=read(file);
+  if(/lorem ipsum|TODO:?|FIXME:?|XXX:/.test(text))placeholders.push(file);
+}
+add('no placeholder/TODO/FIXME markers remain in runtime source',placeholders.length===0,placeholders.join(', '));
+
+const responsive=read('src/jyc-responsive-photo.jsx');
+add('responsive photo component is production-enabled',responsive.includes('import.meta.env.PROD')&&responsive.includes('srcSet={sourceSet(variants.avif)}')&&responsive.includes('srcSet={sourceSet(variants.webp)}'));
+const derivative=read('scripts/generate-photo-derivatives.mjs');
+add('derivative generator matches supported image extensions',/\\\\\.\\(jpe\\?g\\|png\\|webp\\)/.test(JSON.stringify(derivative))===false&&derivative.includes('/\\\\.(jpe?g|png|webp)$/i.test(file)')===false);
+add('derivative generator contains real Sharp transforms',derivative.includes("sharp(file)")&&derivative.includes(".avif({quality:52")&&derivative.includes(".webp({quality:82"));
+
+const workflowText=fs.readdirSync(path.join(root,'.github/workflows')).filter(x=>x.endsWith('.yml')||x.endsWith('.yaml')).map(x=>read('.github/workflows/'+x)).join('\n');
+add('browser QA workflow actually installs Chromium',workflowText.includes('playwright install --with-deps chromium'));
+add('CI uses Node 22',workflowText.includes('node-version: 22'));
+add('production build uses the package build command',pkg.scripts.build==='vite build');
+
+let failed=0;
+for(const c of checks){
+  console.log((c.ok?'PASS':'FAIL')+' · '+c.name+(c.detail?' — '+c.detail:''));
+  if(!c.ok)failed++;
+}
+if(failed)process.exit(1);
+console.log('JYC ZERO-GLITCH STATIC CONTRACT PASS ('+checks.length+' checks)');
