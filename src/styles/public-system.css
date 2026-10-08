@@ -547,3 +547,55 @@ body{background:var(--bg)!important;color:var(--ink)!important}
   .mobile-dock button{color:var(--muted)!important}
   .mobile-dock button.active{color:var(--ink)!important;background:color-mix(in srgb,var(--accent) 10%,transparent)!important}
 }
+
+
+/* V63 PHOTO ARCHIVE — editorial archive IA + restrained Motion-inspired transitions.
+   The interaction language borrows the good parts of open-source Motion, Embla and
+   responsive photo-album patterns without adding a second visual design system. */
+.jyc-responsive-picture{display:block;width:100%;height:100%;min-width:0}
+.jyc-responsive-picture img{width:100%;height:100%;display:block;object-fit:cover;object-position:50% 50%}
+.jyc57-archive-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:20px 0 14px;padding:6px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--surface) 94%,transparent);position:sticky;top:74px;z-index:12;backdrop-filter:blur(14px)}
+.jyc57-archive-nav a,.jyc57-archive-nav button{appearance:none;border:0;background:transparent;color:var(--muted);padding:9px 13px;border-radius:999px;font:800 10px/1 inherit;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.jyc57-archive-nav a:hover,.jyc57-archive-nav button:hover{color:var(--ink);background:color-mix(in srgb,var(--gold) 10%,transparent)}
+.jyc57-collection-rail{margin:24px 0 42px;padding:24px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface)}
+.jyc57-collection-scroller{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,220px);gap:10px;overflow-x:auto;overscroll-behavior-inline:contain;padding:2px 2px 10px;scroll-snap-type:x proximity}
+.jyc57-collection-scroller button{display:grid;grid-template-rows:128px auto auto;gap:7px;text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:7px;cursor:pointer;scroll-snap-align:start}
+.jyc57-collection-scroller button.active,.jyc57-collection-scroller button:hover{border-color:var(--gold);transform:translateY(-2px)}
+.jyc57-collection-cover{display:block;overflow:hidden;border-radius:8px;background:var(--dark);height:128px}
+.jyc57-collection-cover img{width:100%;height:100%;object-fit:cover}
+.jyc57-collection-cover>span{height:100%;display:grid;place-items:center;color:var(--gold);font:800 11px/1 inherit;letter-spacing:.16em}
+.jyc57-collection-scroller strong{font:700 14px/1.1 "Space Grotesk",Inter,sans-serif}
+.jyc57-collection-scroller small{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.jyc57-photo-story{margin:24px 0 48px}
+.jyc57-photo-story-stage{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.65fr);min-height:560px;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--dark);color:#fff}
+.jyc57-photo-story-image{min-width:0;min-height:0;overflow:hidden;background:#080808}
+.jyc57-photo-story-frame,.jyc57-photo-story-frame .jyc-responsive-picture{width:100%;height:100%}
+.jyc57-photo-story-frame img{object-fit:cover}
+.jyc57-photo-story-copy{display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:clamp(22px,4vw,44px);background:linear-gradient(180deg,#18161d,#0f0e11)}
+.jyc57-photo-story-copy h3{margin:0;font:700 clamp(28px,4vw,52px)/.98 "Space Grotesk",Inter,sans-serif;letter-spacing:-.045em}
+.jyc57-photo-story-copy p{margin:0;color:#a8a3b0;line-height:1.65}
+.jyc57-photo-story-copy .btn{align-self:flex-start}
+.jyc57-photo-story-scrubber{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scroll-snap-type:x proximity}
+.jyc57-photo-story-scrubber button{position:relative;flex:0 0 112px;height:76px;padding:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--dark);cursor:pointer;scroll-snap-align:start}
+.jyc57-photo-story-scrubber button.active{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 18%,transparent)}
+.jyc57-photo-story-scrubber button span{position:absolute;left:7px;bottom:6px;padding:3px 5px;border-radius:999px;background:rgba(15,14,17,.72);color:#fff;font:800 9px/1 inherit}
+.jyc57-photo-story-scrubber .jyc-responsive-picture{height:100%}
+@media(max-width:900px){
+ .jyc57-archive-nav{top:66px}
+ .jyc57-photo-story-stage{grid-template-columns:1fr;min-height:0}
+ .jyc57-photo-story-image{height:min(66vw,560px)}
+ .jyc57-photo-story-copy{min-height:240px}
+}
+@media(max-width:640px){
+ .jyc57-archive-nav{border-radius:12px;top:60px}
+ .jyc57-archive-nav a,.jyc57-archive-nav button{flex:1 0 auto}
+ .jyc57-collection-rail{padding:16px}
+ .jyc57-collection-scroller{grid-auto-columns:minmax(160px,185px)}
+ .jyc57-photo-story-stage{border-radius:14px}
+ .jyc57-photo-story-image{height:70vw}
+ .jyc57-photo-story-copy{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .jyc57-collection-scroller button:hover{transform:none}
+ .jyc57-photo-story-frame{animation:none!important}
+}
