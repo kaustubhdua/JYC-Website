@@ -801,19 +801,11 @@ function SearchTopicBand({eyebrow='JYC · JIIT NOIDA',title,text,links=[]}){retu
 function Breadcrumbs({items=[]}){if(!items.length)return null;return <nav className="visible-breadcrumbs reveal" aria-label="Breadcrumb"><a href="/">JYC</a>{items.map((item,i)=><React.Fragment key={`${item.href||item.label}-${i}`}><span aria-hidden="true">/</span>{item.href&&i<items.length-1?<a href={item.href}>{item.label}</a>:<span aria-current="page">{item.label}</span>}</React.Fragment>)}</nav>}
 function EcosystemContextRail(){
  const nav=useNavigate();
- const items=React.useMemo(()=>{
-  const seen=new Set();
-  const candidates=JYC_HUB_FAMILIES.map(family=>{
-   const meta=JYC_HUB_CONTENT && Object.entries(JYC_HUB_CONTENT).find(([name,p])=>p.family===family && sourceHubMedia(name).photoItems?.length);
-   if(!meta)return null;
-   const [name,p]=meta;
-   const media=sourceHubMedia(name);
-   const item=media.photoItems[0];
-   return item?{src:item.url,kicker:family,name,path:'/clubs/'+slug(name)}:null;
-  }).filter(Boolean);
-  return candidates.filter(item=>{if(seen.has(item.name))return false;seen.add(item.name);return true}).slice(0,5);
- },[]);
- return <div className="ecosystem-context-rail" aria-label="JYC ecosystem shortcuts">{items.map(item=><button type="button" key={item.name} onClick={()=>nav(item.path)}><img src={item.src} alt="" loading="lazy"/><span><small>{item.kicker}</small><strong>{item.name}</strong></span><b aria-hidden="true">↗</b></button>)}</div>
+ const items=React.useMemo(()=>JYC_HUB_FAMILIES.map(family=>{
+   const meta=JYC_HUB_CONTENT&&Object.entries(JYC_HUB_CONTENT).find(([name,p])=>p.family===family);
+   return meta?{family,name:meta[0],path:'/clubs/'+slug(meta[0])}:null;
+ }).filter(Boolean).slice(0,5),[]);
+ return <nav className="ecosystem-context-rail" aria-label="JYC ecosystem shortcuts"><span className="ecosystem-context-label">Explore</span>{items.map(item=><button type="button" key={item.name} onClick={()=>nav(item.path)}><small>{item.family}</small><strong>{item.name}</strong><b aria-hidden="true">↗</b></button>)}</nav>
 }
 function DetailSection({title,eyebrow='JYC DETAIL',children}){return <section className="detail-section reveal"><div className="detail-section-head"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2></div></div>{children}</section>}
 function ShareButton({title='Share JYC'}){const share=async()=>{try{if(navigator.share){await navigator.share({title,text:title,url:window.location.href});return}await navigator.clipboard?.writeText(window.location.href);jycToast('Link copied to clipboard.')}catch{}};return <button type="button" className="btn secondary share-button" onClick={share} aria-label={title}>Share ↗</button>}
