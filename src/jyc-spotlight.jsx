@@ -51,7 +51,7 @@ export function JYCSpotlight({data}){
       <button className="reference-view-all" type="button" onClick={()=>nav('/updates')}>Open JYC Now →</button>
     </div>
     <div className="jyc-living-spotlight-grid">
-      <button type="button" className="jyc-living-spotlight-card is-event" onClick={()=>spotlight.event&&nav('/events/'+slug(spotlight.event.title))}>
+      <button type="button" className="jyc-living-spotlight-card is-event" onClick={()=>spotlight.event&&nav('/events/'+slug(spotlight.event.slug||spotlight.event.title))}>
         <div className="jyc-living-spotlight-media">
           {spotlight.event?.poster?<img src={spotlight.event.poster} alt="" loading="lazy"/>:<div className="jyc-living-spotlight-fallback">NOW</div>}
           <span>01 · NEXT EXPERIENCE</span>
