@@ -19,13 +19,22 @@ const focusable='a[href],button:not([disabled]),textarea:not([disabled]),input:n
 
 export function FeaturedEventPopup(){
   const onHome=typeof window==='undefined'||window.location.pathname==='/'||window.location.pathname==='';
-  const [open,setOpen]=useState(()=>{
-    try{return Number(localStorage.getItem(FEATURED_EVENT_DISMISS_KEY)||0)<Date.now()}
-    catch{return true}
-  });
+  const [open,setOpen]=useState(false);
   const closeRef=useRef(null);
   const dialogRef=useRef(null);
   const triggerRef=useRef(null);
+
+  useEffect(()=>{
+    if(!onHome||Date.now()>EVENT_END)return;
+    let cancelled=false;
+    const timer=setTimeout(()=>{
+      if(cancelled)return;
+      try{
+        if(Number(localStorage.getItem(FEATURED_EVENT_DISMISS_KEY)||0)<Date.now())setOpen(true);
+      }catch{setOpen(true)}
+    },1200);
+    return()=>{cancelled=true;clearTimeout(timer)};
+  },[onHome]);
 
   const dismiss=()=>{
     try{localStorage.setItem(FEATURED_EVENT_DISMISS_KEY,String(Date.now()+FEATURED_EVENT_DISMISS_MS))}catch{}
