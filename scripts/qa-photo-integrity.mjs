@@ -36,7 +36,7 @@ const qualityOverrideViolations=qualityOverrideUrls.filter(url=>[...auditedArchi
 assert('curated archive photography pool is exposed',JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.length>350,`found ${JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.length}`);
 assert('audited identity assets are preserved outside photography',JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS.some(x=>x.association==='CICR'&&/logo/i.test(x.sourcePath))&&JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS.some(x=>x.association==='JODC'&&/logo/i.test(x.sourcePath)),JSON.stringify(JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS.map(x=>x.sourcePath)));
 assert('identity assets remain excluded from photo pool',JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS.every(x=>!JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.some(p=>p.url===x.url)));
-assert('audited archive exclusions are declared before validation',auditedExclusionIds.length===272,`found ${auditedExclusionIds.length}`);
+assert('audited archive exclusions are declared before validation',auditedExclusionIds.length===277,`found ${auditedExclusionIds.length}`);
 assert('audited archive exclusions never re-enter through source overrides',auditedExclusionIds.every(id=>![...archivePhotoUrls].some(url=>url.includes('/'+id+'.webp'))),auditedExclusionIds.filter(id=>[...archivePhotoUrls].some(url=>url.includes('/'+id+'.webp'))).join(', '));
 assert('source overrides cannot reference audited archive exclusions',qualityOverrideViolations.length===0,qualityOverrideViolations.join(', '));
 assert('curated featured overrides remain explicit',mediaSource.includes('const QUALITY_OVERRIDES=')&&mediaSource.includes("Aakriti:[")&&mediaSource.includes("Panache:[")&&mediaSource.includes("CICR:[")&&mediaSource.includes("Innovation:["));
