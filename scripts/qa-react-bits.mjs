@@ -27,7 +27,7 @@ const checks=[
  ['event reminders use BellToggle',main.includes('EventReminderControl')&&main.includes('scheduleEventReminder')],
  ['Agentic AI popup is isolated from the public shell',!main.includes('AgenticAIPopup')&&!main.includes('agentic-launcher')&&!main.includes('LazyBorderGlow')],
  ['DitherVeil is the current React Bits implementation',dither.includes('const KERNELS =')&&dither.includes('const getBlueNoise')&&dither.includes('const diffuse')&&dither.includes('RenderTarget')&&dither.includes('measureEdge')],
- ['DitherVeil is lazy-loaded on the homepage',home.includes("lazy(()=>import('./react-bits/DitherVeil.jsx'))")&&home.includes('<LazyDitherVeil')],
+ ['DitherVeil is not redundantly mounted on the homepage',!home.includes("lazy(()=>import('./react-bits/DitherVeil.jsx'))")&&!home.includes('<LazyDitherVeil')],
  ['DitherVeil has reduced-motion/visibility lifecycle support',dither.includes("prefers-reduced-motion")&&dither.includes('IntersectionObserver')&&dither.includes('ResizeObserver')],
  ['DitherVeil CSS is minimal and scoped',ditherCss.includes('.dither-veil')&&!ditherCss.includes('body{')],
  ['public motion layer is lazy-loaded',main.includes('LazyJYCInnovationMotion')&&main.includes('<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>')],
