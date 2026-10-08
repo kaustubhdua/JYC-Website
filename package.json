@@ -1,7 +1,7 @@
 {
   "name": "jyc-website",
   "private": true,
-  "version": "61.1.0",
+  "version": "62.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
