@@ -37,7 +37,7 @@ check(vercel.redirects?.some(x=>x.source==='/leadership'&&x.destination==='/team
 check(vercel.redirects?.some(x=>x.source==='/event-calendar'&&x.destination==='/calendar'&&x.permanent),'event-calendar must redirect permanently to calendar');
 check(vercel.redirects?.some(x=>x.source==='/guide'&&x.destination==='/about'&&x.permanent),'guide must redirect permanently to about');
 check(vercel.redirects?.some(x=>x.source==='/resources'&&x.destination==='/about'&&x.permanent),'resources must redirect permanently to about');
-check(manifest.icons.every(x=>x.type==='image/webp'),'PWA icon MIME type must match the WebP asset');
+check(manifest.icons.every(x=>{const src=String(x.src||'').toLowerCase();const type=String(x.type||'').toLowerCase();return (src.endsWith('.webp')&&type==='image/webp')||(src.endsWith('.png')&&type==='image/png')||(src.endsWith('.jpg')&&type==='image/jpeg')||(src.endsWith('.jpeg')&&type==='image/jpeg')||(src.endsWith('.avif')&&type==='image/avif')}),'PWA icon MIME type must match its declared asset extension');
 warn((main.match(/<img\b/g)||[]).length<80,'main.jsx contains many image nodes; continue moving repeated image rendering into a dedicated Image component');
 const formButtons=[...main.matchAll(/<form\b[\s\S]*?<\/form>/g)].flatMap(m=>[...m[0].matchAll(/<button\b[^>]*>/g)].map(m=>m[0]));
 warn(formButtons.every(button=>/\btype\s*=/.test(button)),'a form contains a button without an explicit type');
