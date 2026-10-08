@@ -102,7 +102,7 @@ add('derivative generator contains budgeted Sharp transforms',derivative.include
 
 const workflowText=fs.readdirSync(path.join(root,'.github/workflows')).filter(x=>x.endsWith('.yml')||x.endsWith('.yaml')).map(x=>read('.github/workflows/'+x)).join('\n');
 add('browser QA workflow actually installs Chromium',workflowText.includes('playwright install --with-deps chromium'));
-add('CI uses Node 22',workflowText.includes('node-version: 22'));
+add('active workflows do not use stale Node 22',!workflowText.includes('node-version: 22'));
 add('production build uses the package build command',pkg.scripts.build==='vite build');
 add('production browser suite covers image integrity and geometry',exists('scripts/zero-glitch-browser.spec.js')&&read('scripts/zero-glitch-browser.spec.js').includes('broken images')&&read('scripts/zero-glitch-browser.spec.js').includes('fixed overlap'));
 const directImageLoadingFailures=[];
