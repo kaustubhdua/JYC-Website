@@ -112,6 +112,11 @@
   ],
   "redirects": [
     {
+      "source": "/events/agentic-ai-2026",
+      "destination": "/events/jai-2026-jaypee-agentic-ai-hackathon",
+      "permanent": true
+    },
+    {
       "source": "/admin",
       "destination": "/",
       "permanent": true
