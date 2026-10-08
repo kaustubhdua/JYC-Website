@@ -55,7 +55,7 @@ check('official JYC hub content is wired',main.includes('JYC_HUB_CONTENT')&&main
 check('verified leadership content remains source-grounded',fallbacks.includes('Dr. Vinay Anand Tikkiwal')&&fallbacks.includes('Dr. Pankaj Kumar Srivastava')&&fallbacks.includes("name:'Harisha'")&&fallbacks.includes("name:'Dhruv Choudhary'"));
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
 check('JYC identity remains explicit in the public hero',editorialHome.includes('jh-kicker')&&editorialHome.includes('JIIT YOUTH CLUB')&&editorialHome.includes('128'));
-check('SEO/social preview remains logo-led',index.includes('og:image" content="https://jyc-website-jyc-website.vercel.app/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://jyc-website-jyc-website.vercel.app/JYC%20Logo(4).png"'));
+check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
 check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
