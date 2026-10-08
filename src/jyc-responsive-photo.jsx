@@ -2,7 +2,8 @@ import React from 'react';
 import {photoDerivativeUrls} from './jyc-photo-intelligence.js';
 const fallback=(e,src)=>{if(e.currentTarget.src!==src)e.currentTarget.src=src};
 export function ResponsivePhoto({src,alt='',width,height,sizes='100vw',loading='lazy',fetchPriority,decoding='async',className='',style,onError,objectPosition}){
- const variants=import.meta.env.VITE_ENABLE_PHOTO_DERIVATIVES==='true'?photoDerivativeUrls(src,width):null;
+ const derivativesEnabled=import.meta.env.PROD||import.meta.env.VITE_ENABLE_PHOTO_DERIVATIVES==='true';
+ const variants=derivativesEnabled?photoDerivativeUrls(src,width):null;
  const fallbackSrc=variants?.webp?.at(-1)?.url||src;
  const sourceSet=list=>list.map(x=>x.url+' '+x.width+'w').join(', ');
  return <picture className={className?'jyc-responsive-picture '+className:'jyc-responsive-picture'}>
