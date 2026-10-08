@@ -1,5 +1,15 @@
 # Changelog
 
+## V64.0.0 — Editorial interaction, media delivery & release hardening
+
+- Added restrained shared-element transitions for event cards → event details and gallery cards → lightbox, with reduced-motion fallbacks.
+- Added the multi-day event timeline and editorial navigation layer.
+- Added route-specific metadata shells for major public routes.
+- Added the real Sharp-based AVIF/WebP responsive-photo derivative pipeline and wired it into production builds.
+- Added dependency-lock, photo-intelligence and V64 release contracts to the quality gate.
+- Synchronized package, lockfile, README, service-worker cache and public discovery metadata to V64.
+- Kept the Sector 128 publication boundary, canonical JAI route and media rights/editorial gates intact.
+
 ## V58.0.8 — Media audit
 
 - Added duplicate public-URL detection to the media-health workspace so archive collisions are visible to editors.
