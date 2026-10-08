@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jyc-cache-v64-4-3';
+const CACHE_NAME = 'jyc-cache-v64-4-4';
 
 const APP_SHELL = ['/', '/offline.html', '/manifest.json', '/JYC%20Logo(4).png'];
 
