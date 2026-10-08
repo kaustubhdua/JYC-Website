@@ -96,7 +96,7 @@ export function JYCEditorialHome({data}){
      <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="191,156,111" clickEffect/></Suspense>
    </section>
 
-   <JYCNowStrip limit={3}/>
+   <JYCNowStrip limit={3} compact/>
 
    <section className="jh-history">
      <div className="jh-container jh-history-grid"><div><div className="jh-section-number">06 / THROUGH THE YEARS</div><h2>JYC is not a moment.<br/><em>It is a continuity.</em></h2><p>Official reports, events and campus photography give JYC a history worth remembering.</p><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/history')}>Explore History <span>→</span></button><button type="button" className="jh-btn" onClick={()=>nav('/achievements')}>Explore Achievements <span>→</span></button></div><div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div>
@@ -104,7 +104,7 @@ export function JYCEditorialHome({data}){
 
    <section className="jh-people jh-container">
      <div className="jh-section-head"><div><div className="jh-section-number">07 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button></div>
-     {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><div><Img src={m.photo||m.image} alt={m.name||'JYC team member'} loading="lazy"/></div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
+     {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><div className="jh-team-monogram" aria-hidden="true">{String(m.name||'JYC').trim().split(/\\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase()}</div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong><small>View profile <b>↗</b></small></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
    </section>
 
    <section className="jh-final">
