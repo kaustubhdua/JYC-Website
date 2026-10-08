@@ -872,3 +872,24 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 @media(prefers-reduced-motion:reduce){
   .public-app :where(.card:hover,.feature-card:hover,.contact-card:hover,.archive-event:hover,.archive-club:hover,.achievement-feature:hover,.announcement-card:hover,.event-related-card:hover){transform:none}
 }
+
+
+/* V65.2 — public chrome polish */
+.public-app .nav{min-height:0!important}
+.public-app .nav-inner{height:76px!important;width:min(1240px,calc(100% - 64px));padding-right:0!important;gap:18px}
+.public-app .brand{gap:10px!important}
+.public-app .brand img{width:46px!important;height:46px!important}
+.public-app .brand span{font-size:14px!important;letter-spacing:.02em}
+.public-app .nav nav{gap:2px!important}
+.public-app .nav nav button{padding:10px 11px!important;font-size:12px}
+.public-app .search-trigger,.public-app .theme-toggle{box-shadow:none!important}
+.public-app .theme-toggle{position:static!important;width:40px!important;height:40px!important;font-size:17px!important}
+.public-app .search-trigger{padding:9px 11px!important}
+.public-app .jyc-footer,.public-app .jyc-footer-v6{margin-top:0!important}
+.public-app .footer-v6-main{padding:56px 0 60px!important;gap:40px!important}
+.public-app .footer-v6-intro h2{font-size:clamp(40px,5.5vw,72px)!important}
+.public-app .footer-v6-bottom{min-height:58px!important}
+@media(max-width:900px){
+ .public-app .nav-inner{width:calc(100% - 32px);height:68px!important;padding-right:0!important}
+ .public-app .brand img{width:42px!important;height:42px!important}
+}
