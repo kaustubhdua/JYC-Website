@@ -33,6 +33,8 @@ jobs:
 
       - run: npm run qa
       - run: npm run qa:seo
+      - run: npm run qa:v64-editorial
+      - run: npm run qa:photo-intelligence
       - run: npm run build
       - name: Enforce production media/performance budget
         run: node scripts/qa-performance.mjs
