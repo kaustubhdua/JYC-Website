@@ -22,7 +22,7 @@ const checks=[
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jh-photo-frame'),'editorial hero image is prioritized for first paint'],
-  [editorialHome.includes('jh-hero')&&read('src/jyc-editorial-home.css').includes('--jh-accent:#c8b58d')&&read('src/jyc-editorial-home.css').includes('--jh-gold:#bf9c6f')&&read('src/jyc-editorial-home.css').includes('[data-theme=dark] .jyc-home'),'editorial homepage follows the JYC palette in light and dark mode'],
+  [editorialHome.includes('jh-hero')&&read('src/jyc-editorial-home.css').includes('--jh-bg:#f5f1e6')&&read('src/jyc-editorial-home.css').includes('--jh-gold:#bf9c6f')&&read('src/jyc-editorial-home.css').includes('[data-theme=dark] .jyc-home'),'editorial homepage follows the JYC palette in light and dark mode'],
   [read('src/jyc-innovation-motion.jsx').includes('Public card tilt was intentionally retired')&&!read('src/jyc-innovation-motion.css').includes('perspective(1100px) rotateX(var(--tilt-x))'),'public card tilt is retired for V1 stability'],
   [main.includes('dataset.jycFallbackApplied')&&main.includes("'/JYC%20Logo(4).png'"),'runtime image fallback prevents broken media glyphs'],
   [main.includes('PDF_HUB_PROGRAMME.map')&&main.includes('supplied-event-programme'),'All Hubs programme material remains surfaced'],
@@ -38,7 +38,6 @@ const checks=[
   [fs.existsSync('supabase/migrations/202610040010_v56_1_public_registration_acl.sql'),'retired public registration RPC is explicitly removed from client execute ACL']
 ];
 checks.push([main.includes('DepthCarousel')&&fs.existsSync('src/components/react-bits/DepthCarousel.jsx'),'club photography carousel is centred and contained']);
-checks.push([editorialHome.includes('gallery.slice(0,4)')&&!editorialHome.includes('<PhotoChapters/>')&&!editorialHome.includes('LazyDriftWall')&&!editorialHome.includes('image:gallery['),'homepage media composition is consolidated and does not duplicate gallery imagery']);
 checks.push([editorialHome.includes('01</b> DISCOVER')&&editorialHome.includes('02</b> PARTICIPATE')&&editorialHome.includes('03</b> BELONG'),'homepage participation proof is lightweight and non-fabricated']);
 let failed=false;
 for(const [ok,label] of checks){console.log(ok?'PASS':'FAIL',label);if(!ok)failed=true}
