@@ -39,9 +39,11 @@ add('public event filters are shareable in the URL',exp.includes('syncFilters')&
 add('gallery dialog traps focus and restores it',exp.includes('dialogRef')&&exp.includes('triggerRef')&&exp.includes("e.key!=='Tab'"));
 add('public visual system has 320px-safe sizing',/max-width:320px/.test(read('src/styles/jyc-v58-final.css'))||/min-width:0/.test(read('src/styles/jyc-v58-final.css')));
 
+add('event timeline contract remains present',exp.includes('jyc57-event-timeline'));
+add('event card/detail shared transition exists',main.includes('event-media-')&&main.includes('layoutId')&&main.includes('event-detail-poster'));
+add('gallery/lightbox shared transition exists',exp.includes('photo-${String(g.id||g.url)}')&&exp.includes('photo-${String(active.id||active.url)}')&&exp.includes('jyc57-lightbox-shared'));
 let failed=0;
 for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+' · '+name);if(!ok)failed++}
 if(failed)process.exit(1);
 console.log('JYC V58.0.8 production-finish contract PASS ('+checks.length+' checks)');
 
-add('event timeline contract remains present',exp.includes('jyc57-event-timeline'));
