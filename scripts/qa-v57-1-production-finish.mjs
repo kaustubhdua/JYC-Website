@@ -14,8 +14,8 @@ const readme=read('README.md');
 const checks=[];
 const add=(name,ok)=>checks.push([name,Boolean(ok)]);
 
-add('release metadata is synchronized to current V64.4.2',pkg.version==='64.4.2'&&lock.version==='64.4.2'&&lock.packages?.['']?.version==='64.4.2');
-add('service worker cache matches current release',sw.includes('jyc-cache-v64-4-2'));
+add('release metadata is synchronized to the package release',pkg.version===lock.version&&lock.packages?.['']?.version===pkg.version);
+add('service worker cache matches current release',sw.includes('jyc-cache-v'+pkg.version.replace(/\./g,'-')));
 add('README release matches current package',readme.includes('Current release: V'+pkg.version));
 add('event detail has registration action',/id="event-register"/.test(main)&&/REGISTER NOW|REGISTRATIONS CLOSED/.test(main));
 add('event detail gates unverified planned registration',/registrationPublished=e\.publicStatus!=='planned'\|\|e\.registrationVerified===true/.test(main)&&/Boolean\(e\.registrationUrl\|\|e\.registrationMode==='native'\)/.test(main));
