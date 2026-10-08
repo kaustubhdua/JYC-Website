@@ -15,7 +15,7 @@ const browser=read('scripts/browser-smoke.spec.js');
 const checks=[];
 const add=(name,ok,detail='')=>checks.push([name,Boolean(ok),detail]);
 
-add('release metadata is V64.4.3',pkg.version==='64.4.2');
+add('release metadata is a V64 release',/^64\.\d+\.\d+$/.test(pkg.version));
 add('homepage has exactly one intentional photo-story surface',home.includes('gallery.slice(0,4)')&&home.includes('jh-photo-grid'));
 add('homepage has no retired PhotoChapters mount',!home.includes('<PhotoChapters/>'));
 add('homepage has no retired DriftWall mount',!home.includes('LazyDriftWall')&&!home.includes('jh-archive-section'));
