@@ -31,7 +31,7 @@ const nowModule=fs.readFileSync(path.join(root,'src/jyc-now.jsx'),'utf8');
 const nowLogoOk=nowModule.includes('/JYC%20Logo(4).png')&&!nowModule.includes('/jyc-logo-official.webp');
 console.log((nowLogoOk ? "PASS" : "FAIL")+": JYC Now uses the canonical JYC logo asset");
 if(!nowLogoOk)failed++;
-const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes(')).filter(x=>x.url);');
+const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes('safeExternalUrl(x.image||x.thumbnail||\'\')')&&nowModule.includes('.filter(x=>x.url)');
 console.log((nowNormaliseOk ? "PASS" : "FAIL")+": JYC Now drops connector items whose URLs fail external URL validation");
 if(!nowNormaliseOk)failed++;
 const registrationSubmitOk=authModule.includes('<form className="native-registration" onSubmit={submit}>')&&authModule.includes('<button type="submit" className="btn" disabled={busy}>{busy?\'Submitting…\':\'Submit registration\'}</button>');
