@@ -1,5 +1,12 @@
 # Changelog
 
+## V64.4.0 — Cohesive media layout hardening
+
+- Consolidated homepage imagery into intentional editorial surfaces instead of stacking multiple photo walls.
+- Replaced masonry/column gallery flow with a deterministic responsive grid and fixed 4:3 image frames.
+- Added `qa:media-layout` to prevent scattered-media regressions.
+
+
 ## V64.3.0 — Repository identity and release-QA hardening
 
 - Updated repository ownership, maintainer links and Supabase creator identity to the current GitHub account.
