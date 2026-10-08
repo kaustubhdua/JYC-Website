@@ -3,6 +3,8 @@
 V64 is the current application release on GitHub `main`.
 
 ## Verified in source / database
+- V64.0.0 is synchronized across package metadata, lockfile, README and service-worker cache.
+- Production builds now generate real AVIF/WebP photo derivatives before Vite copies public assets.
 - V64 shared Motion transition: event card → event detail.
 - V64 shared Motion transition: gallery card → lightbox.
 - Both transitions respect reduced-motion preferences.
