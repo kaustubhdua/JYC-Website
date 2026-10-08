@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+const {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS}=await import('../src/jyc-source-media.js');
+const allowedArchive=new Set(JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.map(item=>String(item?.url||'')));
 const root=path.resolve('public/assets');
 const outputRoot=path.resolve('public/assets/photo-derivatives');
 const WIDTHS=[320,480,640,960,1280,1600,2400];
@@ -8,7 +10,7 @@ const ALLOWED=['source-archive','hub-photos','hub-photos-extra'];
 const inputFiles=[];
 const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(/\\.(jpe?g|png|webp)$/i.test(file))inputFiles.push(file)}};
 walk(root);
-const sourceFiles=inputFiles.filter(file=>!file.includes(path.join('photo-derivatives',path.sep))&&ALLOWED.some(folder=>file.includes(path.sep+folder+path.sep)));
+const sourceFiles=inputFiles.filter(file=>{if(file.includes(path.join('photo-derivatives',path.sep)))return false;const url='/assets/'+path.relative(root,file).replaceAll(path.sep,'/');if(url.startsWith('/assets/source-archive/'))return allowedArchive.has(url);return ALLOWED.some(folder=>url.startsWith('/assets/'+folder+'/'));});
 let generated=0,failed=0,skipped=0;
 for(const file of sourceFiles){
  const rel=path.relative(root,file).replaceAll(path.sep,'/');
