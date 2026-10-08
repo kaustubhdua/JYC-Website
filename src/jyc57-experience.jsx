@@ -111,7 +111,7 @@ export function JYC57Gallery({data}){
    setSelected(null);setVisibleCount(36);
  };
  useEffect(()=>{setQuery(params.get('q')||'');setAssociation(params.get('club')||'All');setYear(params.get('year')||'All');if(!pathAlbum)setAlbum(params.get('album')||'All')},[params,pathAlbum]);
- useEffect(()=>{const key=params.get('photo');if(!key||!filtered.length)return;const match=filtered.find(g=>String(g.id)===String(key)||String(g.url)===decodeURIComponent(key));if(match)setSelected(match)},[params,filtered]);
+ useEffect(()=>{const key=params.get('photo');if(!key||!items.length)return;const decoded=(()=>{try{return decodeURIComponent(key)}catch{return key}})();const match=items.find(g=>String(g.id)===String(key)||String(g.url)===decoded);if(match){setScope('all');setSelected(match)}},[params,items]);
  useEffect(()=>{
    if(!active)return;
    triggerRef.current=document.activeElement;setZoom(1);setCopied(false);
