@@ -4,8 +4,8 @@ const p=JSON.parse(fs.readFileSync('package.json','utf8'));
 const l=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
 const sw=fs.readFileSync('public/sw.js','utf8');
 const checks=[
- ['version 62.0.0',p.version==='62.0.0'&&l.version==='62.0.0'&&l.packages?.['']?.version==='62.0.0'],
- ['cache v62',sw.includes('jyc-cache-v62-0-0')],
+ ['current release metadata is synchronized',/^64\.\d+\.\d+$/.test(p.version)&&l.version===p.version&&l.packages?.['']?.version===p.version],
+ ['service worker cache matches current release',sw.includes('jyc-cache-v'+String(p.version).replace(/\./g,'-'))],
  ['vite config uses valid forward-slash regexes',c.includes('test: /node_modules\\/react(?:-dom)?\\//')&&c.includes('test: /node_modules\\/react-router-dom\\//')&&c.includes('test: /node_modules\\/\\@supabase\\//')&&c.includes('test: /node_modules\\/three\\//')&&c.includes('test: /node_modules\\//')],
  ['archive path regex is valid',c.includes("replace(/^\\/assets\\//,''")&&!c.includes("replace(/^\\\\/assets\\\\//,''")],
  ['archive chunk regex is valid',c.includes('test: /src\\/(?:source-archive-index|jyc-source-archive|jyc-source-media)\\.js$/')],
@@ -13,4 +13,4 @@ const checks=[
 ];
 for(const [n,ok] of checks) console.log((ok?'PASS':'FAIL')+': '+n);
 if(checks.some(([,ok])=>!ok))process.exit(1);
-console.log('V61.1 BUILD CONFIG QA PASS');
+console.log('CURRENT BUILD CONFIG QA PASS');
