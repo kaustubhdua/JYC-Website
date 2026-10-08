@@ -13,7 +13,7 @@ const sourceArchivePruner=()=>({
     if(!fs.existsSync(publicArchive)||!fs.existsSync(outArchive)) return;
     const media=await import('./src/jyc-source-media.js');
     const keep=new Set([
-      ...media.JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.map(item=>String(item?.url||'').replace(/^\\/assets\\//,'')),
+      ...media.JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.map(item=>String(item?.url||'').replace(/^\/assets\//,'')),
       ...media.JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS.map(item=>String(item?.url||'').replace(/^\\/assets\\//,''))
     ].filter(Boolean));
     const keepFiles=[...keep];
