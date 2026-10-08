@@ -43,3 +43,5 @@ let failed=0;
 for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+' · '+name);if(!ok)failed++}
 if(failed)process.exit(1);
 console.log('JYC V58.0.8 production-finish contract PASS ('+checks.length+' checks)');
+
+add('event timeline contract remains present',exp.includes('jyc57-event-timeline'));
