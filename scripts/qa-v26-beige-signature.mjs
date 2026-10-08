@@ -38,7 +38,7 @@ check('final JYC logo theme remains inside consolidated stylesheet stack',read('
 check('logo beige is the final public brand anchor',css.includes('--jyc-champagne:#bf9c6f')&&css.includes('--jyc-cream:#f5f1e6')&&css.includes('--jyc-navy:#18161d')&&css.includes('--accent-red:#a82420'));
 check('light/dark theme contracts are explicit',css.includes('html[data-theme="light"]')&&css.includes('html[data-theme="dark"]')&&css.includes('--jyc-text:var(--jyc-ink)')&&css.includes('--jyc-muted-live:var(--jyc-muted)'));
 check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
-check('homepage hierarchy and motion layer are present',editorialHome.includes('jh-hero')&&editorialHome.includes('jh-photo-story')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
+check('homepage hierarchy and motion layer are present',editorialHome.includes('jh-hero')&&editorialHome.includes('JYCNetwork')&&editorialHome.includes('jh-photo-story')&&!editorialHome.includes('<PhotoChapters/>')&&!editorialHome.includes('jh-archive-section')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
 
 check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3}/>'));
 check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC'));
@@ -54,7 +54,7 @@ check('public navigation exposes Contact',main.includes("['Contact','/contact']"
 check('official JYC hub content is wired',main.includes('JYC_HUB_CONTENT')&&main.includes('JYC_HUB_FAMILIES'));
 check('verified leadership content remains source-grounded',fallbacks.includes('Dr. Vinay Anand Tikkiwal')&&fallbacks.includes('Dr. Pankaj Kumar Srivastava')&&fallbacks.includes("name:'Harisha'")&&fallbacks.includes("name:'Dhruv Choudhary'"));
 check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
-check('JYC logo remains the public hero identity',editorialHome.includes('JIIT YOUTH CLUB')&&editorialHome.includes('128')&&editorialHome.includes('jh-photo-frame'));
+check('JYC identity remains explicit in the public hero',editorialHome.includes('jh-kicker')&&editorialHome.includes('JIIT YOUTH CLUB')&&editorialHome.includes('128'));
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://jyc-website-jyc-website.vercel.app/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://jyc-website-jyc-website.vercel.app/JYC%20Logo(4).png"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
