@@ -8,7 +8,7 @@ const EVENT={
   title:'JAI 2026 · Jaypee Agentic AI Hackathon',
   dates:'30–31 October 2026',
   venue:'JIIT Wish Town Campus · Sector 128, Noida',
-  poster:'/assets/events/agentic-ai-2026.webp',
+  poster:'https://www.jiityouthclub128.in/imgs/ai-agent-face.png',
   official:'https://www.jiityouthclub128.in/',
   register:'https://unstop.com/o/XAfa40i?lb=yRvSl6Vl&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Jyc128tf6988',
   discord:'https://discord.gg/K6vrFAhMA',
