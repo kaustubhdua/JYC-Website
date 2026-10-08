@@ -4,6 +4,7 @@ import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceHubMedia,sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {PhotoChapters} from './jyc-next-experience.jsx';
+import {JYCNetwork} from './jyc-network.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
 
@@ -55,9 +56,7 @@ export function JYCEditorialHome({data}){
          <span className="jh-photo-label">JYC 128 / CAMPUS LIFE</span>
          <span className="jh-photo-index">01 — MOMENTS</span>
        </div>
-       <div className="jh-dither" aria-hidden="true">
-         <Suspense fallback={null}><LazyDitherVeil src="/jyc-logo-official.webp" fit="contain" pattern="floyd" pixelSize={3} levels={2} palette="duotone" inkColor="#a82420" paperColor="#f5f1e6" contrast={1.05} revealRadius={130} softness={0.7} linger={0.8} rim={0} wander={false}/></Suspense>
-       </div>
+       <JYCNetwork />
      </div>
    </section>
 
@@ -104,7 +103,7 @@ export function JYCEditorialHome({data}){
 
    <section className="jh-activities jh-container">
      <div className="jh-section-head"><div><div className="jh-section-number">05 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>From culture and sport to technical communities, performances, workshops and competitions, JYC creates places to take part.</p></div>
-     <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:gallery[i%Math.max(1,gallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="168,36,32" clickEffect/></Suspense>
+     <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:gallery[i%Math.max(1,gallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="191,156,111" clickEffect/></Suspense>
    </section>
 
    <section className="jh-archive-section" aria-labelledby="jh-archive-title"><div className="jh-section-head"><div><span className="jh-section-number">06 / MOMENTS</span><h2 id="jh-archive-title">The visual archive.</h2><p>Published JYC photography, posters and campus moments — a living record of student life at 128.</p></div><button type="button" className="jh-text-link" onClick={()=>nav("/gallery")}>Open gallery →</button></div><Suspense fallback={<div className="jh-archive-fallback" aria-hidden="true"/>}><LazyDriftWall items={gallery.slice(0,18).map((g,i)=>({id:g.id||i,src:g.url,alt:g.alt||g.caption||g.title||'JYC campus moment'}))} columns={3} tileWidth={240} tileHeight={160} gap={14} tilt={5} turn={-4} perspective={1100} depth={45} speed={1.5} direction="up" variance={.08} parallax={.05} pauseOnHover lift={10} fade={.5} dim={.25} ariaLabel="JYC visual archive"/></Suspense></section>\n\n   <JYCNowStrip limit={3}/>
