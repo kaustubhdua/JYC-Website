@@ -39,7 +39,8 @@
     "qa:editorial": "node scripts/qa-editorial-system.mjs",
     "qa:v64-editorial": "node scripts/qa-v64-editorial-release.mjs",
     "postbuild": "node scripts/generate-route-shells.mjs",
-    "qa:dependency-lock": "node scripts/qa-dependency-lock.mjs"
+    "qa:dependency-lock": "node scripts/qa-dependency-lock.mjs",
+    "qa:zero-glitch": "node scripts/qa-zero-glitch-contract.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
