@@ -40,7 +40,7 @@ check('light/dark theme contracts are explicit',css.includes('html[data-theme="l
 check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
 check('homepage hierarchy and motion layer are present',editorialHome.includes('jh-hero')&&editorialHome.includes('JYCNetwork')&&editorialHome.includes('jh-photo-story')&&!editorialHome.includes('<PhotoChapters/>')&&!editorialHome.includes('jh-archive-section')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
 
-check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3}/>'));
+check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3} compact/>')&&read('src/jyc-now.jsx').includes('compact=false')&&read('src/jyc-now.jsx').includes('showMedia={!compact}'));
 check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC'));
 check('Team hierarchy is explicit',main.includes('Faculty → Apex → Core → Clubs & Hubs')&&main.includes('team-command-strip')&&main.includes('JYC Apex'));
 check('About exposes requested principles',main.includes('WHAT WE STAND FOR')&&main.includes('about-principles-v33'));
@@ -59,7 +59,7 @@ check('SEO/social preview remains logo-led',index.includes('og:image" content="h
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
 check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
-check('published team photo fallbacks resolve to committed assets',editorialHome.includes('<Img src={m.photo||m.image}')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
+check('homepage team surface stays text-led while full team retains image support',editorialHome.includes('jh-team-monogram')&&!editorialHome.includes('m.photo||m.image')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
 check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
 check('service worker cache is current',read('public/sw.js').includes('jyc-cache-v'+pkg.version.replace(/\./g,'-')));
