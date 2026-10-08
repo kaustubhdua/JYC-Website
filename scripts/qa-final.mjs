@@ -51,7 +51,7 @@ checks.push(
  ['generic supplied archive photos do not carry inferred 2026 years',!pdfHub.split('\n').some(line=>line.includes("association:'JYC Archive'")&&line.includes("year:'2026'"))],
  ['ecosystem context rail selects across JYC families',main.includes('JYC_HUB_FAMILIES.map(family')&&main.includes('sourceHubMedia(name).photoItems')],
  ['public copy uses maintained 23-community count',!main.includes('names 21 communities')],
- ['JAI event fallback uses local committed artwork',fallbacks.includes("poster:'/assets/events/agentic-ai-2026.webp'")],
+ ['JAI event fallback uses local committed artwork',fallbacks.includes("poster:'/assets/events/jai-2026-jaypee-agentic-ai-hackathon.webp'"],
  ['photo archive uses the full source pool',nextExperience.includes('sourceBuckets=JYC_HUB_SOURCE_REGISTRY.map')&&nextExperience.includes('sourceHubMedia(meta.name).photoItems')&&!nextExperience.includes('photoItems.slice(0,8)')&&!nextExperience.includes('sourcePhotos.slice(0,16)')&&!nextExperience.includes('photos.slice(0,4)')],
  ['photo story imports the committed archive photo pool',nextExperience.includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')&&nextExperience.includes('...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')],
 ['photo story uses the living related-photo engine',nextExperience.includes('LivingPhoto')&&nextExperience.includes('className="jyc-photo-story-living"')&&livingPhoto.includes('scoreRelatedPhoto')&&livingPhoto.includes('preloadAndDecode')&&livingPhoto.includes('img.decode')],
