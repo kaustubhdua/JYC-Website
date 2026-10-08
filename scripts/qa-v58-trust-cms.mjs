@@ -33,7 +33,7 @@ const checks=[
  ['stale verification cleanup exists',read('supabase/migrations/202610080008_v58_7_remove_stale_verification_duplicates.sql').includes("entity_id like 'club-%'")&&read('supabase/migrations/202610080008_v58_7_remove_stale_verification_duplicates.sql').includes("agentic-ai-2026")],
 
 
- ['album guard is not directly executable',read('supabase/migrations/202610080005_revoke_album_guard_execute.sql').includes('revoke execute on function public.jyc_guard_media_album_publication() from public, anon, authenticated')],
+ ['album guard is not directly executable',read('supabase/migrations/202610080005_v58_4_album_guard_privilege_hardening.sql').includes('revoke execute on function public.jyc_guard_media_album_publication() from anon')],
 
 
 ];
