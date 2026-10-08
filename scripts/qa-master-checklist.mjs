@@ -13,7 +13,7 @@ const gallery=read('src/jyc57-experience.jsx');
 const vite=read('vite.config.js');
 const checks=[];
 const add=(name,ok)=>checks.push([name,Boolean(ok)]);
-add('release is V62.0.0 or newer',Number(String(pkg.version).split('.')[0])>=61);
+add('release is V64.0.0 or newer',Number(String(pkg.version).split('.')[0])>=64);
 add('core public routes are wired', ['/','/about','/clubs','/events','/gallery','/team','/contact'].every(r=>main.includes("'" + r + "'")||main.includes('"' + r + '"')));
 add('hub and event detail routes remain canonical',main.includes("/clubs/")&&main.includes("/events/")&&main.includes('eventPath'));
 add('gallery album/deep-link experience exists',gallery.includes('/gallery/')&&gallery.includes('ArrowRight')&&gallery.includes('ArrowLeft'));
