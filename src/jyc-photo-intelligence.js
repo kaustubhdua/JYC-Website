@@ -33,5 +33,5 @@ export function rankDiverseJycPhotos(items=[],{limit=24,seed=0,maxPerAssociation
  return out;
 }
 export function diversityAudit(items=[]){const rows=[...new Set((items||[]).map(x=>String(x.association||'JYC Archive')))].map(association=>({association,count:(items||[]).filter(x=>String(x.association||'JYC Archive')===association).length})).sort((a,b)=>b.count-a.count);return{total:items.length,collections:rows,largestCollection:rows[0]||null}}
-export function photoVariantBase(url){const value=String(url||'');if(!/^\\/(assets\\/source-archive|assets\\/hub-photos|assets\\/hub-photos-extra)\\//.test(value))return null;return '/assets/photo-derivatives/'+value.replace(/^\\/assets\\//,'').replace(/\\.(jpe?g|png|webp)$/i,'')}
+export function photoVariantBase(url){const value=String(url||'');if(!(value.startsWith('/assets/source-archive/')||value.startsWith('/assets/hub-photos/')||value.startsWith('/assets/hub-photos-extra/')))return null;return '/assets/photo-derivatives/'+value.slice('/assets/'.length).replace(/\.(jpe?g|png|webp)$/i,'')}
 export function photoDerivativeUrls(url){const base=photoVariantBase(url);if(!base)return null;const widths=[320,480,640,960,1280,1600,2400];return{avif:widths.map(width=>({url:base+'-'+width+'.avif',width})),webp:widths.map(width=>({url:base+'-'+width+'.webp',width}))}}
