@@ -6,6 +6,7 @@ import {JYC_HUB_CONTENT} from './v21-hub-content.js';
 import {PDF_HUB_GALLERY,PDF_HUB_STORIES,HUB_PHOTO_MAP} from './pdf-hub-content.js';
 import {PDF_HUB_EXTRA_GALLERY} from './pdf-hub-extra.js';
 import {JYC_SOURCE_ARCHIVE_CATALOG,JYC_SOURCE_ARCHIVE_STATS} from './source-archive-index.js';
+import {rankDiverseJycPhotos} from './jyc-photo-intelligence.js';
 
 const normalise=v=>String(v||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'');
 const HUB_ALIASES={
@@ -238,29 +239,7 @@ export function sourceEventMedia(eventOrName){
 }
 export const JYC_SOURCE_MEDIA_STATS={maintainedCommunities:Object.keys(JYC_HUB_CONTENT).length,storyBackedCommunities:PDF_HUB_STORIES.length,galleryItems:SOURCE_GALLERY.length,sourcePhotography:SOURCE_GALLERY.filter(item=>mediaKind(item)==='photo').length,qualityOverrideCommunities:Object.keys(QUALITY_OVERRIDES).length,eventCollections:Object.keys(EVENT_ALIASES).length};
 
-export function rankJycPhotoItems(items=[],{limit=24,seed=0}={}){
-  const pool=[...new Map((items||[]).filter(x=>x?.url&&(x.mediaKind||'photo')==='photo').map(x=>[String(x.url),x])).values()];
-  const score=item=>{
-    let n=0;
-    const role=String(item.role||''); const assoc=String(item.association||''); const year=Number(String(item.year||'').slice(0,4))||0;
-    if(role==='event')n+=120; else if(role==='club')n+=90; else if(role==='leadership')n+=80; else n+=40;
-    if(assoc&&assoc!=='JYC Archive')n+=24;
-    if(year)n+=Math.max(0,Math.min(24,year-2000));
-    const text=String(item.caption||item.alt||'').toLowerCase();
-    if(/stage|performance|team|group|workshop|competition|campus|event|people|student|audience|portrait/.test(text))n+=18;
-    if(/poster|logo|qr|banner|graphic|illustration|background|texture|screenshot/.test(text))n-=80;
-    return n;
-  };
-  const sorted=pool.map((item,index)=>({item,index,score:score(item)})).sort((a,b)=>b.score-a.score||String(a.item.association||'').localeCompare(String(b.item.association||''))||a.index-b.index);
-  const out=[]; const counts=new Map();
-  for(const entry of sorted){
-    const key=String(entry.item.association||'JYC Archive'); const count=counts.get(key)||0;
-    if(count>=3 && out.length<Math.min(limit,pool.length)-6)continue;
-    out.push(entry.item); counts.set(key,count+1); if(out.length>=Math.min(limit,pool.length))break;
-  }
-  if(seed&&out.length>1){const shift=Math.abs(Number(seed)||0)%out.length;return [...out.slice(shift),...out.slice(0,shift)]}
-  return out;
-}
+export function rankJycPhotoItems(items=[],{limit=24,seed=0}={}){return rankDiverseJycPhotos(items,{limit,seed,maxPerAssociation:3})}
 
 export function buildJycMediaManifest(gallery=[]){
   const merged=[...mergeSourceGallery(gallery)].reduce((acc,item)=>{const key=String(item?.url||item?.id||'');if(key&&!acc.some(x=>String(x?.url||x?.id||'')===key))acc.push(item);return acc},[]);
