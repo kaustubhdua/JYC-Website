@@ -49,7 +49,7 @@ export function HubLatestUpdates({hub,limit=3}){
 }
 
 /* Homepage compact mode: JYC Now is an information rail, not another image gallery. */
-.jyc-now-strip-section.is-compact{margin-top:clamp(18px,3vw,34px);padding:clamp(24px,3.5vw,38px);border-radius:0;background:transparent;border-inline:0;border-bottom:0}
+.jyc-now-strip-section.is-compact{width:min(1320px,calc(100% - 64px));margin:clamp(18px,3vw,34px) auto 0;padding:clamp(24px,3.5vw,38px);border-radius:0;background:transparent;border-inline:0;border-bottom:0}
 .jyc-now-strip-section.is-compact:before{display:none}
 .jyc-now-strip-section.is-compact .jyc-now-head{align-items:end;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--line,rgba(20,24,30,.12))}
 .jyc-now-strip-section.is-compact .jyc-now-head h2{font-size:clamp(24px,3vw,36px);margin-bottom:6px}
@@ -63,5 +63,5 @@ export function HubLatestUpdates({hub,limit=3}){
 .jyc-now-strip-section.is-compact .jyc-now-card p{font-size:12px;max-width:340px}
 .jyc-now-strip-section.is-compact .jyc-now-meta{font-size:9px}
 .jyc-now-strip-section.is-compact .jyc-now-media{display:none}
-@media(max-width:760px){.jyc-now-strip-section.is-compact{padding-inline:0}.jyc-now-strip-section.is-compact .jyc-now-grid{grid-template-columns:1fr}.jyc-now-strip-section.is-compact .jyc-now-card:not(:first-child) .jyc-now-card-copy{padding-left:0;border-left:0}.jyc-now-strip-section.is-compact .jyc-now-card-copy{padding:16px 0}.jyc-now-strip-section.is-compact .jyc-now-head{display:block}.jyc-now-strip-section.is-compact .jyc-now-head .reference-view-all{display:inline-block;margin-top:12px}}
+@media(max-width:760px){.jyc-now-strip-section.is-compact{width:min(100% - 32px,1320px);padding-inline:0}.jyc-now-strip-section.is-compact .jyc-now-grid{grid-template-columns:1fr}.jyc-now-strip-section.is-compact .jyc-now-card:not(:first-child) .jyc-now-card-copy{padding-left:0;border-left:0}.jyc-now-strip-section.is-compact .jyc-now-card-copy{padding:16px 0}.jyc-now-strip-section.is-compact .jyc-now-head{display:block}.jyc-now-strip-section.is-compact .jyc-now-head .reference-view-all{display:inline-block;margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.jyc-now-strip-section.is-compact .jyc-now-card:hover{transform:none}}
