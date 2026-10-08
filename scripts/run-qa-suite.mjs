@@ -47,7 +47,8 @@ const scripts = [
   'qa-v59-production-boundary.mjs',
   'qa-v60-sitewide-polish.mjs',
   'qa-v61-finalization.mjs',
-  'qa-v61-1-build-config.mjs'
+  'qa-v61-1-build-config.mjs',
+  'qa-master-checklist.mjs'
 ];
 
 for (const script of scripts) {
