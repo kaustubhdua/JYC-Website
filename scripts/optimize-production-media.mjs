@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const root=path.resolve('dist/assets');
+const root=path.resolve('dist');
 const MAX_BYTES=3*1024*1024;
 const candidates=[];
 const walk=dir=>{
