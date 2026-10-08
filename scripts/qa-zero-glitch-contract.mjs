@@ -8,12 +8,12 @@ const walk=(dir,files=[])=>{
   for(const entry of fs.readdirSync(path.join(root,dir),{withFileTypes:true})){
     const rel=path.join(dir,entry.name).replaceAll('\\','/');
     if(entry.isDirectory()&&!['node_modules','dist','.git'].includes(entry.name))walk(rel,files);
-    else if(/\\.(js|jsx|mjs|css|json|html|md)$/.test(entry.name))files.push(rel);
+    else if(/\.(js|jsx|mjs|css|json|html|md)$/.test(entry.name))files.push(rel);
   }
   return files;
 };
 const files=walk('.');
-const sourceFiles=files.filter(p=>/\\.(js|jsx|mjs)$/.test(p));
+const sourceFiles=files.filter(p=>/\.(js|jsx|mjs)$/.test(p));
 const cssFiles=files.filter(p=>p.endsWith('.css'));
 const checks=[];
 const add=(name,ok,detail='')=>checks.push({name,ok:Boolean(ok),detail});
@@ -29,7 +29,7 @@ add('all active workflow files are present',[
 const relativeFailures=[];
 for(const file of sourceFiles){
   const text=read(file);
-  for(const match of text.matchAll(/(?:from|import)\\s*(?:\\(\\s*)?['"](.\\.?\\/[^'"]+)['"]/g)){
+  for(const match of text.matchAll(/(?:from|import)\s*(?:\(\s*)?['"](\.\.?\/[^'"]+)['"]/g)){
     const spec=match[1];
     if(!spec.startsWith('.'))continue;
     const base=path.normalize(path.join(path.dirname(file),spec)).replaceAll('\\','/');
@@ -42,7 +42,7 @@ add('relative JS/CSS imports resolve',relativeFailures.length===0,relativeFailur
 const assetFailures=[];
 for(const file of [...sourceFiles,...cssFiles]){
   const text=read(file);
-  for(const match of text.matchAll(/(?:['"(]|url\\(\\s*['"]?)(\\/assets\\/[^'")\\s?]+)/g)){
+  for(const match of text.matchAll(/(?:['"(]|url\(\s*['"]?)(\/assets\/[^'")\s?]+)/g)){
     const url=match[1];
     if(/\\$|\\{|\\}|\\*|\\[|\\]/.test(url))continue;
     const clean=url.split('?')[0].split('#')[0];
@@ -79,7 +79,7 @@ add('no placeholder/TODO/FIXME markers remain in runtime source',placeholders.le
 const responsive=read('src/jyc-responsive-photo.jsx');
 add('responsive photo component is production-enabled',responsive.includes('import.meta.env.PROD')&&responsive.includes('srcSet={sourceSet(variants.avif)}')&&responsive.includes('srcSet={sourceSet(variants.webp)}'));
 const derivative=read('scripts/generate-photo-derivatives.mjs');
-add('derivative generator matches supported image extensions',/\\\\\.\\(jpe\\?g\\|png\\|webp\\)/.test(JSON.stringify(derivative))===false&&derivative.includes('/\\\\.(jpe?g|png|webp)$/i.test(file)')===false);
+add('derivative generator matches supported image extensions',derivative.includes('/\\.(jpe?g|png|webp)$/i.test(file)'));
 add('derivative generator contains real Sharp transforms',derivative.includes("sharp(file)")&&derivative.includes(".avif({quality:52")&&derivative.includes(".webp({quality:82"));
 
 const workflowText=fs.readdirSync(path.join(root,'.github/workflows')).filter(x=>x.endsWith('.yml')||x.endsWith('.yaml')).map(x=>read('.github/workflows/'+x)).join('\n');
