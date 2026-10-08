@@ -719,3 +719,156 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 @media(max-width:460px){
   .public-app .jyc57-masonry{grid-template-columns:1fr!important}
 }
+
+
+/* V65.1 — universal public-page cohesion
+   One layout contract across About, Clubs, Events, Gallery, Team, Archive,
+   Contact, History and utility pages. Decorative navigation is intentionally
+   subordinate to the page content. */
+.public-app .jyc-route-context,
+.public-app .jyc-section-index{display:none!important}
+.public-app .route-stage{width:100%;overflow:clip}
+.public-app :where(.section,.page,.feature-page,.unified-public-page){
+  width:min(1240px,calc(100% - 64px));
+  margin-inline:auto;
+}
+.public-app :where(.page,.unified-public-page){padding-top:36px;padding-bottom:96px}
+.public-app :where(.section:not(.page)){padding-top:88px;padding-bottom:88px}
+.public-app :where(.section-head,.section-inline-head,.final-page-head,.compact-page-head){
+  max-width:920px;
+  margin-inline:auto;
+}
+.public-app :where(.section-head h2,.section-inline-head h2){
+  max-width:820px;
+  text-wrap:balance;
+}
+.public-app :where(.page>h1,.page .hero-copy h1,.page .final-page-head h1){
+  max-width:920px;
+  text-wrap:balance;
+}
+.public-app :where(.page>p,.page .hero-copy>p,.page .final-page-head>p){
+  max-width:720px;
+  text-wrap:pretty;
+}
+.public-app :where(.hero-actions,.page-actions){gap:10px;flex-wrap:wrap}
+.public-app :where(.card,.feature-card,.contact-card,.archive-event,.archive-club,.achievement-feature,.announcement-card,.event-related-card,.event-context-card,.event-identity-panel){
+  border-radius:12px!important;
+  box-shadow:none!important;
+}
+.public-app :where(.card:hover,.feature-card:hover,.contact-card:hover,.archive-event:hover,.archive-club:hover,.achievement-feature:hover,.announcement-card:hover,.event-related-card:hover){
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(26,25,29,.06)!important;
+}
+.public-app .ecosystem-context-rail{
+  width:100%;
+  display:grid;
+  grid-template-columns:auto repeat(5,minmax(0,1fr));
+  gap:0;
+  margin:0 0 34px;
+  padding:0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:transparent;
+}
+.public-app .ecosystem-context-label{
+  display:flex;
+  align-items:center;
+  padding:12px 18px 12px 0;
+  color:var(--muted);
+  font:800 9px/1 Inter,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.public-app .ecosystem-context-rail button{
+  min-width:0;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px;
+  border:0;
+  border-left:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  color:var(--ink);
+  box-shadow:none;
+  text-align:left;
+  cursor:pointer;
+}
+.public-app .ecosystem-context-rail button:hover{
+  transform:none;
+  background:color-mix(in srgb,var(--gold) 7%,transparent);
+  border-color:var(--line);
+}
+.public-app .ecosystem-context-rail button small{
+  color:var(--muted);
+  font-size:8px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.public-app .ecosystem-context-rail button strong{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font:700 12px/1.1 "Space Grotesk",Inter,sans-serif;
+}
+.public-app .ecosystem-context-rail button b{margin-left:auto;color:var(--gold)}
+.public-app :where(.about-family-grid-v28,.about-flow-grid-v28,.about-programme-grid-v28,.about-principles-v28,.about-principles-v33,.contact-grid,.join-benefits,.archive-summary,.jyc-spotlight-grid){
+  align-items:stretch;
+}
+.public-app .archive-story-collage{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  gap:10px!important;
+}
+.public-app .archive-story-photo{
+  grid-column:auto!important;
+  grid-row:auto!important;
+  aspect-ratio:4/3;
+}
+.public-app .archive-story-photo img{aspect-ratio:4/3;object-fit:cover}
+.public-app :where(.moments-feature-grid){
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.public-app :where(.moments-feature){
+  min-width:0;
+  aspect-ratio:4/3;
+  border-radius:12px!important;
+  overflow:hidden;
+}
+.public-app :where(.moments-feature img){width:100%;height:100%;object-fit:cover}
+.public-app :where(.contact-location,.contact-form-container,.achievement-footer-card,.announcement-footer-card,.about-next-v28,.about-vision-v28){
+  margin-top:34px;
+}
+.public-app :where(.detail-section){
+  padding:72px 0;
+  border-top:1px solid var(--line);
+}
+.public-app :where(.detail-section-head){margin-bottom:26px}
+.public-app :where(.detail-section-head h2){font-size:clamp(34px,4.5vw,58px)}
+.public-app :where(.event-related-grid,.event-extended-grid,.event-track-cards,.event-summit-stats>div){
+  gap:10px!important;
+}
+@media(max-width:900px){
+  .public-app :where(.section,.page,.feature-page,.unified-public-page){width:min(100% - 40px,1240px)}
+  .public-app .ecosystem-context-rail{grid-template-columns:1fr 1fr}
+  .public-app .ecosystem-context-label{grid-column:1/-1;border-bottom:1px solid var(--line);padding:10px 0}
+  .public-app .ecosystem-context-rail button:nth-of-type(odd){border-left:0}
+  .public-app :where(.moments-feature-grid,.archive-story-collage){grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:620px){
+  .public-app :where(.section,.page,.feature-page,.unified-public-page){width:min(100% - 28px,1240px)}
+  .public-app :where(.page,.unified-public-page){padding-top:24px;padding-bottom:72px}
+  .public-app :where(.section:not(.page)){padding-top:64px;padding-bottom:64px}
+  .public-app .ecosystem-context-rail{grid-template-columns:1fr}
+  .public-app .ecosystem-context-label{grid-column:auto}
+  .public-app .ecosystem-context-rail button{border-left:0;border-top:1px solid var(--line);min-height:44px}
+  .public-app :where(.moments-feature-grid,.archive-story-collage){grid-template-columns:1fr!important}
+  .public-app :where(.section-head,.section-inline-head){margin-bottom:26px}
+}
+@media(prefers-reduced-motion:reduce){
+  .public-app :where(.card:hover,.feature-card:hover,.contact-card:hover,.archive-event:hover,.archive-club:hover,.achievement-feature:hover,.announcement-card:hover,.event-related-card:hover){transform:none}
+}
