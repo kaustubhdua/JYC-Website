@@ -295,11 +295,11 @@ The remaining production gates are operational: configure required third-party E
 
 ## Current release status
 
-**V58.0.8 is the current code release.** The codebase is intentionally in final public polish and production-QA mode rather than feature expansion. V58.0.8 is the active release boundary.
+**V61.1.0 is the current code release.** V62 is a checklist/release-governance pass: it adds the restrained JYC Network hero interaction, removes the legacy dither hero layer, restores the beige/champagne editorial accent system, and adds the master checklist to the static QA suite.
 
-The release boundary is aligned across `package.json`, `package-lock.json`, the service-worker cache, final product QA, final hygiene QA, `public/llms.txt`, and the latest public-surface hardening commits, including the V58.0.8 accessibility/modal/archive/media hardening.
+The release boundary is aligned across package metadata, the service-worker cache, final product QA, final hygiene QA, public discovery files and the latest V61.1 production-build hardening. The current V62 master checklist is documented in docs/V62-MASTER-CHECKLIST-STATUS.md.
 
-The highest-value remaining production work is operational rather than architectural:
+The highest-value remaining production work is operational/editorial rather than architectural:
 
 1. Keep the complete 873-file source archive catalogued and maintain editorial review when promoting new material into official event/club records.
 2. CI now enforces the production JS/CSS/image budget, public-route hygiene and expanded browser smoke suite; run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
