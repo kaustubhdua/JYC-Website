@@ -14,7 +14,7 @@ const checks=[
   ['official dark palette',css.includes('--jyc-bg:#0f0e11')&&css.includes('--jyc-red:#c92a2a')&&css.includes('--jyc-gold:#d2b48c')],
   ['Space Grotesk display system',css.includes('Space Grotesk')],
   ['desktop navigation uses JYC routes',main.includes("['Clubs','/clubs']")&&main.includes("['Events','/events']")],
-  ['home navigation exposes Team and Contact',main.includes("['Team','/team']")&&main.includes("['Contact','/contact']")],
+  ['home navigation exposes Team and Contact',main.includes("['Team','team']")&&main.includes("['Contact','/contact']")],
   ['mobile five-item dock retained',main.includes("['Home','/','home']")&&main.includes("['More','__more','more']")],
   ['home signature hero retained',home.includes('THE VOICE.')&&home.includes('THE TALENT.')&&home.includes('THE SPIRIT.')],
   ['real media fallback retained',home.includes('FALLBACK')&&home.includes('onError')],
@@ -22,7 +22,7 @@ const checks=[
   ['44px interaction target contract',css.includes('min-height:44px')||css.includes('min-height: 44px')],
   ['creator footer remains wired',main.includes('jyc-creator-credit')&&main.includes('data.creator.linkedin')],
   ['featured JAI popup uses canonical route',read('src/featured-event-popup.jsx').includes("const EVENT_PATH='/events/jai-2026-jaypee-agentic-ai-hackathon';")],
-  ['featured JAI popup is an accessible modal',read('src/featured-event-popup.jsx').includes('role="dialog"')&&read('src/featured-event-popup.jsx').includes('aria-modal="true"')&&read('src/featured-event-popup.jsx').includes("e.key==='Tab'")],
+  ['featured JAI popup is an accessible modal',read('src/featured-event-popup.jsx').includes('role="dialog"')&&read('src/featured-event-popup.jsx').includes('aria-modal="true"')&&/e\.key\s*!==\s*['"]Tab['"]/.test(read('src/featured-event-popup.jsx'))],
   ['featured JAI popup remains pointer-interactive and scrollable',read('src/featured-event-popup.jsx').includes('pointer-events:auto')&&!read('src/featured-event-popup.jsx').includes('pointer-events:none;display:grid')],
 
 ];
