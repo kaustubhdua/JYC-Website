@@ -65,7 +65,7 @@ const staleActive=[];
 for(const file of [...sourceFiles,...cssFiles,'.github/workflows/ci.yml','.github/workflows/jyc-quality.yml'].filter(exists)){
   const text=read(file);
   if(file.includes('qa-final-hygiene.mjs'))continue;
-  if(/Current release: V61\\.1\\.0|V58\\.0\\.8 is the current|release is V62\\.0\\.0/.test(text))staleActive.push(file);
+  if(/Current release: V61\.1\.0|V58\.0\.8 is the current|release is V62\.0\.0/.test(text))staleActive.push(file);
 }
 add('no stale active release assertions remain',staleActive.length===0,staleActive.join(', '));
 
