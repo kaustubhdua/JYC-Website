@@ -78,9 +78,9 @@ Public website: Home, About, History, Clubs, Events, Event Calendar, Fests, Gall
 
 ## Release boundary
 
-V56.11 living editorial photography and performance pass adds source-led JYC brand storytelling, richer hub context and a left-copy/right-emblem identity composition while preserving the senior/V1 visual contract.
+V64.0.0 is the current repository release boundary. It adds restrained editorial navigation, event/gallery shared-element transitions, a multi-day event timeline, route-specific metadata shells, a real AVIF/WebP derivative pipeline, photo editorial tooling and expanded release/browser QA.
 
-V56.11 is a club-first public website. Academic calendars are informational only; student accounts, attendance, passes, certificates, campus utilities and student-help workflows are outside the public product. Current official records are published only through authorised JYC editorial workflows.
+V64.0.0 remains a club-first public website. Academic calendars are informational only; student accounts, attendance, passes, certificates, campus utilities and student-help workflows are outside the public product. Current official records are published only through authorised JYC editorial workflows.
 
 ## Source-backed community detail
 
