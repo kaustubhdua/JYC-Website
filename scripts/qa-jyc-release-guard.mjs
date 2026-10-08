@@ -10,13 +10,13 @@ const homeCss=read('src/jyc-editorial-home.css');
 const publicCss=read('src/styles/public-system.css');
 const sw=read('public/sw.js');
 const checks=[
- ['release metadata is V64.4.2',pkg.version==='64.4.2'&&lock.version==='64.4.2'&&lock.packages?.['']?.version==='64.4.2'],
- ['service worker cache matches V64.4.2',sw.includes('jyc-cache-v64-4-1')],
+ ['release is V59.0.1',pkg.version==='59.0.1'&&lock.version==='59.0.1'&&lock.packages?.['']?.version==='59.0.1'],
+ ['service worker cache is V59.0.1',sw.includes('jyc-cache-v58-0-8')&&!sw.includes('jyc-cache-v57-0-0')],
  ['retired Projects/Impact/FAQ navigation is absent',!main.includes("['/projects','Projects'")&&!main.includes("['/impact','Impact'")&&!main.includes("['/faq','FAQ'"),],
  ['homepage retired Impact section is absent',!home.includes('jyc-v1-impact')&&!home.includes('HIGHLIGHTS · IMPACT')],
  ['homepage achievements section remains available',home.includes("nav('/achievements')")&&home.includes('Explore Achievements')],
- ['homepage uses the consolidated four-frame photo story',home.includes('gallery.slice(0,4)')&&home.includes('jh-photo-story')&&!home.includes('<PhotoChapters/>')&&!home.includes('LazyDriftWall')],
- ['homepage heavy media engines stay bounded',home.includes('LazyMagicBento')&&!home.includes('LazyDitherVeil')&&!home.includes('LazyDriftWall')],
+ ['homepage media hierarchy is consolidated',home.includes('jh-photo-story')&&!home.includes('<PhotoChapters/>')&&!home.includes('jh-archive-section')],
+ ['homepage keeps the heavy archive engine off the landing page',!home.includes('LazyDriftWall')&&home.includes('LazyMagicBento')],
  ['DriftWall surface has desktop/tablet/mobile height reservations',homeCss.includes('.jh-photo-grid')&&homeCss.includes('@media(max-width:680px)')],
  ['public layout has min-width and wrapping guards',publicCss.includes('min-width:0')&&publicCss.includes('overflow-wrap:anywhere')],
  ['reduced motion remains explicit',publicCss.includes('prefers-reduced-motion')],
