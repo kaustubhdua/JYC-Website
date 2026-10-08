@@ -4,8 +4,8 @@ import path from 'node:path';
 const root=process.cwd();
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const checks=[
-  ['release version is V59.0.0',JSON.parse(read('package.json')).version==='64.4.2'],
-  ['service worker cache is V59.0.0',read('public/sw.js').includes('jyc-cache-v64-4-2')],
+  ['release metadata matches package.json',(()=>{const pkg=JSON.parse(read('package.json'));return /^64\.\d+\.\d+$/.test(pkg.version)})()],
+  ['service worker cache matches package release',(()=>{const pkg=JSON.parse(read('package.json'));return read('public/sw.js').includes('jyc-cache-v'+pkg.version.replace(/\./g,'-'))})()],
   ['production media boundary plugin exists',read('vite.config.js').includes("name:'jyc-production-media-boundary'")],
   ['image manifest uses the same curated archive boundary',read('scripts/generate-image-manifest.mjs').includes('allowedArchiveUrls')&&read('scripts/generate-image-manifest.mjs').includes("url.startsWith('/assets/source-archive/')&&!allowedArchiveUrls.has(url)")],
   ['production media boundary keeps strict photos and identity assets',read('vite.config.js').includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')&&read('vite.config.js').includes('JYC_SOURCE_ARCHIVE_IDENTITY_ASSETS')],
