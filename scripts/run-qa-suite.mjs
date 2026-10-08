@@ -46,7 +46,8 @@ const scripts = [
   'qa-v61-1-build-config.mjs',
   'qa-master-checklist.mjs',
   'qa-v64-editorial-release.mjs',
-  'qa-dependency-lock.mjs'
+  'qa-dependency-lock.mjs',
+  'qa-zero-glitch-contract.mjs'
 ];
 
 for (const script of scripts) {
