@@ -1,7 +1,7 @@
 {
   "name": "jyc-website",
   "private": true,
-  "version": "60.0.0",
+  "version": "61.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -31,7 +31,8 @@
     "qa:trust-cms": "node scripts/qa-v58-trust-cms.mjs",
     "qa:sitemap": "node scripts/qa-sitemap-contract.mjs",
     "qa:identifiers": "node scripts/qa-canonical-identifiers.mjs",
-    "qa:v60": "node scripts/qa-v60-sitewide-polish.mjs"
+    "qa:v60": "node scripts/qa-v60-sitewide-polish.mjs",
+    "qa:v61": "node scripts/qa-v61-finalization.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
