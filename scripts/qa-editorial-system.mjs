@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const main=fs.readFileSync('src/main.jsx','utf8');
+const component=fs.readFileSync('src/jyc-editorial-system.jsx','utf8');
+const css=fs.readFileSync('src/jyc-editorial-system.css','utf8');
+assert.match(main,/JYCEditorialSystem/,'editorial system must be wired');
+assert.match(component,/IntersectionObserver/,'section index observer missing');
+assert.match(component,/prefers-reduced-motion/,'reduced-motion behavior missing');
+assert.match(css,/jyc-section-index/,'section index CSS missing');
+assert.match(css,/jyc-route-progress/,'route transition CSS missing');
+assert.match(css,/prefers-reduced-motion/,'reduced-motion CSS missing');
+console.log('JYC editorial system contract: PASS');
