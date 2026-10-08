@@ -18,7 +18,7 @@
     "qa:best-jyc": "npm run qa",
     "qa:mobile-first": "npm run qa",
     "qa:security": "node scripts/qa-security.mjs",
-    "prebuild": "node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs",
+    "prebuild": "node scripts/generate-photo-derivatives.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs",
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
     "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
@@ -32,7 +32,8 @@
     "qa:sitemap": "node scripts/qa-sitemap-contract.mjs",
     "qa:identifiers": "node scripts/qa-canonical-identifiers.mjs",
     "qa:v60": "node scripts/qa-v60-sitewide-polish.mjs",
-    "qa:v61": "node scripts/qa-v61-finalization.mjs"
+    "qa:v61": "node scripts/qa-v61-finalization.mjs",
+    "qa:photo-intelligence": "node scripts/qa-photo-intelligence.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
@@ -48,7 +49,8 @@
     "gsap": "3.15.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "sharp": "^0.35.0"
   },
   "engines": {
     "node": ">=22"
