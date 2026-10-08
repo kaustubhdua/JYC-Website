@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const checks=[];
+const source=read('src/jyc-source-media.js');
+const intelligence=read('src/jyc-photo-intelligence.js');
+const responsive=read('src/jyc-responsive-photo.jsx');
+const gallery=read('src/jyc57-experience.jsx');
+const css=read('src/styles/public-system.css');
+const migration=read('supabase/migrations/202610080800_v63_photo_editorial_intelligence.sql');
+const derivatives=read('scripts/generate-photo-derivatives.mjs');
+const pkg=JSON.parse(read('package.json'));
+const check=(name,ok)=>checks.push({name,ok:Boolean(ok)});
+check('editorial rubric is defined',intelligence.includes('JYC_EDITORIAL_RUBRIC')&&intelligence.includes('scoreJycPhoto'));
+check('diversity-aware ranking is wired',intelligence.includes('rankDiverseJycPhotos')&&source.includes('rankDiverseJycPhotos'));
+check('responsive picture pipeline exists',responsive.includes('<picture')&&responsive.includes('srcSet')&&intelligence.includes('photoDerivativeUrls'));
+check('AVIF/WebP derivative build exists',derivatives.includes('.avif')&&derivatives.includes('.webp')&&pkg.scripts.prebuild.includes('generate-photo-derivatives'));
+check('photo editorial schema exists',migration.includes('editorial_score')&&migration.includes('duplicate_group')&&migration.includes('derivative_status'));
+check('focal points are publication-gated',migration.includes('focal_x is null')&&migration.includes('focal_y is null'));
+check('album narrative is publication-gated',migration.includes("trim(new.narrative)")&&migration.includes("editorial_status not in ('ready','published')"));
+check('Motion is used for gallery transitions',gallery.includes("from 'motion/react'")||gallery.includes('from "motion/react"'));
+check('gallery includes archive IA',gallery.includes('COLLECTIONS')&&gallery.includes('MOMENTS')&&gallery.includes('YEARS')&&gallery.includes('COMMUNITIES'));
+check('gallery responsive styles exist',css.includes('.jyc57-photo-story')&&css.includes('.jyc57-archive-nav'));
+const failed=checks.filter(x=>!x.ok);
+for(const row of checks)console.log((row.ok?'PASS ':'FAIL ')+row.name);
+if(failed.length){console.error('Photo intelligence QA failed: '+failed.length);process.exit(1)}
