@@ -14,7 +14,7 @@ const vercel=JSON.parse(read('vercel.json'));
 const checks=[];
 const add=(name,ok,detail='')=>checks.push({name,ok:Boolean(ok),detail});
 
-add('release metadata is synchronized for the current major release',/^58\.\d+\.\d+$/.test(pkg.version)&&lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version);
+add('release metadata is synchronized for the current major release',/^64\.\d+\.\d+$/.test(pkg.version)&&lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version);
 add('canonical public routes are declared',[
   ['/about','/history','/clubs','/events','/gallery','/team','/archive','/recruitment','/announcements','/calendar','/contact']
 ].every(group=>group.every(route=>config.includes("'" + route + "'"))));
