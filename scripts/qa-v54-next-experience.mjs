@@ -18,7 +18,7 @@ const checks=[
  ['editorial homepage provides community discovery',editorialHome.includes('families.slice(0,5).map')&&editorialHome.includes('Explore all clubs')],
  ['editorial homepage mounts current updates',editorialHome.includes('<JYCNowStrip limit={3}/>')],
  ['homepage uses one controlled moments surface',editorialHome.includes('jh-photo-story')&&!editorialHome.includes('<PhotoChapters/>')&&!editorialHome.includes('jh-archive-section')],
- ['editorial homepage mounts living spotlight',editorialHome.includes('LazyMagicBento')&&editorialHome.includes('LazyDitherVeil')],
+ ['editorial homepage mounts living spotlight',editorialHome.includes('LazyMagicBento')&&editorialHome.includes('magic-bento')],
  ['editorial homepage ordering is content-first',(()=>{const order=['jh-hero','jh-intro','jh-dark-section','jh-events','jh-photo-story','jh-activities','<JYCNowStrip limit={3}/>','jh-history','jh-people','jh-final'];const positions=order.map(token=>editorialHome.indexOf(token));return positions.every(i=>i>=0)&&positions.every((i,n)=>n===0||i>positions[n-1])})()],
  ['bot context labels exist',bot.includes('Explore hubs')&&bot.includes('Find an event')&&bot.includes('Explore archive')],
  ['bot stays above mobile dock',bot.includes('bottom:calc(94px + env(safe-area-inset-bottom))')],
