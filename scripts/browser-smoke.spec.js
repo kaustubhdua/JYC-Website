@@ -197,6 +197,12 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
       expect(result.bodyOverflow, 'horizontal overflow ' + width + 'px ' + route).toBe(false);
       expect(result.badRects, 'off-screen elements ' + width + 'px ' + route).toEqual([]);
       expect(result.invisibleText, 'off-screen visible text ' + width + 'px ' + route + ' :: ' + JSON.stringify(result.invisibleTextDetails)).toBe(0);
+      const textOverflow = await page.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,p,button,a,span')].filter(el => {
+        const s=getComputedStyle(el), r=el.getBoundingClientRect(), text=(el.textContent||'').trim();
+        if(!text||s.display==='none'||s.visibility==='hidden'||r.width<=0||r.height<=0)return false;
+        return el.scrollWidth > el.clientWidth + 2 && s.overflowWrap !== 'anywhere' && s.whiteSpace !== 'nowrap';
+      }).slice(0,8).map(el => ({tag:el.tagName,cls:String(el.className||''),text:String(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),scrollWidth:el.scrollWidth,clientWidth:el.clientWidth})));
+      expect(textOverflow, 'text clipping/overflow ' + width + 'px ' + route).toEqual([]);
     }
   }
 });
@@ -595,6 +601,28 @@ test('mobile fixed controls have separation and never overlap the navigation doc
     expect(overlap).toBe(0);
   }
 });
+test('fixed public controls have no accidental pairwise overlap on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(300);
+  const result = await page.evaluate(() => {
+    const selectors=['.mobile-dock','.jyc-bot-shell'];
+    const boxes=selectors.map(sel=>{
+      const el=document.querySelector(sel); if(!el) return null;
+      const r=el.getBoundingClientRect(); const s=getComputedStyle(el);
+      return {sel,left:r.left,right:r.right,top:r.top,bottom:r.bottom,visible:s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0};
+    }).filter(Boolean).filter(x=>x.visible);
+    const overlaps=[];
+    for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){
+      const a=boxes[i],b=boxes[j];
+      const area=Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
+      if(area>0)overlaps.push({a:a.sel,b:b.sel,area});
+    }
+    return overlaps;
+  });
+  expect(result).toEqual([]);
+});
+
 
 
 test('Join JYC exposes the public coming-soon experience', async ({ page }) => {
