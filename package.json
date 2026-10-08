@@ -35,7 +35,8 @@
     "qa:v61": "node scripts/qa-v61-finalization.mjs",
     "qa:photo-intelligence": "node scripts/qa-photo-intelligence.mjs",
     "media:audit": "node scripts/audit-photo-intelligence.mjs",
-    "media:derivatives": "node scripts/generate-photo-derivatives.mjs"
+    "media:derivatives": "node scripts/generate-photo-derivatives.mjs",
+    "qa:editorial": "node scripts/qa-editorial-system.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
