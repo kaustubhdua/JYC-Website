@@ -1,13 +1,10 @@
-import React,{lazy,Suspense,useMemo} from 'react';
+import React,{useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
 import {sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
 import {JYCNetwork} from './jyc-network.jsx';
-import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
-
-const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
 
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -15,8 +12,7 @@ const eventPath=e=>`/events/${slug(e?.slug||e?.title)}`;
 const media=v=>v?.url||v?.src||v?.image||v?.imageUrl||'';
 const dateMs=e=>{const d=new Date(String(e?.date||'')+'T'+String(e?.start||'00:00'));return Number.isNaN(d.getTime())?Infinity:d.getTime()};
 const dateLabel=v=>{const d=new Date(String(v||''));return Number.isNaN(d.getTime())?'DATE TBA':d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
-const eventImage=(e,i=0)=>e?.poster||sourceEventMedia(e)?.photoItems?.filter(x=>x?.url).map(media)[i]||FALLBACK;
-
+const eventImage=e=>e?.poster||sourceEventMedia(e)?.photoItems?.filter(x=>x?.url).map(media)[0]||FALLBACK;
 function Img({src,alt,loading,fetchPriority,decoding='async',...props}){const resolvedLoading=loading??(fetchPriority==='high'?'eager':'lazy');return <img {...props} src={src||FALLBACK} alt={alt||''} loading={resolvedLoading} fetchPriority={fetchPriority} decoding={decoding} onError={e=>{if(e.currentTarget.dataset.fallback)return;e.currentTarget.dataset.fallback='1';e.currentTarget.src=FALLBACK;}}/>}
 
 export function JYCEditorialHome({data}){
@@ -29,86 +25,12 @@ export function JYCEditorialHome({data}){
  const activities=JYC_PUBLIC_ACTIVITIES.slice(0,6);
  const featured=upcoming[0];
  return <main className="jyc-editorial-home jyc-home">
-   <section className="jh-hero" aria-labelledby="jh-title">
-     <div className="jh-hero-copy">
-       <div className="jh-kicker"><span>JIIT YOUTH CLUB</span><b>128</b></div>
-       <p className="jh-overline">JIIT WISH TOWN · SECTOR 128 · NOIDA</p>
-       <h1 id="jh-title"><span>THE VOICE.</span><span>THE TALENT.</span><em>THE SPIRIT.</em></h1>
-       <p className="jh-lead">The student-powered layer connecting the communities, events, culture, competition and campus life of JIIT 128.</p>
-       <div className="jh-actions">
-         <button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button>
-         <button type="button" className="jh-btn" onClick={()=>nav('/events')}>What’s Happening <span>→</span></button>
-       </div>
-       <div className="jh-proof"><span><b>01</b> DISCOVER</span><span><b>02</b> PARTICIPATE</span><span><b>03</b> BELONG</span></div>
-     </div>
-     <div className="jh-hero-visual">
-       <div className="jh-photo-frame">
-         <Img src={gallery[0]?.url||FALLBACK} alt={gallery[0]?.alt||'JIIT Youth Club 128 campus moment'} fetchPriority="high"/>
-         <div className="jh-photo-overlay"/>
-         <span className="jh-photo-label">JYC 128 / CAMPUS LIFE</span>
-         <span className="jh-photo-index">01 — MOMENTS</span>
-       </div>
-       <JYCNetwork />
-     </div>
-   </section>
-
-   <section className="jh-intro jh-container">
-     <div className="jh-section-number">01 / THE ORGANISATION</div>
-     <div className="jh-intro-grid">
-       <h2>The student organisation behind the experiences that make <em>campus life move.</em></h2>
-       <div><p>JYC is the central student-led layer connecting JIIT 128 communities, events, fests and inter-society activity. It gives students places to discover a skill, find people, lead something and make a memory.</p><button type="button" className="jh-text-link" onClick={()=>nav('/about')}>What is JYC? <span>→</span></button></div>
-     </div>
-     <div className="jh-word-rail"><span>CLUBS</span><i>×</i><span>EVENTS</span><i>×</i><span>CULTURE</span><i>×</i><span>COMPETITION</span><i>×</i><span>COMMUNITY</span></div>
-   </section>
-
-   <section className="jh-dark-section">
-     <div className="jh-container">
-       <div className="jh-section-head light"><div><div className="jh-section-number">02 / FIND YOUR SPACE</div><h2>Many communities.<br/><em>One campus.</em></h2></div><button type="button" className="jh-text-link light" onClick={()=>nav('/clubs')}>Explore all clubs <span>↗</span></button></div>
-       <div className="jh-family-grid">
-         {families.slice(0,5).map((group,i)=><article className={'jh-family family-'+i} key={group.family}>
-           <div className="jh-family-index" aria-hidden="true"><span>0{i+1}</span><b>{String(group.family||'JYC').slice(0,3).toUpperCase()}</b></div>
-           <div className="jh-family-copy"><span>{group.family}</span><h3>{group.hubs.slice(0,3).map(x=>x.name).join(' · ')}</h3><p>{group.hubs.length} documented communities</p><button type="button" onClick={()=>nav('/clubs')}>Find your space →</button></div>
-         </article>)}
-       </div>
-     </div>
-   </section>
-
-   <section className="jh-container jh-events">
-     <div className="jh-section-head"><div><div className="jh-section-number">03 / WHAT’S NEXT</div><h2>What’s happening<br/><em>at JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/events')}>View all events <span>↗</span></button></div>
-     {featured ? <div className="jh-featured-event" onClick={()=>nav(eventPath(featured))}>
-       <div className="jh-event-image"><Img src={eventImage(featured)} alt={featured.title+' event poster'} loading="lazy"/><span>FEATURED EVENT</span></div>
-       <div className="jh-event-copy"><p className="jh-event-meta">{dateLabel(featured.date)} · JIIT 128 · {featured.club||'JYC'}</p><h3>{featured.title}</h3><p>{featured.description||'Discover the official event record, schedule and registration information.'}</p><div className="jh-event-details"><span>VENUE <b>{featured.venue||'JIIT 128'}</b></span><span>TIME <b>{featured.start||'TBA'}</b></span></div><button type="button" className="jh-btn jh-btn-primary">View Event <span>↗</span></button></div>
-     </div> : <div className="jh-empty">No published upcoming events are currently available.</div>}
-     {upcoming.slice(1).length>0&&<div className="jh-event-list">{upcoming.slice(1).map((e,i)=><button type="button" key={e.id||e.title} onClick={()=>nav(eventPath(e))}><span>{dateLabel(e.date)}</span><strong>{e.title}</strong><small>{e.club||'JYC'} · {e.venue||'JIIT 128'}</small><b>→</b></button>)}</div>}
-   </section>
-
-   <section className="jh-photo-story">
-     <div className="jh-container">
-       <div className="jh-section-head"><div><div className="jh-section-number">04 / CAMPUS IN MOTION</div><h2>Real people.<br/><em>Real moments.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/gallery')}>Open gallery <span>↗</span></button></div>
-       <div className="jh-photo-grid">
-         {gallery.slice(0,4).map((g,i)=><button type="button" key={g.id||i} onClick={()=>nav('/gallery')} className={'jh-gallery-tile tile-'+i}><Img src={g.url} alt={g.alt||g.caption||'JYC 128 campus moment'} loading="lazy"/><span>{g.caption||g.title||'JYC 128'}</span></button>)}
-       </div>
-     </div>
-   </section>
-
-   <section className="jh-activities jh-container">
-     <div className="jh-section-head"><div><div className="jh-section-number">05 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>From culture and sport to technical communities, performances, workshops and competitions, JYC creates places to take part.</p></div>
-     <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="191,156,111" clickEffect/></Suspense>
-   </section>
-
-   <JYCNowStrip limit={3} compact/>
-
-   <section className="jh-history">
-     <div className="jh-container jh-history-grid"><div><div className="jh-section-number">06 / THROUGH THE YEARS</div><h2>JYC is not a moment.<br/><em>It is a continuity.</em></h2><p>Official reports, events and campus photography give JYC a history worth remembering.</p><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/history')}>Explore History <span>→</span></button><button type="button" className="jh-btn" onClick={()=>nav('/achievements')}>Explore Achievements <span>→</span></button></div><div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div>
-   </section>
-
-   <section className="jh-people jh-container">
-     <div className="jh-section-head"><div><div className="jh-section-number">07 / THE PEOPLE</div><h2>The students<br/><em>behind JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button></div>
-     {team.length?<div className="jh-team-row">{team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><div className="jh-team-monogram" aria-hidden="true">{String(m.name||'JYC').trim().split(/\\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase()}</div><span>{m.role||m.position||'JYC Team'}</span><strong>{m.name||'JYC Team Member'}</strong><small>View profile <b>↗</b></small></button>)}</div>:<div className="jh-empty">Official team profiles will appear here when published.</div>}
-   </section>
-
-   <section className="jh-final">
-     <div className="jh-container jh-final-grid"><div><div className="jh-section-number">08 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div>
-   </section>
+  <section className="jh-hero" aria-labelledby="jh-title"><div className="jh-hero-copy"><div className="jh-kicker"><span>JIIT YOUTH CLUB</span><b>128</b></div><p className="jh-overline">JIIT WISH TOWN · SECTOR 128 · NOIDA</p><h1 id="jh-title"><span>THE VOICE.</span><span>THE TALENT.</span><em>THE SPIRIT.</em></h1><p className="jh-lead">The student-powered layer connecting the communities, events, culture, competition and campus life of JIIT 128.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-primary" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn" onClick={()=>nav('/events')}>What’s Happening <span>→</span></button></div><div className="jh-proof"><span><b>01</b> DISCOVER</span><span><b>02</b> PARTICIPATE</span><span><b>03</b> BELONG</span></div></div><div className="jh-hero-visual"><div className="jh-photo-frame"><Img src={gallery[0]?.url||FALLBACK} alt={gallery[0]?.alt||'JIIT Youth Club 128 campus moment'} fetchPriority="high"/><div className="jh-photo-overlay"/><span className="jh-photo-label">JYC 128 / CAMPUS LIFE</span><span className="jh-photo-index">01 — MOMENT</span></div><JYCNetwork/></div></section>
+  <section className="jh-intro jh-container"><div className="jh-section-number">01 / THE ORGANISATION</div><div className="jh-intro-grid"><h2>The student organisation behind the experiences that make <em>campus life move.</em></h2><div><p>JYC connects JIIT 128 communities, events, fests and inter-society activity. Discover a skill, find people, lead something and make a memory.</p><button type="button" className="jh-text-link" onClick={()=>nav('/about')}>What is JYC? <span>→</span></button></div></div><div className="jh-word-rail"><span>CLUBS</span><i>×</i><span>EVENTS</span><i>×</i><span>CULTURE</span><i>×</i><span>COMPETITION</span><i>×</i><span>COMMUNITY</span></div></section>
+  <section className="jh-dark-section"><div className="jh-container"><div className="jh-section-head light"><div><div className="jh-section-number">02 / FIND YOUR SPACE</div><h2>Many communities.<br/><em>One campus.</em></h2></div><button type="button" className="jh-text-link light" onClick={()=>nav('/clubs')}>Explore all clubs <span>↗</span></button></div><div className="jh-family-grid">{families.slice(0,5).map((group,i)=><article className="jh-family" key={group.family}><div className="jh-family-index" aria-hidden="true"><span>0{i+1}</span><b>{String(group.family||'JYC').slice(0,3).toUpperCase()}</b></div><div className="jh-family-copy"><span>{group.family}</span><h3>{group.hubs.slice(0,3).map(x=>x.name).join(' · ')}</h3><p>{group.hubs.length} documented communities</p><button type="button" onClick={()=>nav('/clubs')}>Find your space →</button></div></article>)}</div></div></section>
+  <section className="jh-container jh-events"><div className="jh-section-head"><div><div className="jh-section-number">03 / WHAT’S NEXT</div><h2>What’s happening<br/><em>at JYC.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/events')}>View all events <span>↗</span></button></div>{featured?<div className="jh-featured-event" onClick={()=>nav(eventPath(featured))}><div className="jh-event-image"><Img src={eventImage(featured)} alt={featured.title+' event poster'} loading="lazy"/><span>FEATURED EVENT</span></div><div className="jh-event-copy"><p className="jh-event-meta">{dateLabel(featured.date)} · JIIT 128 · {featured.club||'JYC'}</p><h3>{featured.title}</h3><p>{featured.description||'Discover the official event record, schedule and registration information.'}</p><div className="jh-event-details"><span>VENUE <b>{featured.venue||'JIIT 128'}</b></span><span>TIME <b>{featured.start||'TBA'}</b></span></div><button type="button" className="jh-btn jh-btn-primary">View Event <span>↗</span></button></div></div>:<div className="jh-empty">No published upcoming events are currently available.</div>}{upcoming.slice(1).length>0&&<div className="jh-event-list">{upcoming.slice(1).map(e=><button type="button" key={e.id||e.title} onClick={()=>nav(eventPath(e))}><span>{dateLabel(e.date)}</span><strong>{e.title}</strong><small>{e.club||'JYC'} · {e.venue||'JIIT 128'}</small><b>→</b></button>)}</div>}</section>
+  <section className="jh-activities jh-container"><div className="jh-section-head"><div><div className="jh-section-number">04 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>Choose how you want to show up: create, compete, perform, build, organise or simply find your people.</p></div><div className="jh-activity-grid">{activities.map((a,i)=><button type="button" key={a.id||a.title} className="jh-activity-card" onClick={()=>nav(a.link||'/clubs')}><span>{String(i+1).padStart(2,'0')}</span><strong>{a.title}</strong><p>{a.text}</p><b>Explore <i>↗</i></b></button>)}</div><div className="jh-activities-foot"><span>Want the visual archive?</span><button type="button" className="jh-text-link" onClick={()=>nav('/gallery')}>Open JYC Gallery <span>↗</span></button></div></section>
+  <section className="jh-community"><div className="jh-container jh-community-grid"><div className="jh-community-copy"><div className="jh-section-number">05 / THE PEOPLE + THE RECORD</div><h2>Built by students.<br/><em>Remembered together.</em></h2><p>JYC is a living student organisation, but its work also becomes a record of campus life. Meet the people behind it, then explore the years, events and achievements they leave behind.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/team')}>Meet the team <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/history')}>Explore history <span>→</span></button></div></div><div className="jh-team-list"><div className="jh-team-list-head"><span>JYC TEAM</span><span>{team.length?String(team.length).padStart(2,'0'):'—'} PROFILES</span></div>{team.length?team.map((m,i)=><button type="button" key={m.id||i} onClick={()=>nav('/team')}><span className="jh-team-monogram" aria-hidden="true">{String(m.name||'JYC').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase()}</span><span><small>{m.role||m.position||'JYC Team'}</small><strong>{m.name||'JYC Team Member'}</strong></span><b>↗</b></button>):<div className="jh-empty">Official team profiles will appear here when published.</div>}<div className="jh-years"><span>2016</span><span>2019</span><span>2023</span><span>2026</span><b>NOW</b></div></div></div></section>
+  <section className="jh-final"><div className="jh-container jh-final-grid"><div><div className="jh-section-number">06 / GET INVOLVED</div><h2>Find your place<br/><em>in JIIT 128.</em></h2></div><div><p>Discover a community. Find the next event. Meet the people making campus life happen.</p><div className="jh-actions"><button type="button" className="jh-btn jh-btn-light" onClick={()=>nav('/clubs')}>Explore Clubs <span>↗</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/events')}>See Events <span>→</span></button><button type="button" className="jh-btn jh-btn-outline-light" onClick={()=>nav('/join-jyc')}>Join JYC <span>→</span></button></div></div></div></section>
  </main>;
 }
