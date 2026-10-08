@@ -8,16 +8,13 @@ import {JYCNetwork} from './jyc-network.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
 
-const LazyDitherVeil=lazy(()=>import('./react-bits/DitherVeil.jsx'));
 const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
-const DRIFT_WALL_PRESETS=['1','2','4'];
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const eventPath=e=>`/events/${slug(e?.slug||e?.title)}`;
 const media=v=>v?.url||v?.src||v?.image||v?.imageUrl||'';
-const safeUrl=v=>{try{const u=new URL(String(v||''),window.location.origin);return ['http:','https:'].includes(u.protocol)?u.href:''}catch{return ''}};
 const dateMs=e=>{const d=new Date(String(e?.date||'')+'T'+String(e?.start||'00:00'));return Number.isNaN(d.getTime())?Infinity:d.getTime()};
 const dateLabel=v=>{const d=new Date(String(v||''));return Number.isNaN(d.getTime())?'DATE TBA':d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
 const hubImage=(name,i=0)=>sourceHubMedia(name)?.photos?.[i%Math.max(1,sourceHubMedia(name)?.photos?.length||1)]||FALLBACK;
@@ -27,8 +24,6 @@ function Img({src,alt,...props}){return <img {...props} src={src||FALLBACK} alt=
 
 export function JYCEditorialHome({data}){
  const nav=useNavigate();
- const visualArchive=useMemo(()=>mergeSourceGallery().filter(x=>media(x)).slice(0,24).map((x,i)=>({id:x.id||i,src:media(x),alt:x.alt||x.title||x.caption||'JYC campus moment'})),[]);
- const clubs=useMemo(()=>Array.isArray(data?.clubs)?data.clubs.filter(c=>c?.published&&c?.status!=='archived').slice().sort((a,b)=>String(a.name).localeCompare(String(b.name))):[],[data?.clubs]);
  const events=useMemo(()=>Array.isArray(data?.events)?data.events.filter(e=>e?.published&&!e?.archived).slice().sort((a,b)=>dateMs(a)-dateMs(b)):[],[data?.events]);
  const upcoming=events.slice(0,4);
  const gallery=useMemo(()=>mergeSourceGallery(data?.gallery||[]).filter(g=>g?.url),[data?.gallery]);
