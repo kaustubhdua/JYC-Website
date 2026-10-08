@@ -1,7 +1,7 @@
 {
   "name": "jyc-website",
   "private": true,
-  "version": "62.0.0",
+  "version": "64.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,7 +18,7 @@
     "qa:best-jyc": "npm run qa",
     "qa:mobile-first": "npm run qa",
     "qa:security": "node scripts/qa-security.mjs",
-    "prebuild": "node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs",
+    "prebuild": "node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs && node scripts/generate-photo-derivatives.mjs",
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
     "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
