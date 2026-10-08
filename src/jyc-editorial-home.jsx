@@ -1,15 +1,13 @@
 import React,{lazy,Suspense,useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {JYC_HUB_CONTENT,JYC_HUB_FAMILIES} from './v21-hub-content.js';
-import {sourceHubMedia,sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
+import {sourceEventMedia,mergeSourceGallery} from './jyc-source-media.js';
 import {JYC_PUBLIC_ACTIVITIES} from './public-v1/config.js';
-import {PhotoChapters} from './jyc-next-experience.jsx';
 import {JYCNetwork} from './jyc-network.jsx';
 import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
 
 const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
-const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -17,7 +15,6 @@ const eventPath=e=>`/events/${slug(e?.slug||e?.title)}`;
 const media=v=>v?.url||v?.src||v?.image||v?.imageUrl||'';
 const dateMs=e=>{const d=new Date(String(e?.date||'')+'T'+String(e?.start||'00:00'));return Number.isNaN(d.getTime())?Infinity:d.getTime()};
 const dateLabel=v=>{const d=new Date(String(v||''));return Number.isNaN(d.getTime())?'DATE TBA':d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
-const hubImage=(name,i=0)=>sourceHubMedia(name)?.photos?.[i%Math.max(1,sourceHubMedia(name)?.photos?.length||1)]||FALLBACK;
 const eventImage=(e,i=0)=>e?.poster||sourceEventMedia(e)?.photoItems?.filter(x=>x?.url).map(media)[i]||FALLBACK;
 
 function Img({src,alt,loading,fetchPriority,decoding='async',...props}){const resolvedLoading=loading??(fetchPriority==='high'?'eager':'lazy');return <img {...props} src={src||FALLBACK} alt={alt||''} loading={resolvedLoading} fetchPriority={fetchPriority} decoding={decoding} onError={e=>{if(e.currentTarget.dataset.fallback)return;e.currentTarget.dataset.fallback='1';e.currentTarget.src=FALLBACK;}}/>}
@@ -64,14 +61,12 @@ export function JYCEditorialHome({data}){
      <div className="jh-word-rail"><span>CLUBS</span><i>×</i><span>EVENTS</span><i>×</i><span>CULTURE</span><i>×</i><span>COMPETITION</span><i>×</i><span>COMMUNITY</span></div>
    </section>
 
-   <PhotoChapters/>
-
    <section className="jh-dark-section">
      <div className="jh-container">
        <div className="jh-section-head light"><div><div className="jh-section-number">02 / FIND YOUR SPACE</div><h2>Many communities.<br/><em>One campus.</em></h2></div><button type="button" className="jh-text-link light" onClick={()=>nav('/clubs')}>Explore all clubs <span>↗</span></button></div>
        <div className="jh-family-grid">
          {families.slice(0,5).map((group,i)=><article className={'jh-family family-'+i} key={group.family}>
-           <button type="button" onClick={()=>nav('/clubs')} className="jh-family-image"><Img src={hubImage(group.hubs[0]?.name,i)} alt={group.family+' communities at JIIT 128'} loading="lazy"/><span>0{i+1}</span></button>
+           <div className="jh-family-index" aria-hidden="true"><span>0{i+1}</span><b>{String(group.family||'JYC').slice(0,3).toUpperCase()}</b></div>
            <div className="jh-family-copy"><span>{group.family}</span><h3>{group.hubs.slice(0,3).map(x=>x.name).join(' · ')}</h3><p>{group.hubs.length} documented communities</p><button type="button" onClick={()=>nav('/clubs')}>Find your space →</button></div>
          </article>)}
        </div>
@@ -91,7 +86,7 @@ export function JYCEditorialHome({data}){
      <div className="jh-container">
        <div className="jh-section-head"><div><div className="jh-section-number">04 / CAMPUS IN MOTION</div><h2>Real people.<br/><em>Real moments.</em></h2></div><button type="button" className="jh-text-link" onClick={()=>nav('/gallery')}>Open gallery <span>↗</span></button></div>
        <div className="jh-photo-grid">
-         {gallery.slice(0,6).map((g,i)=><button type="button" key={g.id||i} onClick={()=>nav('/gallery')} className={'jh-gallery-tile tile-'+i}><Img src={g.url} alt={g.alt||g.caption||'JYC 128 campus moment'} loading="lazy"/><span>{g.caption||g.title||'JYC 128'}</span></button>)}
+         {gallery.slice(0,4).map((g,i)=><button type="button" key={g.id||i} onClick={()=>nav('/gallery')} className={'jh-gallery-tile tile-'+i}><Img src={g.url} alt={g.alt||g.caption||'JYC 128 campus moment'} loading="lazy"/><span>{g.caption||g.title||'JYC 128'}</span></button>)}
        </div>
      </div>
    </section>
@@ -100,8 +95,6 @@ export function JYCEditorialHome({data}){
      <div className="jh-section-head"><div><div className="jh-section-number">05 / WHAT JYC MAKES POSSIBLE</div><h2>A campus with<br/><em>room to participate.</em></h2></div><p>From culture and sport to technical communities, performances, workshops and competitions, JYC creates places to take part.</p></div>
      <Suspense fallback={<div className="jh-bento-fallback"/>}><LazyMagicBento items={activities.map((a,i)=>({id:a.id||a.title,title:a.title,description:a.text,label:String(i+1).padStart(2,'0'),image:gallery[i%Math.max(1,gallery.length)]?.url||FALLBACK,href:a.link||'/clubs'}))} textAutoHide={false} enableStars={false} enableSpotlight enableBorderGlow enableTilt={false} enableMagnetism={false} particleCount={0} spotlightRadius={260} glowColor="191,156,111" clickEffect/></Suspense>
    </section>
-
-   <section className="jh-archive-section" aria-labelledby="jh-archive-title"><div className="jh-section-head"><div><span className="jh-section-number">06 / MOMENTS</span><h2 id="jh-archive-title">The visual archive.</h2><p>Published JYC photography, posters and campus moments — a living record of student life at 128.</p></div><button type="button" className="jh-text-link" onClick={()=>nav("/gallery")}>Open gallery →</button></div><Suspense fallback={<div className="jh-archive-fallback" aria-hidden="true"/>}><LazyDriftWall items={gallery.slice(0,18).map((g,i)=>({id:g.id||i,src:g.url,alt:g.alt||g.caption||g.title||'JYC campus moment'}))} columns={3} tileWidth={240} tileHeight={160} gap={14} tilt={5} turn={-4} perspective={1100} depth={45} speed={1.5} direction="up" variance={.08} parallax={.05} pauseOnHover lift={10} fade={.5} dim={.25} ariaLabel="JYC visual archive"/></Suspense></section>
 
    <JYCNowStrip limit={3}/>
 
