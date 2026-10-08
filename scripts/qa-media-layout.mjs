@@ -14,7 +14,7 @@ const checks=[
   ['homepage activity bento does not duplicate gallery imagery',!home.includes('image:gallery[')],
   ['homepage photo-story has a deterministic four-tile layout',homeCss.includes('.jh-photo-grid')&&homeCss.includes('.tile-0')&&homeCss.includes('.tile-3')],
   ['homepage family index has a stable non-media frame',homeCss.includes('.jh-family-index')],
-  ['gallery archive uses a deterministic grid, not CSS columns/masonry',system.includes('.public-app .gallery-grid{')&&system.includes('display:grid!important')&&!system.includes('column-count:4!important')],
+  ['gallery archive uses a deterministic grid, not CSS columns/masonry',system.includes('.public-app .gallery-grid{')&&system.includes('display:grid!important')&&system.includes('column-count:unset!important')&&!system.includes('.public-app .gallery-grid{display:block!important')],
   ['gallery archive images have stable aspect-ratio frames',system.includes('.public-app .gallery-grid .gallery-item img')&&system.includes('aspect-ratio:4/3!important')],
   ['gallery archive remains responsive at mobile widths',system.includes('@media(max-width:620px)')&&system.includes('.public-app .gallery-grid')],
 ];
