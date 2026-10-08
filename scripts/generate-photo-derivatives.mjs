@@ -8,13 +8,13 @@ const outputRoot=path.resolve('public/assets/photo-derivatives');
 const WIDTHS=[320,480,640,960,1280,1600,2400];
 const ALLOWED=['source-archive','hub-photos','hub-photos-extra'];
 const inputFiles=[];
-const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(/\\.(jpe?g|png|webp)$/i.test(file))inputFiles.push(file)}};
+const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(/\.(jpe?g|png|webp)$/i.test(file))inputFiles.push(file)}};
 walk(root);
 const sourceFiles=inputFiles.filter(file=>{if(file.includes(path.join('photo-derivatives',path.sep)))return false;const url='/assets/'+path.relative(root,file).replaceAll(path.sep,'/');if(url.startsWith('/assets/source-archive/'))return allowedArchive.has(url);return ALLOWED.some(folder=>url.startsWith('/assets/'+folder+'/'));});
 let generated=0,failed=0,skipped=0;
 for(const file of sourceFiles){
  const rel=path.relative(root,file).replaceAll(path.sep,'/');
- const base=rel.replace(/\\.(jpe?g|png|webp)$/i,'');
+ const base=rel.replace(/\.(jpe?g|png|webp)$/i,'');
  const outDir=path.join(outputRoot,path.dirname(rel));
  fs.mkdirSync(outDir,{recursive:true});
  try{
