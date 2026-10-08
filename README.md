@@ -1,6 +1,6 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current release: V61.1.0 — Vite build and final production hardening**
+> **Current release: V64.0.0 — Editorial interaction, media delivery and release hardening**
 
 [![Quality](https://github.com/kaustubhdua/JYC-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/ci.yml) [![CodeQL](https://github.com/kaustubhdua/JYC-Website/actions/workflows/codeql.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/codeql.yml) [![JYC Quality](https://github.com/kaustubhdua/JYC-Website/actions/workflows/jyc-quality.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/jyc-quality.yml)
 
@@ -179,7 +179,7 @@ Stale or unsupported information should not remain visually dominant.
 
 ## Repository map
 
-For a concise explanation of the active runtime, source/content hierarchy, SEO, media, 3D bot and QA boundaries, see `docs/ARCHITECTURE-V56.1.md`. The latest source/research pass is documented in `docs/JYC-V56.8-DEEP-RESEARCH-2026-10-05.md`.
+For a concise explanation of the active runtime, source/content hierarchy, SEO, media, 3D bot and QA boundaries, see `docs/ARCHITECTURE-V56.1.md`. The latest source/research pass is documented in `docs/V64-EDITORIAL-RESEARCH-AND-NEXT-PLAN.md`.
 
 ## Local development
 
@@ -297,7 +297,7 @@ The remaining production gates are operational: configure required third-party E
 
 **V61.1.0 is the current code release.** V62 is a checklist/release-governance pass: it adds the restrained JYC Network hero interaction, removes the legacy dither hero layer, restores the beige/champagne editorial accent system, and adds the master checklist to the static QA suite.
 
-The release boundary is aligned across package metadata, the service-worker cache, final product QA, final hygiene QA, public discovery files and the latest V61.1 production-build hardening. The current V62 master checklist is documented in docs/V62-MASTER-CHECKLIST-STATUS.md.
+The release boundary is aligned across package metadata, the service-worker cache, final product QA, final hygiene QA, public discovery files and the latest V61.1 production-build hardening. The current V64 operational release status is documented in `docs/V62-OPERATIONAL-RELEASE-STATUS.md`.
 
 The highest-value remaining production work is operational/editorial rather than architectural:
 
