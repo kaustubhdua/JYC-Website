@@ -16,7 +16,7 @@ const check=(name,ok)=>checks.push({name,ok:Boolean(ok)});
 check('editorial rubric is defined',intelligence.includes('JYC_EDITORIAL_RUBRIC')&&intelligence.includes('scoreJycPhoto'));
 check('diversity-aware ranking is wired',intelligence.includes('rankDiverseJycPhotos')&&source.includes('rankDiverseJycPhotos'));
 check('responsive picture pipeline exists',responsive.includes('<picture')&&responsive.includes('srcSet')&&intelligence.includes('photoDerivativeUrls'));
-check('AVIF/WebP derivative build exists',derivatives.includes('.avif')&&derivatives.includes('.webp')&&pkg.scripts['media:derivatives']==='node scripts/generate-photo-derivatives.mjs'&&!pkg.scripts.prebuild.includes('generate-photo-derivatives'));
+check('AVIF/WebP derivative build is wired into production prebuild',derivatives.includes('.avif')&&derivatives.includes('.webp')&&pkg.scripts['media:derivatives']==='node scripts/generate-photo-derivatives.mjs'&&pkg.scripts.prebuild.includes('generate-photo-derivatives.mjs'));
 check('photo editorial schema exists',migration.includes('editorial_score')&&migration.includes('duplicate_group')&&migration.includes('derivative_status'));
 check('focal points are publication-gated',migration.includes('focal_x is null')&&migration.includes('focal_y is null'));
 check('rights clearance is evidence-gated',hardening.includes("new.rights_status = 'cleared'")&&hardening.includes('auth.uid()')&&hardening.includes('usage_notes'));
