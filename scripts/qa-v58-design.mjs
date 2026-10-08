@@ -22,7 +22,7 @@ const checks=[
   ['44px interaction target contract',css.includes('min-height:44px')||css.includes('min-height: 44px')],
   ['creator footer remains wired',main.includes('jyc-creator-credit')&&main.includes('data.creator.linkedin')],
   ['featured JAI popup uses canonical route',read('src/featured-event-popup.jsx').includes("const EVENT_PATH='/events/jai-2026-jaypee-agentic-ai-hackathon';")],
-  ['featured JAI popup is an accessible modal',read('src/featured-event-popup.jsx').includes('role="dialog"')&&read('src/featured-event-popup.jsx').includes('aria-modal="true"')&&read('src/featured-event-popup.jsx').includes("e.key==='Tab'")],
+  ['featured JAI popup is an accessible modal',read('src/featured-event-popup.jsx').includes('role="dialog"')&&read('src/featured-event-popup.jsx').includes('aria-modal="true"')&&/e\.key\s*!==\s*['"]Tab['"]/.test(read('src/featured-event-popup.jsx'))],
   ['featured JAI popup remains pointer-interactive and scrollable',read('src/featured-event-popup.jsx').includes('pointer-events:auto')&&!read('src/featured-event-popup.jsx').includes('pointer-events:none;display:grid')],
 
 ];
