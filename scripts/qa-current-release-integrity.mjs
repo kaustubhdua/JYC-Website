@@ -19,9 +19,9 @@ const accessibility=read('scripts/qa-accessibility-contract.mjs');
 const zeroGlitch=read('scripts/qa-zero-glitch-contract.mjs');
 const suite=read('scripts/run-qa-suite.mjs');
 
-check('release metadata is synchronized',pkg.version==='64.4.2'&&lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version);
-check('service-worker cache matches the release',sw.includes('jyc-cache-v64-4-2'));
-check('README advertises the exact release',readme.includes('Current release: V64.4.2'));
+check('release metadata is synchronized',lock.version===pkg.version&&lock.packages?.['']?.version===pkg.version);
+check('service-worker cache matches the release',sw.includes('jyc-cache-v'+pkg.version.replace(/\./g,'-')));
+check('README advertises the exact release',readme.includes('Current release: V'+pkg.version));
 check('homepage uses the intended editorial section sequence',
   ['jh-hero','jh-intro jh-container','jh-dark-section','jh-container jh-events','jh-photo-story','jh-activities jh-container','jh-history','jh-people jh-container','jh-final']
     .every(x=>home.includes('className="'+x+'"')));
