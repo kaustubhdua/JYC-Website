@@ -8,7 +8,6 @@ import {JYCNowStrip} from './jyc-now.jsx';
 import './jyc-editorial-home.css';
 
 const LazyMagicBento=lazy(()=>import('./components/react-bits/MagicBento.jsx'));
-const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 
 const FALLBACK='/assets/hub-photos/jyc-06.webp';
 const slug=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
