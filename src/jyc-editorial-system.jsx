@@ -5,7 +5,6 @@ const PAGE_NAMES={'/':'JYC','/about':'About','/clubs':'Communities','/events':'E
 export function JYCEditorialSystem({children}){
  const loc=useLocation();
  const clean=loc.pathname.replace(/\/$/,'')||'/';
- const admin=clean.startsWith('/admin');
  const page=PAGE_NAMES[clean]||(clean.startsWith('/clubs/')?'Community':clean.startsWith('/events/')?'Event':clean.startsWith('/gallery/')?'Moment':'JYC');
  useEffect(()=>{
    document.documentElement.dataset.jycRoute=clean;
