@@ -68,7 +68,7 @@ export function FlagshipExperience({data}){
  const nav=useNavigate();
  const event=useMemo(()=>{
   const rows=Array.isArray(data?.events)?data.events:[];
-  const preferred=rows.find(e=>String(e.id||'')==='agentic-ai-2026'&&e.published&&!e.archived);
+  const preferred=rows.find(e=>String(e.id||'')==='jai-2026-jaypee-agentic-ai-hackathon'&&e.published&&!e.archived);
   if(preferred)return preferred;
   return rows.filter(e=>e.published&&!e.archived&&(e.featured||e.pinned)).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')))[0]||null;
  },[data?.events]);
