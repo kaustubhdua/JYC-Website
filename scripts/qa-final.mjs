@@ -11,7 +11,7 @@ const livingPhoto=fs.readFileSync(path.join(root,'src/jyc-living-photo.jsx'),'ut
 const extraFeatures=fs.readFileSync(path.join(root,'src/extra-features.jsx'),'utf8');
 const checks=[
  ['public events are explicitly Sector 128 only',main.includes("const isSector128Venue=venue=>/sector\\s*128|jiit[-\\s]*128|wish\\s*town/i.test(String(venue||''));")&&main.includes('events:events.filter(e=>isSector128Venue(e.venue))')&&!fallbacks.includes("venue:'JIIT Noida'")&&!fallbacks.includes('Sector 62')],
- ['release version is valid semantic version',/^\\d+\\.\\d+\\.\\d+$/.test(pkg.version)],
+ ['release version is valid semantic version',/^\d+\.\d+\.\d+$/.test(pkg.version)],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
  ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jh-final')],
  ['Club navigation links include clubs/events/team/contact',main.includes("['/clubs','Clubs']")&&main.includes("['/events','Events']")&&main.includes("['/team','Team']")&&main.includes("['/contact','Contact']")],
