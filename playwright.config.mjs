@@ -4,11 +4,12 @@ const baseURL = process.env.JYC_BASE_URL || 'http://127.0.0.1:5173';
 
 export default defineConfig({
   testDir: './scripts',
-  timeout: 30000,
+  timeout: 45000,
+  globalTimeout: 40 * 60 * 1000,
   expect: { timeout: 7000 },
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? 1 : undefined,
   fullyParallel: false,
-  reporter: [['line']],
+  reporter: [['line'], ['html', { open: 'never' }]],
   // The public site exercises WebGL, image decoding and multiple lazy React surfaces. CI runners are memory-constrained; serializing projects prevents browser-context OOM cascades while retaining every viewport check.
   use: {
     baseURL,
