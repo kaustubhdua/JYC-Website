@@ -11,7 +11,7 @@ const livingPhoto=fs.readFileSync(path.join(root,'src/jyc-living-photo.jsx'),'ut
 const extraFeatures=fs.readFileSync(path.join(root,'src/extra-features.jsx'),'utf8');
 const checks=[
  ['public events are explicitly Sector 128 only',main.includes("const isSector128Venue=venue=>/sector\\s*128|jiit[-\\s]*128|wish\\s*town/i.test(String(venue||''));")&&main.includes('events:events.filter(e=>isSector128Venue(e.venue))')&&!fallbacks.includes("venue:'JIIT Noida'")&&!fallbacks.includes('Sector 62')],
- ['release version is current V58 line',/^58\.\d+\.\d+$/.test(pkg.version)],
+ ['release version is valid semantic version',/^58\.\d+\.\d+$/.test(pkg.version)],
  ['visible breadcrumbs component exists',main.includes('function Breadcrumbs')&&main.includes('aria-label="Breadcrumb"')],
  ['public home has closing CTA contract',main.includes('JYCEditorialHome')&&editorialHome.includes('jh-final')],
  ['Club navigation links include clubs/events/team/contact',main.includes("['/clubs','Clubs']")&&main.includes("['/events','Events']")&&main.includes("['/team','Team']")&&main.includes("['/contact','Contact']")],
@@ -20,7 +20,7 @@ const checks=[
  ['detail canonical URLs use slugs',main.includes('const canonicalPath=club?`/clubs/${slug(club.name)}`')&&main.includes('`/events/${slug(event.title)}'),],
  ['breadcrumb styling exists',main.includes('className="visible-breadcrumbs reveal"')],
  ['SEO topic link styling exists',main.includes('.search-topic-links')],
- ['service worker cache matches V58 release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v'+pkg.version.replace(/\./g,'-'))],
+ ['service worker cache matches current package release',fs.readFileSync(path.join(root,'public/sw.js'),'utf8').includes('jyc-cache-v'+pkg.version.replace(/\./g,'-'))],
  ['footer gates Fests by fest mode',main.includes("...(isFestMode(data)?[['/fests','Fests']]:[])")&&main.includes("['/fests','Fests']")],
  ['club logo alt text is descriptive',main.includes('alt={\`\${c.name} logo\`}'),],
  ['homepage does not expose gallery image count as a hero metric',!main.includes('Published gallery images')&&!main.includes('gallery memories')],
