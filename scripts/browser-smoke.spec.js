@@ -357,7 +357,16 @@ test('gallery deep-link opens the requested photograph', async ({ page }) => {
   expect(key).toBeTruthy();
   await page.goto(base + '/gallery?photo=' + encodeURIComponent(key), { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'gallery photo deep-link');
-  await expect(page.locator('.jyc57-lightbox[role="dialog"]')).toBeVisible();
+  const dialog=page.locator('.jyc57-lightbox[role="dialog"]');
+  await expect(dialog).toBeVisible();
+  if (photoId) await expect(dialog).toHaveAttribute('data-photo-id', photoId);
+  else {
+    const requestedPath=new URL(src, base).pathname;
+    await expect.poll(async()=>{
+      const actual=await dialog.locator('.jyc57-lightbox-media img').getAttribute('src');
+      return actual?new URL(actual,base).pathname:'';
+    }).toBe(requestedPath);
+  }
 });
 
 
