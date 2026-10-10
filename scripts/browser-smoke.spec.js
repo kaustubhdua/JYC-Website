@@ -816,6 +816,13 @@ test('failed team portraits fall through the optimized logo to the original PNG 
   await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
   await expect.poll(() => portrait.evaluate(img => getComputedStyle(img).objectFit)).toBe('contain');
   await expect.poll(() => portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+
+  // A parent/theme render must not restore the failed original portrait URL.
+  const themeToggle = page.locator('.theme-toggle').first();
+  if (await themeToggle.isVisible().catch(() => false)) await themeToggle.click();
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '2');
+  await expect(portrait).toHaveAttribute('alt', 'Official JYC logo placeholder; portrait unavailable');
+  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
 });
 
 
