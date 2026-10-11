@@ -32,7 +32,8 @@ const scripts = [
   'qa-zero-glitch-contract.mjs',
   'qa-media-layout.mjs',
   'qa-current-release-coherence.mjs',
-  'qa-current-release-integrity.mjs'
+  'qa-current-release-integrity.mjs',
+  'qa-public-ux-refinements.mjs'
 ];
 
 for (const script of scripts) {
