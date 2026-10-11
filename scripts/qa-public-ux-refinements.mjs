@@ -2,13 +2,13 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 
 const read=path=>fs.readFileSync(path,'utf8');
-const css=read('src/jyc-ux-refinements.css');
+const css=read('src/jyc-design-upgrades.css');
 const main=read('src/main.jsx');
 const home=read('src/jyc-editorial-home.css');
 const gallery=read('src/styles/jyc57-experience.css');
 const flip=read('src/components/react-bits/FlipCard.jsx');
 const checks=[
-  ['public UX refinement stylesheet is loaded by the application entry',main.includes("import './jyc-ux-refinements.css';")],
+  ['public UX refinement stylesheet is loaded by the application entry',main.includes("import './jyc-design-upgrades.css';")],
   ['refinement layer preserves responsive gallery filter grouping',css.includes('.jyc57-filterbar')&&css.includes('@media (max-width: 620px)')],
   ['gallery lightbox has narrow viewport and safe-area treatment',css.includes('.jyc57-lightbox-inner')&&css.includes('100dvh')&&css.includes('env(safe-area-inset-top)')],
   ['gallery controls have explicit keyboard focus styling',css.includes('.jyc57-photo:focus-visible')&&css.includes('outline: 3px solid var(--jyc-ux-focus)')],
