@@ -1,6 +1,27 @@
-const CACHE_NAME = 'jyc-cache-v64-5-0';
+const CACHE_NAME = 'jyc-cache-v64-5-6';
 
 const APP_SHELL = ['/', '/offline.html', '/manifest.json', '/JYC%20Logo(4).png'];
+
+function validImageManifest(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload) || payload.version !== 1) return false;
+  const images = payload.images;
+  if (!images || typeof images !== 'object' || Array.isArray(images)) return false;
+  const entries = Object.entries(images);
+  if (!entries.length || entries.length > 10000) return false;
+  return entries.every(([url, record]) => {
+    if (typeof url !== 'string' || !url.startsWith('/assets/') || url.startsWith('//')) return false;
+    if (url.includes('\\') || /[?#\x00-\x1f\x7f]/.test(url) || /%(?:25)*(?:2e|2f|5c)/i.test(url)) return false;
+    if (url.split('/').some(segment => !segment || segment === '.' || segment === '..')) return false;
+    if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
+    const { width, height, aspectRatio, orientation, derivativesEligible } = record;
+    if (!Number.isSafeInteger(width) || width <= 0 || !Number.isSafeInteger(height) || height <= 0) return false;
+    if (typeof aspectRatio !== 'number' || !Number.isFinite(aspectRatio) || aspectRatio !== Number((width / height).toFixed(5))) return false;
+    const expectedOrientation = width === height ? 'square' : width > height ? 'landscape' : 'portrait';
+    if (orientation !== expectedOrientation || typeof derivativesEligible !== 'boolean') return false;
+    if (derivativesEligible && !/^\/assets\/(?:source-archive|hub-photos|hub-photos-extra)\//.test(url)) return false;
+    return true;
+  });
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
@@ -18,6 +39,27 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const request = event.request;
   const requestUrl = new URL(request.url);
+  // Image manifests are network-first. Only schema-validated JSON may replace
+  // the last known-good cache; malformed HTTP 200 responses never poison it.
+  if (requestUrl.origin === self.location.origin && requestUrl.pathname === '/image-manifest.json') {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: 'no-store' });
+        if (response.ok) {
+          const payload = await response.clone().json().catch(() => null);
+          if (validImageManifest(payload)) {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, response.clone());
+          }
+          return response;
+        }
+        return await caches.match(request) || response;
+      } catch {
+        return await caches.match(request) || Response.error();
+      }
+    })());
+    return;
+  }
   // Never cache same-origin API responses. Public JYC Now uses /api/jyc-updates and
   // must be allowed to refresh even when an older service-worker cache exists.
   if (requestUrl.origin === self.location.origin && requestUrl.pathname.startsWith('/api/')) return;
