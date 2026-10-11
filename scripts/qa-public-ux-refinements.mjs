@@ -5,7 +5,7 @@ const read=path=>fs.readFileSync(path,'utf8');
 const css=read('src/jyc-design-upgrades.css');
 const main=read('src/main.jsx');
 const home=read('src/jyc-editorial-home.css');
-const gallery=read('src/styles/jyc57-experience.css');
+const gallery=read('src/jyc57-experience.jsx');
 const flip=read('src/components/react-bits/FlipCard.jsx');
 const checks=[
   ['public UX refinement stylesheet is loaded by the application entry',main.includes("import './jyc-design-upgrades.css';")],
