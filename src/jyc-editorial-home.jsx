@@ -38,7 +38,7 @@ const registrationState=e=>{
  const endDate=String(e?.dateEnd||e?.date||'').trim();
  const endMs=endDate?Date.parse(endDate+'T23:59:59'):NaN;
  const deadline=String(e?.registrationDeadline||'').trim();
- const deadlineMs=deadline?Date.parse(/T\\d{2}:\\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
+ const deadlineMs=deadline?Date.parse(/T\d{2}:\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
  const ended=Number.isFinite(endMs)&&Date.now()>endMs;
  const deadlinePassed=Number.isFinite(deadlineMs)&&Date.now()>deadlineMs;
  if(e?.publicStatus==='planned'&&e?.registrationVerified!==true)return {label:'Registration not published',href:''};
