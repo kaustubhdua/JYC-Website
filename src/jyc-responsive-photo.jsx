@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import {photoDerivativeUrls} from './jyc-photo-intelligence.js';
 const LOGO_FALLBACK=import.meta.env.PROD?'/assets/jyc-logo.webp':'/JYC%20Logo(4).png';
 const ORIGINAL_LOGO='/JYC%20Logo(4).png';
-const isDerivativeSource=url=>/^\\/assets\\/(?:source-archive|hub-photos|hub-photos-extra)\\//.test(String(url||''));
+const isDerivativeSource=url=>/^\/assets\/(?:source-archive|hub-photos|hub-photos-extra)\//.test(String(url||''));
 let imageManifestPromise=null;
 
 // Shared, retryable manifest request: the gallery and every ResponsivePhoto use
