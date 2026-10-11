@@ -802,6 +802,32 @@ test('team profiles flip to readable biographies and verified LinkedIn links', a
   await expect(card).toHaveClass(/is-flipped/);
 });
 
+\n
+test('photo manifest failures do not trigger guessed variants and retry on the next route', async ({ page }) => {
+  let manifestRequests = 0;
+  await page.route('**/image-manifest.json', async route => {
+    manifestRequests += 1;
+    if (manifestRequests === 1) return route.abort('failed');
+    return route.continue();
+  });
+
+  await page.goto(base + '/clubs', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'photo manifest first-request failure');
+  await expect.poll(() => manifestRequests).toBeGreaterThanOrEqual(1);
+  await expect(page.locator('.jyc-responsive-picture source[srcset]')).toHaveCount(0);
+  const originalSource = await page.locator('.jyc-responsive-picture img').first().getAttribute('src');
+  expect(originalSource || '').not.toContain('/assets/photo-derivatives/');
+
+  await page.evaluate(() => {
+    window.history.pushState({}, '', '/gallery');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(page).toHaveURL(/\/gallery$/);
+  await waitForAppMount(page, 'photo manifest retry in gallery');
+  await expect.poll(() => manifestRequests).toBeGreaterThanOrEqual(2);
+  await expect.poll(() => page.locator('.jyc-responsive-picture source[srcset]').count()).toBeGreaterThan(0);
+});
+
 
 test('failed team portraits fall through the optimized logo to the original PNG safely', async ({ page }) => {
   await page.route('**/assets/team/**', route => route.abort());
