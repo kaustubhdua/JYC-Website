@@ -761,7 +761,7 @@
     font-size: clamp(15px, 4vw, 20px);
     line-height: 1.2;
   }
-  .public-app .section :where(.native-registration, .feature-page) :where(button, .btn, a.btn) {
+  .public-app :where(.native-registration, .feature-page) :where(button, .btn, a.btn) {
     width: 100%;
     justify-content: center;
   }
