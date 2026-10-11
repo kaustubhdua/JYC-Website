@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import {photoDerivativeUrls} from './jyc-photo-intelligence.js';
+import {isValidJycImageManifest} from './jyc-image-manifest.js';
 const LOGO_FALLBACK=import.meta.env.PROD?'/assets/jyc-logo.webp':'/JYC%20Logo(4).png';
 const ORIGINAL_LOGO='/JYC%20Logo(4).png';
 const isDerivativeSource=url=>/^\/assets\/(?:source-archive|hub-photos|hub-photos-extra)\//.test(String(url||''));
@@ -11,7 +12,7 @@ export const loadJycImageManifest=()=>{
  if(!imageManifestPromise){
   imageManifestPromise=fetch('/image-manifest.json',{cache:'no-cache'})
    .then(response=>{if(!response.ok)throw new Error('Image manifest request failed: '+response.status);return response.json()})
-   .then(payload=>{if(payload?.images)return payload;imageManifestPromise=null;return null})
+   .then(payload=>{if(isValidJycImageManifest(payload))return payload;imageManifestPromise=null;return null})
    .catch(()=>{imageManifestPromise=null;return null});
  }
  return imageManifestPromise;
