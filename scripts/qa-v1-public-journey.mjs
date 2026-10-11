@@ -14,7 +14,7 @@ assert.ok(home.includes('The next JYC recruitment cycle is being prepared'),'Joi
 assert.ok(main.includes("clean==='/join-jyc'"),'Join JYC is routed as a public destination');
 
 assert.ok(home.includes('function registrationState(e)'),'featured event registration state is derived from event data');
-assert.ok(home.includes('new URL(String(value||\'\'))'),'registration URLs are parsed before use');
+assert.ok(home.includes("new URL(String(value||''))"),'registration URLs are parsed before use');
 assert.ok(home.includes("['https:','http:'].includes(url.protocol)"),'registration CTA rejects non-http(s) URL schemes');
 assert.ok(home.includes('!url.username&&!url.password'),'registration CTA rejects credential-bearing URLs');
 assert.ok(home.includes('registrationDeadline'),'registration CTA respects a published deadline');
