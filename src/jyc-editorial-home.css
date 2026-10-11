@@ -414,3 +414,23 @@
  .jyc-editorial-home.jyc-home .jh-story-photo img,
  .jyc-editorial-home.jyc-home .jh-story-copy>b span{transition:none!important;transform:none!important}
 }
+
+
+/* V1 public journey: make the three primary homepage paths visible without crowding mobile. */
+.jyc-editorial-home .jh-hero-actions{align-items:stretch}
+.jyc-editorial-home .jh-hero-actions .jh-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:12px}
+.jyc-editorial-home .jh-registration-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:2px}
+.jyc-editorial-home .jh-registration-row>[role="status"]{display:inline-flex;align-items:center;min-height:34px;padding:7px 10px;border:1px solid var(--jh-line);color:var(--jh-muted);font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.jyc-editorial-home .jh-registration-row>[role="status"].is-open{border-color:color-mix(in srgb,#3b865a 50%,var(--jh-line));color:color-mix(in srgb,#2c754a 82%,var(--jh-ink))}
+.jyc-editorial-home .jh-registration-row .jh-btn{min-height:42px}
+@media(max-width:760px){
+ .jyc-editorial-home .jh-hero-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .jyc-editorial-home .jh-hero-actions .jh-btn{min-width:0;padding:12px;font-size:12px}
+ .jyc-editorial-home .jh-hero-actions .jh-btn:first-child{grid-column:1/-1}
+ .jyc-editorial-home .jh-registration-row{align-items:stretch}
+ .jyc-editorial-home .jh-registration-row>[role="status"]{width:100%;justify-content:center}
+ .jyc-editorial-home .jh-registration-row .jh-btn{flex:1;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+ .jyc-editorial-home .jh-hero-actions .jh-btn{transition:none}
+}
