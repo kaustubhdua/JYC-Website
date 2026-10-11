@@ -31,6 +31,7 @@ const scripts = [
   'qa-dependency-lock.mjs',
   'qa-zero-glitch-contract.mjs',
   'qa-media-layout.mjs',
+  'qa-v1-public-journey.mjs',
   'qa-current-release-coherence.mjs',
   'qa-current-release-integrity.mjs'
 ];
