@@ -36,7 +36,7 @@ const safeRegistrationUrl=value=>{try{const url=new URL(String(value||''));retur
 const registrationState=e=>{
  const href=safeRegistrationUrl(e?.registrationUrl);
  const endDate=String(e?.dateEnd||e?.date||'').trim();
- const endMs=endDate?Date.parse(/T\\d{2}:\\d{2}/.test(endDate)?endDate:endDate+'T23:59:59'):NaN;
+ const endMs=endDate?Date.parse(/T\d{2}:\d{2}/.test(endDate)?endDate:endDate+'T23:59:59'):NaN;
  const deadline=String(e?.registrationDeadline||'').trim();
  const deadlineMs=deadline?Date.parse(/T\d{2}:\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
  const ended=Number.isFinite(endMs)&&Date.now()>endMs;
