@@ -4,7 +4,7 @@ const isSafeManifestAssetUrl=url=>{
  if(typeof url!=='string'||!url.startsWith('/assets/')||url.startsWith('//'))return false;
  if(url.includes('\\')||/[?#\x00-\x1f\x7f]/.test(url))return false;
  if(/%(?:25)*(?:2e|2f|5c)/i.test(url))return false;
- const segments=url.split('/');
+ const segments=url.slice(1).split('/');
  if(segments.some(segment=>segment==='.'||segment==='..'||segment===''))return false;
  return true;
 };
