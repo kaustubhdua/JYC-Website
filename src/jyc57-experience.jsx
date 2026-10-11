@@ -4,7 +4,7 @@ import {useLocation,useNavigate} from 'react-router-dom';
 import {supabase} from './lib/supabase';
 import {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,JYC_SOURCE_ARCHIVE_ALBUMS,rankJycPhotoItems,sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {eventIdentity} from './hub-identities.js';
-import {ResponsivePhoto} from './jyc-responsive-photo.jsx';
+import {ResponsivePhoto,loadJycImageManifest} from './jyc-responsive-photo.jsx';
 
 const safeDate=(e)=>{const t=Date.parse(`${e?.date||''}T${e?.start||'00:00'}`);return Number.isFinite(t)?t:Infinity};
 const stateOf=(e)=>{const start=safeDate(e),end=Date.parse(`${e?.dateEnd||e?.date||''}T${e?.end||'23:59'}`),now=Date.now();if(!Number.isFinite(start)||!e?.date)return 'draft';if(now<start)return 'upcoming';if(Number.isFinite(end)&&now<=end)return 'live';return 'past'};
@@ -96,7 +96,7 @@ export function JYC57Gallery({data}){
  const [albums,setAlbums]=useState(JYC_SOURCE_ARCHIVE_ALBUMS),[imageManifest,setImageManifest]=useState({});
  const [selected,setSelected]=useState(null),[visibleCount,setVisibleCount]=useState(36),[zoom,setZoom]=useState(1),[copied,setCopied]=useState(false),[storyIndex,setStoryIndex]=useState(0);
  const dialogRef=useRef(null),triggerRef=useRef(null),touchStart=useRef(null),lastTap=useRef(0),shouldReduceMotion=useReducedMotion();
- useEffect(()=>{let alive=true;fetch('/image-manifest.json',{cache:'force-cache'}).then(r=>r.ok?r.json():null).then(payload=>{if(alive&&payload?.images)setImageManifest(payload.images)}).catch(()=>{});return()=>{alive=false}},[]);
+ useEffect(()=>{let alive=true;loadJycImageManifest().then(payload=>{if(alive&&payload?.images)setImageManifest(payload.images)});return()=>{alive=false}},[]);
  useEffect(()=>{let alive=true;supabase.from('jyc_media_albums').select('id,name,slug,cover_url,hero_url,narrative,description,scope_type,club_id,event_id').eq('is_published',true).order('created_at',{ascending:false}).then(({data:rows})=>{if(alive)setAlbums([...JYC_SOURCE_ARCHIVE_ALBUMS,...(rows||[])].reduce((acc,row)=>{if(!acc.some(x=>x.slug===row.slug))acc.push(row);return acc},[]))});return()=>{alive=false}},[]);
  const albumMatches=(g)=>{if(album==='All')return true;const key=String(g.albumId||g.album_id||'');const selectedAlbum=albums.find(a=>String(a.id)===String(album)||String(a.slug)===String(album));return key===String(selectedAlbum?.id||album)||String(g.album||g.albumSlug||'')===String(album)};
  const items=useMemo(()=>{
