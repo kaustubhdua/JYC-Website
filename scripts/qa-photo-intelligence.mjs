@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import {photoDerivativeUrls} from '../src/jyc-photo-intelligence.js';
+import {isValidJycImageManifest,isSafeJycManifestAssetUrl} from '../src/jyc-image-manifest.js';
 const read=p=>fs.readFileSync(p,'utf8');
 const checks=[];
 const source=read('src/jyc-source-media.js');
@@ -16,6 +17,19 @@ const imageManifestGenerator=read('scripts/generate-image-manifest.mjs');
 const productionMediaOptimizer=read('scripts/optimize-production-media.mjs');
 const pkg=JSON.parse(read('package.json'));
 const check=(name,ok)=>checks.push({name,ok:Boolean(ok)});
+const validManifest={version:1,images:{
+ '/assets/hub-photos/sample.webp':{width:1200,height:600,aspectRatio:2,orientation:'landscape',derivativesEligible:true},
+ '/assets/brand/mark.webp':{width:400,height:400,aspectRatio:1,orientation:'square',derivativesEligible:false}
+}};
+const invalidRecord=(url,patch)=>({version:1,images:{[url]:{...validManifest.images['/assets/hub-photos/sample.webp'],...patch}}});
+check('strict image manifest accepts valid dimensions, orientation and approved derivative records',isValidJycImageManifest(validManifest));
+check('strict image manifest rejects unsupported versions and empty image maps',!isValidJycImageManifest({...validManifest,version:2})&&!isValidJycImageManifest({version:1,images:{}}));
+check('strict image manifest rejects non-object and array payloads',!isValidJycImageManifest(null)&&!isValidJycImageManifest([])&&!isValidJycImageManifest({version:1,images:[]}));
+check('strict image manifest rejects missing, non-integer and unsafe dimensions',!isValidJycImageManifest(invalidRecord('/assets/hub-photos/sample.webp',{width:0}))&&!isValidJycImageManifest(invalidRecord('/assets/hub-photos/sample.webp',{height:600.5})));
+check('strict image manifest rejects mismatched aspect ratios and orientations',!isValidJycImageManifest(invalidRecord('/assets/hub-photos/sample.webp',{aspectRatio:1}))&&!isValidJycImageManifest(invalidRecord('/assets/hub-photos/sample.webp',{orientation:'portrait'})));
+check('strict image manifest requires an explicit derivative eligibility boolean',!isValidJycImageManifest(invalidRecord('/assets/hub-photos/sample.webp',{derivativesEligible:'true'})));
+check('strict image manifest rejects traversal, encoded separators, double encoding and control characters',!isSafeJycManifestAssetUrl('/assets/hub-photos/../private.webp')&&!isSafeJycManifestAssetUrl('/assets/hub-photos/%2e%2e/private.webp')&&!isSafeJycManifestAssetUrl('/assets/hub-photos/%252e%252e/private.webp')&&!isSafeJycManifestAssetUrl('/assets/hub-photos/a\\\\b.webp')&&!isSafeJycManifestAssetUrl('/assets/hub-photos/a\\x00b.webp'));
+check('strict image manifest rejects derivative eligibility outside managed photo folders',!isValidJycImageManifest(invalidRecord('/assets/brand/mark.webp',{width:400,height:400,aspectRatio:1,orientation:'square',derivativesEligible:true})));
 check('editorial rubric is defined',intelligence.includes('JYC_EDITORIAL_RUBRIC')&&intelligence.includes('scoreJycPhoto'));
 check('diversity-aware ranking is wired',intelligence.includes('rankDiverseJycPhotos')&&source.includes('rankDiverseJycPhotos'));
 check('responsive picture pipeline exists',responsive.includes('<picture')&&responsive.includes('srcSet')&&intelligence.includes('photoDerivativeUrls'));
