@@ -1453,6 +1453,9 @@ test('featured accordion gallery keeps five source-backed panels usable without 
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });
     await expect(feature).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), width + 'px accordion layout should not overflow').toBeTruthy();
+    await panels.nth(1).focus();
+    await page.keyboard.press('End');
+    await expect(panels.nth(4)).toHaveAttribute('aria-pressed', 'true');
     await panels.nth(1).click();
     await expect(panels.nth(1)).toHaveAttribute('aria-pressed', 'true');
   }
