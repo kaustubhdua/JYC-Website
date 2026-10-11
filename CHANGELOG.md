@@ -8,6 +8,7 @@
 - Add browser regression coverage for terminal image failures and the visible/accessible placeholder; update source-contract checks and the service-worker cache namespace to `jyc-cache-v64-5-9`.
 - Refresh the JYC Now fallback cards: surface the verified JAI registration deadline and explicitly flag conflicting RIDE Hack registration sources rather than presenting an uncertain status as verified.
 - Add dark-theme contrast overrides for JYC Now cards, filters, empty states and community spotlights, with reduced-motion-safe card hover behavior and a browser contrast regression.
+- Add a reviewed SQL migration that pins `search_path` for seven privileged JYC functions to trusted schemas while preserving existing authorization checks and grants. It is not applied to live Supabase; the owner must review/apply it.
 - Keep exact-head build/browser verification and production-domain/API checks as release blockers until CI and preview evidence is available.
 
 ## V64.5.8 — Accessible terminal image fallback
