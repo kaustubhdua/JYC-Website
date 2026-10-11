@@ -53,6 +53,13 @@ Avoid adding more animation libraries or a second 3D framework. Motion/GSAP/OGL/
 7. **Performance:** measure LCP/CLS/INP on mobile; preserve intrinsic dimensions; keep hero/logo eager only when above the fold; lazy-load archive, below-fold gallery and team media; cap image decode/animation work on constrained devices.
 8. **Release hygiene:** keep README/changelog/package-lock/service-worker cache aligned; do not merge or call the site production-ready until the exact head passes and production routing is verified.
 
+## Read-only live Supabase check (11 October 2026)
+- The live `jyc_events` row for JAI 2026 is `published`, its verification record is `verified`, its registration URL is the official Unstop short link, and its stored deadline is `2026-10-10 18:29:00Z` (10 Oct, 23:59 IST). The Unstop listing currently shows the 15 Oct deadline, so the existing UI can incorrectly treat registration as closed until the migration is reviewed/applied.
+- The schema uses `start_at` / `end_at`, not a `date` column. The first draft of the new migration used a non-existent `date` predicate; this was corrected to a bounded `start_at` timestamp range and added to SQL-contract checks. The migration has **not** been applied to live Supabase.
+- `jyc_read_site_data()` is a SECURITY DEFINER function executable by `anon`, which triggers a broad Supabase advisor warning. Its current public projection exposes only the public site-data keys `clubs`, `events`, `gallery`, `homepage`, `source` and `team`; it filters normalized clubs/events/gallery and published team rows. Do not revoke anon execution without replacing the public read path; re-review the function whenever new top-level keys are added.
+- The live JAI content-verification row remains `verified`; the deadline migration updates provenance and the deadline but does not change publication or verification status.
+- The latest READY preview's `/api/jyc-updates` response is HTTP 200 but has `configured:false` and no live connector items. JYC Now uses curated fallback cards. The live runtime aggregation still includes a legacy `url.parse()` deprecation from an older deployment; the current branch source uses the WHATWG `URL` API, and the exact-head preview is still required to confirm the warning is gone.
+
 ## Source references checked
 
 - JYC-128 LinkedIn profile: https://in.linkedin.com/in/jyc128
