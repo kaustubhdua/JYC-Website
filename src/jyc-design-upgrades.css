@@ -796,7 +796,7 @@
 
 /* Keep the team-card return action clear of the fixed mobile navigation dock. */
 @media (max-width: 700px) {
-  .team-member-flip .flip-card__back-content {
+  .team-member-flip .team-member-back-content {
     padding-bottom: 88px;
   }
   .team-member-flip .flip-card__back-trigger {
