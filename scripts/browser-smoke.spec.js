@@ -1440,3 +1440,24 @@ test('JYC Now fallback cards and filters keep readable contrast in light and dar
   }
   expect(samples.dark.filterBackground).not.toBe(samples.light.filterBackground);
 });
+
+test('featured accordion gallery keeps five source-backed panels usable without overflow across viewports', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'featured accordion gallery');
+  const feature = page.locator('.jyc-accordion-feature');
+  await expect(feature).toBeVisible();
+  const panels = feature.locator('.ag-panel');
+  await expect(panels).toHaveCount(5);
+  for (const width of [390, 768, 1280]) {
+    await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });
+    await expect(feature).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), width + 'px accordion layout should not overflow').toBeTruthy();
+    await panels.nth(1).click();
+    await expect(panels.nth(1)).toHaveAttribute('aria-pressed', 'true');
+  }
+  await feature.getByRole('button', { name: /Open full photograph/i }).click();
+  await expect(page.locator('.jyc57-lightbox[role="dialog"]')).toBeVisible();
+  await page.locator('.jyc57-lightbox .jyc57-close').click();
+  await expect(page.locator('.jyc57-lightbox[role="dialog"]')).toHaveCount(0);
+});
