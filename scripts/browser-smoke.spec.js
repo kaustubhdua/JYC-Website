@@ -1299,6 +1299,18 @@ test('JYC Assistant traps keyboard focus and restores focus after closing', asyn
 });
 
 
+test('published JAI external registration route shows the verified provider without auto-navigation', async ({ page }) => {
+  await page.goto(base + '/events/jai-2026-jaypee-agentic-ai-hackathon/register', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'JAI external registration route');
+  await expect(page.locator('.feature-page h1')).toContainText(/JAI 2026/i);
+  await expect(page.getByText('This event uses an external registration form.')).toBeVisible();
+  const registrationLink = page.getByRole('link', { name: 'Open registration ↗' });
+  await expect(registrationLink).toHaveAttribute('href', /^https:\/\/unstop\.com\//);
+  await expect(registrationLink).toHaveAttribute('target', '_blank');
+  await expect(registrationLink).toHaveAttribute('rel', /noopener noreferrer/);
+  await expect(page).toHaveURL(/\/events\/jai-2026-jaypee-agentic-ai-hackathon\/register$/);
+});
+
 test('published JAI event detail renders without entering the recovery boundary', async ({ page }) => {
   await page.goto(base + '/events/jai-2026-jaypee-agentic-ai-hackathon', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'published JAI event detail');
