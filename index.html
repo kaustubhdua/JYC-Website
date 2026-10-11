@@ -10,31 +10,8 @@
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="color-scheme" content="light dark" />
-    <script>
-      (() => {
-        let theme = 'light';
-        try {
-          const saved = localStorage.getItem('jyc-theme');
-          theme = saved === 'dark' || saved === 'light'
-            ? saved
-            : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        } catch {
-          theme = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        document.documentElement.dataset.theme = theme;
-        const themeColor = document.querySelector('meta[name="theme-color"]');
-        if (themeColor) themeColor.content = theme === 'dark' ? '#0f0e11' : '#f5f1e6';
-      })();
-    </script>
-    <script>
-      document.addEventListener('error',event=>{
-        const image=event.target;
-        if(!(image instanceof HTMLImageElement)||!image.classList.contains('boot-logo'))return;
-        const fallback=image.dataset.bootFallback;
-        if(fallback){delete image.dataset.bootFallback;image.src=fallback;return}
-        image.hidden=true;
-      },true);
-    </script>
+    <script src="/boot-theme.js"></script>
+    <script src="/boot-image-fallback.js"></script>
     <style>
       .boot-fallback{min-height:100svh;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:28px;text-align:center;background:radial-gradient(ellipse at 50% 42%,rgba(191,156,111,.14),transparent 42%),#0e0d0f;color:#f8f1e5;font-family:Inter,system-ui,sans-serif}
       .boot-fallback img{width:clamp(88px,13vw,144px);height:auto;max-height:20vh;object-fit:contain;filter:drop-shadow(0 12px 28px rgba(0,0,0,.45))}
