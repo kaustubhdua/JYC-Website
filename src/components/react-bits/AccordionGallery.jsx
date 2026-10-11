@@ -24,7 +24,7 @@ export default function AccordionGallery({
   panels.forEach((panel,i)=>{
    const selected=i===active,media=mediaRefs.current[i];
    tl.to(panel,{flexGrow:selected?grow:1,scale:selected?1:1,duration:animate && !reduced ? 0.42 : 0,ease:'power3.out'},0);
-   if(media)tl.to(media,{'--ag-gray':grayscale&&!selected?1:0,'--ag-dim':selected?0:.34,duration:animate&&!reduced?.42:0,ease:'power3.out'},0);
+   if(media)tl.to(media,{'--ag-gray':grayscale&&!selected?1:0,'--ag-dim':selected?0:.34,duration:animate && !reduced ? 0.42 : 0,ease:'power3.out'},0);
   });
   timelineRef.current=tl;
  },[active,expandRatio,reduced,grayscale]);
