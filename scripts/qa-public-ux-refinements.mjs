@@ -19,6 +19,7 @@ const checks=[
   ['coarse-pointer interactions do not depend on hover transforms',css.includes('@media (hover: none), (pointer: coarse)')&&css.includes('.jh-story-card:hover')],
   ['reduced-motion preference disables decorative transitions',css.includes('@media (prefers-reduced-motion: reduce)')&&css.includes('transition-duration: 0.01ms')],
   ['gallery already exposes keyboard/touch navigation controls',gallery.includes('aria-label="Previous photograph"')&&gallery.includes('onTouchStart={onTouchStart}')],
+  ['mobile team flip return action clears the fixed navigation dock',css.includes('.team-member-flip .flip-card__back-trigger')&&css.includes('bottom: 74px')&&css.includes('padding-bottom: 88px')],
   ['no curated project or achievement spotlight feature was added',!css.includes('project-spotlight')&&!css.includes('achievement-spotlight')]
 ];
 for(const [name,ok] of checks){
