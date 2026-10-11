@@ -5,27 +5,28 @@ const home=fs.readFileSync('src/jyc-editorial-home.jsx','utf8');
 const css=fs.readFileSync('src/jyc-editorial-home.css','utf8');
 const main=fs.readFileSync('src/main.jsx','utf8');
 
-assert.match(home,/className="jh-hero-actions"/,'homepage hero action group is present');
+assert.ok(home.includes('className="jh-hero-actions"'),'homepage hero action group is present');
 for(const [label,path] of [['Explore Events','/events'],['Join JYC','/join-jyc'],['View Clubs','/clubs']]){
   assert.ok(home.includes(label)&&home.includes(path),`homepage exposes ${label} → ${path}`);
 }
-assert.match(home,/function JoinJYC\(/,'Join JYC page component exists');
-assert.match(home,/The next JYC recruitment cycle is being prepared/,'Join JYC stays honest about the recruitment state');
-assert.match(main,/clean==='\/join-jyc'/,'Join JYC is routed as a public destination');
+assert.ok(home.includes('function JoinJYC('),'Join JYC page component exists');
+assert.ok(home.includes('The next JYC recruitment cycle is being prepared'),'Join JYC stays honest about recruitment state');
+assert.ok(main.includes("clean==='/join-jyc'"),'Join JYC is routed as a public destination');
 
-assert.match(home,/function registrationState\(e\)/,'featured event registration state is derived from event data');
-assert.match(home,/new URL\(String\(value\|\|''\)\)/,'registration URLs are parsed before use');
-assert.match(home,/\['https:','http:'\]\.includes\(url\.protocol\)/,'registration CTA rejects non-http(s) URL schemes');
-assert.match(home,/url\.username\|\|url\.password/,'registration CTA rejects credential-bearing URLs');
-assert.match(home,/registrationDeadline/,'registration CTA respects a published deadline');
-assert.match(home,/Registration not published/,'planned events do not imply registration is open');
-assert.match(home,/Registration open/,'open registration state is visible');
-assert.match(home,/Registration closed/,'closed registration state is visible');
-assert.match(home,/Register Now/,'registration CTA appears when registration is open');
-assert.match(home,/noopener,noreferrer/,'external registration opens with safe window features');
-assert.match(home,/View Event/,'event details remain available alongside registration');
+assert.ok(home.includes('function registrationState(e)'),'featured event registration state is derived from event data');
+assert.ok(home.includes('new URL(String(value||\'\'))'),'registration URLs are parsed before use');
+assert.ok(home.includes("['https:','http:'].includes(url.protocol)"),'registration CTA rejects non-http(s) URL schemes');
+assert.ok(home.includes('!url.username&&!url.password'),'registration CTA rejects credential-bearing URLs');
+assert.ok(home.includes('registrationDeadline'),'registration CTA respects a published deadline');
+assert.ok(home.includes('Registration not published'),'planned events do not imply registration is open');
+assert.ok(home.includes('Registration open'),'open registration state is visible');
+assert.ok(home.includes('Registration closed'),'closed registration state is visible');
+assert.ok(home.includes('Register Now'),'registration CTA appears when registration is open');
+assert.ok(home.includes('noopener,noreferrer'),'external registration opens with safe window features');
+assert.ok(home.includes('View Event'),'event details remain available alongside registration');
+assert.ok(home.includes('const featuredRegistration=registrationState(featured)'),'registration state is computed once per homepage render');
 
-assert.match(css,/\.jh-registration-row/,'registration state has a dedicated layout');
-assert.match(css,/@media\(max-width:760px\)/,'hero and registration actions have a mobile layout');
-assert.match(css,/@media\(prefers-reduced-motion:reduce\)/,'new action styling respects reduced-motion preference');
+assert.ok(css.includes('.jh-registration-row'),'registration state has a dedicated layout');
+assert.ok(css.includes('@media(max-width:760px)'),'hero and registration actions have a mobile layout');
+assert.ok(css.includes('@media(prefers-reduced-motion:reduce)'),'new action styling respects reduced-motion preference');
 console.log('JYC V1 public journey contract: PASS (20 assertions)');
