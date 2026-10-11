@@ -11,7 +11,7 @@ function validImageManifest(payload) {
   return entries.every(([url, record]) => {
     if (typeof url !== 'string' || !url.startsWith('/assets/') || url.startsWith('//')) return false;
     if (url.includes('\\') || /[?#\x00-\x1f\x7f]/.test(url) || /%(?:25)*(?:2e|2f|5c)/i.test(url)) return false;
-    if (url.split('/').some(segment => !segment || segment === '.' || segment === '..')) return false;
+    if (url.slice(1).split('/').some(segment => !segment || segment === '.' || segment === '..')) return false;
     if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
     const { width, height, aspectRatio, orientation, derivativesEligible } = record;
     if (!Number.isSafeInteger(width) || width <= 0 || !Number.isSafeInteger(height) || height <= 0) return false;
