@@ -465,3 +465,330 @@
   color:inherit;
   text-decoration:none;
 }
+
+
+/* JYC public UX refinement layer.
+   Keep enhancements additive: existing React routes and content remain the source of truth. */
+:root {
+  --jyc-ux-focus: #d8b17a;
+  --jyc-ux-tap: 48px;
+}
+
+/* Predictable focus and touch targets across public-facing controls. */
+.public-app :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible,
+.jyc57-page :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible,
+.team-member-flip :where(button, a):focus-visible {
+  outline: 3px solid var(--jyc-ux-focus);
+  outline-offset: 3px;
+}
+.public-app :where(button, [role="button"]),
+.jyc57-page :where(button, [role="button"]) {
+  touch-action: manipulation;
+}
+.public-app :where(button, a),
+.jyc57-page :where(button, a) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Gallery archive controls: keep filters legible without letting them dominate mobile. */
+.jyc57-filterbar {
+  min-width: 0;
+  gap: clamp(12px, 2vw, 24px);
+}
+.jyc57-filter-group {
+  min-width: 0;
+}
+.jyc57-filter-group > div {
+  min-width: 0;
+  gap: 7px;
+}
+.jyc57-filter-group button {
+  min-height: 40px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.jyc57-filter-group button.active {
+  font-weight: 750;
+}
+.jyc57-photo {
+  min-width: 0;
+  isolation: isolate;
+}
+.jyc57-photo img {
+  display: block;
+}
+.jyc57-photo:focus-visible {
+  outline: 3px solid var(--jyc-ux-focus);
+  outline-offset: 2px;
+  z-index: 2;
+}
+.jyc57-lightbox {
+  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+    max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  overscroll-behavior: contain;
+}
+.jyc57-lightbox-inner {
+  width: min(1180px, 100%);
+  min-width: 0;
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
+}
+.jyc57-lightbox-media,
+.jyc57-lightbox-copy {
+  min-width: 0;
+}
+.jyc57-lightbox-copy {
+  overflow-wrap: anywhere;
+}
+.jyc57-lightbox-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.jyc57-lightbox-actions button,
+.jyc57-close,
+.jyc57-nav {
+  min-width: var(--jyc-ux-tap);
+  min-height: var(--jyc-ux-tap);
+}
+.jyc57-lightbox-actions button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.jyc57-close {
+  display: grid;
+  place-items: center;
+}
+.jyc57-counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Team flips must remain readable and operable when the viewport is narrow. */
+.team-member-flip,
+.team-member-flip .flip-card__inner,
+.team-member-flip .flip-card__face,
+.team-member-face-content {
+  min-width: 0;
+  max-width: 100%;
+}
+.team-member-face-content {
+  overflow-wrap: anywhere;
+}
+.team-photo-editorial {
+  display: block;
+  overflow: hidden;
+}
+.team-photo-editorial img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.team-member-name {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.team-member-about,
+.team-member-headline {
+  overflow-wrap: anywhere;
+}
+.team-member-flip :where(button, a) {
+  min-height: 44px;
+}
+.flip-card__back-trigger {
+  position: relative;
+  z-index: 2;
+}
+
+/* Registration and event actions: clear, full-width touch targets on phones. */
+.public-app :where(.native-registration, .feature-page, .event-detail, .event-registration) {
+  min-width: 0;
+}
+.public-app :where(.native-registration, .feature-page) :where(input, select, textarea) {
+  max-width: 100%;
+  min-height: 48px;
+  font: inherit;
+}
+.public-app :where(.native-registration, .feature-page) :where(button, .btn, a.btn) {
+  min-height: 48px;
+}
+.public-app .native-registration :where(input, select, textarea):focus-visible {
+  outline-offset: 2px;
+}
+.public-app :where(.event-card-premium, .event-poster, .card-body) {
+  min-width: 0;
+}
+.public-app :where(.event-card-premium, .event-poster) img {
+  max-width: 100%;
+}
+.public-app :where(.event-card-premium, .event-poster, .card-body) :where(h2, h3, p, strong, small) {
+  overflow-wrap: anywhere;
+}
+
+/* Homepage hero: preserve the text/logo composition while preventing grid overflow. */
+.jyc-editorial-home.jyc-home .jh-hero,
+.jyc-editorial-home.jyc-home .jh-hero-copy,
+.jyc-editorial-home.jyc-home .jh-hero-visual {
+  min-width: 0;
+}
+.jyc-editorial-home.jyc-home .jh-hero h1 {
+  max-width: 100%;
+  text-wrap: balance;
+}
+.jyc-editorial-home.jyc-home .jh-hero-visual {
+  contain: layout paint;
+}
+.jyc-editorial-home.jyc-home .jh-actions > * {
+  min-width: 0;
+}
+.jyc-editorial-home.jyc-home .jh-btn {
+  min-height: 48px;
+}
+.jyc-editorial-home.jyc-home :where(button, a):focus-visible {
+  outline: 3px solid var(--jh-accent);
+  outline-offset: 4px;
+}
+
+/* Shared public page rhythm and long-copy resilience. */
+.public-app .section :where(h1, h2, h3, p, small, strong, a, button) {
+  min-width: 0;
+}
+.public-app .section :where(h1, h2) {
+  text-wrap: balance;
+}
+.public-app .section :where(p, li, small) {
+  overflow-wrap: anywhere;
+}
+.public-app .section :where(button, .btn, a.btn) {
+  touch-action: manipulation;
+}
+.public-app .section :where(input, select, textarea) {
+  font-size: max(16px, 1em);
+}
+
+/* Coarse pointers should not require hover to reveal essential affordances. */
+@media (hover: none), (pointer: coarse) {
+  .jyc-editorial-home.jyc-home .jh-btn:hover,
+  .jyc-editorial-home.jyc-home .jh-story-card:hover,
+  .jyc57-page .jyc57-photo:hover img,
+  .public-app .card:hover {
+    transform: none;
+  }
+  .jyc-editorial-home.jyc-home .jh-story-card:hover .jh-story-photo img,
+  .jyc57-page .jyc57-photo:hover img {
+    transform: none;
+  }
+}
+
+/* Tablet and mobile composition. */
+@media (max-width: 900px) {
+  .jyc57-filterbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .jyc57-filter-group > div {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .jyc57-lightbox-inner {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .jyc57-lightbox-media {
+    min-height: 0;
+  }
+  .jyc57-lightbox img {
+    width: 100%;
+    max-height: min(56dvh, 620px);
+    object-fit: contain;
+  }
+  .jyc57-lightbox-copy {
+    padding: clamp(16px, 4vw, 28px);
+  }
+}
+@media (max-width: 620px) {
+  :root {
+    --jyc-ux-tap: 48px;
+  }
+  .jyc57-filterbar {
+    padding: 12px;
+    gap: 14px;
+  }
+  .jyc57-filter-group > span {
+    display: block;
+    margin-bottom: 7px;
+  }
+  .jyc57-filter-group > div {
+    gap: 6px;
+  }
+  .jyc57-filter-group button {
+    min-height: 40px;
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+  .jyc57-masonry {
+    gap: 8px;
+  }
+  .jyc57-lightbox {
+    padding: max(6px, env(safe-area-inset-top)) 6px max(6px, env(safe-area-inset-bottom));
+  }
+  .jyc57-lightbox-inner {
+    max-height: calc(100dvh - 20px);
+    border-radius: 12px;
+  }
+  .jyc57-lightbox h2 {
+    font-size: clamp(24px, 7vw, 34px);
+    line-height: 1.08;
+  }
+  .jyc57-lightbox-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .jyc57-lightbox-actions button {
+    min-width: 0;
+    padding: 10px;
+    font-size: 12px;
+  }
+  .jyc57-close {
+    right: 8px;
+    top: 8px;
+  }
+  .team-member-flip {
+    width: 100%;
+  }
+  .team-member-name {
+    font-size: clamp(15px, 4vw, 20px);
+    line-height: 1.2;
+  }
+  .public-app .section :where(.native-registration, .feature-page) :where(button, .btn, a.btn) {
+    width: 100%;
+    justify-content: center;
+  }
+  .jyc-editorial-home.jyc-home .jh-actions {
+    gap: 9px;
+  }
+  .jyc-editorial-home.jyc-home .jh-actions .jh-btn {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jyc-ux-refinements *,
+  .jyc-editorial-home.jyc-home *,
+  .jyc57-page * {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-btn:hover,
+  .jyc-editorial-home.jyc-home .jh-story-card:hover,
+  .jyc57-page .jyc57-photo:hover img {
+    transform: none !important;
+  }
+}
