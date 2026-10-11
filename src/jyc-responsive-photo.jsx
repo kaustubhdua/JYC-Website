@@ -11,7 +11,7 @@ export const loadJycImageManifest=()=>{
  if(!imageManifestPromise){
   imageManifestPromise=fetch('/image-manifest.json',{cache:'no-cache'})
    .then(response=>{if(!response.ok)throw new Error('Image manifest request failed: '+response.status);return response.json()})
-   .then(payload=>payload&&payload.images?payload:null)
+   .then(payload=>{if(payload?.images)return payload;imageManifestPromise=null;return null})
    .catch(()=>{imageManifestPromise=null;return null});
  }
  return imageManifestPromise;
