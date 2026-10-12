@@ -20,15 +20,15 @@
 html{color-scheme:light dark;}
 
 :root {
-  color-scheme: dark;
-  --jyc-bg: #0F0E11;
-  --jyc-surface: #18161D;
-  --jyc-ink: #FFF8E1;
-  --jyc-muted: #A8A3B0;
-  --jyc-line: rgba(255, 248, 225, 0.12);
-  --jyc-accent: #C92A2A;
-  --jyc-gold: #D2B48C;
-  --jyc-focus: #D2B48C;
+  color-scheme: light;
+  --jyc-bg: #F5F1E6;
+  --jyc-surface: #FFFFFF;
+  --jyc-ink: #1A191D;
+  --jyc-muted: #6E6A75;
+  --jyc-line: rgba(26, 25, 29, 0.12);
+  --jyc-accent: #A82420;
+  --jyc-gold: #BF9C6F;
+  --jyc-focus: #A82420;
 }
 
 html[data-theme="light"] {
