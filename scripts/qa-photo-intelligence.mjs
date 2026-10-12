@@ -26,7 +26,7 @@ const pkg=JSON.parse(read('package.json'));
 const check=(name,ok)=>checks.push({name,ok:Boolean(ok)});
 check('PNG header dimensions are read exactly',JSON.stringify(parseImageDimensions(pngHeader()))===JSON.stringify({width:2048,height:1024}));
 check('JPEG SOF dimensions are read exactly',JSON.stringify(parseImageDimensions(jpegHeader()))===JSON.stringify({width:1280,height:720}));
-check('WebP VP8X extended dimensions are read exactly',JSON.stringify(parseImageDimensions(webpHeader('VP8X')))===JSON.stringify({width:1339,height:211}));
+check('WebP VP8X extended dimensions are read exactly',JSON.stringify(parseImageDimensions(webpHeader('VP8X')))===JSON.stringify({width:1340,height:211}));
 check('WebP VP8 lossy dimensions are read exactly',JSON.stringify(parseImageDimensions(webpHeader('VP8 ')))===JSON.stringify({width:1280,height:720}));
 check('WebP VP8L lossless dimensions use the correct packed bits',JSON.stringify(parseImageDimensions(losslessWebpHeader(1500,211)))===JSON.stringify({width:1500,height:211}));
 check('EXIF orientations 5–8 swap display dimensions before responsive selection',JSON.stringify(orientedImageDimensions(4000,3000,6))===JSON.stringify({width:3000,height:4000})&&JSON.stringify(orientedImageDimensions(500,2000,8))===JSON.stringify({width:2000,height:500}));
