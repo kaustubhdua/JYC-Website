@@ -332,6 +332,7 @@ test('photo-led pages render real image content without broken assets', async ({
 
 test('lazy-loaded media decodes across long-form public routes', async ({ page }) => {
   test.setTimeout(180000);
+  test.skip([430, 1280].includes(page.viewportSize()?.width), 'Run the exhaustive lazy-media decode sweep at mobile, tablet and large-desktop breakpoints; the other projects still run the full interaction suite.');
   for (const route of ['/about', '/clubs', '/events', '/team', '/gallery', '/achievements', '/best-of-jyc']) {
     await page.goto(base + route, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('#root .public-app, #root main', { timeout: 15000 }).catch(() => {});
@@ -367,6 +368,7 @@ test('lazy-loaded media decodes across long-form public routes', async ({ page }
 
 test('public pages have no empty media frames or normal-flow section overlaps', async ({ page }) => {
   test.setTimeout(120000);
+  test.skip(page.viewportSize()?.width !== 1280, 'This exhaustive route/overlap scan explicitly checks both 390px and 1280px layouts, so run it once rather than repeating the same scan in every browser project.');
   for (const route of routes) {
     for (const width of [390, 1280]) {
       await page.setViewportSize({ width, height: 900 });
