@@ -22,7 +22,7 @@ add('release metadata is V64',/^64\.\d+\.\d+$/.test(pkg.version));
 const apiSyntax=spawnSync(process.execPath,['--check',path.join(root,'api/jyc-updates.js')],{encoding:'utf8'});
 add('updates API parses under the configured Node runtime',apiSyntax.status===0,(apiSyntax.stderr||apiSyntax.stdout||'').trim());
 add('YouTube updates parser returns its mapped list without syntax-breaking parentheses',updatesApi.includes("return ((await pr.json()).items||[]).map(x=>({")&&updatesApi.includes("verified:true}));"));
-add('homepage is content-first and visually consolidated',home.includes('jh-hero')&&home.includes('jh-intro')&&home.includes('jh-dark-section')&&home.includes('jh-events')&&home.includes('jh-activities')&&!home.includes('jh-archive-section'));
+add('homepage is content-first and visually consolidated',home.includes('jh-hero')&&home.includes('jh-about-editorial')&&home.includes('jh-pillars-section')&&home.includes('jh-events')&&home.includes('jh-photo-story')&&home.includes('jh-community')&&home.includes('jh-final')&&!home.includes('jh-archive-section'));
 add('homepage has no retired PhotoChapters mount',!home.includes('<PhotoChapters/>'));add('homepage magnetic Bento is lazy and uses the React Router callback',home.includes('LazyMagicBento')&&home.includes('enableMagnetism={true}')&&read('src/components/react-bits/MagicBento.jsx').includes('onNavigate?onNavigate(item.href)'));
 add('homepage has no retired DriftWall mount',!home.includes('LazyDriftWall'));
 add('homepage family cards are media-free',home.includes('jh-family-index')&&!home.includes('jh-family-image'));
