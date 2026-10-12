@@ -187,14 +187,6 @@ export function JYCEditorialHome({ data }) {
 
   return (
     <main className="jyc-editorial-home jyc-home">
-      {/* AMBIENT CYBER BACKDROP */}
-      <div className="jh-ambient-backdrop" aria-hidden="true">
-        <div className="jh-ambient-orb jh-ambient-orb-1" />
-        <div className="jh-ambient-orb jh-ambient-orb-2" />
-        <div className="jh-ambient-orb jh-ambient-orb-3" />
-        <div className="jh-ambient-grid" />
-      </div>
-
       {/* HERO SECTION */}
       <section className="jh-hero" aria-labelledby="jh-title">
         <div className="jh-hero-copy">
