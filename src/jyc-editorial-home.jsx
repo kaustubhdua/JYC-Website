@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'rea
 import { useNavigate } from 'react-router-dom';
 import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
 import { sourceEventMedia, sourceHubMedia } from './jyc-source-media.js';
+import { teamPhotoFor } from './jyc-team-media.js';
 import { rankDiverseJycPhotos } from './jyc-photo-intelligence.js';
 import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
@@ -444,7 +445,9 @@ export function JYCEditorialHome({ data }) {
               team.map((m, i) => (
                 <button type="button" key={m.id || i} onClick={() => nav('/team')}>
                   <span className="jh-team-monogram" aria-hidden="true">
-                    {String(m.name || 'JYC').trim().split(/\s+/).map(x => x[0]).slice(0, 2).join('').toUpperCase()}
+                    {teamPhotoFor(m)
+                      ? <ResponsivePhoto className="jh-team-thumb" src={teamPhotoFor(m)} alt="" loading="lazy" decoding="async" sizes="48px" fallbackSrc="/assets/jyc-logo.webp" fallbackAlt="" />
+                      : String(m.name || 'JYC').trim().split(/\s+/).map(x => x[0]).slice(0, 2).join('').toUpperCase()}
                   </span>
                   <span>
                     <small>{m.role || m.position || 'JYC Apex'}</small>
