@@ -21,7 +21,6 @@ const editorialHome=read('src/jyc-editorial-home.jsx');
 const flip=read('src/components/react-bits/FlipCard.jsx');
 const indexHtml=read('index.html');
 const bootTheme=read('public/boot-theme.js');
-const bootTheme=read('public/boot-theme.js');
 const serviceWorker=read('public/sw.js');
 const socials=read('src/jyc-socials.js');
 const hubs=read('src/v21-hub-content.js');
