@@ -542,6 +542,20 @@ body::before {
   color: var(--tech-gold);
 }
 
+/* The original technical palette is intentionally dark; override it explicitly in the paper theme. */
+:root[data-theme="light"] .jyc-filter-toggle-btn{background:#fff;color:#24211e;border-color:#b8ad9e}
+:root[data-theme="light"] .jyc-filter-toggle-btn:hover,:root[data-theme="light"] .jyc-filter-toggle-btn.is-active{background:#f5f1e6;color:#7f1d1d;border-color:#a82420}
+:root[data-theme="light"] .jyc-quick-pill{background:#fff;color:#34302b;border-color:#c9c0b4}
+:root[data-theme="light"] .jyc-quick-pill.is-active{background:#a82420;color:#fff;border-color:#a82420}
+:root[data-theme="light"] .jyc-quick-pill small{background:#eee5d8;color:#24211e}
+:root[data-theme="light"] .jyc-quick-pill.is-active small{background:rgba(0,0,0,.18);color:#fff}
+:root[data-theme="light"] .jyc-filter-drawer{background:#fff;color:#24211e;border-color:#c9c0b4}
+:root[data-theme="light"] .jyc-filter-group-label{color:#51483f}
+:root[data-theme="dark"] .jyc-filter-toggle-btn{background:#18161d;color:#f5f1e8;border-color:#4c443a}
+:root[data-theme="dark"] .jyc-quick-pill{background:#18161d;color:#f5f1e8;border-color:#4c443a}
+:root[data-theme="dark"] .jyc-quick-pill.is-active{background:#a82420;color:#fff;border-color:#a82420}
+
+
 .jyc-filter-toggle-btn .filter-badge {
   display: inline-grid;
   place-items: center;
