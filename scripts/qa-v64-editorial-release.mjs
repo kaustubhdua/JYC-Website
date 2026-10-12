@@ -38,6 +38,8 @@ const dither=read('src/react-bits/DitherVeil.jsx');
 const bento=read('src/components/react-bits/MagicBento.jsx');
 const bentoCss=read('src/components/react-bits/MagicBento.css');
 const identities=read('src/hub-identities.js');
+const finalTheme=read('src/jyc-logo-final-theme.css');
+const flipCss=read('src/components/react-bits/FlipCard.css');
 const globalStyles=read('src/styles.css');
 const intelligence=read('src/jyc-photo-intelligence.js');
 const routeShells=read('scripts/generate-route-shells.mjs');
@@ -48,7 +50,7 @@ const qualityWorkflow=read('.github/workflows/jyc-quality.yml');
 const checks=[
   ['homepage restores the editorial intro and source-linked JYC Now update feed',editorialHome.includes('jh-about-editorial')&&editorialHome.includes('<JYCNowStrip limit={3} compact={false} />')],
   ['homepage removes unsupported impact counters and a hard-coded flagship countdown',!editorialHome.includes('5,000')&&!editorialHome.includes('FLAGSHIP COUNTDOWN')&&!editorialHome.includes('const [countdown')],
-  ['brand tokens avoid neon cyan, purple and rainbow halo treatment in shared styling',design.includes('--jyc-design-accent:#A82420')&&design.includes('--jyc-design-copper:#BF9C6F')&&!design.includes('conic-gradient(from 0deg at 50% 50%,#38bdf8')&&!proRedesign.includes('#38bdf8')&&!proRedesign.includes('rgba(56, 189, 248')],
+  ['shared brand styling and hub identities use restrained red/gold accents instead of neon/purple',design.includes('--jyc-design-accent:#A82420')&&design.includes('--jyc-design-copper:#BF9C6F')&&!design.includes('conic-gradient(from 0deg at 50% 50%,#38bdf8')&&!proRedesign.includes('#38bdf8')&&!proRedesign.includes('rgba(56, 189, 248')&&!finalTheme.includes('#38bdf8')&&!finalTheme.includes('#00e5ff')&&!identities.includes("accent:'#00e5ff'")&&flipCss.includes('var(--color-accent-cyan, #A82420)')],
  ['society detail exposes organisation, activities, events, people and photography',/function ClubDetail/.test(main)&&/HUB PROFILE/.test(main)&&/ACTIVITIES/.test(main)&&/EVENTS/.test(main)&&/PEOPLE/.test(main)&&/CLUB PHOTOGRAPHY/.test(main)],
  ['event detail has lifecycle state and participation action',/eventState\(e\)/.test(main)&&/LIVE NOW/.test(main)&&/REGISTER NOW/.test(main)&&/REGISTRATION CLOSED/.test(main)],
  ['event card and detail share the same media layout id',main.includes('layoutId={\`event-media-\${slug(e.id||e.slug||e.title)}\`')&&main.includes('event-detail-poster')],
