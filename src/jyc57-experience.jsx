@@ -353,7 +353,7 @@ export function JYC57Gallery({data}){
 
   const sharePhoto = async () => {
     if (!selected) return;
-    const url = window.location.origin + loc.pathname + (loc.search ? loc.search.replace(/([?&])photo=[^&]*/, '$1photo=' + encodeURIComponent(selected.id || selected.url)) : '?photo=' + encodeURIComponent(selected.id || selected.url));
+    const url = window.location.origin + loc.pathname + '?photo=' + encodeURIComponent(selected.id || selected.url);
     try {
       if (navigator.share) await navigator.share({ title: selected.caption || 'JYC Moment', url });
       else {
