@@ -815,7 +815,7 @@ test('team profiles flip to readable biographies and verified LinkedIn links', a
     await expect(card.locator('.flip-card__back')).toHaveAttribute('aria-hidden', 'false');
   await expect(card).toHaveAttribute('aria-expanded', 'true');
   await expect(card.locator('.team-back-content .team-back-bio')).toBeVisible();
-  await expect(card.locator('.team-member-back-content a[href*="linkedin.com"]').first()).toHaveAttribute('href', /^https:\/\/(?:www\.|in\.)?linkedin\.com\//);
+  await expect(card.locator('.team-back-content a[href*="linkedin.com"]').first()).toHaveAttribute('href', /^https:\/\/(?:www\.|in\.)?linkedin\.com\//);
   await card.locator('.flip-card__back-trigger').click();
   await expect(card).not.toHaveClass(/is-flipped/);
   await card.locator('.flip-card__front').focus();
