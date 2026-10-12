@@ -27,7 +27,7 @@ add('No browser-shipped secret key patterns',findings.length===0,findings.join('
 const supabase=read(path.join(root,'src/lib/supabase.js'));
 add('Frontend Supabase client uses publishable key only',supabase.includes('VITE_SUPABASE_PUBLISHABLE_KEY')&&!/SERVICE_ROLE|sb_secret_/i.test(supabase));
 const indexHtml=read(path.join(root,'index.html'));
-add('Strict CSP bootstrap scripts are external rather than inline',!/<script(?![^>]*\\bsrc=)(?![^>]*type=["']application\\/ld\\+json["'])[^>]*>/i.test(indexHtml));
+add('Strict CSP bootstrap scripts are external rather than inline',!/<script(?![^>]*\bsrc=)(?![^>]*type=["']application\/ld\+json["'])[^>]*>/i.test(indexHtml));
 add('Theme bootstrap is served as a same-origin script',indexHtml.includes('<script src="/boot-theme.js"></script>')&&fs.existsSync(path.join(root,'public/boot-theme.js')));
 add('Boot image fallback is served as a same-origin script',indexHtml.includes('<script src="/boot-image-fallback.js"></script>')&&fs.existsSync(path.join(root,'public/boot-image-fallback.js')));
 const vercel=JSON.parse(read(path.join(root,'vercel.json')));
