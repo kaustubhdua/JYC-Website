@@ -323,8 +323,8 @@ export function JYC57Gallery({data}){
       const {data:publishedAlbum,error}=await supabase.from('jyc_media_albums').select('id,slug,name,description,cover_url,is_published').eq('slug',albumSlug).eq('is_published',true).maybeSingle();
       if(error)throw error;if(!active)return;setAlbum(publishedAlbum||null);
       if(!publishedAlbum){setAlbumItems([]);return;}
-      const {data:photos,error:photoError}=await supabase.from('jyc_gallery_items').select('id,public_url,caption,alt,year,album_id,status,rights_status').eq('album_id',publishedAlbum.id).eq('status','approved').eq('rights_status','cleared');
-      if(photoError)throw photoError;if(active)setAlbumItems((photos||[]).map(photo=>({...photo,url:photo.public_url,mediaKind:'photo'})).filter(photo=>photo.url));
+      const {data:photos,error:photoError}=await supabase.from('jyc_gallery_items').select('id,public_url,caption,album_id,status,rights_status,created_at').eq('album_id',publishedAlbum.id).eq('status','approved').eq('rights_status','cleared');
+      if(photoError)throw photoError;if(active)setAlbumItems((photos||[]).map(photo=>({...photo,url:photo.public_url,alt:photo.alt||photo.caption||'JYC archive photograph',year:photo.created_at?.slice(0,4),mediaKind:'photo'})).filter(photo=>photo.url));
     }catch{if(active){setAlbum(null);setAlbumItems([])}}})();
     return()=>{active=false};
   },[albumSlug]);
