@@ -258,6 +258,7 @@ export function JYC57Gallery({data}){
 
   const categories = useMemo(() => ['All', ...new Set(items.map(g => g.category).filter(Boolean))], [items]);
   const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
+  const ARCHIVE_IA = ['COLLECTIONS','MOMENTS','YEARS','COMMUNITIES'];
 
   useEffect(() => {
     let alive = true;
@@ -359,9 +360,10 @@ export function JYC57Gallery({data}){
       <p>{currentAlbum?.description || 'Explore source-backed campus photography organized by published albums, events, communities and years across Sector 128.'}</p>
       <span className="jyc57-gallery-meta" aria-live="polite">{filtered.length} photographs {albumSlug ? 'in this collection' : 'in the archive'}</span>
     </header>
+    <nav className="jyc57-archive-nav" aria-label="Gallery archive navigation">{ARCHIVE_IA.map(label=><a key={label} href={`#jyc-gallery-${label.toLowerCase()}`}>{label}</a>)}</nav>
 
     {/* Published albums and source-backed collections; counts come from actual photo records. */}
-    <section className="jyc-memories-section">
+    <section id="jyc-gallery-collections" className="jyc-memories-section">
       <div className="jyc-section-head-bar">
         <div>
           <h2>{currentAlbum?.name || 'Published photo albums'}</h2>
@@ -389,7 +391,7 @@ export function JYC57Gallery({data}){
     </section>
 
     {/* Filter Toolbar */}
-    <div className="jyc-filter-bar">
+    <div id="jyc-gallery-moments" className="jyc-filter-bar">
       <div className="jyc-search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input className="jyc-search-input" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search memories, events, years..." aria-label="Search gallery" />
@@ -413,7 +415,7 @@ export function JYC57Gallery({data}){
         ))}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <div id="jyc-gallery-years" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--tech-gold)', textTransform: 'uppercase', minWidth: 80 }}>Year:</span>
         {years.map(y => (
           <button 
@@ -441,7 +443,7 @@ export function JYC57Gallery({data}){
     {/* Photo Grid */}
     {filtered.length ? (
       <>
-        <div className="jyc57-masonry" aria-label="JYC photograph collection">
+        <div id="jyc-gallery-communities" className="jyc57-masonry" aria-label="JYC photograph collection">
           {filtered.slice(0, visibleCount).map((g, i) => (
             <button 
               type="button" 
