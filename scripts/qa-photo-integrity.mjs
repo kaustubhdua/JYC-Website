@@ -114,7 +114,7 @@ assert('every mapped team portrait is a committed local WebP',invalidTeamPhotoPa
 assert('team flip cards use lazy responsive portraits and safe public profile links',mainSource.includes('className="team-photo-editorial"')&&mainSource.includes('loading="lazy" sizes=')&&mainSource.includes('safeExternalUrl(m.linkedin||m.linkedinUrl||m.linkedin_url||m.socials?.linkedin)')&&mainSource.includes('team-member-back-content'));
 const responsivePhotoSource=fs.readFileSync('src/jyc-responsive-photo.jsx','utf8');
 const productionMediaSource=fs.readFileSync('scripts/optimize-production-media.mjs','utf8');
-const serviceWorkerSource=fs.readFileSync('public/sw.js','utf8');
+
 const teamThemeSource=fs.readFileSync('src/jyc-logo-final-theme.css','utf8');
 const publicSystemSource=fs.readFileSync('src/styles/public-system.css','utf8');
 assert('team portraits reserve intrinsic dimensions and fall back to the optimized official JYC logo',mainSource.includes('width={600} height={720}')&&mainSource.includes('fallbackSrc={logo}')&&mainSource.includes("const logo=import.meta.env.PROD?'/assets/jyc-logo.webp':'/JYC%20Logo(4).png'")&&mainSource.includes('fallbackAlt="Official JYC logo placeholder; portrait unavailable"'));
