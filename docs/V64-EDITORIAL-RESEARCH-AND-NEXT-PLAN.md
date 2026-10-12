@@ -78,3 +78,40 @@ Sources checked:
 ## Definition of done
 
 The branch is not production-ready until the exact head has a successful dependency install, full QA, production build and Playwright run; a fresh preview has been visually checked across the matrix; generated media size/decoding is confirmed; official event/profile content has been reviewed; and production-domain routing is verified.
+
+## Follow-up homepage and competitor audit — 2026-10-13
+
+### Confirmed source-level issues and fixes
+
+- The prior homepage used a generic cyber slogan rather than explaining what JYC helps a student discover or do. The editorial restoration replaces this with a student-centred headline and plain-language lead.
+- The prior homepage hard-coded a November 15, 2026 countdown for Converge/Dron-O-War, plus 23+, 50+, 5,000+ and 15+ counters. These claims need verified source records and editorial ownership before publication; they should not be presented as live facts without evidence.
+- The editorial restoration removes the unverified counters/countdown, aligns Dither Veil rim lighting to JYC red, and removes the generic ambient cyber decoration from the homepage.
+- A homepage editorial-truth QA contract guards against reintroducing unsupported countdowns/counters and generic cyber decoration. It is source-level regression protection, not a substitute for browser QA or owner review.
+
+### Competitor/reference synthesis
+
+- **Innovation JIIT** is strongest as a journey model: purpose → capabilities → activities → upcoming event → archive → team → contact. Its event cards expose participation details and distinguish completed events. Use this clarity, but do not copy its layout, copy, or branding. Source: https://www.innovationjiit.in/
+- **Official JIIT Hub directory** is a reference for breadth and campus context, but it is an institutional directory, not the visual bar JYC should aim for. Source: https://www.jiit.ac.in/existing-student/life-%40-jiit/jiit-hub
+- **CICR** is a useful specialist-community reference for connecting a hub's purpose to projects, workshops, events and people. Source: https://www.cicr.in/
+- Fest sites such as Concetto, Thomso and Sangram can inspire event discovery, timelines, result states and archive navigation. Use date selectors only for confirmed multi-day programmes, and never publish a countdown, prize, sponsor, or registration claim without an organiser-backed source.
+
+### Recommended design bar for JYC
+
+1. **A recognizable editorial identity.** Use warm paper, ink, JYC red and restrained champagne accents. Avoid neon-cyan glows, generic cyber grids, glass panels and unrelated background effects.
+2. **A useful headline, not a slogan stack.** Lead with a human benefit, then explain JYC in one concrete sentence. Keep one H1 per route, one clear primary action and a secondary discovery action.
+3. **Real photography as the main visual asset.** Prioritise source-backed moments showing people, performance, making/building, crowds and clear subject focus. Use posters as event identity, not as substitutes for documentary photography.
+4. **Editorial image sequencing.** Give each photo a context: event/club, year, caption, photographer/credit and meaningful alt text. Use varied but deliberate crops, focal points, consistent radius and restrained borders. Do not mix unrelated images merely to increase visual density.
+5. **Better hub pages.** Each hub needs a short plain-language purpose statement, 2–4 real activity examples, a small photo set, upcoming/past events when verified, leadership only when current and sourced, and one clear exploration/join path.
+6. **Better event pages.** Surface date, venue, organiser, eligibility and registration state immediately. Keep upcoming, registration-closed, completed and archived states distinct. Add timelines, FAQs, results and sponsors only when the organiser source supports them.
+7. **Motion with hierarchy.** Keep Dither Veil scoped to the official logo; use small hover lift on cards; use shared-element transitions for event and photo detail; retain keyboard/touch parity on team flips and gallery controls; disable costly motion on coarse pointers and reduced-motion settings.
+8. **Content governance.** Keep counts, event dates, prizes, deadlines, team roles and social links source-backed. Unknown data should be omitted or marked unavailable—not filled with invented copy.
+
+### Copy direction examples
+
+- Homepage: **Find your people. Make your mark.**
+- Clubs: **A place for what you love—and what you haven't tried yet.**
+- Events: **What's happening at JYC.** Show a clear date and participation state on each card.
+- Gallery: **Campus life, as it happened.** Include caption, event, year and photo credit wherever available.
+- Team: **The people who bring it all together.** Publish current positions and biographies only when verified.
+
+These are editorial directions, not a claim that every route has already been rewritten or visually verified.
