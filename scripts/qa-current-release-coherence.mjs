@@ -33,18 +33,18 @@ add('event detail receives the reminder notification callback from the route',ev
 add('tablet event/club hero switches to a safe single-column layout',design.includes('@media(max-width:900px)')&&design.includes('.public-app .jyc57-page .jyc57-hero{')&&design.includes('overflow-wrap:normal')&&design.includes('hyphens:none'));
 add('recruitment empty state provides next-step links',extra.includes('No published club has recruitment enabled right now.')&&extra.includes('Explore clubs ↗')&&extra.includes('See events →')&&extra.includes('Join JYC updates →'));
 add('Best of JYC photo cards support shareable photo deep links',experience.includes('sharePhoto')&&experience.includes("params.get('photo')")&&experience.includes("const albumRoute=value=>'/gallery/'+encodeURIComponent(value)")&&experience.includes("aria-label={`Open ${g.caption||'JYC photograph'} in the gallery`}"));
-add('gallery collection rail exposes a horizontal-scroll hint',experience.includes('Swipe or scroll to explore')&&publicCss.includes('.jyc57-collection-scroller{')&&publicCss.includes('scrollbar-width:thin'));
+add('gallery album cards route to published collections and expose real photo metadata',experience.includes('publishedAlbums.slice(0, 12)')&&experience.includes("const albumRoute=value=>'/gallery/'+encodeURIComponent(value)")&&experience.includes('jyc_media_albums')&&experience.includes('jyc57-gallery-meta'));
 
 add('homepage photo stories use only published event/club photo records',home.includes("item?.mediaKind !== 'photo'")&&home.includes("!['event','club'].includes(role)")&&home.includes('item?.published === false'));
 add('homepage event links use the stored canonical slug used by event details and sitemap',home.includes('const eventPath = e =>')&&home.includes('/events/${slug(e?.slug||e?.title)}'));
-add('event card, archive, calendar and announcements links prefer canonical stored slugs',main.includes('const eventPath = e =>')&&main.includes('/events/${slug(e?.slug||e?.title)}')&&main.includes('eventPath(e)'));
+add('event card, archive, calendar and announcements links prefer canonical stored slugs',main.includes("href:'/events/'+slug(e.slug||e.title)")&&main.includes('encodeURIComponent(slug(e.slug||e.title))')&&main.includes("onClick={()=>nav('/events/'+slug(e.slug||e.title))"));
 add('gallery uses deterministic grid contract',publicCss.includes('.public-app .gallery-grid{')&&publicCss.includes('display:grid!important')&&publicCss.includes('column-count:unset!important')&&publicCss.includes('aspect-ratio:4/3!important'));
 add('gallery archive uses deterministic rows',publicCss.includes('.public-app .jyc57-masonry')&&publicCss.includes('grid-auto-rows:auto!important')&&publicCss.includes('.public-app .jyc57-masonry .jyc57-photo'));
 add('gallery has mobile layout contracts',publicCss.includes('@media(max-width:620px)')&&publicCss.includes('.public-app .gallery-grid'));
 add('homepage activity Bento has responsive media-free card layout',homeCss.includes('.jh-activity-bento-shell')&&homeCss.includes('.magic-bento__grid')&&homeCss.includes('@media (max-width: 600px)'));
 add('active suite contains current media/layout QA',suite.includes('qa-media-layout.mjs')&&suite.includes('qa-current-release-coherence.mjs'));
 add('homepage CMS cannot restore retired visual surfaces',!admin.includes('move=(id,dir)')&&!admin.includes('Photo Chapters')&&!admin.includes('Hub Photo Wall'));
-add('browser QA guards homepage composition',browser.includes('homepage media composition stays editorial')&&browser.includes('activity image duplication'));
+add('browser QA guards homepage composition and gallery interactions',browser.includes('homepage renders the official logo through Dither Veil and a magnetic activity Bento')&&browser.includes('homepage photo-story horizontal overflow')&&browser.includes('gallery album routes are shareable and filter the archive'));
 const suiteFiles=[...suite.matchAll(/'([^']+\.mjs)'/g)].map(m=>m[1]).filter(p=>p.startsWith('qa-'));
 const stale=[];
 const stalePatterns=[/pkg\.version===['"](?:5[0-9]|6[0-3])\./,/release is v(?:5[0-9]|6[0-3])/i,/release version is V(?:5[0-9]|6[0-3])/i,/gallery\.slice\(0,4\)/,/jh-photo-grid/,/column-count:4/];
