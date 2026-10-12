@@ -146,6 +146,7 @@ export function JYCEditorialHome({ data }) {
   };
 
   const handleCardTilt = e => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     handleSpotlight(e);
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
