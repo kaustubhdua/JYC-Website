@@ -34,11 +34,11 @@ if(!nowLogoOk)failed++;
 const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes('safeExternalUrl(x.image||x.thumbnail||\'\')')&&nowModule.includes('.filter(x=>x.url)');
 console.log((nowNormaliseOk ? "PASS" : "FAIL")+": JYC Now drops connector items whose URLs fail external URL validation");
 if(!nowNormaliseOk)failed++;
-const nativeRegistrationOk=authModule.includes('className="native-registration"')&&authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes("event.registrationMode!=='native'")&&authModule.includes("event.registrationMode==='native')return");
-console.log((nativeRegistrationOk ? "PASS" : "FAIL")+": native event registration is explicitly guarded by native registration mode");
+const nativeRegistrationOk=!authModule.includes('className="native-registration"')&&!authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes('Public native registration is disabled.');
+console.log((nativeRegistrationOk ? "PASS" : "FAIL")+": public native registration is removed after RPC revocation");
 if(!nativeRegistrationOk)failed++;
-const externalRegistrationOk=authModule.includes('Open registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&authModule.includes("if(!safeExternalUrl(event.registrationUrl))e.preventDefault()");
-console.log((externalRegistrationOk ? "PASS" : "FAIL")+": external registration routes require a safe HTTP(S) URL");
+const externalRegistrationOk=authModule.includes('Open official registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&authModule.includes('target="_blank" rel="noopener noreferrer"');
+console.log((externalRegistrationOk ? "PASS" : "FAIL")+": public external registration links require a safe HTTP(S) URL");
 if(!externalRegistrationOk)failed++;
 
 const nowLazyImportOk=nowModule.includes('lazy(') && /import React,\{[^}]*\blazy\b/.test(nowModule);
