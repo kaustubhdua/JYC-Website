@@ -7,7 +7,7 @@ import {BrowserRouter,Navigate,useLocation,useNavigate} from 'react-router-dom';
 import {supabase} from './lib/supabase';
 import {uploadJycMedia} from './lib/media.js';
 import {jycToast} from './lib/ui';
-import './styles/public-system.css';
+import './styles/public-entry.css';
 import {JYCEditorialSystem} from './jyc-editorial-system.jsx';
 import {JYC_HUB_CONTENT, JYC_HUB_FAMILIES, hubProfile} from './v21-hub-content.js';
 import {JYC_HUB_SOURCE_REGISTRY,JYC_HUB_SOURCE_ONLY} from './jyc-hub-registry.js';
@@ -43,8 +43,7 @@ const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
 
 
 
-import './jyc-design-upgrades.css';
-import './styles/jyc-pro-redesign.css';
+
 
 const PUBLIC_ACTIVITIES=JYC_PUBLIC_ACTIVITIES;
 function mergePublicFallback(d,{allowContentFallback=true}={}){
