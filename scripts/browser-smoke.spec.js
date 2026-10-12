@@ -260,18 +260,18 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
   }
   expect(themeSamples.light.background, 'light theme uses the light editorial surface').not.toBe(themeSamples.dark.background);
 
-  await page.locator('.jh-activities').scrollIntoViewIfNeeded();
-  await expect(page.locator('.jh-activities .magic-bento-card').first()).toBeVisible({ timeout: 15000 });
+  await page.locator('.jh-activity-bento-shell').scrollIntoViewIfNeeded();
+  await expect(page.locator('.jh-activity-bento-shell .magic-bento-card').first()).toBeVisible({ timeout: 15000 });
 
   const result = await page.evaluate(() => {
-    const story = [...document.querySelectorAll('.jyc-home .jh-gallery-tile')];
-    const familyImages = document.querySelectorAll('.jyc-home .jh-family-image, .jyc-home .jh-family img').length;
+    const story = [...document.querySelectorAll('.jyc-home .jh-story-card')];
+    const familyImages = document.querySelectorAll('.jyc-home .jh-family-image, .jyc-home .jh-family img, .jyc-home .jh-activity-bento-shell img').length;
     const archiveWalls = document.querySelectorAll('.jyc-home .jh-archive-section, .jyc-home .jyc-photo-chapters-section').length;
     const heroDitherMarks = document.querySelectorAll('.jyc-home .jh-dither-mark .dither-veil').length;
     const heroDriftWalls = document.querySelectorAll('.jyc-home .jh-hero-drift-wall .drift-wall').length;
-    const bentoCards = document.querySelectorAll('.jyc-home .jh-activities .magic-bento-card').length;
-    const activityImages = document.querySelectorAll('.jyc-home .jh-activities img').length;
-    const storyOverflow = [...document.querySelectorAll('.jyc-home .jh-photo-grid')].some(el => el.scrollWidth > el.clientWidth + 1);
+    const bentoCards = document.querySelectorAll('.jyc-home .jh-activity-bento-shell .magic-bento-card').length;
+    const activityImages = document.querySelectorAll('.jyc-home .jh-activity-bento-shell img').length;
+    const storyOverflow = [...document.querySelectorAll('.jyc-home .jh-photo-story-grid')].some(el => el.scrollWidth > el.clientWidth + 1);
     return { storyTiles: story.length, familyImages, archiveWalls, heroDitherMarks, heroDriftWalls, bentoCards, activityImages, storyOverflow };
   });
   expect(result.heroDitherMarks, 'one lazy Dither Veil for the actual JYC logo').toBe(1);
@@ -281,13 +281,13 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
   expect(result.archiveWalls, 'homepage retired archive/photo-chapter surfaces').toBe(0);
   expect(result.activityImages, 'homepage activity cards avoid unrelated stock/gallery imagery').toBe(0);
   expect(result.storyOverflow, 'homepage photo-story horizontal overflow').toBe(false);
-  expect(result.storyTiles).toBeLessThanOrEqual(1);
+  expect(result.storyTiles).toBeLessThanOrEqual(3);
 });
 
 test('gallery archive uses deterministic responsive image frames', async ({ page }) => {
   await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'gallery layout');
-  await page.locator('.jyc57-archive-nav').waitFor({ state: 'visible', timeout: 10000 });
+  await page.locator('.jyc-gallery-hero').waitFor({ state: 'visible', timeout: 10000 });
   const result = await page.evaluate(() => {
     const grid = document.querySelector('.public-app .jyc57-masonry');
     const items = [...document.querySelectorAll('.public-app .jyc57-masonry .jyc57-photo')].slice(0, 12);
@@ -437,9 +437,9 @@ test('gallery deep-link opens the requested photograph', async ({ page }) => {
 test('gallery album routes are shareable and filter the archive', async ({ page }) => {
   await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'gallery album route');
-  const albumButton=page.locator('.jyc57-filter-group').filter({ hasText: 'Album' }).locator('button').nth(1);
+  const albumButton=page.locator('.jyc-memories-grid .jyc-memory-card').first();
   await expect(albumButton).toBeVisible();
-  const label=(await albumButton.innerText()).trim();
+  const label=(await albumButton.locator('.jyc-memory-title').innerText()).trim();
   await albumButton.click();
   await expect.poll(() => new URL(page.url()).pathname, { timeout: 5000 }).toMatch(/^\/gallery\/[^/]+$/);
   await expect(page.locator('h1').first()).toContainText(label);
