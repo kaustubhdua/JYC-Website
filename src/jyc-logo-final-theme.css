@@ -5,14 +5,14 @@
    This is the final public override layer; historical CSS remains for reference.
 */
 :root{
-  --jyc-navy:#050a14;
-  --jyc-navy-deep:#030710;
-  --jyc-navy-soft:#0b1329;
-  --jyc-champagne:#38bdf8;
-  --jyc-champagne-soft:#111c38;
-  --jyc-ivory:#f8fafc;
-  --jyc-cream:#050a14;
-  --jyc-bronze:#0284c7;
+  --jyc-navy:#0F0E11;
+  --jyc-navy-deep:#0F0E11;
+  --jyc-navy-soft:#18161D;
+  --jyc-champagne:#BF9C6F;
+  --jyc-champagne-soft:#BF9C6F;
+  --jyc-ivory:#FFF8E1;
+  --jyc-cream:#F5F1E6;
+  --jyc-bronze:#BF9C6F;
   --jyc-ink:#f8fafc;
   --jyc-muted:#94a3b8;
   --jyc-line:rgba(255,255,255,.1);
@@ -21,13 +21,13 @@
   --jyc-shadow-dark:0 22px 65px rgba(0,0,0,.5);
   --jyc-ease:cubic-bezier(.22,.8,.24,1);
   --jyc-content:min(1240px,calc(100vw - 40px));
-  --accent-gold:#fbbf24;
-  --accent-red:#ef4444;
-  --club-red:#ef4444;
-  --club-gold:#fbbf24;
-  --jyc-gold:#fbbf24;
-  --bg-main:#050a14;
-  --bg-card:#0b1329;
+  --accent-gold:#BF9C6F;
+  --accent-red:#A82420;
+  --club-red:#A82420;
+  --club-gold:#BF9C6F;
+  --jyc-gold:#BF9C6F;
+  --bg-main:#0F0E11;
+  --bg-card:#18161D;
   --text-primary:#f8fafc;
   --text-muted:#94a3b8;
   --border-tech:var(--jyc-line);
@@ -39,11 +39,11 @@ html[data-theme="light"]{
   --jyc-text:#0f172a;
   --jyc-muted-live:#475569;
   --jyc-border:rgba(203,213,225,.7);
-  --accent-gold:#d97706;
-  --accent-red:#dc2626;
-  --club-red:#dc2626;
-  --club-gold:#d97706;
-  --jyc-gold:#d97706;
+  --accent-gold:#BF9C6F;
+  --accent-red:#A82420;
+  --club-red:#A82420;
+  --club-gold:#BF9C6F;
+  --jyc-gold:#BF9C6F;
   --bg-main:#f8fafc;
   --bg-card:#ffffff;
   --text-primary:#0f172a;
@@ -52,8 +52,8 @@ html[data-theme="light"]{
 }
 html[data-theme="dark"]{
   color-scheme:dark;
-  --jyc-bg:#050a14;
-  --jyc-surface:#0b1329;
+  --jyc-bg:#0F0E11;
+  --jyc-surface:#18161D;
   --jyc-text:#f8fafc;
   --jyc-muted-live:#94a3b8;
   --jyc-border:rgba(255,255,255,.1);
@@ -63,20 +63,20 @@ html{background:var(--jyc-bg);scroll-padding-top:78px}
 body{
   margin:0;
   background:
-    radial-gradient(circle at 50% -12%,rgba(56,189,248,.08),transparent 35%),
-    linear-gradient(180deg,#050a14 0%,#090d16 100%);
+    radial-gradient(circle at 50% -12%,rgba(168,36,32,.08),transparent 35%),
+    linear-gradient(180deg,#0F0E11 0%,#090d16 100%);
   color:var(--jyc-text);
   transition:background-color .35s ease,color .25s ease;
 }
 html[data-theme="light"] body{
   background:
-    radial-gradient(circle at 50% -12%,rgba(2,132,199,.06),transparent 35%),
+    radial-gradient(circle at 50% -12%,rgba(191,156,111,.06),transparent 35%),
     linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
 }
 html[data-theme="dark"] body{
   background:
-    radial-gradient(circle at 50% -12%,rgba(56,189,248,.08),transparent 35%),
-    linear-gradient(180deg,#050a14 0%,#080f1e 100%);
+    radial-gradient(circle at 50% -12%,rgba(168,36,32,.08),transparent 35%),
+    linear-gradient(180deg,#0F0E11 0%,#080f1e 100%);
 }
 .public-app,.home,.page{
   --bg-main:var(--jyc-bg)!important;
