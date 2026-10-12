@@ -25,9 +25,9 @@ add('YouTube updates parser returns its mapped list without syntax-breaking pare
 add('homepage is content-first and visually consolidated',home.includes('jh-hero')&&home.includes('jh-about-editorial')&&home.includes('jh-pillars-section')&&home.includes('jh-events')&&home.includes('jh-photo-story')&&home.includes('jh-community')&&home.includes('jh-final')&&!home.includes('jh-archive-section'));
 add('homepage has no retired PhotoChapters mount',!home.includes('<PhotoChapters/>'));add('homepage magnetic Bento is lazy and uses the React Router callback',home.includes('LazyMagicBento')&&home.includes('enableMagnetism={true}')&&read('src/components/react-bits/MagicBento.jsx').includes('onNavigate?onNavigate(item.href)'));
 add('homepage has no retired DriftWall mount',!home.includes('LazyDriftWall'));
-add('homepage family cards are media-free',home.includes('jh-family-index')&&!home.includes('jh-family-image'));
-add('homepage activity cards are media-free',!home.includes('image:gallery['));
-add('homepage has one hero image and one featured-event image path',home.includes('jh-photo-frame')&&home.includes('jh-featured-event'));
+add('homepage activity cards are media-free',home.includes('const activities = useMemo(() => PILLARS.map')&&home.includes('description:p.desc')&&!home.includes('image:gallery['));
+add('homepage activity cards are media-free',home.includes('LazyActivityBento activities={activities} nav={nav}')&&!home.includes('image:gallery['));
+add('homepage has one identity-first Dither hero and one featured-event image path',home.includes('jh-dither-mark')&&home.includes('jh-featured-event-photo')&&home.includes('LazyDitherVeil'));
 add('event detail defines its poster source before rendering the poster',eventDetail.includes("const eventPoster=e.poster||sourceEventMedia(e)?.photoItems?.find(item=>item?.url)?.url||'';")&&eventDetail.indexOf('const eventPoster=')<eventDetail.indexOf('{eventPoster?'));
 add('event detail receives the reminder notification callback from the route',eventDetail.includes('function EventDetail({data,id,session,notify})')&&main.includes('<EventDetail data={data} id={slugId} session={session} notify={notify}/>'));
 add('tablet event/club hero switches to a safe single-column layout',design.includes('@media(max-width:900px)')&&design.includes('.public-app .jyc57-page .jyc57-hero{')&&design.includes('overflow-wrap:normal')&&design.includes('hyphens:none'));
@@ -35,13 +35,13 @@ add('recruitment empty state provides next-step links',extra.includes('No publis
 add('Best of JYC photo cards open their full gallery photo',experience.includes("href={'/gallery?photo='+encodeURIComponent(g.id||g.url)}")&&experience.includes('aria-label={`Open ${g.caption||\'JYC photograph\'} in the gallery`}'));
 add('gallery collection rail exposes a horizontal-scroll hint',experience.includes('Swipe or scroll to explore')&&publicCss.includes('.jyc57-collection-scroller{')&&design.includes('scrollbar-width:thin'));
 
-add('homepage hero uses photographs only, never posters or identity graphics',home.includes("g?.url&&g?.mediaKind==='photo'"));
-add('homepage event links use the stored canonical slug used by event details and sitemap',home.includes("const eventPath=e=>`/events/${slug(e?.slug||e?.title)}`"));
+add('homepage photo stories use only published event/club photo records',home.includes("item?.mediaKind !== 'photo'")&&home.includes("!['event','club'].includes(role)")&&home.includes('item?.published === false'));
+add('homepage event links use the stored canonical slug used by event details and sitemap',home.includes('const eventPath = e =>')&&home.includes('/events/${slug(e?.slug||e?.title)}'));
 add('event card, archive, calendar and announcements links prefer canonical stored slugs',main.includes("nav('/events/'+slug(e.slug||e.title))")&&main.includes("/events/${slug(e.slug||e.title)}")&&main.includes("href:'/events/'+slug(e.slug||e.title)"));
 add('gallery uses deterministic grid contract',publicCss.includes('.public-app .gallery-grid{')&&publicCss.includes('display:grid!important')&&publicCss.includes('column-count:unset!important')&&publicCss.includes('aspect-ratio:4/3!important'));
 add('gallery archive uses deterministic rows',publicCss.includes('.public-app .jyc57-masonry')&&publicCss.includes('grid-auto-rows:auto!important')&&publicCss.includes('.public-app .jyc57-masonry .jyc57-photo'));
 add('gallery has mobile layout contracts',publicCss.includes('@media(max-width:620px)')&&publicCss.includes('.public-app .gallery-grid'));
-add('homepage media CSS has family-index contract',homeCss.includes('.jh-family-index'));
+add('homepage activity Bento has responsive media-free card layout',homeCss.includes('.jh-activity-bento-shell')&&homeCss.includes('.magic-bento__grid')&&homeCss.includes('@media (max-width: 600px)'));
 add('active suite contains current media/layout QA',suite.includes('qa-media-layout.mjs')&&suite.includes('qa-current-release-coherence.mjs'));
 add('homepage CMS cannot restore retired visual surfaces',!admin.includes('move=(id,dir)')&&!admin.includes('Photo Chapters')&&!admin.includes('Hub Photo Wall'));
 add('browser QA guards homepage composition',browser.includes('homepage media composition stays editorial')&&browser.includes('activity image duplication'));
