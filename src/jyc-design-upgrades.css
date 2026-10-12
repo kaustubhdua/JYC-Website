@@ -816,4 +816,6 @@
   .jyc-home .jh-hero-drift-wall .drift-wall { animation: none !important; }
 }
 /* Long source-grounded family descriptions must wrap within responsive cards. */
+.about-family-grid-v28>button:before{right:0!important}
+
 .about-family-grid-v28>button :where(strong,p,small){min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:normal}
