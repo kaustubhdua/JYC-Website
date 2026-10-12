@@ -217,6 +217,7 @@ export function JYC57Clubs({data}){
 }
 
 export function JYC57Gallery({data}){
+  const shouldReduceMotion = useReducedMotion();
   const nav=useNavigate(),loc=useLocation();
   const params=useMemo(()=>new URLSearchParams(loc.search),[loc.search]);
   const [query,setQuery]=useState(params.get('q')||'');
@@ -478,7 +479,7 @@ export function JYC57Gallery({data}){
           <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
           <div className="jyc57-lightbox-media" onTouchStart={e => { touchStartX.current = e.changedTouches[0]?.clientX || 0; }} onTouchEnd={e => { const endX = e.changedTouches[0]?.clientX || touchStartX.current; const delta = endX - touchStartX.current; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); touchStartX.current = 0; }}>
-            <ResponsivePhoto src={selected.url} alt={selected.caption || 'JYC photo'} sizes="(max-width: 900px) 100vw, 75vw" loading="eager" style={{ transform: `scale(${zoom})`, transition: 'transform 0.2s ease' }} fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
+            <ResponsivePhoto src={selected.url} alt={selected.caption || 'JYC photo'} sizes="(max-width: 900px) 100vw, 75vw" loading="eager" style={{ transform: `scale(${zoom})`, transition: shouldReduceMotion ? 'none' : 'transform 0.2s ease' }} fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
           </div>
           <button className="jyc57-nav next" type="button" onClick={() => move(1)} aria-label="Next photo">›</button>
           <div className="jyc57-lightbox-copy">
