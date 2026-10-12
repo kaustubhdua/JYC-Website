@@ -87,7 +87,7 @@
 }
 
 .flip-card__back-trigger:hover {
-  background: rgba(56, 189, 248, 0.18);
+  background: rgba(191, 156, 111, 0.10);
   border-color: var(--color-accent-cyan, #A82420);
   transform: translateX(-2px);
 }
