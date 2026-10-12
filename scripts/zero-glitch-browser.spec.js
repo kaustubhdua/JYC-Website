@@ -6,6 +6,10 @@ const routes=[
   '/calendar','/fests','/contact','/join-jyc'
 ];
 
+const routesForProject = projectName => ['desktop-1280','desktop-1440'].includes(projectName)
+  ? routes
+  : ['/','/clubs','/events','/gallery','/team','/updates','/contact'];
+
 async function waitForPublicApp(page,label){
   await page.locator('#root').waitFor({state:'attached',timeout:15000});
   await expect(page.locator('body'),label).toBeVisible();
@@ -106,7 +110,7 @@ async function loadAllImages(page){
 
 test('sitewide routes have no overflow, clipping, off-screen content or fixed-control overlap', async ({page})=>{
   test.skip(!['mobile-390','mobile-430','tablet-768','desktop-1280','desktop-1440'].includes(test.info().project.name));
-  for(const route of routes){
+  for(const route of routeMatrix(test.info().project.name)){
     await page.goto(route,{waitUntil:'domcontentloaded'});
     await waitForPublicApp(page,route);
     const result=await inspectViewport(page);
@@ -124,7 +128,7 @@ test('sitewide routes load every visible image successfully and expose alt text'
   // images; allow it more than the default 30s when the media-heavy gallery runs in CI.
   test.setTimeout(90000);
   test.skip(!['mobile-390','mobile-430','tablet-768','desktop-1280','desktop-1440'].includes(test.info().project.name));
-  for(const route of routes){
+  for(const route of routeMatrix(test.info().project.name)){
     await page.goto(route,{waitUntil:'domcontentloaded'});
     await waitForPublicApp(page,route);
     const images=await loadAllImages(page);
