@@ -1239,7 +1239,7 @@ test('static boot screen respects the saved light/dark theme before React mounts
   await page.addInitScript(value => localStorage.setItem('jyc-theme', value), 'light');
   await page.route('**/*', route => {
     const pathname = new URL(route.request().url()).pathname;
-    if (/\.(?:js|jsx|mjs)$/.test(pathname) || pathname === '/@vite/client') return route.abort();
+    if ((pathname.startsWith('/assets/') && /\.(?:js|jsx|mjs)$/.test(pathname)) || pathname === '/@vite/client') return route.abort();
     return route.continue();
   });
 
@@ -1273,7 +1273,7 @@ test('static boot screen respects the saved light/dark theme before React mounts
 test('public route shells keep route-specific SEO content and one primary heading without JavaScript', async ({ page }) => {
   await page.route('**/*', route => {
     const pathname = new URL(route.request().url()).pathname;
-    if (/\.(?:js|jsx|mjs)$/.test(pathname) || pathname === '/@vite/client') return route.abort();
+    if ((pathname.startsWith('/assets/') && /\.(?:js|jsx|mjs)$/.test(pathname)) || pathname === '/@vite/client') return route.abort();
     return route.continue();
   });
   const routes = [
