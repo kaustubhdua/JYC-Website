@@ -111,7 +111,7 @@ body::before {
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00f0ff 0%, #ffea00 100%);
+  background: linear-gradient(180deg, #A82420 0%, #BF9C6F 100%);
   box-shadow: 0 0 16px rgba(191, 156, 111, 0.7);
 }
 
@@ -245,7 +245,7 @@ body::before {
   color: #fff;
   font-size: 13px;
   background: var(--tech-gold);
-  color: #09080d;
+  color: #0F0E11;
   padding: 2px 7px;
   border-radius: 99px;
 }
@@ -311,15 +311,15 @@ body::before {
 }
 
 .jh-btn-primary {
-  background: linear-gradient(135deg, #f5d485 0%, var(--tech-gold) 100%);
-  color: #09080d;
+  background: linear-gradient(135deg, #D2B48C 0%, var(--tech-gold) 100%);
+  color: #0F0E11;
   border-color: var(--tech-gold);
   font-weight: 800;
   box-shadow: 0 4px 20px -2px rgba(229, 184, 105, 0.35);
 }
 
 .jh-btn-primary:hover {
-  background: linear-gradient(135deg, #fff 0%, #e5b869 100%);
+  background: linear-gradient(135deg, #fff 0%, #BF9C6F 100%);
   box-shadow: 0 8px 30px 0 rgba(229, 184, 105, 0.45);
 }
 
@@ -550,7 +550,7 @@ body::before {
   padding: 0 6px;
   border-radius: 99px;
   background: var(--tech-gold);
-  color: #09080d;
+  color: #0F0E11;
   font-size: 11px;
   font-weight: 800;
 }
@@ -618,7 +618,7 @@ body::before {
 .jyc-filter-pill.is-active {
   background: var(--tech-gold);
   border-color: var(--tech-gold);
-  color: #09080d;
+  color: #0F0E11;
   font-weight: 700;
   box-shadow: 0 2px 10px var(--tech-gold-glow);
 }
@@ -788,7 +788,7 @@ body::before {
 
 /* BACK FACE */
 .team-member-flip .flip-card__back {
-  background: #111018 !important;
+  background: #18161D !important;
   border: 1px solid var(--tech-border-glow) !important;
   color: var(--tech-text-primary) !important;
   padding: 24px !important;
@@ -918,16 +918,16 @@ body::before {
 :root[data-theme="light"] {
   --tech-bg: #f8fafc;
   --tech-surface: #ffffff;
-  --tech-surface-elevated: #f1f5f9;
+  --tech-surface-elevated: #FFFDF8;
   --tech-surface-glass: rgba(255, 255, 255, 0.92);
   --tech-border: rgba(15, 23, 42, 0.08);
   --tech-border-glow: rgba(168, 36, 32, 0.35);
-  --tech-gold: #b45309;
+  --tech-gold: #BF9C6F;
   --tech-gold-glow: rgba(180, 83, 9, 0.14);
   --tech-cyan: #A82420;
-  --tech-text-primary: #0f172a;
-  --tech-text-secondary: #475569;
-  --tech-text-muted: #64748b;
+  --tech-text-primary: #1A191D;
+  --tech-text-secondary: #6E6A75;
+  --tech-text-muted: #A8A3B0;
 }
 
 :root[data-theme="light"] .jh-hero-logo-plaque {
@@ -948,7 +948,7 @@ body::before {
 
 :root[data-theme="light"] .jyc-search-input {
   background: #ffffff;
-  color: #0f172a;
+  color: #1A191D;
   border-color: rgba(15, 23, 42, 0.12);
 }
 
@@ -958,16 +958,16 @@ body::before {
 
 :root[data-theme="light"] .team-member-flip .flip-card__back {
   background: #ffffff !important;
-  color: #121115 !important;
+  color: #0F0E11 !important;
   border-color: rgba(166, 120, 40, 0.35) !important;
 }
 
 :root[data-theme="light"] .team-back-name {
-  color: #121115 !important;
+  color: #0F0E11 !important;
 }
 
 :root[data-theme="light"] .team-back-bio {
-  color: #585461 !important;
+  color: #6E6A75 !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -1435,7 +1435,7 @@ body::before {
   aspect-ratio: 16 / 10;
   width: 100%;
   overflow: hidden;
-  background: #080d1a;
+  background: #0F0E11;
 }
 
 .about-programme-image img {
@@ -2983,7 +2983,7 @@ body::before {
 .about-history-section {
   margin: 48px 0;
   padding: 40px 32px;
-  background: var(--tech-surface, #12131a);
+  background: var(--tech-surface, #18161D);
   border: 1px solid var(--tech-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--tech-radius-lg, 16px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -3039,7 +3039,7 @@ body::before {
 }
 
 .about-history-node-card {
-  background: color-mix(in srgb, var(--tech-surface-elevated, #161822) 80%, transparent);
+  background: color-mix(in srgb, var(--tech-surface-elevated, #18161D) 80%, transparent);
   border: 1px solid var(--tech-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--tech-radius-md, 12px);
   padding: 22px 26px;
@@ -3076,7 +3076,7 @@ body::before {
 
 .about-history-node-card p {
   font-size: 0.92rem;
-  color: var(--tech-text-muted, #94a3b8);
+  color: var(--tech-text-muted, #A8A3B0);
   line-height: 1.6;
   margin-bottom: 14px;
 }
@@ -3086,11 +3086,11 @@ body::before {
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  color: var(--tech-text-subtle, #64748b);
+  color: var(--tech-text-subtle, #A8A3B0);
 }
 
 .about-history-cite a {
-  color: var(--tech-cyan, #06b6d4);
+  color: var(--tech-cyan, #BF9C6F);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color 0.2s ease;
@@ -3179,9 +3179,9 @@ body::before {
   gap: 8px;
   padding: 7px 15px;
   border-radius: 999px;
-  background: var(--tech-surface, #12131a);
+  background: var(--tech-surface, #18161D);
   border: 1px solid var(--tech-border, rgba(255, 255, 255, 0.08));
-  color: var(--tech-text-muted, #94a3b8);
+  color: var(--tech-text-muted, #A8A3B0);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -3204,7 +3204,7 @@ body::before {
 }
 
 .jyc-quick-pill:hover {
-  background: color-mix(in srgb, var(--jyc-red, #C92A2A) 12%, var(--tech-surface, #12131a));
+  background: color-mix(in srgb, var(--jyc-red, #C92A2A) 12%, var(--tech-surface, #18161D));
   border-color: color-mix(in srgb, var(--jyc-red, #C92A2A) 40%, transparent);
   color: var(--tech-text, #fff);
   transform: translateY(-1px);
@@ -3293,7 +3293,7 @@ body::before {
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--tech-text-secondary, #94a3b8);
+  color: var(--tech-text-secondary, #A8A3B0);
   font-weight: 800;
 }
 
