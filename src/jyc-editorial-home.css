@@ -1557,3 +1557,38 @@
   .jyc-editorial-home .jh-photo-story-grid.has-three { grid-template-columns: 1fr; }
   .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1 { grid-row: auto; aspect-ratio: 16 / 11; min-height: 0; }
 }
+
+
+/* Lazy, source-first activity Bento — red/gold only, no image placeholders or fake counts. */
+.jyc-editorial-home .jh-activity-bento-shell { min-height: 260px; }
+.jyc-editorial-home .jh-bento-loading,
+.jyc-editorial-home .magic-bento__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.jyc-editorial-home .jh-bento-loading-card,
+.jyc-editorial-home .magic-bento-card {
+  min-width: 0; min-height: 260px; border: 1px solid var(--jh-line);
+  border-radius: 16px; background: var(--jh-surface); color: var(--jh-ink);
+  box-shadow: 0 8px 26px rgba(26,25,29,.05); overflow: hidden;
+}
+.jyc-editorial-home .jh-bento-loading-card { padding: clamp(18px,2.2vw,28px); }
+.jyc-editorial-home .jh-bento-loading-card span,
+.jyc-editorial-home .magic-bento-card__label { color: var(--jh-accent); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.jyc-editorial-home .jh-bento-loading-card strong,
+.jyc-editorial-home .magic-bento-card h3 { display: block; margin: 18px 0 10px; color: var(--jh-ink); font-family: 'Space Grotesk',sans-serif; font-size: clamp(21px,2.1vw,30px); line-height: 1.12; }
+.jyc-editorial-home .jh-bento-loading-card p,
+.jyc-editorial-home .magic-bento-card p { color: var(--jh-muted); font-size: 15px; line-height: 1.7; }
+.jyc-editorial-home .magic-bento-card__media { display: none; }
+.jyc-editorial-home .magic-bento-card__body { padding: clamp(18px,2.2vw,28px); }
+.jyc-editorial-home .magic-bento-card__body h3 { margin-top: 18px; }
+.jyc-editorial-home .magic-bento-card__body button { min-height: 44px; padding: 10px 0; color: var(--jh-accent); background: transparent; border: 0; font-weight: 750; }
+.jyc-editorial-home .magic-bento-card:hover { border-color: var(--jh-line-accent); box-shadow: 0 14px 34px rgba(26,25,29,.09); }
+.jyc-editorial-home .magic-bento__spotlight { opacity: .16; }
+@media (max-width: 900px) {
+  .jyc-editorial-home .jh-bento-loading,
+  .jyc-editorial-home .magic-bento__grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 600px) {
+  .jyc-editorial-home .jh-bento-loading,
+  .jyc-editorial-home .magic-bento__grid { grid-template-columns: 1fr; gap: 12px; }
+  .jyc-editorial-home .jh-bento-loading-card,
+  .jyc-editorial-home .magic-bento-card { min-height: 0; }
+}
