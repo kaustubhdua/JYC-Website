@@ -1252,13 +1252,15 @@ test('public route shells keep route-specific SEO content and one primary headin
   });
   const routes = [
     { path: '/', title: 'JIIT Youth Club 128 — Official JYC Website | JIIT Wish Town, Noida' },
-    { path: '/contact', title: 'Contact JIIT Youth Club 128 | JYC' },
-    { path: '/clubs', title: 'JYC Communities & Clubs | JIIT Youth Club 128' },
-    { path: '/events/jai-2026-jaypee-agentic-ai-hackathon', title: 'JAI 2026 — Jaypee Agentic AI Hackathon | JYC' }
+    { path: '/contact', requestPath: '/contact/', title: 'Contact JIIT Youth Club 128 | JYC' },
+    { path: '/clubs', requestPath: '/clubs/', title: 'JYC Communities & Clubs | JIIT Youth Club 128' },
+    { path: '/events/jai-2026-jaypee-agentic-ai-hackathon', requestPath: '/events/jai-2026-jaypee-agentic-ai-hackathon/', title: 'JAI 2026 — Jaypee Agentic AI Hackathon | JYC' }
   ];
 
-  for (const { path, title } of routes) {
-    await page.goto(base + path, { waitUntil: 'domcontentloaded' });
+  for (const { path, title, requestPath } of routes) {
+    // Vite preview serves the generated dist/<route>/index.html at the trailing-slash path.
+    // Keep the canonical assertion on the public, slashless route.
+    await page.goto(base + (requestPath || path), { waitUntil: 'domcontentloaded' });
     await expect(page).toHaveTitle(title);
     const primaryHeading = page.getByRole('heading', { level: 1 });
     await expect(primaryHeading).toHaveCount(1);
