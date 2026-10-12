@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
-import { sourceEventMedia } from './jyc-source-media.js';
+import { sourceEventMedia, sourceHubMedia } from './jyc-source-media.js';
 import { rankDiverseJycPhotos } from './jyc-photo-intelligence.js';
 import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
@@ -145,7 +145,14 @@ function LazyActivityBento({ activities, nav }) {
 
 export function JYCEditorialHome({ data }) {
   const nav = useNavigate();
-  const activities = useMemo(() => PILLARS.map(p => ({ id:p.id, label:p.family.toUpperCase(), title:p.title, description:p.desc, href:p.id === 'fests' ? '/events' : '/clubs' })), []);
+  const activities = useMemo(() => {
+    const photoHubs = { technical: 'CICR', cultural: 'VamUnique', literary: 'Eloquence', fests: 'Aakriti', sports: 'Sports', creative: 'Aura' };
+    return PILLARS.map(p => {
+      const source = sourceHubMedia(photoHubs[p.id]);
+      const image = source.photoItems.find(item => item?.url)?.url || '';
+      return { id:p.id, label:p.family.toUpperCase(), title:p.title, description:p.desc, href:p.id === 'fests' ? '/events' : '/clubs', image };
+    });
+  }, []);
   const events = useMemo(() => Array.isArray(data?.events) ? data.events.filter(e => e?.published && !e?.archived).slice().sort((a, b) => dateMs(a) - dateMs(b)) : [], [data?.events]);
   const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }, []);
   const upcoming = events.filter(e => { const t = dateMs(e); return Number.isFinite(t) && t >= today; }).slice(0, 4);
@@ -280,10 +287,10 @@ export function JYCEditorialHome({ data }) {
           <div className="jh-photo-story-head">
             <div>
               <div className="jh-section-number">02 / CAMPUS LIFE IN FRAME</div>
-              <h2 id="jh-photo-story-title">The moments<br /><em className="jh-title-gradient">that make us.</em></h2>
+              <h2 id="jh-photo-story-title">A year of moments.<br /><em className="jh-title-gradient">All ours.</em></h2>
             </div>
             <div className="jh-photo-story-intro">
-              <p>People, performances, competitions, and memories from the moments that make JIIT vibrant.</p>
+              <p>Real people. Loud stages. Small wins. The shared moments that turn a campus into a community.</p>
               <button type="button" className="jh-text-link" onClick={() => nav('/gallery')}>
                 Open full gallery <span>↗</span>
               </button>
@@ -341,7 +348,7 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-section-head">
           <div>
             <div className="jh-section-number">04 / WHAT’S HAPPENING</div>
-            <h2>What's happening<br /><em className="jh-title-gradient">on campus.</em></h2>
+            <h2>Make room for<br /><em className="jh-title-gradient">what's next.</em></h2>
           </div>
           <button type="button" className="jh-text-link" onClick={() => nav('/events')}>
             View event directory <span>↗</span>
@@ -415,7 +422,7 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-container jh-community-grid">
           <div className="jh-community-copy">
             <div className="jh-section-number">05 / THE PEOPLE BEHIND IT</div>
-            <h2>The people<br /><em className="jh-title-gradient">behind JYC.</em></h2>
+            <h2>Meet the people<br /><em className="jh-title-gradient">making it happen.</em></h2>
             <p>
               Meet the students who bring JYC's clubs, events and campus communities together.
             </p>
@@ -464,10 +471,10 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-container jh-final-grid">
           <div>
             <div className="jh-section-number">06 / GET INVOLVED</div>
-            <h2>Find your community<br /><em className="jh-title-gradient">at JIIT 128.</em></h2>
+            <h2>Your campus story<br /><em className="jh-title-gradient">starts here.</em></h2>
           </div>
           <div>
-            <p>Ready to build, perform, organize or compete? Explore the hubs and get involved in the campus ecosystem.</p>
+            <p>Your next chapter could start with a team, a stage, a project or a person you haven't met yet. Find your way in.</p>
             <div className="jh-actions">
               <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/clubs')}>
                 Explore Clubs <span>↗</span>
