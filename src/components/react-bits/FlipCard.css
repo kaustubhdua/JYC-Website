@@ -54,8 +54,8 @@
 }
 
 .flip-card:hover .flip-card__face {
-  border-color: var(--color-border-glow, rgba(56, 189, 248, 0.35));
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px var(--color-glow-cyan, rgba(56, 189, 248, 0.15));
+  border-color: var(--color-border-glow, rgba(191, 156, 111, 0.24));
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px var(--color-glow-cyan, rgba(191, 156, 111, 0.08));
 }
 
 .flip-card__front {
@@ -76,7 +76,7 @@
   align-self: flex-start;
   margin-top: auto;
   padding: 8px 16px;
-  border: 1px solid var(--color-border, rgba(56, 189, 248, 0.25));
+  border: 1px solid var(--color-border, rgba(191, 156, 111, 0.16));
   border-radius: 999px;
   background: rgba(191, 156, 111, 0.10);
   color: var(--color-accent-cyan, #A82420);
