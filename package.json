@@ -44,7 +44,8 @@
     "qa:media-layout": "node scripts/qa-media-layout.mjs",
     "qa:coherence": "node scripts/qa-current-release-coherence.mjs",
     "postbuild": "node scripts/optimize-production-media.mjs && node scripts/generate-route-shells.mjs",
-    "qa:homepage-editorial": "node scripts/qa-homepage-editorial-truth.mjs"
+    "qa:homepage-editorial": "node scripts/qa-homepage-editorial-truth.mjs",
+    "qa:dynamic-route-shells": "node scripts/qa-dynamic-route-shells.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
