@@ -1024,3 +1024,10 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 @media(max-width:900px){.public-app .section.page,.public-app .section.unified-public-page{width:min(100% - 40px,1240px)}}
 @media(max-width:620px){.public-app .section.page,.public-app .section.unified-public-page{width:calc(100% - 28px)}}
 @media(prefers-reduced-motion:reduce){.public-app *{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+
+/* Accessible gallery archive information architecture */
+.jyc57-archive-nav{display:flex;flex-wrap:wrap;gap:.55rem;margin:0 0 1.5rem;padding:.8rem 0;border-block:1px solid var(--line,rgba(127,127,127,.24))}
+.jyc57-archive-nav a{display:inline-flex;align-items:center;min-height:40px;padding:.55rem .8rem;border:1px solid var(--line,rgba(127,127,127,.28));border-radius:999px;color:inherit;text-decoration:none;font-size:.72rem;font-weight:750;letter-spacing:.09em;transition:background-color .18s ease,border-color .18s ease}
+.jyc57-archive-nav a:hover,.jyc57-archive-nav a:focus-visible{background:var(--surface-raised,rgba(127,127,127,.12));border-color:var(--tech-gold,#d6a84f);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.jyc57-archive-nav a{transition:none}}
