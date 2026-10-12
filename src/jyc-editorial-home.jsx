@@ -116,28 +116,20 @@ export function JYCEditorialHome({ data }) {
   const featuredRegistration = registrationState(featured);
 
   const photoStories = useMemo(() => {
-    const defaultFlagships = [
-      { id: 'flag-converge', url: '/assets/events/converge-2026.webp', association: 'Converge Fest', year: '2026', caption: 'Converge 2026 · Annual Cultural & Technical Flagship Fest' },
-      { id: 'flag-jai', url: '/assets/events/jai-2026.webp', association: 'JAI Summit', year: '2026', caption: 'JAI · Jaypee Agentic AI International Hackathon' },
-      { id: 'flag-drono', url: '/assets/home/dron-o-war-1.webp', association: 'Dron-O-War', year: '2026', caption: 'Dronotics & CICR · National Combat Robotics Championship' },
-      { id: 'flag-ebullience', url: '/assets/home/ebullience.webp', association: "Ebullience '25", year: '2025', caption: "Ebullience · Fresher's Induction & Stage Arts" },
-      { id: 'flag-sports', url: '/assets/hub-photos/sports-02.webp', association: 'Kshitij Sports', year: '2026', caption: 'JSA · Annual Campus Sports & Football Championship' },
-      { id: 'flag-dance', url: '/assets/hub-photos/vamunique-02.webp', association: 'VamUnique Dance', year: '2026', caption: 'VamUnique · Classical & Contemporary Performing Arts' },
-    ];
     const items = Array.isArray(data?.gallery) ? data.gallery : [];
     const seen = new Set();
     const selected = [];
     for (const item of items) {
       const url = String(item?.url || '').trim();
       const association = String(item?.association || item?.albumName || '').trim();
-      if (!url || !association || item?.published === false || item?.archived === true || seen.has(association.toLowerCase())) continue;
+      const role = String(item?.role || '').toLowerCase();
+      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || seen.has(association.toLowerCase())) continue;
       seen.add(association.toLowerCase());
       selected.push({ ...item, association });
       if (selected.length === 6) break;
     }
-    return selected.length >= 4 ? selected : defaultFlagships;
+    return selected;
   }, [data?.gallery]);
-
 
   const handleSpotlight = e => {
     const rect = e.currentTarget.getBoundingClientRect();
