@@ -37,9 +37,9 @@ if(!nowNormaliseOk)failed++;
 const registrationSubmitOk=authModule.includes('<form className="native-registration" onSubmit={submit}>')&&authModule.includes('<button type="submit" className="btn" disabled={busy}>{busy?\'Submitting…\':\'Submit registration\'}</button>');
 console.log((registrationSubmitOk ? "PASS" : "FAIL")+": native event registration form has a real submit control");
 if(!registrationSubmitOk)failed++;
-const retiredNativeRegistrationOk=!source.includes("registrationMode==='native'?")&&!source.includes("Boolean(e.registrationUrl||e.registrationMode==='native')")&&authModule.includes("event.registrationMode==='native')return");
-console.log((retiredNativeRegistrationOk ? "PASS" : "FAIL")+": public registration UI does not depend on the revoked native registration RPC");
-if(!retiredNativeRegistrationOk)failed++;
+const nativeRegistrationGuardOk=authModule.includes("event.registrationMode!=='native'")&&authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes('native-registration');
+console.log((nativeRegistrationGuardOk ? "PASS" : "FAIL")+": native event registration is explicitly mode-gated and uses the current registration RPC");
+if(!nativeRegistrationGuardOk)failed++;
 
 const nowLazyImportOk=nowModule.includes('lazy(') && /import React,\{[^}]*\blazy\b/.test(nowModule);
 console.log((nowLazyImportOk ? "PASS" : "FAIL")+": JYC Now lazy React dependency is explicitly imported");
