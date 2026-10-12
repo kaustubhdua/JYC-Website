@@ -16,6 +16,8 @@ export default defineConfig({
   // The public site exercises WebGL, image decoding and multiple lazy React surfaces. CI runners are memory-constrained; serializing projects prevents browser-context OOM cascades while retaining every viewport check.
   use: {
     baseURL,
+    // Keep deterministic request interception reliable for image/API failure-path tests.
+    serviceWorkers: 'block',
     // CI keeps screenshots for actionable failures but disables expensive trace/video streams.
     // This prevents large WebGL/media journeys from exhausting the runner's artifact I/O budget.
     trace: process.env.CI ? 'off' : 'retain-on-failure',
