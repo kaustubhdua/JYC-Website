@@ -13,6 +13,7 @@ const stateOf=(e)=>{const start=safeDate(e),end=Date.parse(`${e?.dateEnd||e?.dat
 const publishedEvents=(data)=>Array.isArray(data?.events)?data.events.filter(e=>e?.published&&e?.archived!==true):[];
 const publishedClubs=(data)=>Array.isArray(data?.clubs)?data.clubs.filter(c=>c?.published&&c?.status!=='archived'):[];
 const eventPath=(e)=>`/events/${encodeURIComponent(String(e?.slug||slugify(e?.title)||e?.id||''))}`;
+const albumPath=value=>'/gallery/'+encodeURIComponent(value);
 const slugify=(value)=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const syncFilters=(nav,loc,values)=>{const p=new URLSearchParams(loc.search);Object.entries(values).forEach(([k,v])=>{const value=String(v??'').trim();if(!value||value==='All'||(k==='status'&&value==='upcoming'))p.delete(k);else p.set(k,value)});const search=p.toString();nav({pathname:loc.pathname,search:search?'?'+search:''},{replace:true});};
 
@@ -221,8 +222,13 @@ export function JYC57Gallery({data}){
   const params=useMemo(()=>new URLSearchParams(loc.search),[loc.search]);
   const [query,setQuery]=useState(params.get('q')||'');
   const [eventCategory,setEventCategory]=useState('All');
+  const [mediaFilter,setMediaFilter]=useState('all');
   const [year,setYear]=useState(params.get('year')||'All');
   const [selected,setSelected]=useState(null);
+  const [album,setAlbum]=useState(null);
+  const [albumItems,setAlbumItems]=useState([]);
+  const touchStart=useRef(null);
+  const albumSlug=loc.pathname.startsWith('/gallery/')?decodeURIComponent(loc.pathname.split('/')[2]||''):'';
   const [zoom,setZoom]=useState(1);
   const [copied,setCopied]=useState(false);
   const [visibleCount,setVisibleCount]=useState(36);
@@ -310,8 +316,22 @@ export function JYC57Gallery({data}){
   const ARCHIVE_IA = ['COLLECTIONS', 'MOMENTS', 'YEARS', 'COMMUNITIES'];
 
   const rawGallery = Array.isArray(data?.gallery) ? data.gallery : [];
+  useEffect(()=>{
+    let active=true;
+    if(!albumSlug){setAlbum(null);setAlbumItems([]);return()=>{active=false};}
+    (async()=>{try{
+      const {data:publishedAlbum,error}=await supabase.from('jyc_media_albums').select('id,slug,name,description,cover_url,is_published').eq('slug',albumSlug).eq('is_published',true).maybeSingle();
+      if(error)throw error;if(!active)return;setAlbum(publishedAlbum||null);
+      if(!publishedAlbum){setAlbumItems([]);return;}
+      const {data:photos,error:photoError}=await supabase.from('jyc_gallery_items').select('id,public_url,caption,alt,year,album_id,status,rights_status').eq('album_id',publishedAlbum.id).eq('status','approved').eq('rights_status','cleared');
+      if(photoError)throw photoError;if(active)setAlbumItems((photos||[]).map(photo=>({...photo,url:photo.public_url,mediaKind:'photo'})).filter(photo=>photo.url));
+    }catch{if(active){setAlbum(null);setAlbumItems([])}}})();
+    return()=>{active=false};
+  },[albumSlug]);
   const items = useMemo(() => {
-    return rawGallery.filter(g => g && g.url).map(g => ({
+    const gallerySource=albumSlug?(album?albumItems:[]):[...rawGallery,...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS];
+    const unique=[...new Map(gallerySource.filter(g=>g&&g.url&&(g.mediaKind==='photo'||!g.mediaKind)).map(g=>[String(g.url),g])).values()];
+    return unique.map(g => ({
       ...g,
       category: /induction/i.test(g.caption||g.association||'') ? 'Induction'
         : /converge|fest|ebullience|ethnic/i.test(g.caption||g.association||'') ? 'Festivals'
@@ -320,7 +340,7 @@ export function JYC57Gallery({data}){
         : /sport|cricket|football/i.test(g.caption||g.association||'') ? 'Sports'
         : 'Festivals'
     }));
-  }, [rawGallery]);
+  }, [rawGallery,albumItems,albumSlug,album]);
   const COMMUNITIES = [...new Set(items.map(item => String(item.association || 'JYC ARCHIVE')).filter(Boolean))].sort();
 
   const filtered = useMemo(() => {
@@ -329,21 +349,22 @@ export function JYC57Gallery({data}){
       const matchesQuery = !query || hay.includes(query.toLowerCase());
       const matchesCategory = eventCategory === 'All' || g.category === eventCategory || hay.includes(eventCategory.toLowerCase());
       const matchesYear = year === 'All' || String(g.year||g.date||'').startsWith(year);
-      return matchesQuery && matchesCategory && matchesYear;
+      const hayMedia=`${g.role||''} ${g.association||''} ${g.mediaKind||'photo'}`.toLowerCase();
+      const matchesMedia=mediaFilter==='all'||(mediaFilter==='club'?/club|community|hub|society/i.test(hayMedia):mediaFilter==='event'?/event|fest|competition|sports/i.test(hayMedia):true);
+      return matchesQuery && matchesCategory && matchesYear && matchesMedia;
     });
-  }, [items, query, eventCategory, year]);
+  }, [items, query, eventCategory, year, mediaFilter]);
 
   const selectedIndex = selected === null ? -1 : filtered.findIndex(g => g.url === selected.url);
-
-  const move = (dir) => {
-    if (!filtered.length) return;
-    const nextIdx = (selectedIndex + dir + filtered.length) % filtered.length;
-    setSelected(filtered[nextIdx]);
-  };
+  const openPhoto=photo=>{if(!photo)return;setSelected(photo);const next=new URLSearchParams(loc.search);next.set('photo',String(photo.id||photo.url));nav({pathname:loc.pathname,search:'?'+next.toString()},{replace:true});};
+  const closePhoto=()=>{setSelected(null);const next=new URLSearchParams(loc.search);next.delete('photo');nav({pathname:loc.pathname,search:next.toString()?'?'+next.toString():''},{replace:true});};
+  const setFilter=filter=>{setMediaFilter(filter);setVisibleCount(36);};
+  useEffect(()=>{const photoKey=params.get('photo');if(!photoKey)return;const match=items.find(photo=>String(photo.id||photo.url)===photoKey||photo.url===photoKey);if(match)setSelected(match);},[params,items]);
+  const move = dir => {if(!filtered.length)return;const nextIdx=(selectedIndex+dir+filtered.length)%filtered.length;openPhoto(filtered[nextIdx]);};
 
   const sharePhoto = async () => {
     if (!selected) return;
-    const url = window.location.origin + '/gallery?photo=' + encodeURIComponent(selected.id || selected.url);
+    const url = window.location.origin + loc.pathname + (loc.search ? loc.search.replace(/([?&])photo=[^&]*/,'$1photo='+encodeURIComponent(selected.id||selected.url)) : '?photo='+encodeURIComponent(selected.id||selected.url));
     try {
       if (navigator.share) await navigator.share({ title: selected.caption || 'JYC Moment', url });
       else {
@@ -356,19 +377,20 @@ export function JYC57Gallery({data}){
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setSelected(null);
+      if (e.key === 'Escape') closePhoto();
       if (e.key === 'ArrowRight') move(1);
       if (e.key === 'ArrowLeft') move(-1);
     };
     if (selected) window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selected, selectedIndex, filtered]);
+  }, [selected, selectedIndex, filtered, loc.pathname, loc.search]);
 
   return <section className="section page unified-public-page jyc-gallery-hub-container">
     <header className="jyc-gallery-hero">
       <span className="jh-kicker">JYC 128 <b>VISUAL VAULT</b></span>
-      <h1>Captured Memories.</h1>
-      <p>Explore official campus photography organized by flagship events, competitions, festivals and milestones across Sector 128.</p>
+      <h1>{album?album.name:'Captured Memories.'}</h1>
+      <p>{album?(album.description||'A published JYC photo album, cleared for public viewing.'):albumSlug?'This album is not published or is unavailable.':'Explore official campus photography organized by flagship events, competitions, festivals and milestones across Sector 128.'}</p>
+      {albumSlug&&<a className="jh-btn" href="/gallery">All gallery memories</a>}
     </header>
 
     <nav className="jyc57-archive-nav" aria-label="Gallery archive navigation">
@@ -419,6 +441,7 @@ export function JYC57Gallery({data}){
       </div>
     </div>
 
+    <div className="jyc57-media-filter" role="group" aria-label="Filter gallery by media type">{[['all','All photos'],['club','Clubs & communities'],['event','Events']].map(([value,label])=><button key={value} type="button" className={`jyc-filter-pill ${mediaFilter===value?'is-active':''}`} aria-pressed={mediaFilter===value} onClick={()=>setFilter(value)}>{label}</button>)}</div>
     {/* Category & Year Pills */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 28 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -461,7 +484,7 @@ export function JYC57Gallery({data}){
     </div>
 
     {/* Photo Grid */}
-    {filtered.length ? (
+    {albumSlug&&!album ? <Empty eyebrow="GALLERY ALBUM" title="This album is not available." text="Only published albums with cleared photographs are available to the public."/> : filtered.length ? (
       <>
         <div id="jyc-gallery-communities" className="jyc57-masonry" aria-label={`Communities: ${COMMUNITIES.length} photo collections`}>
           {filtered.slice(0, visibleCount).map((g, i) => (
@@ -469,7 +492,7 @@ export function JYC57Gallery({data}){
               type="button" 
               key={g.id || g.url || i} 
               className={`jyc57-photo photo-${i % 6}`} 
-              onClick={() => setSelected(g)} 
+              onClick={() => openPhoto(g)} 
               aria-label={'Open ' + (g.caption || 'JYC photograph')}
             >
               <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
@@ -496,8 +519,8 @@ export function JYC57Gallery({data}){
 
     {/* Full-Screen Lightbox Modal */}
     {selected && (
-      <div className="jyc57-lightbox" role="dialog" aria-modal="true" aria-label={selected.caption || 'JYC photograph'} onClick={() => setSelected(null)}>
-        <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()}>
+      <div className="jyc57-lightbox" role="dialog" aria-modal="true" aria-label={selected.caption || 'JYC photograph'} onClick={closePhoto}>
+        <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()} onTouchStart={e=>{touchStart.current=e.touches?.[0]?.clientX??null;}} onTouchEnd={e=>{const start=touchStart.current,end=e.changedTouches?.[0]?.clientX;touchStart.current=null;if(start==null||typeof end!=='number')return;const delta=end-start;if(Math.abs(delta)>48)move(delta<0?1:-1);}}>
           <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
           <div className="jyc57-lightbox-media">
