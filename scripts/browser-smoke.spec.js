@@ -121,6 +121,7 @@ test('reduced-motion mode disables homepage motion', async ({ page }) => {
 
 
 test('brand text contrast stays readable in both light and dark themes', async ({ page }) => {
+  test.skip(page.viewportSize()?.width !== 1440, 'Run theme contrast once at the intended desktop viewport.');
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'brand contrast');
@@ -168,6 +169,7 @@ test('brand text contrast stays readable in both light and dark themes', async (
 });
 
 test('mobile visual guardrails keep core content centered and inside viewport', async ({ page }) => {
+  test.skip(page.viewportSize()?.width !== 1280, 'Run the exhaustive nine-breakpoint/four-route matrix once, not once per browser project.');
   test.setTimeout(120000);
   for (const width of [320, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 844 });
