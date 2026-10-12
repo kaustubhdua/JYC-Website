@@ -225,6 +225,8 @@ export function JYC57Gallery({data}){
   const [selected,setSelected]=useState(null);
   const [zoom,setZoom]=useState(1);
   const touchStartX=useRef(0);
+  const previousFocusRef=useRef(null);
+  const lightboxRef=useRef(null);
   const [remoteAlbums,setRemoteAlbums]=useState([]);
   const [copied,setCopied]=useState(false);
   const [visibleCount,setVisibleCount]=useState(36);
@@ -285,6 +287,27 @@ export function JYC57Gallery({data}){
 
   useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug]);
   useEffect(() => { setZoom(1); }, [selected?.url]);
+  useEffect(() => {
+    if (!selected) return;
+    const dialog = lightboxRef.current;
+    const getFocusable = () => [...(dialog?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])];
+    getFocusable()[0]?.focus();
+    const onTab = event => {
+      if (event.key !== 'Tab') return;
+      const nodes = getFocusable();
+      if (!nodes.length) { event.preventDefault(); return; }
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    dialog?.addEventListener('keydown', onTab);
+    return () => {
+      dialog?.removeEventListener('keydown', onTab);
+      previousFocusRef.current?.focus?.();
+      previousFocusRef.current = null;
+    };
+  }, [Boolean(selected)]);
 
   const filtered = useMemo(() => {
     return items.filter(g => {
@@ -333,6 +356,7 @@ export function JYC57Gallery({data}){
       <span className="jh-kicker">JYC 128 <b>VISUAL VAULT</b></span>
       <h1>{currentAlbum?.name || 'Captured Memories.'}</h1>
       <p>{currentAlbum?.description || 'Explore source-backed campus photography organized by published albums, events, communities and years across Sector 128.'}</p>
+      <span className="jyc57-gallery-meta" aria-live="polite">{filtered.length} photographs {albumSlug ? 'in this collection' : 'in the archive'}</span>
     </header>
 
     {/* Published albums and source-backed collections; counts come from actual photo records. */}
@@ -421,8 +445,8 @@ export function JYC57Gallery({data}){
             <button 
               type="button" 
               key={g.id || g.url || i} 
-              className={`jyc57-photo photo-${i % 6}`} 
-              onClick={() => { setZoom(1); setSelected(g); }} 
+              className={`jyc57-photo photo-${i % 6}`} data-photo-id={String(g.id || g.url)}
+              onClick={() => { previousFocusRef.current = document.activeElement; setZoom(1); setSelected(g); }} 
               aria-label={'Open ' + (g.caption || 'JYC photograph')}
             >
               <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
@@ -449,7 +473,7 @@ export function JYC57Gallery({data}){
 
     {/* Full-Screen Lightbox Modal */}
     {selected && (
-      <div className="jyc57-lightbox" role="dialog" aria-modal="true" aria-label={selected.caption || 'JYC photograph'} onClick={() => setSelected(null)}>
+      <div ref={lightboxRef} className="jyc57-lightbox" role="dialog" aria-modal="true" data-photo-id={String(selected.id || selected.url)} aria-label={selected.caption || 'JYC photograph'} onClick={() => setSelected(null)}>
         <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()}>
           <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
