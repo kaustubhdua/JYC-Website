@@ -20,7 +20,10 @@ add('Viewport meta tag configured with width=device-width', hasViewport);
 const redesignCss = read('src/styles/jyc-pro-redesign.css');
 const editorialCss = read('src/jyc-editorial-home.css');
 const publicCss = read('src/styles/public-system.css');
-const allCss = redesignCss + editorialCss + publicCss;
+const designCss = read('src/jyc-design-upgrades.css');
+const flipCss = read('src/components/react-bits/FlipCard.css');
+const themeCss = read('src/jyc-logo-final-theme.css');
+const allCss = redesignCss + editorialCss + publicCss + designCss + flipCss + themeCss;
 
 const hasMobileBreakpoint = /@media[^{]*max-width:\s*(?:600px|680px|768px)/.test(allCss);
 add('Mobile breakpoint rules present (<600px - 768px)', hasMobileBreakpoint);
@@ -41,16 +44,18 @@ add('Fluid typography with clamp() used for responsive headline scaling', hasFlu
 const hasTouchTargetHandling = allCss.includes('min-height:') || allCss.includes('padding:');
 add('Interactive elements use touch-friendly spacing and padding', hasTouchTargetHandling);
 
-// 6. JYC Logo Complementary Color Tokens
-const hasObsidianBackground = allCss.includes('#050a14') || redesignCss.includes('--tech-bg');
-const hasRoyalGold = allCss.includes('#fbbf24') || redesignCss.includes('--tech-gold');
-const hasElectricCyan = allCss.includes('#38bdf8') || redesignCss.includes('--tech-cyan');
-const hasFlameCrimson = allCss.includes('#ef4444') || redesignCss.includes('--tech-crimson');
+// 6. Approved JYC editorial palette and dark-mode tokens.
+const hasPaperCanvas = editorialCss.includes('--jh-bg: #F5F1E6') && redesignCss.includes('--tech-bg: #F5F1E6');
+const hasWarmGold = editorialCss.includes('--jh-line-accent: rgba(191, 156, 111, 0.42)') && redesignCss.includes('--tech-gold: #BF9C6F');
+const hasJycRed = editorialCss.includes('--jh-accent: #A82420') && redesignCss.includes('--tech-crimson: #A82420') && designCss.includes('--jyc-design-accent:#A82420');
+const hasDarkTokens = editorialCss.includes('--jh-bg: #0F0E11') && redesignCss.includes('--tech-bg: #0F0E11') && themeCss.includes('--jyc-bg:#0F0E11');
+const hasNoNeonAccents = !/#38bdf8|#00e5ff|#0284c7|#6366f1|#a855f7|#10b981|#00f0ff|#06b6d4/i.test(editorialCss + designCss + flipCss);
 
-add('JYC Logo Theme: Obsidian Space canvas defined', hasObsidianBackground);
-add('JYC Logo Theme: Royal Gold / Champagne accent defined', hasRoyalGold);
-add('JYC Logo Theme: Electric Cyan Cyber accent defined', hasElectricCyan);
-add('JYC Logo Theme: Flame Crimson Alert accent defined', hasFlameCrimson);
+add('JYC editorial theme: warm paper and ink light canvas', hasPaperCanvas);
+add('JYC editorial theme: warm gold secondary accent', hasWarmGold);
+add('JYC editorial theme: red primary accent', hasJycRed);
+add('JYC editorial theme: explicit dark palette', hasDarkTokens);
+add('JYC active visual layers avoid neon cyan, blue, purple and green accents', hasNoNeonAccents);
 
 // 7. Route Accessibility Verification
 const mainJsx = read('src/main.jsx');
