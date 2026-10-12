@@ -1,9 +1,10 @@
-import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
 import { sourceEventMedia } from './jyc-source-media.js';
 import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
+import { JYCNowStrip } from './jyc-now.jsx';
 const LazyDitherVeil = lazy(() => import('./react-bits/DitherVeil.jsx'));
 import './jyc-editorial-home.css';
 
@@ -137,30 +138,6 @@ export function JYCEditorialHome({ data }) {
     return selected.length >= 4 ? selected : defaultFlagships;
   }, [data?.gallery]);
 
-  const [countdown, setCountdown] = useState(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const diff = Math.max(0, target - Date.now());
-    return {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-      mins: Math.floor((diff / 1000 / 60) % 60),
-      secs: Math.floor((diff / 1000) % 60),
-    };
-  });
-
-  useEffect(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const timer = setInterval(() => {
-      const diff = Math.max(0, target - Date.now());
-      setCountdown({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        mins: Math.floor((diff / 1000 / 60) % 60),
-        secs: Math.floor((diff / 1000) % 60),
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const handleSpotlight = e => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -222,60 +199,7 @@ export function JYCEditorialHome({ data }) {
             </button>
           </div>
 
-          {/* LIVE STATS STRIP */}
-          <div className="jh-hero-stats-row">
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>23<i>+</i></strong>
-              <span>Hubs & Societies</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>50<i>+</i></strong>
-              <span>Annual Events</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>5,000<i>+</i></strong>
-              <span>Students Reached</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>15<i>+</i></strong>
-              <span>Years Legacy</span>
-            </div>
-          </div>
 
-          {/* FLAGSHIP COUNTDOWN HUD */}
-          <div className="jh-flagship-countdown-strip" onMouseMove={handleSpotlight}>
-            <div className="jh-countdown-label">
-              <span className="jh-live-pulse-dot" />
-              <div>
-                <small>CAMPUS FLAGSHIP COUNTDOWN</small>
-                <strong>CONVERGE '26 &amp; DRON-O-WAR</strong>
-              </div>
-            </div>
-            <div className="jh-countdown-timer">
-              <div className="jh-timer-segment">
-                <b>{String(countdown.days).padStart(2, '0')}</b>
-                <span>DAYS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.hours).padStart(2, '0')}</b>
-                <span>HOURS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.mins).padStart(2, '0')}</b>
-                <span>MINS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.secs).padStart(2, '0')}</b>
-                <span>SECS</span>
-              </div>
-            </div>
-            <button type="button" className="jh-countdown-cta" onClick={() => nav('/events')}>
-              Lineup ↗
-            </button>
-          </div>
         </div>
 
         {/* HERO DITHERVEIL VISUAL PLAQUE */}
@@ -295,14 +219,14 @@ export function JYCEditorialHome({ data }) {
                   pixelSize={2}
                   levels={3}
                   palette="duotone"
-                  inkColor="#050a14"
-                  paperColor="#f8fafc"
+                  inkColor="#18161d"
+                  paperColor="#fffdf8"
                   contrast={1.25}
                   brightness={0.04}
                   revealRadius={250}
                   softness={0.7}
                   linger={1.2}
-                  rimColor="#38bdf8"
+                  rimColor="#a82420"
                   rim={0.28}
                   wander={false}
                   clickBurst={true}
@@ -368,6 +292,21 @@ export function JYCEditorialHome({ data }) {
               <button type="button" onClick={() => { const btn = document.querySelector('.jyc-bot-orb'); if (btn) btn.click(); }}>
                 🎯 Which society matches my domain?
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* V1 EDITORIAL INTRO: context before the discovery content. */}
+      <section className="jh-about-editorial jh-container" aria-labelledby="jh-about-title">
+        <div className="jh-about-kicker">01 / MORE THAN A CLUB DIRECTORY</div>
+        <div className="jh-about-editorial-grid">
+          <h2 id="jh-about-title">A campus is made<br /><em>by the people in it.</em></h2>
+          <div className="jh-about-editorial-copy">
+            <p>JIIT Youth Club brings student communities together across technology, culture, performance, service and sport. Find the people, projects and experiences that make campus life feel like yours.</p>
+            <div className="jh-about-editorial-actions">
+              <button type="button" className="jh-text-link" onClick={() => nav('/about')}>How JYC works <span>↗</span></button>
+              <button type="button" className="jh-text-link" onClick={() => nav('/clubs')}>Explore communities <span>↗</span></button>
             </div>
           </div>
         </div>
@@ -471,6 +410,9 @@ export function JYCEditorialHome({ data }) {
           </div>
         )}
       </section>
+
+      {/* Editorial update feed: source-linked updates instead of invented activity counters. */}
+      <JYCNowStrip limit={3} compact={false} />
 
       {/* LIVING JYC SPOTLIGHT */}
       <JYCSpotlight data={data} />
