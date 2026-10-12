@@ -3178,6 +3178,12 @@ body::before {
   display: none;
 }
 
+/* Keep each category pill at its intrinsic width; never compress labels vertically on phones. */
+.jyc-quick-family-pills{min-width:0;max-width:100%;overscroll-behavior-x:contain}
+.jyc-quick-family-pills .jyc-quick-pill{flex:0 0 auto;min-width:max-content;min-height:44px;white-space:nowrap}
+.jyc-quick-family-pills .jyc-quick-pill>span,.jyc-quick-family-pills .jyc-quick-pill>small{flex:0 0 auto;white-space:nowrap;word-break:keep-all;overflow-wrap:normal}
+
+
 .jyc-quick-pill {
   display: inline-flex;
   align-items: center;
