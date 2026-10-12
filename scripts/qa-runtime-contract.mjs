@@ -34,10 +34,10 @@ if(!nowLogoOk)failed++;
 const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes('safeExternalUrl(x.image||x.thumbnail||\'\')')&&nowModule.includes('.filter(x=>x.url)');
 console.log((nowNormaliseOk ? "PASS" : "FAIL")+": JYC Now drops connector items whose URLs fail external URL validation");
 if(!nowNormaliseOk)failed++;
-const registrationSubmitOk=authModule.includes('<form className="native-registration" onSubmit={submit}>')&&authModule.includes('<button type="submit" className="btn" disabled={busy}>{busy?\'Submitting…\':\'Submit registration\'}</button>');
-console.log((registrationSubmitOk ? "PASS" : "FAIL")+": native event registration form has a real submit control");
-if(!registrationSubmitOk)failed++;
-const retiredNativeRegistrationOk=!source.includes("registrationMode==='native'?")&&!source.includes("Boolean(e.registrationUrl||e.registrationMode==='native')")&&authModule.includes("event.registrationMode==='native')return");
+const externalRegistrationOk=authModule.includes('Open official registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&!authModule.includes('className="native-registration"')&&!authModule.includes("supabase.rpc('jyc_register_for_event'");
+console.log((externalRegistrationOk ? "PASS" : "FAIL")+": public event registration uses verified external links only");
+if(!externalRegistrationOk)failed++;
+const retiredNativeRegistrationOk=!source.includes("registrationMode==='native'?")&&!source.includes("Boolean(e.registrationUrl||e.registrationMode==='native')")&&!authModule.includes("supabase.rpc('jyc_register_for_event'")&&!authModule.includes('className="native-registration"');
 console.log((retiredNativeRegistrationOk ? "PASS" : "FAIL")+": public registration UI does not depend on the revoked native registration RPC");
 if(!retiredNativeRegistrationOk)failed++;
 
