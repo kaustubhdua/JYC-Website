@@ -38,7 +38,7 @@ const checks=[
  ['public gallery supports shareable photo URLs',read('src/jyc57-experience.jsx').includes("/gallery?photo=")&&read('src/jyc57-experience.jsx').includes('params.get(\'photo\')')],
  ['public gallery has published album routes',main.includes("clean.startsWith('/gallery/')")&&read('src/jyc57-experience.jsx').includes("/gallery/'+encodeURIComponent(value)")&&read('src/jyc57-experience.jsx').includes("jyc_media_albums")],
  ['public gallery supports mobile swipe and zoom',read('src/jyc57-experience.jsx').includes('onTouchStart')&&read('src/jyc57-experience.jsx').includes('setZoom')],
- ['public gallery uses metadata filters and progressive rendering',read('src/jyc57-experience.jsx').includes('visibleCount')&&read('src/jyc57-experience.jsx').includes("setFilter('club'")],
+ ['public gallery uses metadata filters and progressive rendering',read('src/jyc57-experience.jsx').includes('visibleCount')&&read('src/jyc57-experience.jsx').includes('setVisibleCount(n => n + 36)')&&read('src/jyc57-experience.jsx').includes('g.association')&&read('src/jyc57-experience.jsx').includes('g.year')&&read('src/jyc57-experience.jsx').includes('eventCategory')],
 ];
 let failed=0; for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failed++}
 if(failed)process.exit(1);
