@@ -453,12 +453,12 @@ export function JYC57Gallery({data}){
             {y}
           </button>
         ))}
-        {(eventCategory !== 'All' || year !== 'All' || query) && (
+        {(eventCategory !== 'All' || year !== 'All' || query || mediaFilter !== 'all') && (
           <button 
             type="button" 
             className="jyc-clear-filters-btn" 
             style={{ marginLeft: 'auto' }} 
-            onClick={() => { setEventCategory('All'); setYear('All'); setQuery(''); }}
+            onClick={() => { setEventCategory('All'); setYear('All'); setQuery(''); setMediaFilter('all'); }}
           >
             Reset Filters ↺
           </button>
