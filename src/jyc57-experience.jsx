@@ -283,10 +283,26 @@ export function JYC57Gallery({data}){
 
   useEffect(() => {
     const requestedPhoto = params.get('photo');
-    if (!requestedPhoto) return;
+    if (!requestedPhoto) { setSelected(null); return; }
     const match = items.find(g => String(g.id || g.url) === requestedPhoto || g.url === requestedPhoto);
     if (match) setSelected(match);
   }, [params, items]);
+
+  const openPhoto = photo => {
+    if (!photo) return;
+    previousFocusRef.current = document.activeElement;
+    setZoom(1);
+    setSelected(photo);
+    const next = new URLSearchParams(loc.search);
+    next.set('photo', String(photo.id || photo.url));
+    nav({ pathname: loc.pathname, search: `?${next.toString()}` }, { replace: true });
+  };
+  const closePhoto = () => {
+    setSelected(null);
+    const next = new URLSearchParams(loc.search);
+    next.delete('photo');
+    nav({ pathname: loc.pathname, search: next.toString() ? `?${next.toString()}` : '' }, { replace: true });
+  };
 
   useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug, mediaFilter]);
   useEffect(() => { setZoom(1); }, [selected?.url]);
@@ -337,7 +353,7 @@ export function JYC57Gallery({data}){
 
   const sharePhoto = async () => {
     if (!selected) return;
-    const url = window.location.origin + '/gallery?photo=' + encodeURIComponent(selected.id || selected.url);
+    const url = window.location.origin + loc.pathname + (loc.search ? loc.search.replace(/([?&])photo=[^&]*/, '$1photo=' + encodeURIComponent(selected.id || selected.url)) : '?photo=' + encodeURIComponent(selected.id || selected.url));
     try {
       if (navigator.share) await navigator.share({ title: selected.caption || 'JYC Moment', url });
       else {
@@ -350,13 +366,13 @@ export function JYC57Gallery({data}){
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setSelected(null);
+      if (e.key === 'Escape') closePhoto();
       if (e.key === 'ArrowRight') move(1);
       if (e.key === 'ArrowLeft') move(-1);
     };
     if (selected) window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selected, selectedIndex, filtered]);
+  }, [selected, selectedIndex, filtered, loc.pathname, loc.search]);
 
   return <section className="section page unified-public-page jyc-gallery-hub-container">
     <header className="jyc-gallery-hero">
@@ -459,7 +475,7 @@ export function JYC57Gallery({data}){
               type="button" 
               key={g.id || g.url || i} 
               className={`jyc57-photo photo-${i % 6}`} data-photo-id={String(g.id || g.url)}
-              onClick={() => { previousFocusRef.current = document.activeElement; setZoom(1); setSelected(g); }} 
+              onClick={() => openPhoto(g)} 
               aria-label={'Open ' + (g.caption || 'JYC photograph')}
             >
               <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
