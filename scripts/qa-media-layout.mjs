@@ -8,10 +8,10 @@ const system=read('src/styles/public-system.css');
 const checks=[
  ['homepage has no retired photo chapter system',!home.includes('<PhotoChapters/>')],
  ['homepage has no retired drift photo wall',!home.includes('LazyDriftWall')&&!home.includes('<LazyDriftWall')],
- ['homepage activity cards are text-led',home.includes('LazyActivityBento activities={activities} nav={nav}')&&!home.includes('image:gallery[')&&!home.includes("count: '10 Hubs'")&&!home.includes("count: '5 Societies'")],
+ ['homepage activity cards use curated source photos and responsive delivery',home.includes('LazyActivityBento activities={activities} nav={nav}')&&home.includes('sourceHubMedia(photoHubs[p.id])')&&home.includes('source.photoItems.find(item => item?.url)')&&homeCss.includes('.jyc-editorial-home .magic-bento-card__media { display: block; }')&&read('src/components/react-bits/MagicBento.jsx').includes('ResponsivePhoto')&&!home.includes("count: '10 Hubs'")&&!home.includes("count: '5 Societies'")],
  ['homepage has a single featured-event photo focal point',home.includes('className="jh-featured-event-photo"')&&home.includes('eventImage(featured)')&&home.includes('fallbackSrc={FALLBACK}')],
  ['homepage activity cards do not duplicate gallery imagery',!home.includes('image:gallery[')],
- ['homepage activity Bento has a stable non-media frame',homeCss.includes('.jh-activity-bento-shell')&&homeCss.includes('.magic-bento__grid')&&homeCss.includes('.magic-bento-card {')],
+ ['homepage activity Bento keeps stable image frames and responsive sizing',homeCss.includes('.jh-activity-bento-shell')&&homeCss.includes('.magic-bento__grid')&&homeCss.includes('.magic-bento-card {')&&homeCss.includes('.magic-bento-card__media picture { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }')],
  ['gallery archive uses deterministic grid geometry',system.includes('.public-app .gallery-grid{')&&system.includes('display:grid!important')&&system.includes('column-count:unset!important')],
  ['gallery archive images have stable 4:3 frames',system.includes('.public-app .gallery-grid .gallery-item img')&&system.includes('aspect-ratio:4/3!important')],
  ['gallery archive is responsive',system.includes('@media(max-width:620px)')&&system.includes('.public-app .gallery-grid')],
