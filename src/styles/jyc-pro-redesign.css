@@ -1029,6 +1029,11 @@ body::before {
 }
 
 .jyc-memory-card {
+  appearance: none;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  font: inherit;
   position: relative;
   display: flex;
   flex-direction: column;
