@@ -1012,32 +1012,18 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 
 
 /* V67 — public visual hierarchy guardrails.
-   Preserve the existing component art direction; constrain overflow without flattening
-   intentional card depth or disabling motion for users who have not requested it. */
+   Prevent layout overflow without flattening authored component surfaces. Legacy public
+   cards remain intentionally still; the editorial Bento owns the site's magnetic motion. */
 .public-app{overflow-x:clip}
 .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.join-grid>div,.jyc-now-card,.jyc-spotlight-grid button){min-width:0}
 .public-app :where(h1,h2,h3,h4,p,span,a,button){overflow-wrap:anywhere}
 .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.join-grid>div){border-radius:12px}
+.public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.featured:hover){transform:none!important}
 .public-app .section-head{max-width:760px}
 .public-app .section-head p{max-width:680px}
-@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-  .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.featured,.jyc-now-card,.jyc-spotlight-grid button){
-    transition:transform .22s ease,box-shadow .22s ease;
-  }
-  .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){
-    transform:translateY(-3px);
-    box-shadow:0 14px 32px rgba(26,25,29,.10);
-  }
-  html[data-theme="dark"] .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){
-    box-shadow:0 16px 36px rgba(0,0,0,.28);
-  }
-}
 @media(max-width:900px){.public-app .section.page,.public-app .section.unified-public-page{width:min(100% - 40px,1240px)}}
 @media(max-width:620px){.public-app .section.page,.public-app .section.unified-public-page{width:calc(100% - 28px)}}
-@media(prefers-reduced-motion:reduce){
-  .public-app *, .public-app *::before, .public-app *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){transform:none!important;box-shadow:none!important}
-}
+@media(prefers-reduced-motion:reduce){.public-app *,.public-app *::before,.public-app *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 
 /* Accessible gallery archive information architecture */
