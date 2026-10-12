@@ -362,6 +362,7 @@ export function JYCEditorialHome({ data }) {
                 decoding="async"
                 sizes="(max-width: 680px) 100vw, 50vw"
                 fallbackSrc={FALLBACK}
+                fallbackAlt="Official JYC logo placeholder; event media unavailable"
               />
               <span className="jh-featured-badge">FEATURED EXPERIENCE</span>
             </div>
