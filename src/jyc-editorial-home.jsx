@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
 import { sourceEventMedia } from './jyc-source-media.js';
@@ -6,6 +6,7 @@ import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
 import { JYCNowStrip } from './jyc-now.jsx';
 const LazyDitherVeil = lazy(() => import('./react-bits/DitherVeil.jsx'));
+const LazyMagicBento = lazy(() => import('./components/react-bits/MagicBento.jsx'));
 import './jyc-editorial-home.css';
 
 const FALLBACK = import.meta.env.PROD ? '/assets/jyc-logo.webp' : '/JYC%20Logo(4).png';
@@ -56,8 +57,7 @@ const PILLARS = [
     title: 'Technical & Innovation',
     tag: 'AI · ROBOTICS · CP · WEB · CYBERSEC',
     desc: 'Hackathons, open-source dev-sprints, AI research, and combat robotics across OSDC, Knuth, CICR, GDG & uCR.',
-    icon: '⚡',
-    count: '10 Hubs'
+    icon: '⚡'
   },
   {
     id: 'cultural',
@@ -65,8 +65,7 @@ const PILLARS = [
     title: 'Cultural & Performing Arts',
     tag: 'DRAMATICS · DANCE · BANDS · CLASSICAL',
     desc: 'Street play, stage dramatics, western & classical dance, and live acoustics with Abhivyakti, Jhankaar, Fortissmo & Crescendo.',
-    icon: '🎭',
-    count: '5 Societies'
+    icon: '🎭'
   },
   {
     id: 'literary',
@@ -74,17 +73,15 @@ const PILLARS = [
     title: 'Literary, MUN & Speaking',
     tag: 'DEBATES · QUIZZING · MUN · WRITING',
     desc: 'Parliamentary debates, National Model United Nations, literary journals, and inter-college quiz championships.',
-    icon: '🖋️',
-    count: '3 Societies'
+    icon: '🖋️'
   },
   {
     id: 'fests',
     family: 'Flagship',
     title: 'Flagship Campus Fests',
     tag: 'CONVERGE · DRON-O-WAR · INDUCTION',
-    desc: 'Annual multi-day festivals uniting thousands of students across North India for competition and celebrated headliners.',
-    icon: '🎪',
-    count: '7 Flagships'
+    desc: 'Campus festivals, showcases, competitions and student-led experiences throughout the academic year.',
+    icon: '🎪'
   },
   {
     id: 'sports',
@@ -92,8 +89,7 @@ const PILLARS = [
     title: 'Sports & Athletics',
     tag: 'CRICKET · FOOTBALL · BASKETBALL · CHESS',
     desc: 'High-intensity athletic tournaments, intra-college leagues, table tennis, badminton, and outdoor sports championships.',
-    icon: '🏆',
-    count: '5 Arenas'
+    icon: '🏆'
   },
   {
     id: 'creative',
@@ -101,13 +97,45 @@ const PILLARS = [
     title: 'Media, Design & Outreach',
     tag: 'UI/UX · GRAPHICS · PHOTO · SOCIAL',
     desc: 'Visual arts, graphic design, photography, campus coverage, community service, and youth social outreach.',
-    icon: '🎨',
-    count: '4 Hubs'
+    icon: '🎨'
   }
 ];
 
+function LazyActivityBento({ activities, nav }) {
+  const rootRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setReady(true);
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin:'360px 0px' });
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={rootRef} className="jh-activity-bento-shell" aria-label="Explore JYC activities">
+    {ready
+      ? <Suspense fallback={<div className="jh-bento-loading" role="status">Loading activity discovery…</div>}>
+          <LazyMagicBento items={activities} enableMagnetism={true} enableTilt={true} enableStars={false} enableSpotlight={true} enableBorderGlow={false} particleCount={0} onNavigate={nav} glowColor="191,156,111" />
+        </Suspense>
+      : <div className="jh-bento-loading" aria-hidden="true">
+          {activities.map(activity => <div key={activity.id} className="jh-bento-loading-card"><span>{activity.label}</span><strong>{activity.title}</strong><p>{activity.description}</p></div>)}
+        </div>}
+  </div>;
+}
+
 export function JYCEditorialHome({ data }) {
   const nav = useNavigate();
+  const activities = useMemo(() => PILLARS.map(p => ({ id:p.id, label:p.family.toUpperCase(), title:p.title, description:p.desc, href:p.id === 'fests' ? '/events' : '/clubs' })), []);
   const events = useMemo(() => Array.isArray(data?.events) ? data.events.filter(e => e?.published && !e?.archived).slice().sort((a, b) => dateMs(a) - dateMs(b)) : [], [data?.events]);
   const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }, []);
   const upcoming = events.filter(e => { const t = dateMs(e); return Number.isFinite(t) && t >= today; }).slice(0, 4);
@@ -316,28 +344,7 @@ export function JYCEditorialHome({ data }) {
             Explore all 23 societies <span>↗</span>
           </button>
         </div>
-        <div className="jh-pillars-bento">
-          {PILLARS.map(p => (
-            <article
-              key={p.id}
-              className={`jh-pillar-card jh-pillar-${p.id}`}
-              onClick={() => nav(p.id === 'fests' ? '/events' : `/clubs`)}
-              onMouseMove={handleSpotlight}
-            >
-              <div className="jh-pillar-head">
-                <span className="jh-pillar-icon">{p.icon}</span>
-                <span className="jh-pillar-count">{p.count}</span>
-              </div>
-              <span className="jh-pillar-tag">{p.tag}</span>
-              <h3>{p.title}</h3>
-              <p>{p.desc}</p>
-              <div className="jh-pillar-footer">
-                <span>Explore Communities</span>
-                <b aria-hidden="true">↗</b>
-              </div>
-            </article>
-          ))}
-        </div>
+        <LazyActivityBento activities={activities} nav={nav} />
       </section>
 
       {/* FEATURED & UPCOMING EVENTS */}
