@@ -1567,7 +1567,45 @@
 .jyc-editorial-home .magic-bento-card h3 { display: block; margin: 18px 0 10px; color: var(--jh-ink); font-family: 'Space Grotesk',sans-serif; font-size: clamp(21px,2.1vw,30px); line-height: 1.12; }
 .jyc-editorial-home .jh-bento-loading-card p,
 .jyc-editorial-home .magic-bento-card p { color: var(--jh-muted); font-size: 15px; line-height: 1.7; }
-.jyc-editorial-home .magic-bento-card__media { display: none; }
+.jyc-editorial-home .magic-bento-card {
+  min-height: 300px;
+  border-radius: 18px;
+  background: #18161D;
+  color: #FFF8E1;
+  box-shadow: 0 12px 32px rgba(26,25,29,.10);
+}
+.jyc-editorial-home .magic-bento-card__media { display: block; }
+.jyc-editorial-home .magic-bento-card__media img {
+  filter: saturate(.82) contrast(1.02);
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), filter .35s ease;
+}
+.jyc-editorial-home .magic-bento-card__media > span {
+  background: linear-gradient(180deg,rgba(12,12,16,.03) 8%,rgba(12,12,16,.32) 42%,rgba(12,12,16,.92) 100%);
+}
+.jyc-editorial-home .magic-bento-card__label {
+  color: #F1D6A8;
+  background: rgba(18,15,23,.72);
+  border-color: rgba(241,214,168,.34);
+}
+.jyc-editorial-home .magic-bento-card h3 { color: #FFF8E1; }
+.jyc-editorial-home .magic-bento-card p { color: rgba(255,248,225,.84); }
+.jyc-editorial-home .magic-bento-card__body button {
+  color: #FFF8E1;
+  border-color: rgba(255,248,225,.38);
+}
+.jyc-editorial-home .magic-bento-card__body button:focus-visible {
+  outline: 3px solid #F1D6A8;
+  outline-offset: 4px;
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .jyc-editorial-home .magic-bento-card:hover .magic-bento-card__media img {
+    transform: scale(1.035);
+    filter: saturate(1) contrast(1.04);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .jyc-editorial-home .magic-bento-card__media img { transition: none; }
+}
 .jyc-editorial-home .magic-bento-card__body { padding: clamp(18px,2.2vw,28px); }
 .jyc-editorial-home .magic-bento-card__body h3 { margin-top: 18px; }
 .jyc-editorial-home .magic-bento-card__body button { min-height: 44px; padding: 10px 0; color: var(--jh-accent); background: transparent; border: 0; font-weight: 750; }
