@@ -13,7 +13,7 @@ if(!fs.existsSync(index)){
 }
 
 const html=fs.readFileSync(index,'utf8');
-const siteOrigin=new URL(process.env.VITE_CANONICAL_ORIGIN||process.env.JYC_CANONICAL_ORIGIN||'https://www.jiityouthclub128.in').origin;
+const siteOrigin=new URL(process.env.VITE_CANONICAL_ORIGIN||process.env.JYC_CANONICAL_ORIGIN||process.env.VITE_SITE_URL||'https://jyc-website-eight.vercel.app').origin;
 const routes={
   '/':{
     title:'JIIT Youth Club 128 — Official JYC Website | JIIT Wish Town, Noida',

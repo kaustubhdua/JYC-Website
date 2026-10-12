@@ -10,4 +10,4 @@ Disallow: /projects/submit
 Disallow: /download
 Disallow: /qr/
 
-Sitemap: https://www.jiityouthclub128.in/sitemap.xml
+Sitemap: https://jyc-website-eight.vercel.app/sitemap.xml
