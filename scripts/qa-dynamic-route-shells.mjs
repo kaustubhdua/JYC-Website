@@ -8,7 +8,8 @@ const checks=[
  ['published clubs are filtered', source.includes('club?.published')],
  ['curated route metadata is preserved', source.includes('if(routes[route])continue;')],
  ['CMS outage is non-fatal', source.includes('dynamic metadata unavailable')],
- ['canonical metadata is generated per route', source.includes('const canonicalUrl=')]
+ ['canonical metadata is generated per route', source.includes('const canonicalUrl=')],
+ ['route metadata is escaped before HTML insertion', source.includes('const escapeHtml=') && source.includes('const escapeAttr=')]
 ];
 let failures=0;
 for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failures++;}
