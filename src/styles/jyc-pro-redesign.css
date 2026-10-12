@@ -1,48 +1,48 @@
 /* ==========================================================================
    JYC PRO REDESIGN SYSTEM
    Inspired by: OSDC, Innovation JIIT, Drone Wars, CICR, JODC
-   Aesthetic: High-Tech Cyber-Obsidian, Glassmorphism, 60fps Micro-Animations
+   Aesthetic: JYC editorial, warm paper, restrained motion, accessible contrast
    ========================================================================== */
 
 :root {
-  --tech-bg: #050a14;
-  --tech-surface: #0b1329;
-  --tech-surface-elevated: #111c38;
-  --tech-surface-glass: rgba(11, 19, 41, 0.78);
-  --tech-border: rgba(255, 255, 255, 0.09);
-  --tech-border-glow: rgba(56, 189, 248, 0.35);
-  --tech-gold: #fbbf24;
-  --tech-gold-glow: rgba(251, 191, 36, 0.2);
-  --tech-cyan: #38bdf8;
-  --tech-cyan-glow: rgba(56, 189, 248, 0.25);
-  --tech-crimson: #ef4444;
-  --tech-emerald: #10b981;
-  --tech-text-primary: #f8fafc;
-  --tech-text-secondary: #94a3b8;
-  --tech-text-muted: #64748b;
+  --tech-bg: #0F0E11;
+  --tech-surface: #18161D;
+  --tech-surface-elevated: #211E26;
+  --tech-surface-glass: rgba(24, 22, 29, 0.90);
+  --tech-border: rgba(255, 248, 225, 0.12);
+  --tech-border-glow: rgba(210, 180, 140, 0.24);
+  --tech-gold: #D2B48C;
+  --tech-gold-glow: rgba(210, 180, 140, 0.12);
+  --tech-cyan: #C92A2A;
+  --tech-cyan-glow: rgba(201, 42, 42, 0.10);
+  --tech-crimson: #C92A2A;
+  --tech-emerald: #D2B48C;
+  --tech-text-primary: #FFF8E1;
+  --tech-text-secondary: #A8A3B0;
+  --tech-text-muted: #A8A3B0;
   --tech-radius-sm: 8px;
   --tech-radius-md: 14px;
   --tech-radius-lg: 20px;
   --tech-radius-full: 9999px;
-  --tech-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --tech-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 :root[data-theme="light"], html[data-theme="light"] {
-  --tech-bg: #f8fafc;
-  --tech-surface: #ffffff;
-  --tech-surface-elevated: #f1f5f9;
-  --tech-surface-glass: rgba(255, 255, 255, 0.88);
-  --tech-border: rgba(203, 213, 225, 0.75);
-  --tech-border-glow: rgba(2, 132, 199, 0.35);
-  --tech-gold: #d97706;
-  --tech-gold-glow: rgba(217, 119, 6, 0.15);
-  --tech-cyan: #0284c7;
-  --tech-cyan-glow: rgba(2, 132, 199, 0.18);
-  --tech-crimson: #dc2626;
-  --tech-emerald: #059669;
-  --tech-text-primary: #0f172a;
-  --tech-text-secondary: #475569;
-  --tech-text-muted: #64748b;
+  --tech-bg: #F5F1E6;
+  --tech-surface: #FFFFFF;
+  --tech-surface-elevated: #FFFDF8;
+  --tech-surface-glass: rgba(255, 255, 255, 0.92);
+  --tech-border: rgba(26, 25, 29, 0.12);
+  --tech-border-glow: rgba(191, 156, 111, 0.24);
+  --tech-gold: #BF9C6F;
+  --tech-gold-glow: rgba(191, 156, 111, 0.12);
+  --tech-cyan: #A82420;
+  --tech-cyan-glow: rgba(168, 36, 32, 0.08);
+  --tech-crimson: #A82420;
+  --tech-emerald: #BF9C6F;
+  --tech-text-primary: #1A191D;
+  --tech-text-secondary: #6E6A75;
+  --tech-text-muted: #6E6A75;
 }
 
 /* --------------------------------------------------------------------------
@@ -3367,3 +3367,15 @@ body::before {
 }
 
 
+
+
+/* JYC brand override for legacy pages still using the pro-redesign layer. */
+body { background-color: var(--tech-bg) !important; color: var(--tech-text-primary) !important; }
+body::before {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(191,156,111,.055) 0%, transparent 45%),
+    radial-gradient(circle at 88% 22%, rgba(168,36,32,.045) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(191,156,111,.035) 0%, transparent 55%);
+  opacity: .7;
+}
+html[data-theme="light"] body::before { opacity: .45; }
