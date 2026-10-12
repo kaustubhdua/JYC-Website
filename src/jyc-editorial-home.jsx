@@ -200,7 +200,7 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-hero-copy">
           <div className="jh-cyber-badge">
             <span className="jh-live-pulse-dot" />
-            <span>JIIT YOUTH CLUB · SECTOR 128 NOIDA</span>
+            <span>THE JIIT 128 COMMUNITY</span>
             <b>AY 2026–27</b>
           </div>
           <p className="jh-overline">JAYPEE INSTITUTE OF INFORMATION TECHNOLOGY · WISH TOWN</p>
@@ -210,7 +210,7 @@ export function JYCEditorialHome({ data }) {
             <em className="jh-title-gradient">At JIIT 128.</em>
           </h1>
           <p className="jh-lead">
-            The clubs you join, the stages you step onto, the ideas you build, and the people you meet — JYC brings campus life at JIIT 128 together.
+            From clubs and competitions to performances, projects and campus traditions, JYC helps you find the people and experiences that make JIIT feel like yours.
           </p>
           <div className="jh-actions jh-hero-actions">
             <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/events')}>
@@ -288,10 +288,10 @@ export function JYCEditorialHome({ data }) {
           <div className="jh-photo-story-head">
             <div>
               <div className="jh-section-number">02 / CAMPUS LIFE IN FRAME</div>
-              <h2 id="jh-photo-story-title">A year of moments.<br /><em className="jh-title-gradient">All ours.</em></h2>
+              <h2 id="jh-photo-story-title">Campus life,<br /><em className="jh-title-gradient">as it happened.</em></h2>
             </div>
             <div className="jh-photo-story-intro">
-              <p>Real people. Loud stages. Small wins. The shared moments that turn a campus into a community.</p>
+              <p>From packed stages to the moments between them — real photographs from JYC clubs, events and campus life.</p>
               <button type="button" className="jh-text-link" onClick={() => nav('/gallery')}>
                 Open full gallery <span>↗</span>
               </button>
@@ -349,7 +349,7 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-section-head">
           <div>
             <div className="jh-section-number">04 / WHAT’S HAPPENING</div>
-            <h2>Make room for<br /><em className="jh-title-gradient">what's next.</em></h2>
+            <h2>Next up at<br /><em className="jh-title-gradient">JIIT 128.</em></h2>
           </div>
           <button type="button" className="jh-text-link" onClick={() => nav('/events')}>
             View event directory <span>↗</span>
@@ -423,9 +423,9 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-container jh-community-grid">
           <div className="jh-community-copy">
             <div className="jh-section-number">05 / THE PEOPLE BEHIND IT</div>
-            <h2>Meet the people<br /><em className="jh-title-gradient">making it happen.</em></h2>
+            <h2>The people<br /><em className="jh-title-gradient">behind JYC.</em></h2>
             <p>
-              Meet the students who bring JYC's clubs, events and campus communities together.
+              Meet the student team coordinating JYC's clubs, events and campus communities.
             </p>
             <div className="jh-actions">
               <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/team')}>
@@ -474,10 +474,10 @@ export function JYCEditorialHome({ data }) {
         <div className="jh-container jh-final-grid">
           <div>
             <div className="jh-section-number">06 / GET INVOLVED</div>
-            <h2>Your campus story<br /><em className="jh-title-gradient">starts here.</em></h2>
+            <h2>Find your place<br /><em className="jh-title-gradient">in campus life.</em></h2>
           </div>
           <div>
-            <p>Your next chapter could start with a team, a stage, a project or a person you haven't met yet. Find your way in.</p>
+            <p>Explore a community, show up for an event, or meet the people building something at JIIT. Your next step starts here.</p>
             <div className="jh-actions">
               <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/clubs')}>
                 Explore Clubs <span>↗</span>
