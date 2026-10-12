@@ -350,7 +350,8 @@ export function JYC57Gallery({data}){
       const matchesCategory = eventCategory === 'All' || g.category === eventCategory || hay.includes(eventCategory.toLowerCase());
       const matchesYear = year === 'All' || String(g.year||g.date||'').startsWith(year);
       const hayMedia=`${g.role||''} ${g.association||''} ${g.mediaKind||'photo'}`.toLowerCase();
-      const matchesMedia=mediaFilter==='all'||(mediaFilter==='club'?/club|community|hub|society/i.test(hayMedia):mediaFilter==='event'?/event|fest|competition|sports/i.test(hayMedia):true);
+      const isCommunity=/club|community|hub|society/i.test(hayMedia)||Object.keys(JYC_HUB_CONTENT).some(name=>hayMedia.includes(name.toLowerCase()));
+      const matchesMedia=mediaFilter==='all'||(mediaFilter==='club'?isCommunity:mediaFilter==='event'?/event|fest|competition|sports|converge|ebullience|dron-o-war|hackathon/i.test(hayMedia):true);
       return matchesQuery && matchesCategory && matchesYear && matchesMedia;
     });
   }, [items, query, eventCategory, year, mediaFilter]);
