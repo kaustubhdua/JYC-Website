@@ -16,6 +16,7 @@ const responsive=read('src/jyc-responsive-photo.jsx');
 const manifestLoader=read('src/jyc-image-manifest.js');
 const homeCss=read('src/jyc-editorial-home.css');
 const design=read('src/jyc-design-upgrades.css');
+const proRedesign=read('src/styles/jyc-pro-redesign.css');
 const editorialHome=read('src/jyc-editorial-home.jsx');
 const flip=read('src/components/react-bits/FlipCard.jsx');
 const indexHtml=read('index.html');
@@ -47,7 +48,7 @@ const qualityWorkflow=read('.github/workflows/jyc-quality.yml');
 const checks=[
   ['homepage restores the editorial intro and source-linked JYC Now update feed',editorialHome.includes('jh-about-editorial')&&editorialHome.includes('<JYCNowStrip limit={3} compact={false} />')],
   ['homepage removes unsupported impact counters and a hard-coded flagship countdown',!editorialHome.includes('5,000')&&!editorialHome.includes('FLAGSHIP COUNTDOWN')&&!editorialHome.includes('const [countdown')],
-  ['brand tokens avoid neon cyan, purple and rainbow halo treatment in the shared upgrade layer',design.includes('--jyc-design-accent:#A82420')&&design.includes('--jyc-design-copper:#BF9C6F')&&!design.includes('conic-gradient(from 0deg at 50% 50%,#38bdf8')],
+  ['brand tokens avoid neon cyan, purple and rainbow halo treatment in shared styling',design.includes('--jyc-design-accent:#A82420')&&design.includes('--jyc-design-copper:#BF9C6F')&&!design.includes('conic-gradient(from 0deg at 50% 50%,#38bdf8')&&!proRedesign.includes('#38bdf8')&&!proRedesign.includes('rgba(56, 189, 248')],
  ['society detail exposes organisation, activities, events, people and photography',/function ClubDetail/.test(main)&&/HUB PROFILE/.test(main)&&/ACTIVITIES/.test(main)&&/EVENTS/.test(main)&&/PEOPLE/.test(main)&&/CLUB PHOTOGRAPHY/.test(main)],
  ['event detail has lifecycle state and participation action',/eventState\(e\)/.test(main)&&/LIVE NOW/.test(main)&&/REGISTER NOW/.test(main)&&/REGISTRATION CLOSED/.test(main)],
  ['event card and detail share the same media layout id',main.includes('layoutId={\`event-media-\${slug(e.id||e.slug||e.title)}\`')&&main.includes('event-detail-poster')],
