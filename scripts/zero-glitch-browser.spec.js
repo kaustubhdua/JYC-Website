@@ -21,6 +21,7 @@ async function waitForPublicApp(page,label){
   // .public-app. Waiting only for #root races the loading screen and creates
   // false blank-page/image failures across every viewport.
   await page.locator('.public-app').waitFor({state:'visible',timeout:20000});
+  await page.waitForFunction(() => document.documentElement.dataset.jycContentReady === 'true', { timeout: 20000 });
   await expect(page.locator('.public-app h1, .public-app h2, .public-app p, .public-app a, .public-app button').first(),label+' visible public content').toBeVisible({timeout:10000});
 }
 
