@@ -37,6 +37,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Build production bundle
+        env:
+          VITE_JYC_QA_FIXTURES: 'true'
         run: npm run build
 
       - name: Run browser smoke and responsive QA against production preview
