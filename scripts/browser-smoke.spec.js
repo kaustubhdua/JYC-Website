@@ -798,13 +798,15 @@ test('search and More sheets keep their surfaces readable in light and dark them
 test('team profiles flip to readable biographies and verified LinkedIn links', async ({ page }) => {
   await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'JYC team profiles');
-  const card = page.locator('.team-member-flip:has(.team-social-row a[href*="linkedin.com"])').first();
+  const card = page.locator('.team-member-flip:has(.team-back-actions a[href*="linkedin.com"])').first();
   await expect(card).toBeVisible();
   await expect(card.locator('.team-member-name').first()).toBeVisible();
   await expect(card.locator('.team-member-face-content .tag').first()).toBeVisible();
   await expect(card.locator('.team-photo-editorial img').first()).toBeVisible();
   await card.click({ position: { x: 18, y: 18 } });
   await expect(card).toHaveClass(/is-flipped/);
+    await expect(card).toHaveAttribute('aria-expanded', 'true');
+    await expect(card.locator('.flip-card__back')).toHaveAttribute('aria-hidden', 'false');
   await expect(card.locator('.flip-card__front')).toHaveAttribute('aria-expanded', 'true');
   await expect(card.locator('.team-member-back-content .team-member-about')).toBeVisible();
   await expect(card.locator('.team-member-back-content a[href*="linkedin.com"]').first()).toHaveAttribute('href', /^https:\/\/(?:www\.|in\.)?linkedin\.com\//);
@@ -963,7 +965,7 @@ test('team flip-card biographies and LinkedIn links remain readable in both them
         return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
       };
       const background = parse(getComputedStyle(back).backgroundColor);
-      const bio = parse(getComputedStyle(back.querySelector('.team-member-about')).color);
+      const bio = parse(getComputedStyle(back.querySelector('.team-back-bio')).color);
       const link = parse(getComputedStyle(back.querySelector('a[href*="linkedin.com"]')).color);
       return { bio: background && bio ? ratio(composite(bio, background), background.slice(0, 3)) : null,
         link: background && link ? ratio(composite(link, background), background.slice(0, 3)) : null };
@@ -972,6 +974,9 @@ test('team flip-card biographies and LinkedIn links remain readable in both them
     expect(contrast.link, theme + ' LinkedIn contrast').toBeGreaterThanOrEqual(4.5);
     await card.locator('.flip-card__back-trigger').click();
     await expect(card).not.toHaveClass(/is-flipped/);
+    await expect(card).toHaveAttribute('aria-expanded', 'false');
+    await expect(card.locator('.flip-card__front')).toBeFocused();
+    await expect(card.locator('.flip-card__back')).toHaveAttribute('inert', '');
   }
 });
 
