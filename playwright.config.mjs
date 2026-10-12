@@ -23,17 +23,17 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile-390',
-      use: { viewport: { width: 390, height: 844 }, isMobile: true }
+      use: { viewport: { width: 390, height: 844 }, isMobile: true },
       grep: responsiveMatrix,
     },
     {
       name: 'mobile-430',
-      use: { viewport: { width: 430, height: 932 }, isMobile: true }
+      use: { viewport: { width: 430, height: 932 }, isMobile: true },
       grep: responsiveMatrix,
     },
     {
       name: 'tablet-768',
-      use: { viewport: { width: 768, height: 1024 } }
+      use: { viewport: { width: 768, height: 1024 } },
       grep: responsiveMatrix,
     },
     {
