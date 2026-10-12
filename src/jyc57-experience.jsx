@@ -307,7 +307,6 @@ export function JYC57Gallery({data}){
   const COLLECTIONS = eventMemories;
   const MOMENTS = categories;
   const YEARS = years;
-  const COMMUNITIES = [...new Set(items.map(item => String(item.association || 'JYC ARCHIVE')).filter(Boolean))].sort();
   const ARCHIVE_IA = ['COLLECTIONS', 'MOMENTS', 'YEARS', 'COMMUNITIES'];
 
   const rawGallery = Array.isArray(data?.gallery) ? data.gallery : [];
@@ -322,6 +321,7 @@ export function JYC57Gallery({data}){
         : 'Festivals'
     }));
   }, [rawGallery]);
+  const COMMUNITIES = [...new Set(items.map(item => String(item.association || 'JYC ARCHIVE')).filter(Boolean))].sort();
 
   const filtered = useMemo(() => {
     return items.filter(g => {
