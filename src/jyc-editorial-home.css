@@ -102,7 +102,7 @@
   left: -200px;
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.22) 0%, rgba(229, 184, 105, 0.06) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(191, 156, 111, 0.154) 0%, rgba(191, 156, 111, 0.060) 50%, transparent 75%);
   animation: jh-float-2 18s ease-in-out infinite alternate;
 }
 
@@ -111,7 +111,7 @@
   right: -150px;
   width: 580px;
   height: 580px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(0, 229, 255, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(191, 156, 111, 0.088) 0%, rgba(168, 36, 32, 0.020) 50%, transparent 70%);
   animation: jh-float-1 22s ease-in-out infinite alternate-reverse;
 }
 
@@ -178,8 +178,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
+  background: #BF9C6F;
+  box-shadow: 0 0 10px #BF9C6F;
   animation: jh-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -224,7 +224,7 @@
 .jh-title-gradient {
   display: inline-block;
   font-style: normal;
-  background: linear-gradient(110deg, #ffffff 10%, var(--jh-accent) 30%, #38bdf8 55%, var(--jh-accent) 80%, #ffffff 95%);
+  background: linear-gradient(110deg, #ffffff 10%, var(--jh-accent) 30%, #A82420 55%, var(--jh-accent) 80%, #ffffff 95%);
   background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -233,7 +233,7 @@
 }
 
 [data-theme="light"] .jh-title-gradient {
-  background: linear-gradient(110deg, #0f1015 15%, #b8860b 50%, #0284c7 75%, #0f1015 95%);
+  background: linear-gradient(110deg, #1A191D 15%, #BF9C6F 50%, #A82420 75%, #1A191D 95%);
   background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -285,12 +285,12 @@
   color: #08080a;
   border-color: var(--jh-accent);
   font-weight: 800;
-  box-shadow: 0 4px 20px -2px rgba(229, 184, 105, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(191, 156, 111, 0.450);
 }
 
 .jh-btn-primary:hover {
   background: linear-gradient(135deg, #ffffff 0%, var(--jh-accent) 100%);
-  box-shadow: 0 8px 32px 0 rgba(229, 184, 105, 0.55);
+  box-shadow: 0 8px 32px 0 rgba(191, 156, 111, 0.550);
 }
 
 .jh-btn-glass {
@@ -332,7 +332,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(160px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(251, 191, 36, 0.16), transparent 70%);
+  background: radial-gradient(160px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(191, 156, 111, 0.112), transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -344,7 +344,7 @@
 
 .jh-stat-item:hover {
   background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(251, 191, 36, 0.25);
+  border-color: rgba(191, 156, 111, 0.175);
 }
 
 .jh-stat-item strong {
@@ -457,8 +457,8 @@
 }
 
 .jh-countdown-cta {
-  background: rgba(0, 229, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.3);
+  background: rgba(168, 36, 32, 0.050);
+  border: 1px solid rgba(168, 36, 32, 0.150);
   color: var(--jh-cyan);
   padding: 8px 14px;
   border-radius: 8px;
@@ -471,7 +471,7 @@
 
 .jh-countdown-cta:hover {
   background: var(--jh-cyan);
-  color: #050a14;
+  color: #0F0E11;
   box-shadow: 0 4px 18px var(--jh-cyan-glow);
 }
 
@@ -524,7 +524,7 @@
 .jh-hero-dither-backdrop {
   position: absolute;
   inset: -30px;
-  background: radial-gradient(circle at 50% 50%, rgba(229, 184, 105, 0.18) 0%, rgba(0, 229, 255, 0.08) 50%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(191, 156, 111, 0.180) 0%, rgba(168, 36, 32, 0.040) 50%, transparent 70%);
   filter: blur(45px);
   pointer-events: none;
   z-index: 0;
@@ -616,7 +616,7 @@
 
 .jh-status-live-tag {
   font: 800 10px/1 'JetBrains Mono', monospace;
-  color: #10b981;
+  color: #BF9C6F;
   letter-spacing: 0.1em;
 }
 
@@ -698,7 +698,7 @@
   position: absolute;
   inset: 0;
   border-radius: var(--jh-radius-lg);
-  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(56, 189, 248, 0.16), transparent 65%);
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(191, 156, 111, 0.088), transparent 65%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -718,8 +718,8 @@
 
 .jh-pillar-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(56, 189, 248, 0.45);
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.15);
+  border-color: rgba(191, 156, 111, 0.248);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(191, 156, 111, 0.083);
 }
 
 .jh-pillar-card:hover::before {
@@ -819,7 +819,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(56, 189, 248, 0.14), transparent 60%);
+  background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(191, 156, 111, 0.077), transparent 60%);
   opacity: 0;
   transition: opacity 0.35s ease;
   pointer-events: none;
@@ -827,8 +827,8 @@
 }
 
 .jh-featured-event:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.6), 0 0 35px rgba(56, 189, 248, 0.15);
+  border-color: rgba(191, 156, 111, 0.220);
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.6), 0 0 35px rgba(191, 156, 111, 0.083);
 }
 
 .jh-featured-event:hover::before {
@@ -920,7 +920,7 @@
 }
 
 .jh-status-highlight {
-  color: #10b981 !important;
+  color: #BF9C6F !important;
 }
 
 .jh-registration-row {
@@ -1032,7 +1032,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(56, 189, 248, 0.22), transparent 65%);
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(191, 156, 111, 0.121), transparent 65%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -1045,8 +1045,8 @@
 
 .jh-story-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(56, 189, 248, 0.45);
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15);
+  border-color: rgba(191, 156, 111, 0.248);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(191, 156, 111, 0.083);
 }
 
 .jh-story-photo {
@@ -1174,7 +1174,7 @@
 }
 
 .jh-team-list button:hover {
-  background: rgba(229, 184, 105, 0.08);
+  background: rgba(191, 156, 111, 0.080);
 }
 
 .jh-team-monogram {
@@ -1244,15 +1244,15 @@
 }
 
 .jh-assistant-spotlight-card:hover {
-  border-color: rgba(0, 229, 255, 0.35);
-  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.38), 0 0 40px rgba(0, 229, 255, 0.08);
+  border-color: rgba(168, 36, 32, 0.175);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.38), 0 0 40px rgba(168, 36, 32, 0.040);
 }
 
 .jh-assistant-spotlight-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle 380px at var(--mouse-x, 30%) var(--mouse-y, 50%), rgba(0, 229, 255, 0.08), transparent 70%);
+  background: radial-gradient(circle 380px at var(--mouse-x, 30%) var(--mouse-y, 50%), rgba(168, 36, 32, 0.040), transparent 70%);
   pointer-events: none;
 }
 
@@ -1260,8 +1260,8 @@
   position: relative;
   width: 100%;
   height: 280px;
-  background: radial-gradient(circle at 50% 60%, rgba(0, 229, 255, 0.15) 0%, rgba(229, 184, 105, 0.08) 40%, rgba(8, 8, 10, 0.6) 80%);
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: radial-gradient(circle at 50% 60%, rgba(168, 36, 32, 0.075) 0%, rgba(191, 156, 111, 0.080) 40%, rgba(8, 8, 10, 0.6) 80%);
+  border: 1px solid rgba(168, 36, 32, 0.125);
   border-radius: var(--jh-radius-md);
   display: flex;
   align-items: center;
@@ -1285,7 +1285,7 @@
   gap: 8px;
   background: rgba(10, 10, 15, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 229, 255, 0.3);
+  border: 1px solid rgba(168, 36, 32, 0.150);
   border-radius: 999px;
   padding: 4px 12px;
   font: 700 10px/1 'JetBrains Mono', monospace;
@@ -1330,11 +1330,11 @@
 }
 
 .jh-assistant-prompts button:hover {
-  background: rgba(0, 229, 255, 0.1);
-  border-color: rgba(0, 229, 255, 0.4);
+  background: rgba(168, 36, 32, 0.050);
+  border-color: rgba(168, 36, 32, 0.200);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 229, 255, 0.15);
+  box-shadow: 0 8px 20px rgba(168, 36, 32, 0.075);
 }
 
 @media (max-width: 900px) {
@@ -1353,7 +1353,7 @@
    -------------------------------------------------------------------------- */
 .jh-final {
   padding: 90px 0;
-  background: radial-gradient(circle at 50% 50%, rgba(229, 184, 105, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(191, 156, 111, 0.120) 0%, transparent 60%);
 }
 
 .jh-final-grid {
