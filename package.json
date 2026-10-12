@@ -43,7 +43,8 @@
     "qa:zero-glitch": "node scripts/qa-zero-glitch-contract.mjs",
     "qa:media-layout": "node scripts/qa-media-layout.mjs",
     "qa:coherence": "node scripts/qa-current-release-coherence.mjs",
-    "postbuild": "node scripts/optimize-production-media.mjs && node scripts/generate-route-shells.mjs"
+    "postbuild": "node scripts/optimize-production-media.mjs && node scripts/generate-route-shells.mjs",
+    "qa:homepage-editorial": "node scripts/qa-homepage-editorial-truth.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.2",
