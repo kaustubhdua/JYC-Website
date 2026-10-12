@@ -1035,3 +1035,6 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 .jyc57-media-filter{display:flex;flex-wrap:wrap;gap:.55rem;margin:0 0 1.25rem}
 .jyc57-media-filter .jyc-filter-pill{min-height:44px}
 @media(max-width:480px){.jyc57-media-filter .jyc-filter-pill{flex:1 1 auto}}
+
+.jyc57-lightbox-actions .jyc57-full-resolution-link{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:transparent;color:#fff;text-decoration:none;font:600 11px "Space Grotesk";cursor:pointer}
+.jyc57-lightbox-actions .jyc57-full-resolution-link:hover,.jyc57-lightbox-actions .jyc57-full-resolution-link:focus-visible{background:#fff;color:#111}
