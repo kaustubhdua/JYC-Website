@@ -1435,7 +1435,8 @@
 .jyc-editorial-home .jh-status-live-tag { color: var(--jh-accent); border-color: var(--jh-line-accent); background: color-mix(in srgb, var(--jh-surface) 88%, var(--jh-accent) 12%); }
 .jyc-editorial-home .jh-live-pulse-dot { background: var(--jh-accent); box-shadow: none; animation: none; }
 .jyc-editorial-home .jh-hero-logo-plaque { border-color: var(--jh-line-accent); background: linear-gradient(145deg, rgba(24,22,29,.90), rgba(24,22,29,.72)); box-shadow: 0 24px 60px rgba(26,25,29,.14); backdrop-filter: blur(3px); }
-.jyc-editorial-home .jh-logo-halo { background: radial-gradient(circle, rgba(191,156,111,.24), rgba(168,36,32,.10) 42%, transparent 72%); filter: blur(22px); opacity: .5; animation: none; }
+.jyc-editorial-home .jh-hero-dither-backdrop { inset: 0; }
+.jyc-editorial-home .jh-logo-halo { inset: 0; background: radial-gradient(circle, rgba(191,156,111,.24), rgba(168,36,32,.10) 42%, transparent 72%); filter: blur(22px); opacity: .5; animation: none; }
 .jyc-editorial-home .jh-hero-dither-visual,
 .jyc-editorial-home .jh-hero-drift-wall { border-color: var(--jh-line-accent); box-shadow: 0 22px 64px rgba(26,25,29,.12); }
 .jyc-editorial-home .jh-pillar-card,
