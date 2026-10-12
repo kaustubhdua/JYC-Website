@@ -9,7 +9,7 @@ const checks=[
  ['homepage has no retired photo chapter system',!home.includes('<PhotoChapters/>')],
  ['homepage has no retired drift photo wall',!home.includes('LazyDriftWall')&&!home.includes('<LazyDriftWall')],
  ['homepage activity cards are text-led',home.includes('LazyActivityBento activities={activities} nav={nav}')&&!home.includes('image:gallery[')&&!home.includes("count: '10 Hubs'")&&!home.includes("count: '5 Societies'")],
- ['homepage has a single featured-event photo focal point',home.includes('className="jh-featured-event-photo"')&&home.includes('featured.image')&&home.includes('fallbackSrc={FALLBACK}')],
+ ['homepage has a single featured-event photo focal point',home.includes('className="jh-featured-event-photo"')&&home.includes('eventImage(featured)')&&home.includes('fallbackSrc={FALLBACK}')],
  ['homepage activity cards do not duplicate gallery imagery',!home.includes('image:gallery[')],
  ['homepage activity Bento has a stable non-media frame',homeCss.includes('.jh-activity-bento-shell')&&homeCss.includes('.magic-bento__grid')&&homeCss.includes('.magic-bento-card {')],
  ['gallery archive uses deterministic grid geometry',system.includes('.public-app .gallery-grid{')&&system.includes('display:grid!important')&&system.includes('column-count:unset!important')],
