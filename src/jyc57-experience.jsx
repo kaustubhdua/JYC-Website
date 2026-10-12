@@ -348,7 +348,7 @@ export function JYC57Gallery({data}){
   const move = (dir) => {
     if (!filtered.length) return;
     const nextIdx = (selectedIndex + dir + filtered.length) % filtered.length;
-    setSelected(filtered[nextIdx]);
+    openPhoto(filtered[nextIdx]);
   };
 
   const sharePhoto = async () => {
@@ -502,7 +502,7 @@ export function JYC57Gallery({data}){
 
     {/* Full-Screen Lightbox Modal */}
     {selected && (
-      <div ref={lightboxRef} className="jyc57-lightbox" role="dialog" aria-modal="true" data-photo-id={String(selected.id || selected.url)} aria-label={selected.caption || 'JYC photograph'} onClick={() => setSelected(null)}>
+      <div ref={lightboxRef} className="jyc57-lightbox" role="dialog" aria-modal="true" data-photo-id={String(selected.id || selected.url)} aria-label={selected.caption || 'JYC photograph'} onClick={closePhoto}>
         <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()}>
           <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
