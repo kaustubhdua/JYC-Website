@@ -7,7 +7,7 @@ export function JYCBot({data}){
  const modelRef=useRef(null); const modelPreloadRef=useRef(false); const motionTimer=useRef(null); const animationStopTimer=useRef(null); const idleTimer=useRef(null); const animationCursor=useRef(0); const modelAnimationCursor=useRef(0);
  const context=loc.pathname.startsWith('/events')?'events':loc.pathname.startsWith('/clubs')?'clubs':loc.pathname.startsWith('/gallery')?'gallery':loc.pathname.startsWith('/team')||loc.pathname.startsWith('/leadership')?'team':'home';
  const loadModelViewer=()=>{
-  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData)return;
+  if(typeof window==='undefined'||document.documentElement.dataset.performance==='lite'||navigator.connection?.saveData||window.matchMedia?.('(pointer: coarse)').matches||window.matchMedia?.('(max-width: 760px)').matches||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
   if(customElements?.get('model-viewer')){setModelReady(true);return;}
   const existing=document.querySelector('script[data-jyc-model-viewer]');
   if(existing){
