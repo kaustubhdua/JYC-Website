@@ -3403,3 +3403,13 @@ body::before {
   opacity: .7;
 }
 html[data-theme="light"] body::before { opacity: .45; }
+
+
+/* Gallery metadata remains visible on album routes and screen readers. */
+.jyc57-gallery-meta {
+  display: block;
+  margin-top: 10px;
+  color: var(--tech-text-secondary, #6E6A75);
+  font-size: 13px;
+  line-height: 1.5;
+}
