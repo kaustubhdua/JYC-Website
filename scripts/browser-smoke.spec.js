@@ -250,13 +250,15 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
       const parse = value => { const match=String(value||'').match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i); return match?[+match[1],+match[2],+match[3]]:null; };
       const luminance = rgb => rgb.map(v=>v/255).map(v=>v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4)).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
       const contrast = (a,b) => {const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
-      const home=document.querySelector('.jyc-home'),heading=home?.querySelector('.jh-hero h1'),cta=home?.querySelector('.jh-btn-primary'),finalSection=home?.querySelector('.jh-final'),finalHeading=finalSection?.querySelector('h2');
-      const bg=parse(getComputedStyle(home).backgroundColor),fg=parse(getComputedStyle(heading).color),ctaBg=parse(getComputedStyle(cta).backgroundColor),ctaFg=parse(getComputedStyle(cta).color),finalBg=parse(getComputedStyle(finalSection).backgroundColor),finalFg=parse(getComputedStyle(finalHeading).color);
-      return {background:getComputedStyle(home).backgroundColor,headingContrast:bg&&fg?contrast(bg,fg):null,ctaContrast:ctaBg&&ctaFg?contrast(ctaBg,ctaFg):null,finalContrast:finalBg&&finalFg?contrast(finalBg,finalFg):null};
+      const home=document.querySelector('.jyc-home'),heading=home?.querySelector('.jh-hero h1'),cta=home?.querySelector('.jh-btn-primary'),finalSection=home?.querySelector('.jh-final'),finalHeading=finalSection?.querySelector('h2'),finalCopy=finalSection?.querySelector('p'),finalCta=finalSection?.querySelector('.jh-btn-primary');
+      const bg=parse(getComputedStyle(home).backgroundColor),fg=parse(getComputedStyle(heading).color),ctaBg=parse(getComputedStyle(cta).backgroundColor),ctaFg=parse(getComputedStyle(cta).color),finalBg=parse(getComputedStyle(finalSection).backgroundColor),finalFg=parse(getComputedStyle(finalHeading).color),finalCopyFg=parse(getComputedStyle(finalCopy).color),finalCtaBg=parse(getComputedStyle(finalCta).backgroundColor),finalCtaFg=parse(getComputedStyle(finalCta).color);
+      return {background:getComputedStyle(home).backgroundColor,headingContrast:bg&&fg?contrast(bg,fg):null,ctaContrast:ctaBg&&ctaFg?contrast(ctaBg,ctaFg):null,finalContrast:finalBg&&finalFg?contrast(finalBg,finalFg):null,finalCopyContrast:finalBg&&finalCopyFg?contrast(finalBg,finalCopyFg):null,finalButtonContrast:finalCtaBg&&finalCtaFg?contrast(finalCtaBg,finalCtaFg):null};
     });
     expect(themeSamples[theme].headingContrast, theme+' homepage heading contrast').toBeGreaterThanOrEqual(4.5);
     expect(themeSamples[theme].ctaContrast, theme+' primary CTA contrast').toBeGreaterThanOrEqual(4.5);
     expect(themeSamples[theme].finalContrast, theme+' final CTA section contrast').toBeGreaterThanOrEqual(4.5);
+    expect(themeSamples[theme].finalCopyContrast, theme+' final CTA body copy contrast').toBeGreaterThanOrEqual(4.5);
+    expect(themeSamples[theme].finalButtonContrast, theme+' final CTA primary button contrast').toBeGreaterThanOrEqual(4.5);
   }
   expect(themeSamples.light.background, 'light theme uses the light editorial surface').not.toBe(themeSamples.dark.background);
 
