@@ -233,6 +233,20 @@ test('club detail route opens from a directory card', async ({ page }) => {
   await expect(page.locator('h1').first(), 'club detail has a primary heading').toBeVisible();
   await expect(page.locator('h1').first()).not.toBeEmpty();
 });
+ 
+test('event detail route opens from the event directory', async ({ page }) => {
+  await page.goto(base + '/events', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'event directory');
+  await page.locator('.jyc57-segment').getByRole('button', { name: 'All', exact: true }).click();
+  const card = page.locator('.jyc57-event-card').first();
+  await expect(card, 'published event card is available').toBeVisible();
+  await card.click();
+  await expect.poll(() => new URL(page.url()).pathname, { timeout: 7000 }).toMatch(/^\/events\/[a-z0-9-]+$/);
+  await waitForAppMount(page, 'event detail destination');
+  await expect(page.locator('h1').first(), 'event detail has a primary heading').toBeVisible();
+  await expect(page.locator('h1').first()).not.toBeEmpty();
+});
+
 
 test('event and gallery navigation use canonical, shareable URLs', async ({ page }) => {
   await page.goto(base + '/events', { waitUntil: 'domcontentloaded' });
