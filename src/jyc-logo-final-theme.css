@@ -576,7 +576,7 @@ html[data-theme="dark"] .public-app .card:hover,html[data-theme="dark"] .public-
 }
 
 @media (max-width:600px){
-  .brand-mark{width:38px;height:38px}
+  .brand-mark{width:40px!important;height:40px!important;min-width:40px;min-height:40px;flex:0 0 40px}
   .nav .brand>span:last-child{font-size:.76rem!important;letter-spacing:.04em!important}
   .home .hero{padding-top:34px!important}
   .home .hero-copy h1{font-size:clamp(2.8rem,14vw,5rem)!important}
