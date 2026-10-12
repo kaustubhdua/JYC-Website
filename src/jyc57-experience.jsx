@@ -224,109 +224,77 @@ export function JYC57Gallery({data}){
   const [year,setYear]=useState(params.get('year')||'All');
   const [selected,setSelected]=useState(null);
   const [zoom,setZoom]=useState(1);
+  const touchStartX=useRef(0);
+  const [remoteAlbums,setRemoteAlbums]=useState([]);
   const [copied,setCopied]=useState(false);
   const [visibleCount,setVisibleCount]=useState(36);
 
-  const eventMemories = [
-    {
-      id: 'converge-2026',
-      title: 'Converge 2026',
-      subtitle: 'Annual Cultural & Technical Flagship Fest',
-      category: 'Festivals',
-      year: '2026',
-      count: '86 Photos · 2 Videos',
-      cover: '/assets/events/converge-2026.webp'
-    },
-    {
-      id: 'jai-2026',
-      title: 'JAI 2026 · AI Hackathon',
-      subtitle: 'Jaypee Agentic AI International Summit',
-      category: 'Competitions',
-      year: '2026',
-      count: '64 Photos · Flagship Event',
-      cover: '/assets/events/jai-2026.webp'
-    },
-    {
-      id: 'drono-war-2026',
-      title: 'Dron-O-War 2026',
-      subtitle: 'National Drone Racing & Combat Robotics',
-      category: 'Competitions',
-      year: '2026',
-      count: '54 Photos · Arena Combat',
-      cover: '/assets/home/dron-o-war-1.webp'
-    },
-    {
-      id: 'ebullience-2025',
-      title: "Ebullience '25",
-      subtitle: "Freshers' Cultural Showcase",
-      category: 'Festivals',
-      year: '2025',
-      count: '72 Photos',
-      cover: '/assets/home/ebullience.webp'
-    },
-    {
-      id: 'kshitij-sports-2026',
-      title: 'Kshitij Sports 2026',
-      subtitle: 'Annual Intra & Inter-College Sports Championship',
-      category: 'Sports',
-      year: '2026',
-      count: '48 Photos · Kshitij Meet',
-      cover: '/assets/hub-photos/sports-02.webp'
-    },
-    {
-      id: 'vamunique-dance-2026',
-      title: 'VamUnique & BDS Dance',
-      subtitle: 'Stage Choreography & Flashmobs',
-      category: 'Festivals',
-      year: '2026',
-      count: '52 Photos · Live Performing Arts',
-      cover: '/assets/hub-photos/vamunique-02.webp'
-    },
-    {
-      id: 'panache-fashion-2026',
-      title: 'Panache Runway',
-      subtitle: 'Annual Fashion & Design Showcase',
-      category: 'Festivals',
-      year: '2026',
-      count: '44 Photos · Stage Runway',
-      cover: '/assets/hub-photos/panache-01.webp'
-    },
-    {
-      id: 'cicr-robotics-2026',
-      title: 'CICR Robotics Arena',
-      subtitle: 'Robotics Innovations & Hardware Showcase',
-      category: 'Competitions',
-      year: '2026',
-      count: '56 Photos · Robotics Lab',
-      cover: '/assets/hub-photos/cicr-01.webp'
-    }
-  ];
-
-  const categories = ['All', 'Induction', 'Competitions', 'Festivals', 'Workshops', 'Sports', 'Social'];
-  const years = ['All', '2026', '2025', '2024'];
-
-  const rawGallery = Array.isArray(data?.gallery) ? data.gallery : [];
+  const albumSlug = loc.pathname.startsWith('/gallery/') ? decodeURIComponent(loc.pathname.split('/')[2] || '') : '';
+  const albumRoute = value => '/gallery/' + encodeURIComponent(value);
+  const rawGallery = [...(Array.isArray(data?.gallery) ? data.gallery : []), ...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS];
   const items = useMemo(() => {
-    return rawGallery.filter(g => g && g.url).map(g => ({
-      ...g,
-      category: /induction/i.test(g.caption||g.association||'') ? 'Induction'
-        : /converge|fest|ebullience|ethnic/i.test(g.caption||g.association||'') ? 'Festivals'
-        : /hack|hackathon|war|drone|jai|compete|code/i.test(g.caption||g.association||'') ? 'Competitions'
-        : /workshop|session|class/i.test(g.caption||g.association||'') ? 'Workshops'
-        : /sport|cricket|football/i.test(g.caption||g.association||'') ? 'Sports'
-        : 'Festivals'
-    }));
+    const seen = new Set();
+    return rawGallery
+      .filter(g => g && g.url && (!g.mediaKind || g.mediaKind === 'photo'))
+      .filter(g => {
+        const key = String(g.url);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .map(g => ({
+        ...g,
+        category: g.category || g.eventType || (/induction/i.test(g.caption||g.association||'') ? 'Induction'
+          : /converge|fest|ebullience|ethnic/i.test(g.caption||g.association||'') ? 'Festivals'
+          : /hack|hackathon|war|drone|jai|compete|code/i.test(g.caption||g.association||'') ? 'Competitions'
+          : /workshop|session|class/i.test(g.caption||g.association||'') ? 'Workshops'
+          : /sport|cricket|football/i.test(g.caption||g.association||'') ? 'Sports'
+          : 'Campus')
+      }));
   }, [rawGallery]);
+
+  const categories = useMemo(() => ['All', ...new Set(items.map(g => g.category).filter(Boolean))], [items]);
+  const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
+
+  useEffect(() => {
+    let alive = true;
+    supabase.from('jyc_media_albums').select('id,name,slug,cover_url,is_published').eq('is_published', true).order('created_at', {ascending:false})
+      .then(({data:rows}) => { if (alive) setRemoteAlbums(Array.isArray(rows) ? rows : []); })
+      .catch(() => { if (alive) setRemoteAlbums([]); });
+    return () => { alive = false; };
+  }, []);
+
+  const publishedAlbums = useMemo(() => {
+    const merged = [...remoteAlbums, ...JYC_SOURCE_ARCHIVE_ALBUMS].filter(album => album && album.slug && album.is_published !== false);
+    const unique = [...new Map(merged.map(album => [String(album.slug), album])).values()];
+    return unique.filter(album => album.cover_url || items.some(g =>
+      g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name
+    ));
+  }, [remoteAlbums, items]);
+
+  const currentAlbum = useMemo(() => publishedAlbums.find(album =>
+    album.slug === albumSlug || slugify(album.name) === albumSlug
+  ), [publishedAlbums, albumSlug]);
+
+  useEffect(() => {
+    const requestedPhoto = params.get('photo');
+    if (!requestedPhoto) return;
+    const match = items.find(g => String(g.id || g.url) === requestedPhoto || g.url === requestedPhoto);
+    if (match) setSelected(match);
+  }, [params, items]);
+
+  useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug]);
 
   const filtered = useMemo(() => {
     return items.filter(g => {
-      const hay = `${g.caption||''} ${g.association||''} ${g.year||''} ${g.category||''}`.toLowerCase();
+      const hay = `${g.caption||''} ${g.association||''} ${g.year||''} ${g.category||''} ${g.albumName||''}`.toLowerCase();
       const matchesQuery = !query || hay.includes(query.toLowerCase());
       const matchesCategory = eventCategory === 'All' || g.category === eventCategory || hay.includes(eventCategory.toLowerCase());
       const matchesYear = year === 'All' || String(g.year||g.date||'').startsWith(year);
-      return matchesQuery && matchesCategory && matchesYear;
+      const matchesAlbum = !albumSlug || g.albumSlug === albumSlug || g.albumId === currentAlbum?.id || g.albumName === currentAlbum?.name || g.association === currentAlbum?.name;
+      return matchesQuery && matchesCategory && matchesYear && matchesAlbum;
     });
-  }, [items, query, eventCategory, year]);
+  }, [items, query, eventCategory, year, albumSlug, currentAlbum]);
 
   const selectedIndex = selected === null ? -1 : filtered.findIndex(g => g.url === selected.url);
 
@@ -362,43 +330,36 @@ export function JYC57Gallery({data}){
   return <section className="section page unified-public-page jyc-gallery-hub-container">
     <header className="jyc-gallery-hero">
       <span className="jh-kicker">JYC 128 <b>VISUAL VAULT</b></span>
-      <h1>Captured Memories.</h1>
-      <p>Explore official campus photography organized by flagship events, competitions, festivals and milestones across Sector 128.</p>
+      <h1>{currentAlbum?.name || 'Captured Memories.'}</h1>
+      <p>{currentAlbum?.description || 'Explore source-backed campus photography organized by published albums, events, communities and years across Sector 128.'}</p>
     </header>
 
-    {/* Event Memories Section */}
+    {/* Published albums and source-backed collections; counts come from actual photo records. */}
     <section className="jyc-memories-section">
       <div className="jyc-section-head-bar">
         <div>
-          <h2>Event Memories & Flagships</h2>
-          <span>Curated albums from the official JYC ecosystem</span>
+          <h2>{currentAlbum?.name || 'Published photo albums'}</h2>
+          <span>{albumSlug ? 'A source-backed collection from the JYC visual archive' : 'Open a published album or explore the complete photo archive'}</span>
         </div>
+        {albumSlug && <button type="button" className="jyc-clear-filters-btn" onClick={() => nav('/gallery')}>All albums ↗</button>}
       </div>
-
-      <div className="jyc-memories-grid">
-        {eventMemories.map(mem => (
-          <article 
-            key={mem.id} 
-            className="jyc-memory-card" 
-            onClick={() => {
-              setEventCategory(mem.category);
-              setYear(mem.year);
-              window.scrollTo({ top: 580, behavior: 'smooth' });
-            }}
-          >
+      {!albumSlug && <div className="jyc-memories-grid">
+        {publishedAlbums.slice(0, 12).map(album => {
+          const albumPhotos = items.filter(g => g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name);
+          return <button type="button" key={album.id || album.slug} className="jyc-memory-card" onClick={() => nav(albumRoute(album.slug))}>
             <div className="jyc-memory-cover">
-              <ResponsivePhoto src={mem.cover} alt={mem.title} loading="lazy" sizes="(max-width: 600px) 100vw, 360px" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
+              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading="lazy" sizes="(max-width: 600px) 100vw, 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder"/>
             </div>
             <div className="jyc-memory-scrim" />
             <div className="jyc-memory-details">
-              <span className="jyc-memory-top-badge">{mem.category} · {mem.year}</span>
-              <h3 className="jyc-memory-title">{mem.title}</h3>
-              <span className="jyc-memory-count">{mem.count}</span>
-              <span className="jyc-memory-action">View Gallery →</span>
+              <span className="jyc-memory-top-badge">PUBLISHED COLLECTION</span>
+              <h3 className="jyc-memory-title">{album.name}</h3>
+              <span className="jyc-memory-count">{albumPhotos.length ? `${albumPhotos.length} verified photos` : 'Source collection'}</span>
+              <span className="jyc-memory-action">Open album →</span>
             </div>
-          </article>
-        ))}
-      </div>
+          </button>;
+        })}
+      </div>}
     </section>
 
     {/* Filter Toolbar */}
@@ -460,7 +421,7 @@ export function JYC57Gallery({data}){
               type="button" 
               key={g.id || g.url || i} 
               className={`jyc57-photo photo-${i % 6}`} 
-              onClick={() => setSelected(g)} 
+              onClick={() => { setZoom(1); setSelected(g); }} 
               aria-label={'Open ' + (g.caption || 'JYC photograph')}
             >
               <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
@@ -491,7 +452,7 @@ export function JYC57Gallery({data}){
         <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()}>
           <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
-          <div className="jyc57-lightbox-media">
+          <div className="jyc57-lightbox-media" onTouchStart={e => { touchStartX.current = e.changedTouches[0]?.clientX || 0; }} onTouchEnd={e => { const endX = e.changedTouches[0]?.clientX || touchStartX.current; const delta = endX - touchStartX.current; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); touchStartX.current = 0; }}>
             <ResponsivePhoto src={selected.url} alt={selected.caption || 'JYC photo'} sizes="(max-width: 900px) 100vw, 75vw" loading="eager" style={{ transform: `scale(${zoom})`, transition: 'transform 0.2s ease' }} fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
           </div>
           <button className="jyc57-nav next" type="button" onClick={() => move(1)} aria-label="Next photo">›</button>
