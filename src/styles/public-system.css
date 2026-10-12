@@ -99,20 +99,20 @@ html[data-theme="dark"] { color-scheme: dark; }
 html[data-theme="dark"] .public-app {
   --jyc-final-bg: #0F0E11;
   --jyc-final-surface: #18161D;
-  --jyc-final-ink: #f8fafc;
-  --jyc-final-muted: #94a3b8;
-  --jyc-final-line: rgba(255, 255, 255, 0.1);
+  --jyc-final-ink: #FFF8E1;
+  --jyc-final-muted: #A8A3B0;
+  --jyc-final-line: rgba(255, 248, 225, 0.12);
   --jyc-final-gold: #D2B48C;
-  --jyc-final-red: #ef4444;
+  --jyc-final-red: #C92A2A;
 }
 html[data-theme="light"] .public-app {
-  --jyc-final-bg: #f8fafc;
-  --jyc-final-surface: #ffffff;
-  --jyc-final-ink: #0f172a;
-  --jyc-final-muted: #475569;
-  --jyc-final-line: rgba(203, 213, 225, 0.7);
+  --jyc-final-bg: #F5F1E6;
+  --jyc-final-surface: #FFFFFF;
+  --jyc-final-ink: #1A191D;
+  --jyc-final-muted: #6E6A75;
+  --jyc-final-line: rgba(26, 25, 29, 0.12);
   --jyc-final-gold: #BF9C6F;
-  --jyc-final-red: #dc2626;
+  --jyc-final-red: #A82420;
 }
 html[data-theme="dark"] .public-app :where(.jyc-source-archive-ledger,.jyc-photo-story-scrubber) {
   background: rgba(11, 19, 41, 0.96);
@@ -1011,19 +1011,33 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 @media(prefers-reduced-motion:reduce){.public-app .ecosystem-context-rail button:hover{transform:none!important}}
 
 
-/* V67 — final public visual hierarchy guardrails */
+/* V67 — public visual hierarchy guardrails.
+   Preserve the existing component art direction; constrain overflow without flattening
+   intentional card depth or disabling motion for users who have not requested it. */
 .public-app{overflow-x:clip}
 .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.join-grid>div,.jyc-now-card,.jyc-spotlight-grid button){min-width:0}
 .public-app :where(h1,h2,h3,h4,p,span,a,button){overflow-wrap:anywhere}
-.public-app :where(.card,.gallery-item,.contact-card,.mini-card,.join-grid>div,.featured,.club-hero,.fest-hero,.event-detail-poster,.quote-card,.search-modal,.state){box-shadow:none!important}
-.public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.featured:hover){transform:none!important}
 .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.join-grid>div){border-radius:12px}
 .public-app .section-head{max-width:760px}
 .public-app .section-head p{max-width:680px}
-.public-app :where(.hero-art .orbit,.state-orbit,.float-chip){animation:none!important}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .public-app :where(.card,.gallery-item,.contact-card,.mini-card,.featured,.jyc-now-card,.jyc-spotlight-grid button){
+    transition:transform .22s ease,box-shadow .22s ease;
+  }
+  .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){
+    transform:translateY(-3px);
+    box-shadow:0 14px 32px rgba(26,25,29,.10);
+  }
+  html[data-theme="dark"] .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){
+    box-shadow:0 16px 36px rgba(0,0,0,.28);
+  }
+}
 @media(max-width:900px){.public-app .section.page,.public-app .section.unified-public-page{width:min(100% - 40px,1240px)}}
 @media(max-width:620px){.public-app .section.page,.public-app .section.unified-public-page{width:calc(100% - 28px)}}
-@media(prefers-reduced-motion:reduce){.public-app *{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){
+  .public-app *, .public-app *::before, .public-app *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.mini-card:hover,.featured:hover,.jyc-now-card:hover,.jyc-spotlight-grid button:hover){transform:none!important;box-shadow:none!important}
+}
 
 
 /* Accessible gallery archive information architecture */
