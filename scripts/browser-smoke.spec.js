@@ -1200,7 +1200,7 @@ test('runtime metadata keeps canonical URLs on the production domain from a prev
   await page.goto(base + route, { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'canonical metadata on preview host');
 
-  const canonical = 'https://www.jiityouthclub128.in' + route;
+  const canonical = 'https://jyc-website-eight.vercel.app' + route;
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonical);
 });
@@ -1261,7 +1261,7 @@ test('public route shells keep route-specific SEO content and one primary headin
     const primaryHeading = page.getByRole('heading', { level: 1 });
     await expect(primaryHeading).toHaveCount(1);
     await expect(primaryHeading).toHaveText(title);
-    const canonical = 'https://www.jiityouthclub128.in' + path;
+    const canonical = 'https://jyc-website-eight.vercel.app' + path;
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
     const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll(nodes => nodes.map(node => JSON.parse(node.textContent || '{}')));
     expect(schemas.some(schema => schema['@type'] === 'WebPage' && schema.name === title && schema.url === canonical)).toBeTruthy();
