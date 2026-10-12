@@ -230,8 +230,8 @@ export function JYC57Gallery({data}){
   const [visibleCount,setVisibleCount]=useState(36);
 
   const albumSlug = loc.pathname.startsWith('/gallery/') ? decodeURIComponent(loc.pathname.split('/')[2] || '') : '';
-  const albumRoute = value => '/gallery/' + encodeURIComponent(value);
-  const rawGallery = [...(Array.isArray(data?.gallery) ? data.gallery : []), ...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS];
+  const albumRoute=value=>'/gallery/'+encodeURIComponent(value);
+  const rawGallery = useMemo(() => [...(Array.isArray(data?.gallery) ? data.gallery : []), ...JYC_SOURCE_ARCHIVE_PHOTO_ITEMS], [data?.gallery]);
   const items = useMemo(() => {
     const seen = new Set();
     return rawGallery
@@ -254,7 +254,7 @@ export function JYC57Gallery({data}){
   }, [rawGallery]);
 
   const categories = useMemo(() => ['All', ...new Set(items.map(g => g.category).filter(Boolean))], [items]);
-  const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
+  const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
 
   useEffect(() => {
     let alive = true;
@@ -265,7 +265,7 @@ export function JYC57Gallery({data}){
   }, []);
 
   const publishedAlbums = useMemo(() => {
-    const merged = [...remoteAlbums, ...JYC_SOURCE_ARCHIVE_ALBUMS].filter(album => album && album.slug && album.is_published !== false);
+    const merged = [...JYC_SOURCE_ARCHIVE_ALBUMS, ...remoteAlbums].filter(album => album && album.slug && album.is_published !== false);
     const unique = [...new Map(merged.map(album => [String(album.slug), album])).values()];
     return unique.filter(album => album.cover_url || items.some(g =>
       g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name
@@ -284,6 +284,7 @@ export function JYC57Gallery({data}){
   }, [params, items]);
 
   useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug]);
+  useEffect(() => { setZoom(1); }, [selected?.url]);
 
   const filtered = useMemo(() => {
     return items.filter(g => {
