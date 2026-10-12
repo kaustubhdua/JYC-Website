@@ -1,4 +1,4 @@
-import React, { Children, useState } from 'react';
+import React, { Children, useRef, useState } from 'react';
 import './FlipCard.css';
 
 /**
@@ -8,6 +8,9 @@ import './FlipCard.css';
  */
 export default function FlipCard({ front, back, children, className = '', label = 'Flip card' }) {
   const [flipped, setFlipped] = useState(false);
+  const frontRef = useRef(null);
+  const backRef = useRef(null);
+  const focusFace = next => requestAnimationFrame(() => (next ? backRef.current : frontRef.current)?.focus({ preventScroll: true }));
   const faces = Children.toArray(children);
   const frontContent = front ?? faces[0] ?? null;
   const backContent = back ?? faces[1] ?? null;
@@ -17,12 +20,13 @@ export default function FlipCard({ front, back, children, className = '', label 
     if (e.target.closest('a, button, input, textarea, select, [data-flip-ignore]')) {
       return;
     }
-    setFlipped(prev => !prev);
+    setFlipped(prev => { const next = !prev; focusFace(next); return next; });
   };
 
   const handleFlipBack = (e) => {
     e.stopPropagation();
     setFlipped(false);
+    requestAnimationFrame(() => frontRef.current?.focus({ preventScroll: true }));
   };
 
   const handleKeyDown = (e) => {
@@ -30,11 +34,12 @@ export default function FlipCard({ front, back, children, className = '', label 
       // Don't intercept if target is a link or inner button
       if (e.target.closest('a, button, input')) return;
       e.preventDefault();
-      setFlipped(prev => !prev);
+      setFlipped(prev => { const next = !prev; focusFace(next); return next; });
     }
     if (e.key === 'Escape' && flipped) {
       e.preventDefault();
       setFlipped(false);
+      requestAnimationFrame(() => frontRef.current?.focus({ preventScroll: true }));
     }
   };
 
@@ -43,6 +48,7 @@ export default function FlipCard({ front, back, children, className = '', label 
       className={`flip-card ${flipped ? 'is-flipped' : ''} ${className}`.trim()}
       role="region"
       aria-label={label}
+      aria-expanded={flipped}
       onClick={handleCardClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -50,16 +56,22 @@ export default function FlipCard({ front, back, children, className = '', label 
       <div className="flip-card__inner">
         {/* Front Face */}
         <div
+          ref={frontRef}
+          tabIndex={-1}
           className="flip-card__face flip-card__front"
           aria-hidden={flipped}
+          inert={flipped}
         >
           {frontContent}
         </div>
 
         {/* Back Face */}
         <div
+          ref={backRef}
+          tabIndex={-1}
           className="flip-card__face flip-card__back"
           aria-hidden={!flipped}
+          inert={!flipped}
         >
           {backContent}
           <button
