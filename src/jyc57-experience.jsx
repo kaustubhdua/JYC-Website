@@ -356,7 +356,7 @@ export function JYC57Gallery({data}){
   }, [items, query, eventCategory, year, mediaFilter]);
 
   const selectedIndex = selected === null ? -1 : filtered.findIndex(g => g.url === selected.url);
-  const openPhoto=photo=>{if(!photo)return;setSelected(photo);const next=new URLSearchParams(loc.search);next.set('photo',String(photo.id||photo.url));nav({pathname:loc.pathname,search:'?'+next.toString()},{replace:true});};
+  const openPhoto=photo=>{if(!photo)return;setSelected(photo);const next=new URLSearchParams(loc.search);next.set('photo',String(photo.id||photo.url));nav({pathname:albumSlug?albumPath(albumSlug):loc.pathname,search:'?'+next.toString()},{replace:true});};
   const closePhoto=()=>{setSelected(null);const next=new URLSearchParams(loc.search);next.delete('photo');nav({pathname:loc.pathname,search:next.toString()?'?'+next.toString():''},{replace:true});};
   const setFilter=filter=>{setMediaFilter(filter);setVisibleCount(36);};
   useEffect(()=>{const photoKey=params.get('photo');if(!photoKey)return;const match=items.find(photo=>String(photo.id||photo.url)===photoKey||photo.url===photoKey);if(match)setSelected(match);},[params,items]);
@@ -441,7 +441,11 @@ export function JYC57Gallery({data}){
       </div>
     </div>
 
-    <div className="jyc57-media-filter" role="group" aria-label="Filter gallery by media type">{[['all','All photos'],['club','Clubs & communities'],['event','Events']].map(([value,label])=><button key={value} type="button" className={`jyc-filter-pill ${mediaFilter===value?'is-active':''}`} aria-pressed={mediaFilter===value} onClick={()=>setFilter(value)}>{label}</button>)}</div>
+    <div className="jyc57-media-filter" role="group" aria-label="Filter gallery by media type">
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='all'?'is-active':''}`} aria-pressed={mediaFilter==='all'} onClick={()=>setFilter('all')}>All photos</button>
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='club'?'is-active':''}`} aria-pressed={mediaFilter==='club'} onClick={()=>setFilter('club')}>Clubs & communities</button>
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='event'?'is-active':''}`} aria-pressed={mediaFilter==='event'} onClick={()=>setFilter('event')}>Events</button>
+    </div>
     {/* Category & Year Pills */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 28 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
