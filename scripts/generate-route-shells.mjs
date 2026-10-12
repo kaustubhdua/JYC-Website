@@ -117,6 +117,65 @@ const routes={
   }
 };
 
+const slugify=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const plainText=value=>String(value||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/\s+/g,' ').trim();
+const metaDescription=(value,fallback)=>{const text=plainText(value)||fallback;return text.length>160?text.slice(0,157).trimEnd()+'...':text;};
+
+// Public records may be edited after this source bundle was authored. Add
+// route-specific shells for every currently published record available to the
+// build, while keeping the curated metadata above authoritative for flagships.
+async function loadDynamicRoutes(){
+  const supabaseUrl=(process.env.VITE_SUPABASE_URL||'').replace(/\/$/,'');
+  const key=process.env.VITE_SUPABASE_PUBLISHABLE_KEY||process.env.VITE_SUPABASE_ANON_KEY||'';
+  if(!supabaseUrl||!key){
+    console.log('Route shells: Supabase build credentials unavailable; using curated route metadata.');
+    return;
+  }
+  try{
+    const response=await fetch(`${supabaseUrl}/rest/v1/rpc/jyc_read_site_data`,{
+      method:'POST',
+      headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:'{}',
+      signal:AbortSignal.timeout(8000)
+    });
+    if(!response.ok) throw new Error(`public site data returned HTTP ${response.status}`);
+    const data=await response.json();
+    let dynamicCount=0;
+    for(const event of (Array.isArray(data?.events)?data.events:[])){
+      if(!event?.published||event?.archived===true)continue;
+      const name=plainText(event.title||event.name);
+      const slug=slugify(event.slug||name)||String(event.id||'');
+      if(!name||!slug)continue;
+      const route='/events/'+slug;
+      if(routes[route])continue;
+      const summary=event.summary||event.description||event.shortDescription;
+      routes[route]={
+        title:`${name} | JIIT Youth Club 128`,
+        description:metaDescription(summary,`Official JYC event details for ${name} at JIIT Wish Town Campus, Sector 128, Noida.`)
+      };
+      dynamicCount++;
+    }
+    for(const club of (Array.isArray(data?.clubs)?data.clubs:[])){
+      if(!club?.published||club?.status==='archived')continue;
+      const name=plainText(club.name);
+      const slug=slugify(name)||String(club.id||'');
+      if(!name||!slug)continue;
+      const route='/clubs/'+slug;
+      if(routes[route])continue;
+      const summary=club.summary||club.description||club.about;
+      routes[route]={
+        title:`${name} | JIIT Youth Club 128`,
+        description:metaDescription(summary,`Official JYC community profile for ${name} at JIIT Wish Town Campus, Sector 128, Noida.`)
+      };
+      dynamicCount++;
+    }
+    console.log(`Route shells: added ${dynamicCount} published database route(s).`);
+  }catch(error){
+    // A temporary CMS/API outage must not break the public production build.
+    console.warn('Route shells: dynamic metadata unavailable; using curated route metadata.',error?.message||error);
+  }
+}
+
 function shellFor(meta,route){
   let out=html;
   const tags=[
@@ -179,6 +238,8 @@ for(const hub of JYC_HUB_SOURCE_REGISTRY.filter(item=>item.publicationStatus==='
     description: content.summary || 'Official JYC community profile for '+hub.name+' at JIIT Wish Town Campus, Sector 128, Noida.'
   };
 }
+await loadDynamicRoutes();
+
 for(const [route,meta] of Object.entries(routes)){
   const dir=path.join(dist,...route.replace(/^\//,'').split('/'));
   fs.mkdirSync(dir,{recursive:true});
