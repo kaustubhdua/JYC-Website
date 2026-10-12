@@ -5,78 +5,87 @@
    This is the final public override layer; historical CSS remains for reference.
 */
 :root{
-  --jyc-navy:#050a14;
-  --jyc-navy-deep:#030710;
-  --jyc-navy-soft:#0b1329;
-  --jyc-champagne:#38bdf8;
-  --jyc-champagne-soft:#111c38;
-  --jyc-ivory:#f8fafc;
-  --jyc-cream:#050a14;
-  --jyc-bronze:#0284c7;
-  --jyc-ink:#f8fafc;
-  --jyc-muted:#94a3b8;
-  --jyc-line:rgba(255,255,255,.1);
-  --jyc-line-dark:rgba(255,255,255,.08);
+  --jyc-navy:#0F0E11;
+  --jyc-navy-deep:#0F0E11;
+  --jyc-navy-soft:#18161D;
+  --jyc-champagne:#BF9C6F;
+  --jyc-champagne-soft:#BF9C6F;
+  --jyc-ivory:#FFF8E1;
+  --jyc-cream:#F5F1E6;
+  --jyc-bronze:#BF9C6F;
+  --jyc-ink:#1A191D;
+  --jyc-muted:#6E6A75;
+  --jyc-line:rgba(26,25,29,.12);
+  --jyc-line-dark:rgba(26,25,29,.10);
   --jyc-shadow:0 18px 55px rgba(0,0,0,.35);
   --jyc-shadow-dark:0 22px 65px rgba(0,0,0,.5);
   --jyc-ease:cubic-bezier(.22,.8,.24,1);
   --jyc-content:min(1240px,calc(100vw - 40px));
-  --accent-gold:#fbbf24;
-  --accent-red:#ef4444;
-  --club-red:#ef4444;
-  --club-gold:#fbbf24;
-  --jyc-gold:#fbbf24;
-  --bg-main:#050a14;
-  --bg-card:#0b1329;
-  --text-primary:#f8fafc;
-  --text-muted:#94a3b8;
-  --border-tech:var(--jyc-line);
+  --accent-gold:#BF9C6F;
+  --accent-red:#A82420;
+  --club-red:#A82420;
+  --club-gold:#BF9C6F;
+  --jyc-gold:#BF9C6F;
+  --bg-main:#F5F1E6;
+  --bg-card:#FFFFFF;
+  --text-primary:#1A191D;
+  --text-muted:#6E6A75;
+  --border-tech:rgba(26,25,29,.12);
 }
 html[data-theme="light"]{
   color-scheme:light;
-  --jyc-bg:#f8fafc;
-  --jyc-surface:#ffffff;
-  --jyc-text:#0f172a;
-  --jyc-muted-live:#475569;
-  --jyc-border:rgba(203,213,225,.7);
-  --accent-gold:#d97706;
-  --accent-red:#dc2626;
-  --club-red:#dc2626;
-  --club-gold:#d97706;
-  --jyc-gold:#d97706;
-  --bg-main:#f8fafc;
-  --bg-card:#ffffff;
-  --text-primary:#0f172a;
-  --text-muted:#475569;
-  --border-tech:rgba(203,213,225,.7);
+  --jyc-bg:#F5F1E6;
+  --jyc-surface:#FFFFFF;
+  --jyc-text:#1A191D;
+  --jyc-muted-live:#6E6A75;
+  --jyc-border:rgba(26,25,29,.12);
+  --accent-gold:#BF9C6F;
+  --accent-red:#A82420;
+  --club-red:#A82420;
+  --club-gold:#BF9C6F;
+  --jyc-gold:#BF9C6F;
+  --bg-main:#F5F1E6;
+  --bg-card:#FFFFFF;
+  --text-primary:#1A191D;
+  --text-muted:#6E6A75;
+  --border-tech:rgba(26,25,29,.12);
 }
 html[data-theme="dark"]{
   color-scheme:dark;
-  --jyc-bg:#050a14;
-  --jyc-surface:#0b1329;
-  --jyc-text:#f8fafc;
-  --jyc-muted-live:#94a3b8;
-  --jyc-border:rgba(255,255,255,.1);
+  --jyc-bg:#0F0E11;
+  --jyc-surface:#18161D;
+  --jyc-text:#FFF8E1;
+  --jyc-ink:#FFF8E1;
+  --jyc-muted:#A8A3B0;
+  --jyc-muted-live:#A8A3B0;
+  --jyc-line:rgba(255,248,225,.12);
+  --jyc-line-dark:rgba(255,248,225,.10);
+  --jyc-border:rgba(255,248,225,.12);
+  --bg-main:#0F0E11;
+  --bg-card:#18161D;
+  --text-primary:#FFF8E1;
+  --text-muted:#A8A3B0;
+  --border-tech:rgba(255,248,225,.12);
 }
 html,body,#root{min-width:0;overflow-x:hidden}
 html{background:var(--jyc-bg);scroll-padding-top:78px}
 body{
   margin:0;
   background:
-    radial-gradient(circle at 50% -12%,rgba(56,189,248,.08),transparent 35%),
-    linear-gradient(180deg,#050a14 0%,#090d16 100%);
+    radial-gradient(circle at 50% -12%,rgba(168,36,32,.08),transparent 35%),
+    linear-gradient(180deg,#0F0E11 0%,#090d16 100%);
   color:var(--jyc-text);
   transition:background-color .35s ease,color .25s ease;
 }
 html[data-theme="light"] body{
   background:
-    radial-gradient(circle at 50% -12%,rgba(2,132,199,.06),transparent 35%),
-    linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
+    radial-gradient(circle at 50% -12%,rgba(191,156,111,.08),transparent 35%),
+    linear-gradient(180deg,#F5F1E6 0%,#FFFDF8 100%);
 }
 html[data-theme="dark"] body{
   background:
-    radial-gradient(circle at 50% -12%,rgba(56,189,248,.08),transparent 35%),
-    linear-gradient(180deg,#050a14 0%,#080f1e 100%);
+    radial-gradient(circle at 50% -12%,rgba(168,36,32,.08),transparent 35%),
+    linear-gradient(180deg,#0F0E11 0%,#080f1e 100%);
 }
 .public-app,.home,.page{
   --bg-main:var(--jyc-bg)!important;

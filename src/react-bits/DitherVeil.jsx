@@ -373,19 +373,20 @@ void main() {
 const DitherVeil = ({
   src = DEFAULT_SRC,
   fallbackSrc = DEFAULT_SRC,
+  originalFallbackSrc = null,
   fit = 'contain',
   pattern = 'floyd',
   pixelSize = 2,
   levels = 2,
   palette = 'duotone',
-  inkColor = '#120f17',
-  paperColor = '#f4f1ea',
+  inkColor = '#18161d',
+  paperColor = '#fffdf8',
   contrast = 1.15,
   brightness = 0,
   revealRadius = 200,
   softness = 0.6,
   linger = 1,
-  rimColor = '#a78bfa',
+  rimColor = '#a82420',
   rim = 0,
   reverse = false,
   wander = false,
@@ -760,9 +761,12 @@ const DitherVeil = ({
       wake();
     };
     img.onerror = () => {
-      if (fallbackSrc && src !== fallbackSrc && img.dataset.logoFallbackAttempted !== '1') {
-        img.dataset.logoFallbackAttempted = '1';
-        img.src = fallbackSrc;
+      const candidates = [fallbackSrc, originalFallbackSrc].filter(Boolean);
+      let next = Number(img.dataset.logoFallbackStage || 0);
+      while (next < candidates.length && new URL(candidates[next], window.location.href).href === img.src) next += 1;
+      if (next < candidates.length) {
+        img.dataset.logoFallbackStage = String(next + 1);
+        img.src = candidates[next];
         return;
       }
       container.dataset.static = '1';
@@ -830,9 +834,9 @@ const DitherVeil = ({
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
-  }, [src, fallbackSrc]);
+  }, [src, fallbackSrc, originalFallbackSrc]);
 
-  return <div ref={containerRef} className={`dither-veil ${className}`.trim()} style={style}><img className="dither-veil__fallback" src={src} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={event=>{const image=event.currentTarget;if(fallbackSrc&&src!==fallbackSrc&&image.dataset.logoFallbackAttempted!=='1'){image.dataset.logoFallbackAttempted='1';image.src=fallbackSrc}else image.hidden=true}} /></div>;
+  return <div ref={containerRef} className={`dither-veil ${className}`.trim()} style={style}><img className="dither-veil__fallback" src={src} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={event=>{const image=event.currentTarget;const candidates=[fallbackSrc,originalFallbackSrc].filter(Boolean);let next=Number(image.dataset.logoFallbackStage||0);while(next<candidates.length&&new URL(candidates[next],window.location.href).href===image.src)next+=1;if(next<candidates.length){image.dataset.logoFallbackStage=String(next+1);image.src=candidates[next]}else image.hidden=true}} /></div>;
 };
 
 export default DitherVeil;

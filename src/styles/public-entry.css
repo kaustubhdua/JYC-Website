@@ -1,0 +1,4 @@
+/* Single public CSS entry point. Keep order aligned with the former main.jsx imports. */
+@import './public-system.css';
+@import '../jyc-design-upgrades.css';
+@import './jyc-pro-redesign.css';

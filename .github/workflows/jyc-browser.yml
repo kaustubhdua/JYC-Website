@@ -1,5 +1,9 @@
 name: JYC Browser QA
 
+concurrency:
+  group: jyc-browser-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]

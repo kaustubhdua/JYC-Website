@@ -4,11 +4,22 @@ import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
 import { sourceEventMedia } from './jyc-source-media.js';
 import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
+import { JYCNowStrip } from './jyc-now.jsx';
 const LazyDitherVeil = lazy(() => import('./react-bits/DitherVeil.jsx'));
+const LazyMagicBento = lazy(() => import('./components/react-bits/MagicBento.jsx'));
 import './jyc-editorial-home.css';
 
-const FALLBACK = '/jyc-logo-official.webp';
-const DITHER_SOURCE = '/jyc-logo-official.webp';
+const ORIGINAL_LOGO = '/JYC%20Logo(4).png';
+const FALLBACK = import.meta.env.PROD ? '/assets/jyc-logo.webp' : ORIGINAL_LOGO;
+const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo.avif' : FALLBACK;
+const handleHeroLogoFallback = event => {
+  const image = event.currentTarget;
+  const candidates = [FALLBACK, ORIGINAL_LOGO];
+  let next = Number(image.dataset.logoFallbackStage || 0);
+  while (next < candidates.length && new URL(candidates[next], window.location.href).href === image.src) next += 1;
+  if (next < candidates.length) { image.dataset.logoFallbackStage = String(next + 1); image.src = candidates[next]; }
+  else image.hidden = true;
+};
 
 const slug = v => String(v || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const eventPath = e => `/events/${slug(e?.slug||e?.title)}`;
@@ -55,8 +66,7 @@ const PILLARS = [
     title: 'Technical & Innovation',
     tag: 'AI · ROBOTICS · CP · WEB · CYBERSEC',
     desc: 'Hackathons, open-source dev-sprints, AI research, and combat robotics across OSDC, Knuth, CICR, GDG & uCR.',
-    icon: '⚡',
-    count: '10 Hubs'
+    icon: '⚡'
   },
   {
     id: 'cultural',
@@ -64,8 +74,7 @@ const PILLARS = [
     title: 'Cultural & Performing Arts',
     tag: 'DRAMATICS · DANCE · BANDS · CLASSICAL',
     desc: 'Street play, stage dramatics, western & classical dance, and live acoustics with Abhivyakti, Jhankaar, Fortissmo & Crescendo.',
-    icon: '🎭',
-    count: '5 Societies'
+    icon: '🎭'
   },
   {
     id: 'literary',
@@ -73,17 +82,15 @@ const PILLARS = [
     title: 'Literary, MUN & Speaking',
     tag: 'DEBATES · QUIZZING · MUN · WRITING',
     desc: 'Parliamentary debates, National Model United Nations, literary journals, and inter-college quiz championships.',
-    icon: '🖋️',
-    count: '3 Societies'
+    icon: '🖋️'
   },
   {
     id: 'fests',
     family: 'Flagship',
     title: 'Flagship Campus Fests',
     tag: 'CONVERGE · DRON-O-WAR · INDUCTION',
-    desc: 'Annual multi-day festivals uniting thousands of students across North India for competition and celebrated headliners.',
-    icon: '🎪',
-    count: '7 Flagships'
+    desc: 'Campus festivals, showcases, competitions and student-led experiences throughout the academic year.',
+    icon: '🎪'
   },
   {
     id: 'sports',
@@ -91,8 +98,7 @@ const PILLARS = [
     title: 'Sports & Athletics',
     tag: 'CRICKET · FOOTBALL · BASKETBALL · CHESS',
     desc: 'High-intensity athletic tournaments, intra-college leagues, table tennis, badminton, and outdoor sports championships.',
-    icon: '🏆',
-    count: '5 Arenas'
+    icon: '🏆'
   },
   {
     id: 'creative',
@@ -100,13 +106,45 @@ const PILLARS = [
     title: 'Media, Design & Outreach',
     tag: 'UI/UX · GRAPHICS · PHOTO · SOCIAL',
     desc: 'Visual arts, graphic design, photography, campus coverage, community service, and youth social outreach.',
-    icon: '🎨',
-    count: '4 Hubs'
+    icon: '🎨'
   }
 ];
 
+function LazyActivityBento({ activities, nav }) {
+  const rootRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setReady(true);
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin:'360px 0px' });
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={rootRef} className="jh-activity-bento-shell" aria-label="Explore JYC activities">
+    {ready
+      ? <Suspense fallback={<div className="jh-bento-loading" role="status">Loading activity discovery…</div>}>
+          <LazyMagicBento items={activities} enableMagnetism={true} enableTilt={true} enableStars={false} enableSpotlight={true} enableBorderGlow={false} particleCount={0} onNavigate={nav} glowColor="191,156,111" />
+        </Suspense>
+      : <div className="jh-bento-loading" aria-hidden="true">
+          {activities.map(activity => <div key={activity.id} className="jh-bento-loading-card"><span>{activity.label}</span><strong>{activity.title}</strong><p>{activity.description}</p></div>)}
+        </div>}
+  </div>;
+}
+
 export function JYCEditorialHome({ data }) {
   const nav = useNavigate();
+  const activities = useMemo(() => PILLARS.map(p => ({ id:p.id, label:p.family.toUpperCase(), title:p.title, description:p.desc, href:p.id === 'fests' ? '/events' : '/clubs' })), []);
   const events = useMemo(() => Array.isArray(data?.events) ? data.events.filter(e => e?.published && !e?.archived).slice().sort((a, b) => dateMs(a) - dateMs(b)) : [], [data?.events]);
   const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }, []);
   const upcoming = events.filter(e => { const t = dateMs(e); return Number.isFinite(t) && t >= today; }).slice(0, 4);
@@ -115,52 +153,20 @@ export function JYCEditorialHome({ data }) {
   const featuredRegistration = registrationState(featured);
 
   const photoStories = useMemo(() => {
-    const defaultFlagships = [
-      { id: 'flag-converge', url: '/assets/events/converge-2026.webp', association: 'Converge Fest', year: '2026', caption: 'Converge 2026 · Annual Cultural & Technical Flagship Fest' },
-      { id: 'flag-jai', url: '/assets/events/jai-2026.webp', association: 'JAI Summit', year: '2026', caption: 'JAI · Jaypee Agentic AI International Hackathon' },
-      { id: 'flag-drono', url: '/assets/home/dron-o-war-1.webp', association: 'Dron-O-War', year: '2026', caption: 'Dronotics & CICR · National Combat Robotics Championship' },
-      { id: 'flag-ebullience', url: '/assets/home/ebullience.webp', association: "Ebullience '25", year: '2025', caption: "Ebullience · Fresher's Induction & Stage Arts" },
-      { id: 'flag-sports', url: '/assets/hub-photos/sports-02.webp', association: 'Kshitij Sports', year: '2026', caption: 'JSA · Annual Campus Sports & Football Championship' },
-      { id: 'flag-dance', url: '/assets/hub-photos/vamunique-02.webp', association: 'VamUnique Dance', year: '2026', caption: 'VamUnique · Classical & Contemporary Performing Arts' },
-    ];
     const items = Array.isArray(data?.gallery) ? data.gallery : [];
     const seen = new Set();
     const selected = [];
     for (const item of items) {
       const url = String(item?.url || '').trim();
       const association = String(item?.association || item?.albumName || '').trim();
-      if (!url || !association || item?.published === false || item?.archived === true || seen.has(association.toLowerCase())) continue;
+      const role = String(item?.role || '').toLowerCase();
+      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || /jyc archive|source archive/i.test(association) || seen.has(association.toLowerCase())) continue;
       seen.add(association.toLowerCase());
       selected.push({ ...item, association });
-      if (selected.length === 6) break;
+      if (selected.length === 3) break;
     }
-    return selected.length >= 4 ? selected : defaultFlagships;
+    return selected;
   }, [data?.gallery]);
-
-  const [countdown, setCountdown] = useState(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const diff = Math.max(0, target - Date.now());
-    return {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-      mins: Math.floor((diff / 1000 / 60) % 60),
-      secs: Math.floor((diff / 1000) % 60),
-    };
-  });
-
-  useEffect(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const timer = setInterval(() => {
-      const diff = Math.max(0, target - Date.now());
-      setCountdown({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        mins: Math.floor((diff / 1000 / 60) % 60),
-        secs: Math.floor((diff / 1000) % 60),
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const handleSpotlight = e => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -169,6 +175,7 @@ export function JYCEditorialHome({ data }) {
   };
 
   const handleCardTilt = e => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     handleSpotlight(e);
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
@@ -208,7 +215,7 @@ export function JYCEditorialHome({ data }) {
             <em className="jh-title-gradient">THE SPIRIT OF JIIT.</em>
           </h1>
           <p className="jh-lead">
-            The student-powered body uniting 23+ hubs, technical societies, flagship fests, cultural arts, and athletic excellence at JIIT Sector 128.
+            A student-led community connecting technology, culture, performance, sport and the people who make campus life happen at JIIT Sector 128.
           </p>
           <div className="jh-actions jh-hero-actions">
             <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/events')}>
@@ -222,60 +229,7 @@ export function JYCEditorialHome({ data }) {
             </button>
           </div>
 
-          {/* LIVE STATS STRIP */}
-          <div className="jh-hero-stats-row">
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>23<i>+</i></strong>
-              <span>Hubs & Societies</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>50<i>+</i></strong>
-              <span>Annual Events</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>5,000<i>+</i></strong>
-              <span>Students Reached</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>15<i>+</i></strong>
-              <span>Years Legacy</span>
-            </div>
-          </div>
 
-          {/* FLAGSHIP COUNTDOWN HUD */}
-          <div className="jh-flagship-countdown-strip" onMouseMove={handleSpotlight}>
-            <div className="jh-countdown-label">
-              <span className="jh-live-pulse-dot" />
-              <div>
-                <small>CAMPUS FLAGSHIP COUNTDOWN</small>
-                <strong>CONVERGE '26 &amp; DRON-O-WAR</strong>
-              </div>
-            </div>
-            <div className="jh-countdown-timer">
-              <div className="jh-timer-segment">
-                <b>{String(countdown.days).padStart(2, '0')}</b>
-                <span>DAYS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.hours).padStart(2, '0')}</b>
-                <span>HOURS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.mins).padStart(2, '0')}</b>
-                <span>MINS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.secs).padStart(2, '0')}</b>
-                <span>SECS</span>
-              </div>
-            </div>
-            <button type="button" className="jh-countdown-cta" onClick={() => nav('/events')}>
-              Lineup ↗
-            </button>
-          </div>
         </div>
 
         {/* HERO DITHERVEIL VISUAL PLAQUE */}
@@ -284,25 +238,24 @@ export function JYCEditorialHome({ data }) {
           <div className="jh-hero-logo-plaque">
             <span className="jh-logo-halo" aria-hidden="true" />
             <div className="jh-dither-mark" role="img" aria-label="Official JIIT Youth Club 128 logo with an interactive Dither Veil effect">
-              <Suspense fallback={
-                <img className="jh-hero-logo" src={FALLBACK} alt="JYC Official Logo" loading="eager" fetchPriority="high" decoding="async" />
-              }>
+              <Suspense fallback={<img className="jh-hero-logo jh-dither-suspense-fallback" src={DITHER_SOURCE} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" onError={handleHeroLogoFallback} />}>
                 <LazyDitherVeil
                   src={DITHER_SOURCE}
                   fallbackSrc={FALLBACK}
+                  originalFallbackSrc={ORIGINAL_LOGO}
                   fit="contain"
                   pattern="floyd"
                   pixelSize={2}
                   levels={3}
                   palette="duotone"
-                  inkColor="#050a14"
-                  paperColor="#f8fafc"
+                  inkColor="#18161d"
+                  paperColor="#fffdf8"
                   contrast={1.25}
                   brightness={0.04}
                   revealRadius={250}
                   softness={0.7}
                   linger={1.2}
-                  rimColor="#38bdf8"
+                  rimColor="#a82420"
                   rim={0.28}
                   wander={false}
                   clickBurst={true}
@@ -373,6 +326,21 @@ export function JYCEditorialHome({ data }) {
         </div>
       </section>
 
+      {/* V1 EDITORIAL INTRO: context before the discovery content. */}
+      <section className="jh-about-editorial jh-container" aria-labelledby="jh-about-title">
+        <div className="jh-about-kicker">01 / MORE THAN A CLUB DIRECTORY</div>
+        <div className="jh-about-editorial-grid">
+          <h2 id="jh-about-title">A campus is made<br /><em>by the people in it.</em></h2>
+          <div className="jh-about-editorial-copy">
+            <p>JIIT Youth Club brings student communities together across technology, culture, performance, service and sport. Find the people, projects and experiences that make campus life feel like yours.</p>
+            <div className="jh-about-editorial-actions">
+              <button type="button" className="jh-text-link" onClick={() => nav('/about')}>How JYC works <span>↗</span></button>
+              <button type="button" className="jh-text-link" onClick={() => nav('/clubs')}>Explore communities <span>↗</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* PILLARS / WHAT JYC DOES BENTO GRID */}
       <section className="jh-pillars-section jh-container">
         <div className="jh-section-head">
@@ -384,28 +352,7 @@ export function JYCEditorialHome({ data }) {
             Explore all 23 societies <span>↗</span>
           </button>
         </div>
-        <div className="jh-pillars-bento">
-          {PILLARS.map(p => (
-            <article
-              key={p.id}
-              className={`jh-pillar-card jh-pillar-${p.id}`}
-              onClick={() => nav(p.id === 'fests' ? '/events' : `/clubs`)}
-              onMouseMove={handleSpotlight}
-            >
-              <div className="jh-pillar-head">
-                <span className="jh-pillar-icon">{p.icon}</span>
-                <span className="jh-pillar-count">{p.count}</span>
-              </div>
-              <span className="jh-pillar-tag">{p.tag}</span>
-              <h3>{p.title}</h3>
-              <p>{p.desc}</p>
-              <div className="jh-pillar-footer">
-                <span>Explore Communities</span>
-                <b aria-hidden="true">↗</b>
-              </div>
-            </article>
-          ))}
-        </div>
+        <LazyActivityBento activities={activities} nav={nav} />
       </section>
 
       {/* FEATURED & UPCOMING EVENTS */}
@@ -430,6 +377,7 @@ export function JYCEditorialHome({ data }) {
                 decoding="async"
                 sizes="(max-width: 680px) 100vw, 50vw"
                 fallbackSrc={FALLBACK}
+                fallbackAlt="Official JYC logo placeholder; event media unavailable"
               />
               <span className="jh-featured-badge">FEATURED EXPERIENCE</span>
             </div>
@@ -472,6 +420,9 @@ export function JYCEditorialHome({ data }) {
         )}
       </section>
 
+      {/* Editorial update feed: source-linked updates instead of invented activity counters. */}
+      <JYCNowStrip limit={3} compact={false} />
+
       {/* LIVING JYC SPOTLIGHT */}
       <JYCSpotlight data={data} />
 
@@ -508,6 +459,7 @@ export function JYCEditorialHome({ data }) {
                   decoding="async"
                   sizes={index === 0 ? '(max-width: 760px) 100vw, 58vw' : '(max-width: 760px) 100vw, 34vw'}
                   fallbackSrc={FALLBACK}
+                  fallbackAlt="Official JYC logo placeholder; photograph unavailable"
                 />
                 <span className="jh-story-shade" aria-hidden="true" />
                 <span className="jh-story-copy">

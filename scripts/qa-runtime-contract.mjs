@@ -34,12 +34,12 @@ if(!nowLogoOk)failed++;
 const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes('safeExternalUrl(x.image||x.thumbnail||\'\')')&&nowModule.includes('.filter(x=>x.url)');
 console.log((nowNormaliseOk ? "PASS" : "FAIL")+": JYC Now drops connector items whose URLs fail external URL validation");
 if(!nowNormaliseOk)failed++;
-const registrationSubmitOk=authModule.includes('<form className="native-registration" onSubmit={submit}>')&&authModule.includes('<button type="submit" className="btn" disabled={busy}>{busy?\'Submitting…\':\'Submit registration\'}</button>');
-console.log((registrationSubmitOk ? "PASS" : "FAIL")+": native event registration form has a real submit control");
-if(!registrationSubmitOk)failed++;
-const nativeRegistrationGuardOk=authModule.includes("event.registrationMode!=='native'")&&authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes('native-registration');
-console.log((nativeRegistrationGuardOk ? "PASS" : "FAIL")+": native event registration is explicitly mode-gated and uses the current registration RPC");
-if(!nativeRegistrationGuardOk)failed++;
+const nativeRegistrationOk=!authModule.includes('className="native-registration"')&&!authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes('Public native registration is disabled.');
+console.log((nativeRegistrationOk ? "PASS" : "FAIL")+": public native registration is removed after RPC revocation");
+if(!nativeRegistrationOk)failed++;
+const externalRegistrationOk=authModule.includes('Open official registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&authModule.includes('target="_blank" rel="noopener noreferrer"');
+console.log((externalRegistrationOk ? "PASS" : "FAIL")+": public external registration links require a safe HTTP(S) URL");
+if(!externalRegistrationOk)failed++;
 
 const nowLazyImportOk=nowModule.includes('lazy(') && /import React,\{[^}]*\blazy\b/.test(nowModule);
 console.log((nowLazyImportOk ? "PASS" : "FAIL")+": JYC Now lazy React dependency is explicitly imported");

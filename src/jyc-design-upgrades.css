@@ -1,10 +1,10 @@
-/* JYC V67 — editorial photo wall, magnetic bento, accessible profiles and responsive public cards. */
+/* JYC design upgrades — editorial photo wall, accessible profiles and responsive public cards. */
 :root{
-  --jyc-design-accent:#38bdf8;
-  --jyc-design-copper:#f59e0b;
-  --jyc-design-sage:#10b981;
-  --jyc-design-blue:#6366f1;
-  --jyc-design-lilac:#a855f7;
+  --jyc-design-accent:#A82420;
+  --jyc-design-copper:#BF9C6F;
+  --jyc-design-sage:#BF9C6F;
+  --jyc-design-blue:#A82420;
+  --jyc-design-lilac:#BF9C6F;
   --jyc-design-motion:cubic-bezier(.2,.8,.2,1);
 }
 
@@ -20,8 +20,8 @@
 .jyc-home .jh-drift-wall-vignette:after{content:"";position:absolute;inset:0;opacity:.16;background-image:radial-gradient(rgba(248,241,229,.42) .45px,transparent .65px);background-size:4px 4px;mix-blend-mode:soft-light}
 .jyc-home .jh-drift-wall-fallback{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#39302b 0%,#171518 52%,#0b0a0c 100%)}
 .jyc-home .jh-hero-logo-plaque{position:absolute;z-index:2;inset:12% 10%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;border:1px solid rgba(248,241,229,.22);background:linear-gradient(145deg,rgba(12,11,13,.54),rgba(12,11,13,.2));box-shadow:inset 0 0 80px rgba(0,0,0,.35),0 30px 90px rgba(0,0,0,.28);backdrop-filter:blur(1px)}
-.jyc-home .jh-logo-halo{position:absolute;width:min(88%,460px);aspect-ratio:1;border-radius:50%;background:conic-gradient(from 0deg at 50% 50%,#38bdf8,#818cf8,#fbbf24,#ef4444,#38bdf8);filter:blur(28px);opacity:.42;animation:jycHaloSpin 12s linear infinite;pointer-events:none}
-@keyframes jycHaloSpin{0%{transform:rotate(0deg) scale(.95)}50%{transform:rotate(180deg) scale(1.05)}100%{transform:rotate(360deg) scale(.95)}}
+.jyc-home .jh-logo-halo{position:absolute;width:min(88%,460px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(191,156,111,.24),rgba(168,36,32,.08) 46%,transparent 72%);filter:blur(24px);opacity:.38;animation:none;pointer-events:none}
+@keyframes jycHaloSpin{0%,100%{opacity:.38}50%{opacity:.48}}
 .jyc-home .jh-hero-logo{position:relative;width:clamp(170px,24vw,330px);height:auto;max-height:54%;object-fit:contain;filter:drop-shadow(0 14px 30px rgba(0,0,0,.58));animation:jyc-logo-settle 1.2s var(--jyc-design-motion) both}
 .jyc-home .jh-logo-caption{position:relative;color:#f8f1e5;font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.3em;text-align:center}
 .jyc-home .jh-logo-caption b{color:var(--jyc-design-accent);padding-inline:7px}
@@ -792,4 +792,24 @@
   .jyc57-page .jyc57-photo:hover img {
     transform: none !important;
   }
+}
+
+
+/* Keep visual identities inside the approved JYC palette. */
+.jyc-home .jh-logo-caption b { color: var(--jyc-design-copper); }
+.jyc-home .jh-family:nth-child(5n+2),
+.jyc-home .jh-family:nth-child(5n+3),
+.jyc-home .jh-family:nth-child(5n+4),
+.jyc-home .jh-family:nth-child(5n) { --card-tint: var(--jyc-design-copper); }
+.jyc57-page .jyc57-club-card:nth-child(6n+2),
+.jyc57-page .jyc57-club-card:nth-child(6n+3),
+.jyc57-page .jyc57-club-card:nth-child(6n+4),
+.jyc57-page .jyc57-club-card:nth-child(6n+5),
+.jyc57-page .jyc57-event-card:nth-child(5n+2),
+.jyc57-page .jyc57-event-card:nth-child(5n+3),
+.jyc57-page .jyc57-event-card:nth-child(5n+4),
+.jyc57-page .jyc57-event-card:nth-child(5n) { --club-accent: var(--jyc-design-copper); --event-accent: var(--jyc-design-copper); }
+@media (prefers-reduced-motion: reduce) {
+  .jyc-home .jh-logo-halo { animation: none !important; }
+  .jyc-home .jh-hero-drift-wall .drift-wall { animation: none !important; }
 }

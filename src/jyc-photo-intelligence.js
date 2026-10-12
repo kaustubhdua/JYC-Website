@@ -12,9 +12,9 @@ const dimensionResult=(width,height)=>width>0&&height>0?{width,height}:null;
 export function parseImageDimensions(input){
  const bytes=input instanceof Uint8Array?input:new Uint8Array(input||[]);
  if(bytes.length>=24&&bytes[0]===0x89&&ascii(bytes,1,4)==='PNG'&&bytes[4]===0x0d&&bytes[5]===0x0a&&bytes[6]===0x1a&&bytes[7]===0x0a)return dimensionResult(new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength).getUint32(16,false),new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength).getUint32(20,false));
- if(bytes.length>=30&&ascii(bytes,0,4)==='RIFF'&&ascii(bytes,8,12)==='WEBP'){
+ if(bytes.length>=26&&ascii(bytes,0,4)==='RIFF'&&ascii(bytes,8,12)==='WEBP'){
   const kind=ascii(bytes,12,16);
-  if(kind==='VP8X')return dimensionResult(1+(bytes[24]|bytes[25]<<8|bytes[26]<<16),1+(bytes[27]|bytes[28]<<8|bytes[29]<<16));
+  if(kind==='VP8X'&&bytes.length>=30)return dimensionResult(1+(bytes[24]|bytes[25]<<8|bytes[26]<<16),1+(bytes[27]|bytes[28]<<8|bytes[29]<<16));
   if(kind==='VP8 '&&bytes.length>=30&&bytes[23]===0x9d&&bytes[24]===0x01&&bytes[25]===0x2a)return dimensionResult((bytes[26]|bytes[27]<<8)&0x3fff,(bytes[28]|bytes[29]<<8)&0x3fff);
   if(kind==='VP8L'&&bytes.length>=26&&bytes[20]===0x2f)return dimensionResult(1+(bytes[21]|(bytes[22]&0x3f)<<8),1+((bytes[22]>>6)|(bytes[23]<<2)|((bytes[24]&0x0f)<<10)));
  }

@@ -18,7 +18,7 @@
 }
 
 .flip-card:focus-visible {
-  outline: 2px solid var(--color-accent-cyan, #38bdf8);
+  outline: 2px solid var(--color-accent-cyan, #A82420);
   outline-offset: 4px;
   border-radius: 18px;
 }
@@ -46,7 +46,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
-  border: 1px solid var(--color-border, rgba(56, 189, 248, 0.14));
+  border: 1px solid var(--color-border, rgba(191, 156, 111, 0.20));
   border-radius: 18px;
   background: var(--color-surface, #0c1222);
   box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5);
@@ -54,8 +54,8 @@
 }
 
 .flip-card:hover .flip-card__face {
-  border-color: var(--color-border-glow, rgba(56, 189, 248, 0.35));
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px var(--color-glow-cyan, rgba(56, 189, 248, 0.15));
+  border-color: var(--color-border-glow, rgba(191, 156, 111, 0.24));
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px var(--color-glow-cyan, rgba(191, 156, 111, 0.08));
 }
 
 .flip-card__front {
@@ -76,10 +76,10 @@
   align-self: flex-start;
   margin-top: auto;
   padding: 8px 16px;
-  border: 1px solid var(--color-border, rgba(56, 189, 248, 0.25));
+  border: 1px solid var(--color-border, rgba(191, 156, 111, 0.16));
   border-radius: 999px;
-  background: rgba(56, 189, 248, 0.08);
-  color: var(--color-accent-cyan, #38bdf8);
+  background: rgba(191, 156, 111, 0.10);
+  color: var(--color-accent-cyan, #A82420);
   font: 700 12px/1.2 'Space Grotesk', system-ui, sans-serif;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -87,8 +87,8 @@
 }
 
 .flip-card__back-trigger:hover {
-  background: rgba(56, 189, 248, 0.18);
-  border-color: var(--color-accent-cyan, #38bdf8);
+  background: rgba(191, 156, 111, 0.10);
+  border-color: var(--color-accent-cyan, #A82420);
   transform: translateX(-2px);
 }
 
