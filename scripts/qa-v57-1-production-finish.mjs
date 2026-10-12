@@ -18,7 +18,7 @@ add('release metadata is synchronized to the package release',pkg.version===lock
 add('service worker cache matches current release',sw.includes('jyc-cache-v'+pkg.version.replace(/\./g,'-')));
 add('README release matches current package',readme.includes('Current release: V'+pkg.version));
 add('event detail has registration action',/id="event-register"/.test(main)&&/REGISTER NOW|REGISTRATIONS CLOSED/.test(main));
-add('event detail gates unverified planned registration',/registrationPublished=e\.publicStatus!=='planned'\|\|e\.registrationVerified===true/.test(main)&&/Boolean\(e\.registrationUrl\|\|e\.registrationMode==='native'\)/.test(main));
+add('event detail gates unverified planned registration and requires an external URL',/registrationPublished=e\.publicStatus!=='planned'\|\|e\.registrationVerified===true/.test(main)&&/Boolean\(safeExternalUrl\(e\.registrationUrl\)\)/.test(main)&&!main.includes("registrationMode==='native'?")&&!main.includes("Boolean(e.registrationUrl||e.registrationMode==='native')"));
 add('event detail has share and ICS tools',/ShareButton/.test(main)&&/DownloadICS/.test(main));
 add('event detail has source/provenance surface',/Official event sources|source photography|VISUAL RECORD/.test(main));
 add('event detail has related event/community links',/relatedEvents/.test(main)&&/relatedClub/.test(main));
