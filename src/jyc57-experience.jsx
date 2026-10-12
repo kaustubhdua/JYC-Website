@@ -1,6 +1,7 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {AnimatePresence,motion,useReducedMotion} from 'motion/react';
 import {useLocation,useNavigate} from 'react-router-dom';
+import {JYC_HUB_CONTENT} from './v21-hub-content.js';
 import {supabase} from './lib/supabase';
 import {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS,JYC_SOURCE_ARCHIVE_ALBUMS,rankJycPhotoItems,sourceHubMedia,sourceEventMedia} from './jyc-source-media.js';
 import {eventIdentity} from './hub-identities.js';
