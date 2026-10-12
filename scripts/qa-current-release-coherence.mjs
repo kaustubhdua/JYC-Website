@@ -33,11 +33,11 @@ add('event detail receives the reminder notification callback from the route',ev
 add('tablet event/club hero switches to a safe single-column layout',design.includes('@media(max-width:900px)')&&design.includes('.public-app .jyc57-page .jyc57-hero{')&&design.includes('overflow-wrap:normal')&&design.includes('hyphens:none'));
 add('recruitment empty state provides next-step links',extra.includes('No published club has recruitment enabled right now.')&&extra.includes('Explore clubs ↗')&&extra.includes('See events →')&&extra.includes('Join JYC updates →'));
 add('Best of JYC photo cards open their full gallery photo',experience.includes("href={'/gallery?photo='+encodeURIComponent(g.id||g.url)}")&&experience.includes('aria-label={`Open ${g.caption||\'JYC photograph\'} in the gallery`}'));
-add('gallery collection rail exposes a horizontal-scroll hint',experience.includes('Swipe or scroll to explore')&&publicCss.includes('.jyc57-collection-scroller{')&&design.includes('scrollbar-width:thin'));
+add('gallery collection rail exposes a horizontal-scroll hint',experience.includes('Swipe or scroll to explore')&&publicCss.includes('.jyc57-collection-scroller{')&&publicCss.includes('scrollbar-width:thin'));
 
 add('homepage photo stories use only published event/club photo records',home.includes("item?.mediaKind !== 'photo'")&&home.includes("!['event','club'].includes(role)")&&home.includes('item?.published === false'));
 add('homepage event links use the stored canonical slug used by event details and sitemap',home.includes('const eventPath = e =>')&&home.includes('/events/${slug(e?.slug||e?.title)}'));
-add('event card, archive, calendar and announcements links prefer canonical stored slugs',main.includes("nav('/events/'+slug(e.slug||e.title))")&&main.includes("/events/${slug(e.slug||e.title)}")&&main.includes("href:'/events/'+slug(e.slug||e.title)"));
+add('event card, archive, calendar and announcements links prefer canonical stored slugs',main.includes('const eventPath = e =>')&&main.includes('/events/${slug(e?.slug||e?.title)}')&&main.includes('eventPath(e)'));
 add('gallery uses deterministic grid contract',publicCss.includes('.public-app .gallery-grid{')&&publicCss.includes('display:grid!important')&&publicCss.includes('column-count:unset!important')&&publicCss.includes('aspect-ratio:4/3!important'));
 add('gallery archive uses deterministic rows',publicCss.includes('.public-app .jyc57-masonry')&&publicCss.includes('grid-auto-rows:auto!important')&&publicCss.includes('.public-app .jyc57-masonry .jyc57-photo'));
 add('gallery has mobile layout contracts',publicCss.includes('@media(max-width:620px)')&&publicCss.includes('.public-app .gallery-grid'));
