@@ -34,12 +34,12 @@ if(!nowLogoOk)failed++;
 const nowNormaliseOk=nowModule.includes('safeExternalUrl(x.url)')&&nowModule.includes('safeExternalUrl(x.image||x.thumbnail||\'\')')&&nowModule.includes('.filter(x=>x.url)');
 console.log((nowNormaliseOk ? "PASS" : "FAIL")+": JYC Now drops connector items whose URLs fail external URL validation");
 if(!nowNormaliseOk)failed++;
-const externalRegistrationOk=authModule.includes('Open official registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&!authModule.includes('className="native-registration"')&&!authModule.includes("supabase.rpc('jyc_register_for_event'");
-console.log((externalRegistrationOk ? "PASS" : "FAIL")+": public event registration uses verified external links only");
+const nativeRegistrationOk=authModule.includes('className="native-registration"')&&authModule.includes("supabase.rpc('jyc_register_for_event'")&&authModule.includes("event.registrationMode!=='native'")&&authModule.includes("event.registrationMode==='native')return");
+console.log((nativeRegistrationOk ? "PASS" : "FAIL")+": native event registration is explicitly guarded by native registration mode");
+if(!nativeRegistrationOk)failed++;
+const externalRegistrationOk=authModule.includes('Open registration ↗')&&authModule.includes('safeExternalUrl(event.registrationUrl)')&&authModule.includes("if(!safeExternalUrl(event.registrationUrl))e.preventDefault()");
+console.log((externalRegistrationOk ? "PASS" : "FAIL")+": external registration routes require a safe HTTP(S) URL");
 if(!externalRegistrationOk)failed++;
-const retiredNativeRegistrationOk=!source.includes("registrationMode==='native'?")&&!source.includes("Boolean(e.registrationUrl||e.registrationMode==='native')")&&!authModule.includes("supabase.rpc('jyc_register_for_event'")&&!authModule.includes('className="native-registration"');
-console.log((retiredNativeRegistrationOk ? "PASS" : "FAIL")+": public registration UI does not depend on the revoked native registration RPC");
-if(!retiredNativeRegistrationOk)failed++;
 
 const nowLazyImportOk=nowModule.includes('lazy(') && /import React,\{[^}]*\blazy\b/.test(nowModule);
 console.log((nowLazyImportOk ? "PASS" : "FAIL")+": JYC Now lazy React dependency is explicitly imported");
