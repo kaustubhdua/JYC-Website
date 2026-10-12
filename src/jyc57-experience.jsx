@@ -304,6 +304,11 @@ export function JYC57Gallery({data}){
 
   const categories = ['All', 'Induction', 'Competitions', 'Festivals', 'Workshops', 'Sports', 'Social'];
   const years = ['All', '2026', '2025', '2024'];
+  const COLLECTIONS = eventMemories;
+  const MOMENTS = categories;
+  const YEARS = years;
+  const COMMUNITIES = [...new Set(items.map(item => String(item.association || 'JYC ARCHIVE')).filter(Boolean))].sort();
+  const ARCHIVE_IA = ['COLLECTIONS', 'MOMENTS', 'YEARS', 'COMMUNITIES'];
 
   const rawGallery = Array.isArray(data?.gallery) ? data.gallery : [];
   const items = useMemo(() => {
@@ -366,8 +371,12 @@ export function JYC57Gallery({data}){
       <p>Explore official campus photography organized by flagship events, competitions, festivals and milestones across Sector 128.</p>
     </header>
 
+    <nav className="jyc57-archive-nav" aria-label="Gallery archive navigation">
+      {ARCHIVE_IA.map(label => <a key={label} href={`#jyc-gallery-${label.toLowerCase()}`}>{label}</a>)}
+    </nav>
+
     {/* Event Memories Section */}
-    <section className="jyc-memories-section">
+    <section id="jyc-gallery-collections" className="jyc-memories-section" aria-label={`Collections: ${COLLECTIONS.length} curated albums`}>
       <div className="jyc-section-head-bar">
         <div>
           <h2>Event Memories & Flagships</h2>
@@ -402,7 +411,7 @@ export function JYC57Gallery({data}){
     </section>
 
     {/* Filter Toolbar */}
-    <div className="jyc-filter-bar">
+    <div id="jyc-gallery-moments" className="jyc-filter-bar" aria-label={`Moments: ${MOMENTS.length} event categories`}>
       <div className="jyc-search-input-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input className="jyc-search-input" value={query} onChange={e => setQuery(e.target.value)} placeholder="Search memories, events, years..." aria-label="Search gallery" />
@@ -426,9 +435,9 @@ export function JYC57Gallery({data}){
         ))}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <div id="jyc-gallery-years" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }} aria-label={`Years: ${YEARS.length - 1} archive years`}>
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--tech-gold)', textTransform: 'uppercase', minWidth: 80 }}>Year:</span>
-        {years.map(y => (
+        {YEARS.map(y => (
           <button 
             key={y} 
             type="button" 
@@ -454,7 +463,7 @@ export function JYC57Gallery({data}){
     {/* Photo Grid */}
     {filtered.length ? (
       <>
-        <div className="jyc57-masonry" aria-label="JYC photograph collection">
+        <div id="jyc-gallery-communities" className="jyc57-masonry" aria-label={`Communities: ${COMMUNITIES.length} photo collections`}>
           {filtered.slice(0, visibleCount).map((g, i) => (
             <button 
               type="button" 
