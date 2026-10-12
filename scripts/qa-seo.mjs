@@ -22,7 +22,7 @@ add('Gallery collection structured data',meta.includes("'@type':'CollectionPage'
 add('Event schema uses source images and full campus address',meta.includes('sourceEventMedia(item)')&&meta.includes('streetAddress')&&meta.includes('Sector 128, Wish Town Campus'));
 add('Event structured data',meta.includes("'@type':'Event'") && meta.includes('startDate'));
 add('Breadcrumb structured data',meta.includes("'@type':'BreadcrumbList'") && meta.includes('itemListElement'));
-add('Dynamic canonical URLs use the explicit production origin',meta.includes('canonical') && meta.includes('VITE_CANONICAL_ORIGIN') && meta.includes('https://www.jiityouthclub128.in') && !meta.includes('const origin=(import.meta.env.VITE_SITE_URL||window.location.origin)'));
+add('Dynamic canonical URLs use the explicit production origin',meta.includes('canonical') && meta.includes('VITE_CANONICAL_ORIGIN') && meta.includes('https://jyc-website-eight.vercel.app') && !meta.includes('const origin=(import.meta.env.VITE_SITE_URL||window.location.origin)'));
 add('Open Graph image',meta.includes("og:image") && meta.includes("og:image:alt") && meta.includes('canonicalUrl') && meta.includes('imageType') && html.includes('og:image'));
 add('Private route noindex',main.includes("clean.startsWith('/qr/')") && meta.includes("noindex,nofollow"));
 add('Robots allows public crawling',robots.includes('Allow: /') && robots.includes('Disallow: /admin'));

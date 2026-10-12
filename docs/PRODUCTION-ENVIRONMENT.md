@@ -8,8 +8,8 @@ Set these in Vercel for the Production environment:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_CANONICAL_ORIGIN=https://www.jiityouthclub128.in` — shared production origin for runtime metadata, generated route shells and sitemap URLs. Do not set this to a Vercel preview hostname.
-- `VITE_SITE_URL` — legacy setting retained for older tooling; it no longer controls canonical URLs.
+- `VITE_CANONICAL_ORIGIN=https://jyc-website-eight.vercel.app` — shared public JYC origin for runtime metadata, generated route shells and sitemap URLs. Use the JYC Vercel alias; the jiityouthclub128.in domain belongs to the JAI website. Do not set this to a preview hostname.
+- `VITE_SITE_URL` — the same stable JYC Vercel origin, used as a fallback by build-time route and sitemap generation.
 - `VITE_VAPID_PUBLIC_KEY` when web push is enabled
 - `VITE_ENABLE_ANALYTICS=false` unless the analytics schema is deployed
 
@@ -21,7 +21,7 @@ Set these with the Supabase CLI/secrets UI:
 
 - `SITE_ORIGINS` — comma-separated exact browser origins, e.g. `https://your-domain.example`
 
-For the public contact/project submission function, `SITE_ORIGINS` is required in production. Set it to the exact deployed origin (for example `https://www.jiityouthclub128.in`) before deploying `public-submission`. Public clients do not receive a database insert grant; the Edge Function uses the service role after origin, payload, honeypot and rate-limit checks.
+For the public contact/project submission function, `SITE_ORIGINS` is required in production. Set it to the exact deployed origin (for example `https://jyc-website-eight.vercel.app`) before deploying `public-submission`. Public clients do not receive a database insert grant; the Edge Function uses the service role after origin, payload, honeypot and rate-limit checks.
 - `BACKUP_FUNCTION_TOKEN` — long random secret used by the backup function scheduler
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
