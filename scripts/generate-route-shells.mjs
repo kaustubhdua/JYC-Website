@@ -120,6 +120,8 @@ const routes={
 const slugify=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const plainText=value=>String(value||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/\s+/g,' ').trim();
 const metaDescription=(value,fallback)=>{const text=plainText(value)||fallback;return text.length>160?text.slice(0,157).trimEnd()+'...':text;};
+const escapeHtml=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const escapeAttr=value=>escapeHtml(value).replace(/\"/g,'&quot;');
 
 // Public records may be edited after this source bundle was authored. Add
 // route-specific shells for every currently published record available to the
@@ -186,9 +188,9 @@ function shellFor(meta,route){
     ['meta[name="twitter:title"]',meta.title],
     ['meta[name="twitter:description"]',meta.description]
   ];
-  out=out.replace(/<title>[^<]*<\/title>/i,`<title>${meta.title.replaceAll('&','&amp;')}</title>`);
+  out=out.replace(/<title>[^<]*<\/title>/i,`<title>${escapeHtml(meta.title)}</title>`);
   for(const [selector,value] of tags.slice(1)){
-    const esc=value.replaceAll('&','&amp;').replaceAll('"','&quot;');
+    const esc=escapeAttr(value);
     if(selector.startsWith('meta[name="description"]')){
       out=out.replace(/<meta name="description" content="[^"]*"\s*\/>/i,`<meta name="description" content="${esc}" />`);
     }else if(selector.includes('og:title')){
