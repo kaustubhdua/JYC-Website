@@ -10,6 +10,10 @@ const routesForProject = projectName => ['desktop-1280','desktop-1440'].includes
   ? routes
   : ['/','/clubs','/events','/gallery','/team','/updates','/contact'];
 
+const routeMatrix = projectName => ['desktop-1280','desktop-1440'].includes(projectName)
+  ? routes
+  : ['/','/clubs','/events','/gallery','/team','/updates','/contact'];
+
 async function waitForPublicApp(page,label){
   await page.locator('#root').waitFor({state:'attached',timeout:15000});
   await expect(page.locator('body'),label).toBeVisible();
