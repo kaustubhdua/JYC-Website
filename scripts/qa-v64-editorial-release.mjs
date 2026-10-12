@@ -42,6 +42,7 @@ const identities=read('src/hub-identities.js');
 const finalTheme=read('src/jyc-logo-final-theme.css');
 const flipCss=read('src/components/react-bits/FlipCard.css');
 const globalStyles=read('src/styles.css');
+const publicSystem=read('src/styles/public-system.css');
 const intelligence=read('src/jyc-photo-intelligence.js');
 const routeShells=read('scripts/generate-route-shells.mjs');
 const sitemap=read('scripts/generate-sitemap.mjs');
@@ -100,6 +101,7 @@ const checks=[
  ['assistant quick routes use a compact two-column mobile layout',assistant.includes('grid-template-columns:repeat(2,minmax(0,1fr));gap:8px')],
  ['assistant quick routes have distinct destinations and stable keys',assistant.includes("const quick=context==='clubs'?[['Explore all clubs','/clubs'],['Upcoming events','/events'],['JYC archive','/archive'],['Contact JYC','/contact']]")&&assistant.includes('key={`${label}-${path}`}')],
  ['public pages balance headings and provide visible keyboard focus',globalStyles.includes(':focus-visible')&&globalStyles.includes('text-wrap:balance')&&globalStyles.includes('text-wrap:pretty')],
+ ['public theme overrides preserve the approved JYC palette and purposeful desktop motion while honoring reduced motion',publicSystem.includes('--jyc-final-bg: #F5F1E6;')&&publicSystem.includes('--jyc-final-red: #A82420;')&&publicSystem.includes('--jyc-final-ink: #FFF8E1;')&&publicSystem.includes('--jyc-final-red: #C92A2A;')&&publicSystem.includes('@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)')&&publicSystem.includes('transform:translateY(-3px)')&&publicSystem.includes('@media(prefers-reduced-motion:reduce)')&&!publicSystem.includes('.public-app :where(.card:hover,.gallery-item:hover,.contact-card:hover,.featured:hover){transform:none!important}')],
  ['editorial homepage uses JYC red as primary and warm gold as secondary accent',homeCss.includes('--jh-accent: #A82420')&&homeCss.includes('--jh-line-accent: rgba(191, 156, 111, 0.42)')&&homeCss.includes('.jh-btn-primary { background: var(--jh-accent); border-color: var(--jh-accent); color: #fff; }')],
  ['red primary actions use readable white text and visible keyboard focus',homeCss.includes('.jh-btn-primary { background: var(--jh-accent); border-color: var(--jh-accent); color: #fff; }')&&homeCss.includes(':focus-visible')],
  ['responsive photos enable derivatives in production',responsive.includes('import.meta.env.PROD')],
