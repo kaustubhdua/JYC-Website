@@ -15,7 +15,7 @@ const checks=[
   ['gallery lightbox has narrow viewport and safe-area treatment',css.includes('.jyc57-lightbox-inner')&&css.includes('100dvh')&&css.includes('env(safe-area-inset-top)')],
   ['gallery controls have explicit keyboard focus styling',css.includes('.jyc57-photo:focus-visible')&&css.includes('outline: 3px solid var(--jyc-ux-focus)')],
   ['gallery action controls meet touch-target sizing',css.includes('.jyc57-lightbox-actions button')&&css.includes('--jyc-ux-tap: 48px')],
-  ['team card content has long-name and copy overflow safeguards',css.includes('.team-member-name')&&css.includes('overflow-wrap: anywhere')&&flip.includes('aria-expanded={flipped}')],
+  ['team card content has long-name and copy overflow safeguards',css.includes('.team-member-name')&&css.includes('overflow-wrap: anywhere')&&flip.includes('aria-hidden={flipped}')&&flip.includes('aria-live="polite"')&&flip.includes("e.key === 'Escape'")],
   ['registration and public form controls receive mobile tap-target styles',css.includes('.btn')&&css.includes('min-height: 48px')&&registration.includes('Open official registration ↗')&&registration.includes('target="_blank" rel="noopener noreferrer"')],
   ['homepage hero keeps copy and visual columns from overflowing',css.includes('.jh-hero-copy')&&css.includes('.jh-hero-visual')&&home.includes('.jh-hero')],
   ['coarse-pointer interactions do not depend on hover transforms',css.includes('@media (hover: none), (pointer: coarse)')&&css.includes('.jh-story-card:hover')],
