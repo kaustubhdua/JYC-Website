@@ -24,6 +24,7 @@ import JYCHistory,{HistoryTeaser,HISTORY} from './jyc-history-page.jsx';
 import {JYCBrandEditorial} from './jyc-next-experience.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
 import {ResponsivePhoto} from './jyc-responsive-photo.jsx';
+import { teamPhotoFor } from './jyc-team-media.js';
 import {FeaturedEventPopup} from './featured-event-popup.jsx';
 import {JYC57Events,JYC57Clubs,JYC57Gallery,JYC57Archive,JYCBestOf} from './jyc57-experience.jsx';
 
@@ -73,11 +74,6 @@ function mergePublicFallback(d,{allowContentFallback=true}={}){
  });
  return {...x,clubs,events:eventsWithVerifiedSources,gallery,team:((allowContentFallback&&x.team?.length===0?PUBLIC_TEAM_FALLBACK:enrichedTeam)),homepage:{...x.homepage,activities:Array.isArray(x.homepage?.activities)&&x.homepage.activities.length?x.homepage.activities:PUBLIC_ACTIVITIES}};
 }
-const TEAM_LOCAL_PHOTOS={
- 'devansh tripathi':'/assets/team/campaign/devansh-tripathi.webp','amrit kumar':'/assets/team/campaign/amrit-kumar.webp','daksh sachdeva':'/assets/team/campaign/daksh-sachdeva.webp','saksham kotia':'/assets/team/campaign/saksham-kotia.webp','asmi srivastava':'/assets/team/campaign/asmi-srivastava.webp','juhi hatuka':'/assets/team/campaign/juhi-hatuka.webp','pratik kumar':'/assets/team/campaign/pratik-kumar.webp','divye bajaj':'/assets/team/divye-bajaj.webp','revant srivastava':'/assets/team/campaign/revant-srivastava.webp','aradhyaa singh':'/assets/team/campaign/aradhyaa-singh.webp','vansh mahajan':'/assets/team/campaign/vansh-mahajan.webp','shriya singh':'/assets/team/campaign/shriya-singh.webp'
-};
-const teamPhotoFor=m=>{const key=String(m?.name||'').trim().toLowerCase();return TEAM_LOCAL_PHOTOS[key]||m?.photo||m?.image||''};
-
 function publicDemoData(){
  const clubs=Object.entries(JYC_HUB_CONTENT).map(([name,p],i)=>({id:`hub-${name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}`,name,type:p.family==='Technical'?'Technical':'Non-Technical',category:p.focus,description:p.summary,about:p.detail,interests:[p.family,p.focus],published:true,status:'published',pinned:i<5,theme:'jyc'}));
  return mergePublicFallback(norm({...empty,clubs,events:PUBLIC_EVENT_FALLBACK,gallery:PUBLIC_GALLERY_FALLBACK,team:PUBLIC_TEAM_FALLBACK,homepage:{...empty.homepage,activities:PUBLIC_ACTIVITIES}}));
