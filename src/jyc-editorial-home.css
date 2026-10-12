@@ -1497,3 +1497,34 @@
 @media (prefers-reduced-motion: reduce) {
   .jyc-editorial-home *, .jyc-editorial-home *::before, .jyc-editorial-home *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Responsive type and equal-width primary routes at tablet/mobile widths. */
+@media (min-width: 681px) and (max-width: 1024px) {
+  .jyc-editorial-home .jh-hero h1 {
+    font-size: clamp(58px, 8.5vw, 92px) !important;
+    line-height: .92 !important;
+  }
+}
+@media (max-width: 680px) {
+  .jyc-editorial-home .jh-hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+  .jyc-editorial-home .jh-hero-actions .jh-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 10px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+}
+@media (max-width: 360px) {
+  .jyc-editorial-home .jh-hero-actions { grid-template-columns: 1fr; }
+}
