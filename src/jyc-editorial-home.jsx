@@ -215,7 +215,7 @@ export function JYCEditorialHome({ data }) {
             <em className="jh-title-gradient">THE SPIRIT OF JIIT.</em>
           </h1>
           <p className="jh-lead">
-            The student-powered body uniting 23+ hubs, technical societies, flagship fests, cultural arts, and athletic excellence at JIIT Sector 128.
+            A student-led community connecting technology, culture, performance, sport and the people who make campus life happen at JIIT Sector 128.
           </p>
           <div className="jh-actions jh-hero-actions">
             <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/events')}>
