@@ -235,7 +235,7 @@ export function JYC57Gallery({data}){
   const items = useMemo(() => {
     const seen = new Set();
     return rawGallery
-      .filter(g => g && g.url && (!g.mediaKind || g.mediaKind === 'photo'))
+      .filter(g => g && g.url && g.mediaKind === 'photo')
       .filter(g => {
         const key = String(g.url);
         if (seen.has(key)) return false;
