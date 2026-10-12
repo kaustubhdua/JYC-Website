@@ -20,7 +20,7 @@ const checks=[
   ['homepage hero keeps copy and visual columns from overflowing',css.includes('.jh-hero-copy')&&css.includes('.jh-hero-visual')&&home.includes('.jh-hero')],
   ['coarse-pointer interactions do not depend on hover transforms',css.includes('@media (hover: none), (pointer: coarse)')&&css.includes('.jh-story-card:hover')],
   ['reduced-motion preference disables decorative transitions',css.includes('@media (prefers-reduced-motion: reduce)')&&css.includes('transition-duration: 0.01ms')],
-  ['gallery already exposes keyboard/touch navigation controls',gallery.includes('aria-label="Previous photograph"')&&gallery.includes('onTouchStart=')&&gallery.includes('onTouchEnd=')],
+  ['gallery already exposes keyboard/touch navigation controls',gallery.includes('aria-label="Previous photo"')&&gallery.includes('onTouchStart=')&&gallery.includes('onTouchEnd=')],
   ['reduced motion disables team flip animation without disabling the flipped state',css.includes('.team-member-flip .flip-card__inner{transition:none!important}')&&!css.split('\n').some(line=>line.includes('prefers-reduced-motion:reduce')&&line.includes('.team-member-flip .flip-card__inner')&&line.includes('transform:none!important'))],
   ['no curated project or achievement spotlight feature was added',!css.includes('project-spotlight')&&!css.includes('achievement-spotlight')]
 ];
