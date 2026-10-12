@@ -8,8 +8,8 @@ import { JYCNowStrip } from './jyc-now.jsx';
 const LazyDitherVeil = lazy(() => import('./react-bits/DitherVeil.jsx'));
 import './jyc-editorial-home.css';
 
-const FALLBACK = '/jyc-logo-official.webp';
-const DITHER_SOURCE = '/jyc-logo-official.webp';
+const FALLBACK = import.meta.env.PROD ? '/assets/jyc-logo.webp' : '/JYC%20Logo(4).png';
+const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo.avif' : FALLBACK;
 
 const slug = v => String(v || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const eventPath = e => `/events/${slug(e?.slug||e?.title)}`;
