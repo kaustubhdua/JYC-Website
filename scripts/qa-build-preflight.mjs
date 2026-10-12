@@ -18,7 +18,7 @@ const checks=[
  ['AdminErrorBoundary import does not collide with local class', !(/class AdminErrorBoundary extends/.test(admin) && /import[^;]*\bAdminErrorBoundary\b[^;]*from ['\"]\.\/admin-extra\.jsx['\"]/.test(admin))],
  ['CSS keyframe identifiers are valid', !/@keyframes\s+[0-9]/.test(cssText) && !/animation(?:-name)?\s*:\s*[0-9]/.test(cssText)],
  ['Production initialization does not ship demo content', main.includes("useState(()=>import.meta.env.DEV?publicDemoData():norm(empty))")],
- ['Production missing-config path does not fabricate content', loader.includes("return import.meta.env.DEV?publicDemoData():norm(empty)")],
+ ['Production missing-config and missing-RPC paths do not fabricate demo content', /if\(supabase\.__configured===false\)[\s\S]*?if\(import\.meta\.env\.DEV\)return publicDemoData\(\);return norm\(empty\)/.test(loader) && /if\(missingRpc\)\{if\(import\.meta\.env\.DEV\)return publicDemoData\(\);return norm\(empty\)\}/.test(loader)],
  ['Multi-day events use dateEnd for lifecycle state', main.includes('const effectiveEndDate=e.dateEnd||e.date')],
  ['retired academic calendar data is not in the active public feature bundle', !fs.readFileSync(path.join(root,'src/extra-features.jsx'),'utf8').includes('academicKeyDates') && !fs.readFileSync(path.join(root,'src/extra-features.jsx'),'utf8').includes('Academic dates')],
  ['GLB bot supports model-native animation without auto-rotation', fs.readFileSync(path.join(root,'src/jyc-bot.jsx'),'utf8').includes('availableAnimations') && fs.readFileSync(path.join(root,'src/jyc-bot.jsx'),'utf8').includes('disable-pan') && !fs.readFileSync(path.join(root,'src/jyc-bot.jsx'),'utf8').includes('auto-rotate')],
