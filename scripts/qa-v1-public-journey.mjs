@@ -22,7 +22,7 @@ const checks=[
   ['external event registration opens with safe window features',main.includes("window.open(safeExternalUrl(e.registrationUrl),'_blank','noopener,noreferrer')")&&main.includes('rel="noopener noreferrer"')],
   ['event detail links use source slugs',main.includes("nav('/events/'+slug(e.slug||e.title))")||main.includes('eventPath(e)')],
   ['event categories come from the current public configuration',config.includes('JYC_EVENT_CATEGORIES')&&config.includes('Technical')&&config.includes('Cultural')&&config.includes('Sports')],
-  ['public information routes remain registered',...['/about','/team','/events','/clubs','/gallery','/contact','/calendar','/announcements'].map(route=>main.includes(`'${route}'`))].every(Boolean),
+  ['public information routes remain registered',['/about','/team','/events','/clubs','/gallery','/contact','/calendar','/announcements'].every(route=>main.includes(`'${route}'`))],
   ['gallery supports published albums and shareable photo URLs',gallery.includes('jyc_media_albums')&&gallery.includes("params.get('photo')")&&gallery.includes("const albumRoute=value=>'/gallery/'+encodeURIComponent(value)")],
   ['hero and action layouts support mobile and reduced motion',css.includes('@media (max-width: 760px)')&&css.includes('@media (prefers-reduced-motion: reduce)')]
 ];
