@@ -35,7 +35,7 @@ const checks=[
  ['gallery wall derives its preview list after filtered items exist',gallery.includes('const wallItems=useMemo(()=>rankJycPhotoItems(items,{limit:24}),[items])')&&gallery.includes('LazyDriftWall items={wallItems.map')],
  ['gallery lightbox supports keyboard image navigation',gallery.includes("e.key==='ArrowRight'")&&gallery.includes("e.key==='ArrowLeft'")&&gallery.includes('wallItems[next]')],
  ['public gallery uses strict photo records',read('src/jyc57-experience.jsx').includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS')&&read('src/jyc57-experience.jsx').includes("g.mediaKind==='photo'")],
- ['public gallery supports shareable photo URLs',read('src/jyc57-experience.jsx').includes("/gallery?photo=")&&read('src/jyc57-experience.jsx').includes('params.get(\'photo\')')],
+ ['public gallery supports shareable photo URLs',read('src/jyc57-experience.jsx').includes("next.set('photo'")&&read('src/jyc57-experience.jsx').includes('params.get(\'photo\')')],
  ['public gallery has published album routes',main.includes("clean.startsWith('/gallery/')")&&read('src/jyc57-experience.jsx').includes("/gallery/'+encodeURIComponent(value)")&&read('src/jyc57-experience.jsx').includes("jyc_media_albums")],
  ['public gallery supports mobile swipe and zoom',read('src/jyc57-experience.jsx').includes('onTouchStart')&&read('src/jyc57-experience.jsx').includes('setZoom')],
  ['public gallery uses metadata filters and progressive rendering',read('src/jyc57-experience.jsx').includes('visibleCount')&&read('src/jyc57-experience.jsx').includes("setFilter('club'")],
