@@ -220,6 +220,18 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
   }
 });
 
+test('club detail route opens from a directory card', async ({ page }) => {
+  await page.goto(base + '/clubs', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'club directory');
+  const card = page.locator('.jyc57-club-card').first();
+  await expect(card, 'published club card is available').toBeVisible();
+  await card.click();
+  await expect.poll(() => new URL(page.url()).pathname, { timeout: 7000 }).toMatch(/^\\/clubs\\/[a-z0-9-]+$/);
+  await waitForAppMount(page, 'club detail destination');
+  await expect(page.locator('h1').first(), 'club detail has a primary heading').toBeVisible();
+  await expect(page.locator('h1').first()).not.toBeEmpty();
+});
+
 test('event and gallery navigation use canonical, shareable URLs', async ({ page }) => {
   await page.goto(base + '/events', { waitUntil: 'domcontentloaded' });
   const eventCard = page.locator('.jyc57-event-card').first();
