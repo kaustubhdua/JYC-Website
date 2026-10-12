@@ -518,9 +518,7 @@ export function JYC57Gallery({data}){
             <div className="jyc57-lightbox-actions">
               <button type="button" onClick={() => setZoom(z => z > 1 ? 1 : 1.75)}>{zoom > 1 ? 'Reset Zoom' : 'Zoom In'}</button>
               <button type="button" onClick={sharePhoto}>{copied ? 'Link Copied ✓' : 'Share Photo'}</button>
-              <a href={selected.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                <button type="button">Full Resolution ↗</button>
-              </a>
+              <a className="jyc57-full-resolution-link" href={selected.url} target="_blank" rel="noopener noreferrer">Full Resolution ↗</a>
             </div>
           </div>
         </div>
