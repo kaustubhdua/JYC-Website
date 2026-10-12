@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'rea
 import { useNavigate } from 'react-router-dom';
 import { JYC_HUB_CONTENT, JYC_HUB_FAMILIES } from './v21-hub-content.js';
 import { sourceEventMedia } from './jyc-source-media.js';
+import { rankDiverseJycPhotos } from './jyc-photo-intelligence.js';
 import { ResponsivePhoto } from './jyc-responsive-photo.jsx';
 import { JYCSpotlight } from './jyc-spotlight.jsx';
 import { JYCNowStrip } from './jyc-now.jsx';
@@ -156,7 +157,7 @@ export function JYCEditorialHome({ data }) {
     const items = Array.isArray(data?.gallery) ? data.gallery : [];
     const seen = new Set();
     const selected = [];
-    for (const item of items) {
+    for (const item of rankDiverseJycPhotos(items, { limit: items.length, maxPerAssociation: 1 })) {
       const url = String(item?.url || '').trim();
       const association = String(item?.association || item?.albumName || '').trim();
       const role = String(item?.role || '').toLowerCase();
