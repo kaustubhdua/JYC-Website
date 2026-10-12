@@ -505,7 +505,7 @@ export function JYC57Gallery({data}){
     {selected && (
       <div ref={lightboxRef} className="jyc57-lightbox" role="dialog" aria-modal="true" data-photo-id={String(selected.id || selected.url)} aria-label={selected.caption || 'JYC photograph'} onClick={closePhoto}>
         <div className="jyc57-lightbox-inner" onClick={e => e.stopPropagation()}>
-          <button type="button" className="jyc57-close" onClick={() => setSelected(null)} aria-label="Close modal">×</button>
+          <button type="button" className="jyc57-close" onClick={closePhoto} aria-label="Close modal">×</button>
           <button className="jyc57-nav prev" type="button" onClick={() => move(-1)} aria-label="Previous photo">‹</button>
           <div className="jyc57-lightbox-media" onTouchStart={e => { touchStartX.current = e.changedTouches[0]?.clientX || 0; }} onTouchEnd={e => { const endX = e.changedTouches[0]?.clientX || touchStartX.current; const delta = endX - touchStartX.current; if (Math.abs(delta) > 48) move(delta < 0 ? 1 : -1); touchStartX.current = 0; }}>
             <ResponsivePhoto src={selected.url} alt={selected.caption || 'JYC photo'} sizes="(max-width: 900px) 100vw, 75vw" loading="eager" style={{ transform: `scale(${zoom})`, transition: shouldReduceMotion ? 'none' : 'transform 0.2s ease' }} fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
