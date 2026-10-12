@@ -7,7 +7,7 @@ const pkg=JSON.parse(read('package.json'));
 const main=read('src/main.jsx');
 const home=read('src/jyc-editorial-home.jsx');
 const homeCss=read('src/jyc-editorial-home.css');
-const network=read('src/jyc-network.jsx');
+const spotlight=read('src/jyc-spotlight.jsx');
 const networkCss=read('src/jyc-network.css');
 const gallery=read('src/jyc57-experience.jsx');
 const vite=read('vite.config.js');
@@ -18,7 +18,7 @@ add('core public routes are wired', ['/','/about','/clubs','/events','/gallery',
 add('hub and event detail routes remain canonical',main.includes("/clubs/")&&main.includes("/events/")&&main.includes('eventPath'));
 add('gallery album/deep-link experience exists',gallery.includes('/gallery/')&&gallery.includes('ArrowRight')&&gallery.includes('ArrowLeft'));
 add('strict photo pool is used',gallery.includes('JYC_SOURCE_ARCHIVE_PHOTO_ITEMS'));
-add('JYC network signature interaction is mounted',home.includes("./jyc-network.jsx")&&home.includes('<JYCNetwork />')&&network.includes('JYC')&&network.includes('EVENTS'));
+add('JYC ecosystem spotlight is mounted on the editorial homepage',home.includes("import { JYCSpotlight } from './jyc-spotlight.jsx';")&&home.includes('<JYCSpotlight data={data} />')&&spotlight.includes('JYC')&&spotlight.includes('EVENTS'));
 add('homepage activity discovery uses lazy magnetic Bento with router navigation',home.includes('LazyMagicBento')&&home.includes('enableMagnetism={true}')&&read('src/components/react-bits/MagicBento.jsx').includes('onNavigate?onNavigate(item.href)'));
 add('official JYC hero logo uses the lazy React Bits Dither Veil with static fallback',home.includes('LazyDitherVeil')&&home.includes('jh-dither-mark')&&home.includes('src="/JYC%20Logo(4).png"')&&!home.includes('LazyDriftWall'));
 add('red hero palette is removed',!homeCss.includes('#a82420')&&!homeCss.includes('168,36,32'));
