@@ -137,31 +137,6 @@ export function JYCEditorialHome({ data }) {
     return selected.length >= 4 ? selected : defaultFlagships;
   }, [data?.gallery]);
 
-  const [countdown, setCountdown] = useState(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const diff = Math.max(0, target - Date.now());
-    return {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-      mins: Math.floor((diff / 1000 / 60) % 60),
-      secs: Math.floor((diff / 1000) % 60),
-    };
-  });
-
-  useEffect(() => {
-    const target = new Date('2026-11-15T09:00:00+05:30').getTime();
-    const timer = setInterval(() => {
-      const diff = Math.max(0, target - Date.now());
-      setCountdown({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        mins: Math.floor((diff / 1000 / 60) % 60),
-        secs: Math.floor((diff / 1000) % 60),
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   const handleSpotlight = e => {
     const rect = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
@@ -185,30 +160,21 @@ export function JYCEditorialHome({ data }) {
 
   return (
     <main className="jyc-editorial-home jyc-home">
-      {/* AMBIENT CYBER BACKDROP */}
-      <div className="jh-ambient-backdrop" aria-hidden="true">
-        <div className="jh-ambient-orb jh-ambient-orb-1" />
-        <div className="jh-ambient-orb jh-ambient-orb-2" />
-        <div className="jh-ambient-orb jh-ambient-orb-3" />
-        <div className="jh-ambient-grid" />
-      </div>
-
       {/* HERO SECTION */}
       <section className="jh-hero" aria-labelledby="jh-title">
         <div className="jh-hero-copy">
           <div className="jh-cyber-badge">
             <span className="jh-live-pulse-dot" />
-            <span>JIIT YOUTH CLUB · SECTOR 128 NOIDA</span>
-            <b>AY 2026–27</b>
+            <span>JIIT YOUTH CLUB · WISH TOWN CAMPUS</span>
           </div>
-          <p className="jh-overline">JAYPEE INSTITUTE OF INFORMATION TECHNOLOGY · WISH TOWN</p>
+          <p className="jh-overline">THE PEOPLE, IDEAS &amp; EXPERIENCES OF JIIT 128</p>
           <h1 id="jh-title">
-            <span>THE VOICE.</span>
-            <span>THE TALENT.</span>
-            <em className="jh-title-gradient">THE SPIRIT OF JIIT.</em>
+            <span>FIND YOUR</span>
+            <span>PEOPLE.</span>
+            <em className="jh-title-gradient">MAKE YOUR MARK.</em>
           </h1>
           <p className="jh-lead">
-            The student-powered body uniting 23+ hubs, technical societies, flagship fests, cultural arts, and athletic excellence at JIIT Sector 128.
+            From ideas taking shape in a workshop to the lights coming up on stage, JYC brings together the clubs, events and people that make campus life matter.
           </p>
           <div className="jh-actions jh-hero-actions">
             <button type="button" className="jh-btn jh-btn-primary" onClick={() => nav('/events')}>
@@ -222,60 +188,7 @@ export function JYCEditorialHome({ data }) {
             </button>
           </div>
 
-          {/* LIVE STATS STRIP */}
-          <div className="jh-hero-stats-row">
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>23<i>+</i></strong>
-              <span>Hubs & Societies</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>50<i>+</i></strong>
-              <span>Annual Events</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>5,000<i>+</i></strong>
-              <span>Students Reached</span>
-            </div>
-            <div className="jh-stat-item" onMouseMove={handleSpotlight}>
-              <strong>15<i>+</i></strong>
-              <span>Years Legacy</span>
-            </div>
-          </div>
 
-          {/* FLAGSHIP COUNTDOWN HUD */}
-          <div className="jh-flagship-countdown-strip" onMouseMove={handleSpotlight}>
-            <div className="jh-countdown-label">
-              <span className="jh-live-pulse-dot" />
-              <div>
-                <small>CAMPUS FLAGSHIP COUNTDOWN</small>
-                <strong>CONVERGE '26 &amp; DRON-O-WAR</strong>
-              </div>
-            </div>
-            <div className="jh-countdown-timer">
-              <div className="jh-timer-segment">
-                <b>{String(countdown.days).padStart(2, '0')}</b>
-                <span>DAYS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.hours).padStart(2, '0')}</b>
-                <span>HOURS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.mins).padStart(2, '0')}</b>
-                <span>MINS</span>
-              </div>
-              <span className="jh-timer-sep">:</span>
-              <div className="jh-timer-segment">
-                <b>{String(countdown.secs).padStart(2, '0')}</b>
-                <span>SECS</span>
-              </div>
-            </div>
-            <button type="button" className="jh-countdown-cta" onClick={() => nav('/events')}>
-              Lineup ↗
-            </button>
-          </div>
         </div>
 
         {/* HERO DITHERVEIL VISUAL PLAQUE */}
@@ -295,15 +208,15 @@ export function JYCEditorialHome({ data }) {
                   pixelSize={2}
                   levels={3}
                   palette="duotone"
-                  inkColor="#050a14"
-                  paperColor="#f8fafc"
+                  inkColor="#2b1d1b"
+                  paperColor="#f8f0e4"
                   contrast={1.25}
                   brightness={0.04}
                   revealRadius={250}
                   softness={0.7}
                   linger={1.2}
-                  rimColor="#38bdf8"
-                  rim={0.28}
+                  rimColor="#b33a32"
+                  rim={0.22}
                   wander={false}
                   clickBurst={true}
                   className="jh-dither-veil-effect"
