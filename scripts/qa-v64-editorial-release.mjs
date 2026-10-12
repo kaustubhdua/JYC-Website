@@ -45,6 +45,9 @@ const pkg=JSON.parse(read('package.json'));
 const ciWorkflow=read('.github/workflows/ci.yml');
 const qualityWorkflow=read('.github/workflows/jyc-quality.yml');
 const checks=[
+  ['homepage restores the editorial intro and source-linked JYC Now update feed',editorialHome.includes('jh-about-editorial')&&editorialHome.includes('<JYCNowStrip limit={3} compact={false} />')],
+  ['homepage removes unsupported impact counters and a hard-coded flagship countdown',!editorialHome.includes('5,000')&&!editorialHome.includes('FLAGSHIP COUNTDOWN')&&!editorialHome.includes('const [countdown')],
+  ['brand tokens avoid neon cyan, purple and rainbow halo treatment in the shared upgrade layer',design.includes('--jyc-design-accent:#A82420')&&design.includes('--jyc-design-copper:#BF9C6F')&&!design.includes('conic-gradient(from 0deg at 50% 50%,#38bdf8')],
  ['society detail exposes organisation, activities, events, people and photography',/function ClubDetail/.test(main)&&/HUB PROFILE/.test(main)&&/ACTIVITIES/.test(main)&&/EVENTS/.test(main)&&/PEOPLE/.test(main)&&/CLUB PHOTOGRAPHY/.test(main)],
  ['event detail has lifecycle state and participation action',/eventState\(e\)/.test(main)&&/LIVE NOW/.test(main)&&/REGISTER NOW/.test(main)&&/REGISTRATION CLOSED/.test(main)],
  ['event card and detail share the same media layout id',main.includes('layoutId={\`event-media-\${slug(e.id||e.slug||e.title)}\`')&&main.includes('event-detail-poster')],
@@ -76,7 +79,7 @@ const checks=[
  ['release metadata is V64',/^64\.\d+\.\d+$/.test(pkg.version)],
  ['production prebuild generates real photo derivatives',pkg.scripts?.prebuild?.includes('generate-photo-derivatives.mjs')],
  ['desktop homepage headline is constrained to its copy column',homeCss.includes('font-size: clamp(48px, 4.5vw, 78px) !important;')&&homeCss.includes('line-height: .9 !important;')],
- ['editorial homepage follows persisted light and dark themes with readable light-surface typography',homeCss.includes(':root[data-theme="light"] .jyc-editorial-home.jyc-home')&&homeCss.includes('--jh-bg:#f5f1e6')&&homeCss.includes('.jh-dark-section')&&homeCss.includes('.jh-community')&&homeCss.includes('.jh-team-list button')&&homeCss.includes('color:#1a191d')],
+ ['editorial homepage uses approved cream/ink/red/gold light tokens and dark-mode tokens',homeCss.includes('--jh-bg: #F5F1E6')&&homeCss.includes('--jh-ink: #1A191D')&&homeCss.includes('--jh-accent: #A82420')&&homeCss.includes('--jh-bg: #0F0E11')&&homeCss.includes('--jh-accent: #C92A2A')&&homeCss.includes('.jh-community')&&homeCss.includes('.jh-team-list button')],
  ['homepage theme browser regression checks heading and CTA contrast in light and dark modes',browser.includes("for (const theme of ['light', 'dark'])")&&browser.includes('headingContrast')&&browser.includes('ctaContrast')&&browser.includes('finalContrast')&&browser.includes('toBeGreaterThanOrEqual(4.5)')&&browser.includes("themeSamples.light.background")],
  ['tablet homepage headline has its own responsive scale',homeCss.includes('font-size: clamp(58px, 8.5vw, 92px) !important;')],
  ['mobile hero CTAs use equal flexible columns',homeCss.includes('grid-template-columns: repeat(2, minmax(0, 1fr));')&&homeCss.includes('min-height: 48px;')],
@@ -93,8 +96,8 @@ const checks=[
  ['assistant quick routes use a compact two-column mobile layout',assistant.includes('grid-template-columns:repeat(2,minmax(0,1fr));gap:8px')],
  ['assistant quick routes have distinct destinations and stable keys',assistant.includes("const quick=context==='clubs'?[['Explore all clubs','/clubs'],['Upcoming events','/events'],['JYC archive','/archive'],['Contact JYC','/contact']]")&&assistant.includes('key={`${label}-${path}`}')],
  ['public pages balance headings and provide visible keyboard focus',globalStyles.includes(':focus-visible')&&globalStyles.includes('text-wrap:balance')&&globalStyles.includes('text-wrap:pretty')],
- ['editorial homepage uses the JYC antique-gold accent',homeCss.includes('--jh-accent:#bf9c6f')&&!homeCss.includes('--jh-accent:#e42b35')],
- ['gold primary actions use dark readable text and visible keyboard focus',homeCss.includes('.jh-btn-primary')&&homeCss.includes('color: #151316;')&&homeCss.includes(':focus-visible')],
+ ['editorial homepage uses JYC red as primary and warm gold as secondary accent',homeCss.includes('--jh-accent: #A82420')&&homeCss.includes('--jh-line-accent: rgba(191, 156, 111, 0.42)')&&homeCss.includes('.jh-btn-primary { background: var(--jh-accent); border-color: var(--jh-accent); color: #fff; }')],
+ ['red primary actions use readable white text and visible keyboard focus',homeCss.includes('.jh-btn-primary { background: var(--jh-accent); border-color: var(--jh-accent); color: #fff; }')&&homeCss.includes(':focus-visible')],
  ['responsive photos enable derivatives in production',responsive.includes('import.meta.env.PROD')],
  ['route metadata shell generator is wired',pkg.scripts?.postbuild==='node scripts/optimize-production-media.mjs && node scripts/generate-route-shells.mjs'&&routeShells.includes('const canonicalUrl=`${siteOrigin}${route}`')&&routeShells.includes('const canonicalTag=')&&routeShells.includes("'/':{")&&routeShells.includes("/events/jai-2026-jaypee-agentic-ai-hackathon")],
  ['static route shells include homepage, canonical/OG URL and one primary heading',routeShells.includes("'/':{")&&routeShells.includes('Clubs, Events &amp; Fests')&&routeShells.includes('Preparing the JYC experience…')&&routeShells.includes('const escapedTitle=meta.title.replaceAll')&&routeShells.includes('escapedTitle}$2')&&routeShells.includes('<noscript')&&routeShells.includes("'$1<p$2>$3</p>'")&&routeShells.includes('const canonicalTag=')&&routeShells.includes('const ogUrlTag=')],
