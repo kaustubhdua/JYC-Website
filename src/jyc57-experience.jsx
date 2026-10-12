@@ -222,6 +222,7 @@ export function JYC57Gallery({data}){
   const params=useMemo(()=>new URLSearchParams(loc.search),[loc.search]);
   const [query,setQuery]=useState(params.get('q')||'');
   const [eventCategory,setEventCategory]=useState('All');
+  const [mediaFilter,setMediaFilter]=useState('all');
   const [year,setYear]=useState(params.get('year')||'All');
   const [selected,setSelected]=useState(null);
   const [zoom,setZoom]=useState(1);
@@ -287,7 +288,7 @@ export function JYC57Gallery({data}){
     if (match) setSelected(match);
   }, [params, items]);
 
-  useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug]);
+  useEffect(() => { setVisibleCount(36); }, [query, eventCategory, year, albumSlug, mediaFilter]);
   useEffect(() => { setZoom(1); }, [selected?.url]);
   useEffect(() => {
     if (!selected) return;
@@ -318,11 +319,15 @@ export function JYC57Gallery({data}){
       const matchesCategory = eventCategory === 'All' || g.category === eventCategory || hay.includes(eventCategory.toLowerCase());
       const matchesYear = year === 'All' || String(g.year||g.date||'').startsWith(year);
       const matchesAlbum = !albumSlug || g.albumSlug === albumSlug || g.albumId === currentAlbum?.id || g.albumName === currentAlbum?.name || g.association === currentAlbum?.name;
-      return matchesQuery && matchesCategory && matchesYear && matchesAlbum;
+      const mediaHay = `${g.role||''} ${g.association||''} ${g.mediaKind||'photo'} ${g.category||''}`.toLowerCase();
+       const isCommunity = /club|community|hub|society/i.test(mediaHay) || Object.keys(JYC_HUB_CONTENT).some(name=>mediaHay.includes(name.toLowerCase()));
+       const matchesMedia = mediaFilter==='all' || (mediaFilter==='club' ? isCommunity : mediaFilter==='event' ? /event|fest|competition|sports|converge|ebullience|dron-o-war|hackathon/i.test(mediaHay) : true);
+       return matchesQuery && matchesCategory && matchesYear && matchesAlbum && matchesMedia;
     });
-  }, [items, query, eventCategory, year, albumSlug, currentAlbum]);
+  }, [items, query, eventCategory, year, albumSlug, currentAlbum, mediaFilter]);
 
   const selectedIndex = selected === null ? -1 : filtered.findIndex(g => g.url === selected.url);
+  const setFilter = filter => setMediaFilter(filter);
 
   const move = (dir) => {
     if (!filtered.length) return;
@@ -399,6 +404,11 @@ export function JYC57Gallery({data}){
       </div>
     </div>
 
+    <div className="jyc57-media-filter" role="group" aria-label="Filter gallery by media type">
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='all'?'is-active':''}`} aria-pressed={mediaFilter==='all'} onClick={()=>setFilter('all')}>All photos</button>
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='club'?'is-active':''}`} aria-pressed={mediaFilter==='club'} onClick={()=>setFilter('club')}>Clubs & communities</button>
+      <button type="button" className={`jyc-filter-pill ${mediaFilter==='event'?'is-active':''}`} aria-pressed={mediaFilter==='event'} onClick={()=>setFilter('event')}>Events</button>
+    </div>
     {/* Category & Year Pills */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 28 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
