@@ -267,7 +267,7 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
 
   const result = await page.evaluate(() => {
     const story = [...document.querySelectorAll('.jyc-home .jh-story-card')];
-    const familyImages = document.querySelectorAll('.jyc-home .jh-family-image, .jyc-home .jh-family img, .jyc-home .jh-activity-bento-shell img').length;
+    const familyImages = document.querySelectorAll('.jyc-home .jh-family-image, .jyc-home .jh-family img').length;
     const archiveWalls = document.querySelectorAll('.jyc-home .jh-archive-section, .jyc-home .jyc-photo-chapters-section').length;
     const heroDitherMarks = document.querySelectorAll('.jyc-home .jh-dither-mark .dither-veil').length;
     const heroDriftWalls = document.querySelectorAll('.jyc-home .jh-hero-drift-wall .drift-wall').length;
@@ -279,9 +279,11 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
   expect(result.heroDitherMarks, 'one lazy Dither Veil for the actual JYC logo').toBe(1);
   expect(result.heroDriftWalls, 'continuous hero photo-wall engine removed to reduce load').toBe(0);
   expect(result.bentoCards, 'magnetic activity cards').toBeGreaterThan(0);
+  const activityPhotoSources = await page.locator('.jh-activity-bento-shell .magic-bento-card__media img').evaluateAll(images => images.map(img => img.getAttribute('src') || ''));
+  expect(activityPhotoSources.filter(src => src.startsWith('/assets/') && !/logo/i.test(src)).length, 'activity cards use real local archive photography, not logo placeholders').toBeGreaterThanOrEqual(4);
   expect(result.familyImages, 'homepage family image duplicates').toBe(0);
   expect(result.archiveWalls, 'homepage retired archive/photo-chapter surfaces').toBe(0);
-  expect(result.activityImages, 'homepage activity cards avoid unrelated stock/gallery imagery').toBe(0);
+  expect(result.activityImages, 'activity discovery uses curated source photography instead of text-only cards').toBeGreaterThanOrEqual(4);
   expect(result.storyOverflow, 'homepage photo-story horizontal overflow').toBe(false);
   expect(result.storyTiles).toBeLessThanOrEqual(3);
 });
