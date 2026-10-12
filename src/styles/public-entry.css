@@ -2,3 +2,55 @@
 @import './public-system.css';
 @import '../jyc-design-upgrades.css';
 @import './jyc-pro-redesign.css';
+
+
+/* V68 — final shared-surface pass after legacy style layers. Keep the editorial home
+   distinct while restoring subtle depth and image affordances on the wider public site. */
+.public-app :where(h1,h2,h3) { text-wrap: balance; }
+.public-app :where(.section-head h1,.section-head h2,.page h1,.page h2) { max-width: 24ch; }
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .public-app .gallery-item:hover img,
+  .public-app .gallery-story-card:hover img,
+  .public-app .jyc57-photo:hover img,
+  .public-app .jyc57-feature-card:hover img {
+    transform: scale(1.035) !important;
+    filter: saturate(1.04) contrast(1.02) !important;
+  }
+  .public-app .gallery-item,
+  .public-app .gallery-story-card,
+  .public-app .jyc57-photo,
+  .public-app .jyc57-feature-card {
+    transition: transform .22s cubic-bezier(.2,.8,.2,1), border-color .22s ease, box-shadow .22s ease !important;
+  }
+  .public-app .gallery-item:hover,
+  .public-app .gallery-story-card:hover,
+  .public-app .jyc57-photo:hover,
+  .public-app .jyc57-feature-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 14px 34px rgba(26,25,29,.12) !important;
+  }
+}
+@media (hover:none), (pointer:coarse) {
+  .public-app .gallery-item:hover img,
+  .public-app .gallery-story-card:hover img,
+  .public-app .jyc57-photo:hover img,
+  .public-app .jyc57-feature-card:hover img { transform: none !important; filter: none !important; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-app .gallery-item,
+  .public-app .gallery-story-card,
+  .public-app .jyc57-photo,
+  .public-app .jyc57-feature-card,
+  .public-app .gallery-item img,
+  .public-app .gallery-story-card img,
+  .public-app .jyc57-photo img,
+  .public-app .jyc57-feature-card img { animation:none !important; transition:none !important; }
+  .public-app .gallery-item:hover,
+  .public-app .gallery-story-card:hover,
+  .public-app .jyc57-photo:hover,
+  .public-app .jyc57-feature-card:hover,
+  .public-app .gallery-item:hover img,
+  .public-app .gallery-story-card:hover img,
+  .public-app .jyc57-photo:hover img,
+  .public-app .jyc57-feature-card:hover img { transform:none !important; filter:none !important; }
+}
