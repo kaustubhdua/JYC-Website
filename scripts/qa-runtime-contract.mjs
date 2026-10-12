@@ -16,7 +16,7 @@ for(const n of names){const ok=exports.has(n);console.log(`${ok?'PASS':'FAIL'}: 
 const required=['EventTools','DownloadICS'];
 for(const n of required){const ok=exports.has(n);console.log(`${ok?'PASS':'FAIL'}: runtime-critical export ${n}`);if(!ok)failed++}
 const source=fs.readFileSync(path.join(root,'src/main.jsx'),'utf8');
-const metaOriginOk=extra.includes("export function usePageMeta")&&extra.includes("import.meta.env.VITE_CANONICAL_ORIGIN||'https://jyc-website-eight.vercel.app'")&&!extra.includes("const origin=(import.meta.env.VITE_SITE_URL||window.location.origin)");
+const metaOriginOk=extra.includes('export function usePageMeta')&&extra.includes("import.meta.env.VITE_CANONICAL_ORIGIN||import.meta.env.VITE_SITE_URL||'https://jyc-website-eight.vercel.app'")&&!extra.includes('const origin=(import.meta.env.VITE_SITE_URL||window.location.origin)')&&!extra.includes('https://www.jiityouthclub128.in');
 console.log((metaOriginOk ? "PASS" : "FAIL")+": usePageMeta resolves a site origin before building canonical/OG URLs");
 if(!metaOriginOk)failed++;
 const updatesApi=fs.readFileSync(path.join(root,'api/jyc-updates.js'),'utf8');
