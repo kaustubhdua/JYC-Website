@@ -1,22 +1,18 @@
-/* ==========================================================================
-   JYC EDITORIAL HOME — CYBER OBSIDIAN EDITION
-   Inspired by: jodc-fromroots, drone-wars, innovationjiit, OSDC, CICR
-   Fonts: Space Grotesk, Inter, JetBrains Mono
-   ========================================================================== */
+/* JYC EDITORIAL HOME — photo-led campus culture, with restrained JYC identity. */
 
 :root {
-  --jh-bg: #08080a;
-  --jh-surface: #101015;
-  --jh-surface-elevated: #16161f;
-  --jh-surface-glass: rgba(16, 16, 22, 0.75);
-  --jh-ink: #f5f5f7;
-  --jh-muted: #8b8b98;
-  --jh-accent: #e5b869;
-  --jh-accent-glow: rgba(229, 184, 105, 0.25);
-  --jh-cyan: #00e5ff;
-  --jh-cyan-glow: rgba(0, 229, 255, 0.2);
-  --jh-line: rgba(255, 255, 255, 0.08);
-  --jh-line-accent: rgba(229, 184, 105, 0.35);
+  --jh-bg: #f7f1e7;
+  --jh-surface: #fffaf2;
+  --jh-surface-elevated: #efe4d3;
+  --jh-surface-glass: rgba(255, 250, 242, 0.88);
+  --jh-ink: #241f1c;
+  --jh-muted: #6d6259;
+  --jh-accent: #a7352e;
+  --jh-accent-glow: rgba(167, 53, 46, 0.16);
+  --jh-cyan: #a7352e;
+  --jh-cyan-glow: rgba(167, 53, 46, 0.12);
+  --jh-line: rgba(36, 31, 28, 0.12);
+  --jh-line-accent: rgba(176, 135, 73, 0.42);
   --jh-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --jh-radius-sm: 8px;
   --jh-radius-md: 14px;
@@ -1407,5 +1403,70 @@
   }
   .jh-actions .jh-btn {
     width: 100%;
+  }
+}
+
+
+/* Editorial hierarchy: warm paper, ink, JYC red and quiet champagne details. */
+.jyc-home {
+  color: var(--jh-ink);
+  background: var(--jh-bg);
+}
+.jyc-home .jh-hero {
+  background: transparent;
+}
+.jyc-home .jh-cyber-badge {
+  color: var(--jh-accent);
+  border-color: rgba(167, 53, 46, .24);
+  background: rgba(167, 53, 46, .055);
+  letter-spacing: .09em;
+}
+.jyc-home .jh-live-pulse-dot {
+  background: var(--jh-accent);
+  box-shadow: 0 0 0 4px rgba(167, 53, 46, .10);
+}
+.jyc-home .jh-hero h1 {
+  color: var(--jh-ink);
+  text-wrap: balance;
+}
+.jyc-home .jh-title-gradient {
+  color: var(--jh-accent);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+.jyc-home .jh-lead {
+  color: var(--jh-muted);
+  max-width: 42rem;
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+.jyc-home .jh-btn-primary {
+  color: #fffaf2;
+  background: var(--jh-accent);
+  border-color: var(--jh-accent);
+}
+.jyc-home .jh-btn-primary:hover {
+  background: #862923;
+  border-color: #862923;
+}
+.jyc-home .jh-btn-glass,
+.jyc-home .jh-btn-outline {
+  color: var(--jh-ink);
+  background: rgba(255, 250, 242, .72);
+  border-color: var(--jh-line);
+}
+.jyc-home .jh-btn:focus-visible,
+.jyc-home a:focus-visible {
+  outline: 3px solid #b08749;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jyc-home *,
+  .jyc-home *::before,
+  .jyc-home *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }
