@@ -36,7 +36,8 @@ const scripts = [
   'qa-current-release-coherence.mjs',
   'qa-current-release-integrity.mjs',
   'qa-public-ux-refinements.mjs',
-  'qa-p0-editorial-routes.mjs'
+  'qa-p0-editorial-routes.mjs',
+  'qa-homepage-editorial-truth.mjs'
 ];
 
 for (const script of scripts) {
