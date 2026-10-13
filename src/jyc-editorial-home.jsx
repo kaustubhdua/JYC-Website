@@ -306,8 +306,8 @@ export function JYCEditorialHome({ data }) {
                   loading="lazy"
                   decoding="async"
                   sizes={index === 0 ? '(max-width: 760px) 100vw, 58vw' : '(max-width: 760px) 100vw, 34vw'}
-                  fallbackSrc={FALLBACK}
-                  fallbackAlt="Official JYC logo placeholder; photograph unavailable"
+                  fallbackSrc="/assets/photo-unavailable.svg"
+                  fallbackAlt="Photograph unavailable"
                 />
                 <span className="jh-story-shade" aria-hidden="true" />
                 <span className="jh-story-copy">
