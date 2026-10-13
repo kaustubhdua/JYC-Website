@@ -973,13 +973,14 @@
    PHOTO STORY & GALLERIES
    -------------------------------------------------------------------------- */
 .jh-photo-story {
-  padding: 80px 0 100px;
+  padding: clamp(54px, 7vw, 100px) 0;
   border-top: 1px solid var(--jh-line);
 }
 
 .jh-photo-story-head {
   display: flex;
   justify-content: space-between;
+  gap: clamp(22px, 4vw, 56px);
   align-items: flex-end;
   margin-bottom: 36px;
 }
@@ -1746,5 +1747,20 @@
   .jyc-editorial-home .jh-story-card:hover .jh-story-photo {
     transform: none !important;
     filter: none !important;
+  }
+}
+
+/* The portrait lead frame gives way to an even collage on narrow screens. */
+@media (max-width: 680px) {
+  .jyc-editorial-home .jh-photo-story-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1,
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-2,
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-3 {
+    grid-row: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
   }
 }
