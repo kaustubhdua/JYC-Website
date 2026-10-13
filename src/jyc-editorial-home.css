@@ -1723,3 +1723,115 @@
     filter: none !important;
   }
 }
+
+
+/* V69 — refined editorial typography and photography composition.
+   Keep the visual signature quiet: real imagery, a legible type hierarchy,
+   warm paper surfaces, and interaction only where it helps orientation. */
+.jyc-editorial-home.jyc-home {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.jyc-editorial-home .jh-hero h1,
+.jyc-editorial-home .jh-photo-story-head h2,
+.jyc-editorial-home .jh-section-head h2,
+.jyc-editorial-home .jh-community-copy h2,
+.jyc-editorial-home .jh-final h2 {
+  font-family: "Space Grotesk", Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-wrap: balance;
+}
+.jyc-editorial-home .jh-overline,
+.jyc-editorial-home .jh-section-number,
+.jyc-editorial-home .jh-about-kicker,
+.jyc-editorial-home .jh-story-copy small,
+.jyc-editorial-home .jh-photo-index {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.jyc-editorial-home .jh-lead,
+.jyc-editorial-home .jh-about-editorial-copy p,
+.jyc-editorial-home .jh-photo-story-intro p {
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+.jyc-editorial-home .jh-photo-story {
+  padding-block: clamp(54px, 7vw, 100px);
+}
+.jyc-editorial-home .jh-photo-story-head {
+  gap: clamp(22px, 4vw, 56px);
+}
+.jyc-editorial-home .jh-photo-story-grid.has-three {
+  gap: clamp(12px, 1.8vw, 24px);
+  align-items: stretch;
+}
+.jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1 {
+  min-height: clamp(360px, 42vw, 600px);
+}
+.jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-2,
+.jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-3 {
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+}
+.jyc-editorial-home .jh-story-card {
+  border-radius: clamp(14px, 1.5vw, 22px);
+  box-shadow: 0 10px 32px rgba(26, 25, 29, .07);
+}
+.jyc-editorial-home .jh-story-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.jyc-editorial-home .jh-story-copy {
+  left: clamp(16px, 2vw, 26px);
+  right: clamp(16px, 2vw, 26px);
+  bottom: clamp(16px, 2vw, 26px);
+}
+.jyc-editorial-home .jh-story-copy small {
+  color: #f0d7ad;
+  letter-spacing: .08em;
+}
+.jyc-editorial-home .jh-story-copy strong {
+  max-width: 24ch;
+  font-size: clamp(18px, 1.55vw, 25px);
+  line-height: 1.12;
+}
+.jyc-editorial-home .jh-story-card:focus-visible,
+.jyc-editorial-home .jh-btn:focus-visible,
+.jyc-editorial-home .jh-text-link:focus-visible,
+.jyc-editorial-home .jh-team-list button:focus-visible {
+  outline: 3px solid var(--jh-accent);
+  outline-offset: 4px;
+}
+@media (max-width: 680px) {
+  .jyc-editorial-home .jh-photo-story-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .jyc-editorial-home .jh-photo-story-grid.has-three {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1,
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-2,
+  .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-3 {
+    grid-row: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+  .jyc-editorial-home .jh-story-copy strong {
+    font-size: clamp(18px, 5vw, 23px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jyc-editorial-home .jh-live-pulse-dot,
+  .jyc-editorial-home .jh-ambient-orb-1,
+  .jyc-editorial-home .jh-ambient-orb-2,
+  .jyc-editorial-home .jh-ambient-orb-3 {
+    animation: none !important;
+  }
+}
