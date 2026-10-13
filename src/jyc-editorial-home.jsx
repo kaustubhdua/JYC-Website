@@ -30,7 +30,7 @@ const dateMs = e => {
   const raw = String(e?.date || '').trim();
   if (!raw) return Infinity;
   const time = String(e?.start || '').trim();
-  const candidate = /T\d{2}:\d{2}/.test(raw) ? raw : raw + 'T' + (/^\d{1,2}:\d{2}$/.test(time) ? time.padStart(5, '0') : '00:00');
+  const candidate = /[T ]\d{1,2}:\d{2}/.test(raw) ? raw.replace(' ', 'T') : raw + 'T' + (/^\d{1,2}:\d{2}$/.test(time) ? time.padStart(5, '0') : '00:00');
   const ms = Date.parse(candidate);
   return Number.isFinite(ms) ? ms : Infinity;
 };
