@@ -146,3 +146,18 @@
   .public-app .jyc57-masonry > .jyc57-photo:hover img,
   .public-app .jyc57-feature-card:hover img { transform: none !important; filter: none !important; }
 }
+
+
+/* Type finishing: preserve the loaded Inter / Space Grotesk / JetBrains Mono pairing
+   while improving optical spacing and editorial wrapping across public routes. */
+.public-app :where(h1,h2,h3,h4) {
+  font-synthesis: none;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-wrap: balance;
+}
+.public-app :where(p,li) { text-wrap: pretty; }
+.public-app :where(.eyebrow,.jh-kicker,.jh-section-number,.jh-overline) {
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
