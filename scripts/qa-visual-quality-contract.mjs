@@ -14,6 +14,8 @@ assert.ok(importIndex >= 0 && firstRuleIndex >= 0 && importIndex < firstRuleInde
   'visual quality stylesheet must be imported before public-entry rules');
 assert.ok(visual.includes('--jyc-font-display') && visual.includes('--jyc-font-body'),
   'shared typography tokens must be defined');
+assert.ok(visual.includes('.jyc57-masonry > .jyc57-photo:nth-child(8n+1)') && visual.includes('grid-template-columns: repeat(12, minmax(0, 1fr)) !important') && visual.includes('grid-auto-rows: clamp(28px, 8.5vw, 38px) !important'), 'gallery archive must use varied responsive collage spans');
+assert.ok(visual.includes('.jyc57-masonry > .jyc57-photo:hover img') && visual.includes('@media (prefers-reduced-motion:reduce)'), 'gallery hover motion must be capability-gated and reduced-motion-safe');
 assert.ok(visual.includes('.jyc-best-of-page .jyc57-featured-grid') &&
   visual.includes('grid-row: span 2') && visual.includes('@media (max-width: 620px)'),
   'Best of JYC collage must have desktop and mobile compositions');
