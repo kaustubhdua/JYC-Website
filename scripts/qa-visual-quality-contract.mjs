@@ -20,6 +20,8 @@ assert.ok(visual.includes('@media (prefers-reduced-motion:reduce)'),
 assert.ok(experience.includes('fallbackSrc="/assets/photo-unavailable.svg"') &&
   experience.includes('fallbackAlt="Photograph unavailable"'),
   'gallery and Best of JYC photos must use a non-logo unavailable-photo fallback');
+assert.ok(visual.includes('.event-identity-page') && visual.includes('--event-accent: var(--hub-accent'),
+  'published event identities must receive scoped visual accents rather than a global fest skin');
 assert.ok(home.includes('.jh-photo-story-grid.has-three') &&
   home.includes('.jh-story-card-1') && home.includes('@media (max-width: 680px)'),
   'homepage editorial photo collage must retain responsive art direction');
