@@ -566,8 +566,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  const clean=p.replace(/\/$/,'')||'/';
  if(clean==='/admin'||clean.startsWith('/admin/'))return <Navigate to="/" replace/>;
  if(clean==='/leadership')return <Navigate to="/team" replace/>;
- if(clean==='/history')return <Navigate to="/about" replace/>;
- if(clean==='/achievements'||clean==='/best-of-jyc')return <Navigate to="/about" replace/>;
  if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;
  if(clean==='/moments')return <Navigate to="/gallery" replace/>;
  if(clean==='/planner'||clean==='/agenda')return <Navigate to="/events" replace/>;
@@ -645,6 +643,9 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  usePageMeta(title,description,canonicalPath,{noindex:privateRoute||unknownRoute,type:event?'event':'website',image:event?.poster||club?.logo||undefined,imageAlt:event?.title||club?.name||'JIIT Youth Club 128 official visual'});
  const schema=<JsonLd data={data} pageType={pageType} item={club||event} path={canonicalPath}/>;
  if(clean==='/')return <>{schema}<Home data={data}/></>;
+ if(clean==='/history')return <>{schema}<JYCHistory data={data}/></>;
+ if(clean==='/achievements')return <>{schema}<Achievements data={data}/></>;
+ if(clean==='/best-of-jyc')return <>{schema}<JYCBestOf data={data}/></>;
  if(clean==='/history')return <Navigate to="/about" replace/>;
  if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<JYC57Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
  if(clean==='/events')return <>{schema}<JYC57Events data={data}/></>;if(clean==='/fests')return isFestMode(data)?<>{schema}<FestsPage data={data}/></>:<Navigate to="/events" replace/>;if(clean.startsWith('/events/')&&legacyEventRedirect)return <Navigate to={'/events/'+legacyEventRedirect} replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session} notify={notify}/></>;
