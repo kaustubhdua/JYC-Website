@@ -37,6 +37,37 @@
   letter-spacing: .12em;
 }
 
+/* Fest and event pages inherit their published identity accent instead of imposing
+   one generic festival skin across the year-round JYC experience. */
+.public-app .event-identity-page {
+  --event-accent: var(--hub-accent, var(--jyc-accent, #A82420));
+}
+.public-app .event-identity-page .event-identity-glyph,
+.public-app .event-identity-page .event-identity-signature,
+.public-app .event-identity-page .event-domain-mark {
+  color: var(--event-accent);
+}
+.public-app .event-identity-page .event-detail-poster,
+.public-app .event-identity-page .event-context-card,
+.public-app .event-identity-page .event-identity-panel {
+  border-color: color-mix(in srgb, var(--event-accent) 32%, var(--jyc-line, #d9d3c8));
+}
+.public-app .event-identity-page .event-detail-badge {
+  border-color: color-mix(in srgb, var(--event-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--event-accent) 12%, var(--jyc-surface, #fff));
+}
+.public-app .event-identity-page .event-jump-nav a:focus-visible,
+.public-app .event-identity-page .event-external-links a:focus-visible {
+  outline: 3px solid var(--event-accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-app .event-identity-page :is(.event-detail-poster,.event-detail-poster img) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* A controlled editorial collage: one lead frame, then supporting moments.
    The source order remains logical for keyboard and screen-reader users. */
 .public-app .jyc-best-of-page .jyc57-featured-grid {
