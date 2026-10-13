@@ -126,7 +126,7 @@ export function JYC57Clubs({data}){
   <header className="jyc-clubs-header">
    <span className="jh-kicker">JYC 128 <b>COMMUNITIES</b></span>
    <h1>Explore the Club Ecosystem.</h1>
-   <p>Find your space across 23 technical, cultural, creative, literary and sports hubs at JIIT Sector 128.</p>
+   <p>Find your space across {clubs.length} published communities spanning technical, cultural, creative, literary and sports interests at JIIT Sector 128.</p>
   </header>
 
   {/* Sleek Filter Bar */}
@@ -479,7 +479,7 @@ export function JYC57Gallery({data}){
               onClick={() => openPhoto(g)} 
               aria-label={'Open ' + (g.caption || 'JYC photograph')}
             >
-              <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/jyc-logo-official.webp" fallbackAlt="JYC Logo"/>
+              <ResponsivePhoto src={g.url} alt={g.alt || g.caption || 'JYC archive photograph'} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 25vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt="Photograph unavailable"/>
               <span>
                 <small>{g.association || 'JYC ARCHIVE'}{g.year ? ' · ' + g.year : ''}</small>
                 <strong>{g.caption || 'JYC moment'}</strong>
@@ -544,7 +544,7 @@ export function JYCBestOf({data}){
  ].map(([name,rows])=>[name,rows.slice(0,6)]).filter(([,rows])=>rows.length));
  return <section className="section page unified-public-page jyc57-page jyc-best-of-page">
   <header className="jyc57-archive-head"><div><span className="eyebrow">JYC · EDITORIAL SELECTION</span><h1>The Best of JYC.</h1><p>A photography-first selection of people, performance, innovation, campus life and celebrations from the maintained JYC visual archive.</p></div><div className="jyc57-gallery-meta"><span><b>{items.length}</b> selected frames</span><span>Source-backed only</span></div></header>
-  {groups.map(([name,rows])=><section className="jyc57-featured" key={name} aria-labelledby={'best-'+name}><div className="jyc57-section-head"><div><span className="eyebrow">BEST OF JYC</span><h2 id={'best-'+name}>{name}</h2></div><span>{rows.length} frames</span></div><div className="jyc57-featured-grid">{rows.map((g,i)=><a className={'jyc57-feature-card feature-'+i%6} key={g.id||g.url} href={'/gallery?photo='+encodeURIComponent(g.id||g.url)} aria-label={`Open ${g.caption||'JYC photograph'} in the gallery`}><ResponsivePhoto src={g.url} alt={g.alt||g.caption||'JYC archive photograph'} loading={i<2?'eager':'lazy'} fetchPriority={i<2?'high':undefined} decoding="async" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"/><span><small>{g.association||'JYC ARCHIVE'}{g.year?' · '+g.year:''}</small><strong>{g.caption||'JYC moment'}</strong></span></a>)}</div></section>)}
+  {groups.map(([name,rows])=><section className="jyc57-featured" key={name} aria-labelledby={'best-'+name}><div className="jyc57-section-head"><div><span className="eyebrow">BEST OF JYC</span><h2 id={'best-'+name}>{name}</h2></div><span>{rows.length} frames</span></div><div className="jyc57-featured-grid">{rows.map((g,i)=><a className={'jyc57-feature-card feature-'+i%6} key={g.id||g.url} href={'/gallery?photo='+encodeURIComponent(g.id||g.url)} aria-label={`Open ${g.caption||'JYC photograph'} in the gallery`}><ResponsivePhoto src={g.url} alt={g.alt||g.caption||'JYC archive photograph'} loading={i<2?'eager':'lazy'} fetchPriority={i<2?'high':undefined} decoding="async" sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt="Photograph unavailable"/><span><small>{g.association||'JYC ARCHIVE'}{g.year?' · '+g.year:''}</small><strong>{g.caption||'JYC moment'}</strong></span></a>)}</div></section>)}
   {!groups.length&&<Empty eyebrow="BEST OF JYC" title="The selection is waiting." text="Published source photography will appear here as the archive grows."/>}
  </section>
 }
