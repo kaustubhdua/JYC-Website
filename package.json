@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "qa": "node scripts/run-qa-suite.mjs",
     "qa:release": "npm run qa",
-    "qa:browser": "node scripts/qa-browser.mjs",
+    "qa:browser": "node scripts/qa-browser.mjs && npx playwright test scripts/visual-route-matrix.spec.js",
     "qa:env": "node scripts/qa-env.mjs",
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
     "qa:seo": "node scripts/qa-seo.mjs",
