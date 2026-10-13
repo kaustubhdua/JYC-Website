@@ -158,7 +158,7 @@ export function JYCEditorialHome({ data }) {
   const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }, []);
   const upcoming = events.filter(e => { const t = dateMs(e); return Number.isFinite(t) && t >= today; }).slice(0, 4);
   const team = (data?.team || []).filter(x => x?.published === true).slice(0, 4);
-  const featured = upcoming[0] || events[0];
+  const featured = upcoming[0] || null;
   const featuredRegistration = registrationState(featured);
 
   const photoStories = useMemo(() => {
@@ -330,7 +330,7 @@ export function JYCEditorialHome({ data }) {
             <h2>Find your kind<br /><em className="jh-title-gradient">of people.</em></h2>
           </div>
           <button type="button" className="jh-text-link" onClick={() => nav('/clubs')}>
-            Explore all 23 societies <span>↗</span>
+            Explore all communities <span>↗</span>
           </button>
         </div>
         <LazyActivityBento activities={activities} nav={nav} />
@@ -384,7 +384,7 @@ export function JYCEditorialHome({ data }) {
             </div>
           </article>
         ) : (
-          <div className="jh-empty">No published upcoming events are currently available.</div>
+          <div className="jh-empty">No published upcoming events are currently available. Check the event directory for the latest published information.</div>
         )}
 
         {upcoming.slice(1).length > 0 && (
