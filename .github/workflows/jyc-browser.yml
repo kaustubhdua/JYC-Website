@@ -47,7 +47,7 @@ jobs:
         run: npm run qa:browser
       - name: Upload Playwright reports and visual route captures
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: jyc-playwright-and-visual-report
           path: |
@@ -57,7 +57,7 @@ jobs:
           if-no-files-found: ignore
       - name: Upload visual baseline bootstrap
         if: success() && contains(github.event.head_commit.message || '', '[visual-baseline-bootstrap]')
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: jyc-visual-baselines-bootstrap
           path: scripts/visual-route-matrix.spec.js-snapshots
@@ -75,7 +75,7 @@ jobs:
         with:
           persist-credentials: true
       - name: Download visual baselines
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: jyc-visual-baselines-bootstrap
           path: /tmp/jyc-visual-baselines
