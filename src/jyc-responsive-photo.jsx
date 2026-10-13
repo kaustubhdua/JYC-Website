@@ -1,12 +1,11 @@
 import React,{useEffect,useLayoutEffect,useState} from 'react';
 import {photoDerivativeUrls} from './jyc-photo-intelligence.js';
 import {loadJycImageManifest} from './jyc-image-manifest.js';
-const LOGO_FALLBACK=import.meta.env.PROD?'/assets/jyc-logo.webp':'/JYC%20Logo(4).png';
-const ORIGINAL_LOGO='/JYC%20Logo(4).png';
+const PHOTO_FALLBACK='/assets/photo-unavailable.svg';
 const isDerivativeSource=url=>/^\/assets\/(?:source-archive|hub-photos|hub-photos-extra|events|home|team)\//.test(String(url||''));
-export function ResponsivePhoto({src,alt='',width,height,sizes='100vw',loading='lazy',fetchPriority,decoding='async',className='',style,onError,objectPosition,fallbackSrc=LOGO_FALLBACK,fallbackAlt='Official JYC logo placeholder; image unavailable'}){
+export function ResponsivePhoto({src,alt='',width,height,sizes='100vw',loading='lazy',fetchPriority,decoding='async',className='',style,onError,objectPosition,fallbackSrc=PHOTO_FALLBACK,fallbackAlt='Photograph unavailable'}){
  // Empty/whitespace sources must never become a request for the current document.
- const normalizedFallbackSrc=typeof fallbackSrc==='string'&&fallbackSrc.trim()?fallbackSrc.trim():LOGO_FALLBACK;
+ const normalizedFallbackSrc=typeof fallbackSrc==='string'&&fallbackSrc.trim()?fallbackSrc.trim():PHOTO_FALLBACK;
  const source=typeof src==='string'&&src.trim()?src.trim():normalizedFallbackSrc;
  const [sourceDimensions,setSourceDimensions]=useState(()=>({src:source,width:0,derivativesEligible:false}));
  const [fallbackState,setFallbackState]=useState(()=>({src:source,fallbackSrc:normalizedFallbackSrc,stage:0,preferOriginal:false}));
@@ -15,7 +14,7 @@ export function ResponsivePhoto({src,alt='',width,height,sizes='100vw',loading='
  const fallbackStateMatches=fallbackState.src===source&&fallbackState.fallbackSrc===normalizedFallbackSrc;
  const stage=fallbackStateMatches?fallbackState.stage:0;
  const preferOriginal=fallbackStateMatches&&fallbackState.preferOriginal===true;
- const candidatePool=preferOriginal?[source,normalizedFallbackSrc,LOGO_FALLBACK,ORIGINAL_LOGO]:[normalizedFallbackSrc,LOGO_FALLBACK,ORIGINAL_LOGO];
+ const candidatePool=preferOriginal?[source,normalizedFallbackSrc]:[normalizedFallbackSrc];
  const candidates=candidatePool.filter((url,index,all)=>Boolean(url)&&(preferOriginal||url!==source)&&all.indexOf(url)===index);
  const failed=stage>candidates.length;
  const usingOriginalRetry=preferOriginal&&stage===1&&candidates[0]===source;
