@@ -9,7 +9,7 @@ import {ResponsivePhoto} from './jyc-responsive-photo.jsx';
 import {loadJycImageManifest} from './jyc-image-manifest.js';
 import AccordionGallery from './components/react-bits/AccordionGallery.jsx';
 
-const safeDate=(e)=>{const t=Date.parse(`${e?.date||''}T${e?.start||'00:00'}`);return Number.isFinite(t)?t:Infinity};
+const safeDate=(e)=>{const t=eventMoment(e?.date,e?.start,'00:00');return Number.isFinite(t)?t:Infinity};
 const eventMoment=(date,time,fallback='00:00')=>{const raw=String(date||'').trim();if(!raw)return NaN;if(/[T ]\d{1,2}:\d{2}/.test(raw))return Date.parse(raw.replace(' ','T'));const clock=String(time||fallback).trim();const normalized=/^\d{1,2}:\d{2}$/.test(clock)?clock.padStart(5,'0'):fallback;return Date.parse(`${raw}T${normalized}`)};
 const stateOf=(e)=>{if(!e?.date)return 'draft';const start=eventMoment(e.date,e.start,'00:00'),end=eventMoment(e.dateEnd||e.date,e.end,'23:59'),now=Date.now();if(!Number.isFinite(start)||!Number.isFinite(end))return 'draft';if(now<start)return 'upcoming';if(now<=end)return 'live';return 'past'};
 const publishedEvents=(data)=>Array.isArray(data?.events)?data.events.filter(e=>e?.published&&e?.archived!==true):[];
