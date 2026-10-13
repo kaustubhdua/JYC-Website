@@ -36,6 +36,7 @@ const scripts = [
   'qa-current-release-coherence.mjs',
   'qa-current-release-integrity.mjs',
   'qa-public-ux-refinements.mjs',
+  'qa-public-route-completeness.mjs',
   'qa-dynamic-route-shells.mjs'
 ];
 
