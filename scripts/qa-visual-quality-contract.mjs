@@ -21,6 +21,9 @@ assert.ok(visual.includes('.jyc-best-of-page .jyc57-featured-grid') &&
   'Best of JYC collage must have desktop and mobile compositions');
 assert.ok(visual.includes('@media (prefers-reduced-motion:reduce)'),
   'photo collage motion must respect reduced-motion preferences');
+assert.ok(fs.readFileSync('src/jyc-responsive-photo.jsx', 'utf8').includes("fallbackSrc=PHOTO_FALLBACK,fallbackAlt='Photograph unavailable'") &&
+  fs.readFileSync('src/jyc-responsive-photo.jsx', 'utf8').includes('const candidatePool=preferOriginal?[source,normalizedFallbackSrc]:[normalizedFallbackSrc];'),
+  'generic photo failures must never silently fall back to the JYC logo');
 assert.ok(experience.includes('fallbackSrc="/assets/photo-unavailable.svg"') &&
   experience.includes('fallbackAlt="Photograph unavailable"'),
   'gallery and Best of JYC photos must use a non-logo unavailable-photo fallback');
