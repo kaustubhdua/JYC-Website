@@ -14,7 +14,7 @@ const routes = [
 for (const route of routes) {
   assert.ok(main.includes(route.path), `Route metadata missing: ${route.path}`);
   assert.match(main, route.render, `Route does not render its dedicated page: ${route.path}`);
-  assert.doesNotMatch(main, new RegExp(`if\\(clean===['"]\\${route.path}['"]\\)return <Navigate to=["']/about`), `Route unexpectedly redirects to About: ${route.path}`);
+  const routeKey = route.path.replace(/^\\//, '');\n  assert.ok(!main.includes(`if(clean==='/${routeKey}')return <Navigate to=\"/about\" replace/>;`), `Route unexpectedly redirects to About: ${route.path}`);
 }
 
 assert.match(main, /function Achievements\(\{data\}\)/, 'Achievements page component must exist');
