@@ -284,7 +284,7 @@ export function JYCEditorialHome({ data }) {
             </div>
             <div className="jh-photo-story-intro">
               <p>From packed stages to the moments between them — real photographs from JYC clubs, events and campus life.</p>
-              <button type="button" className="jh-text-link" onClick={() => nav('/gallery?q=' + encodeURIComponent(story.association || story.caption || ''))}>
+              <button type="button" className="jh-text-link" onClick={() => nav('/gallery')}>
                 Open full gallery <span>↗</span>
               </button>
             </div>
@@ -295,7 +295,7 @@ export function JYCEditorialHome({ data }) {
                 type="button"
                 className={`jh-story-card jh-story-card-${index + 1}`}
                 key={story.id || story.url}
-                onClick={() => nav('/gallery')}
+                onClick={() => nav('/gallery?q=' + encodeURIComponent(story.association || story.caption || ''))}
                 onMouseMove={handleSpotlight}
                 aria-label={`Explore ${story.association} photography in the JYC gallery`}
               >
@@ -330,7 +330,7 @@ export function JYCEditorialHome({ data }) {
             <h2>Find your kind<br /><em className="jh-title-gradient">of people.</em></h2>
           </div>
           <button type="button" className="jh-text-link" onClick={() => nav('/clubs')}>
-            Explore all 23 societies <span>↗</span>
+            Explore all communities <span>↗</span>
           </button>
         </div>
         <LazyActivityBento activities={activities} nav={nav} />
