@@ -968,16 +968,14 @@ function JoinJYC(){
    <div className="join-soon-mark"><LogoImage alt="JIIT Youth Club logo"/></div>
    <span className="eyebrow">JYC 128 · ACADEMIC YEAR 2026–27</span>
    <h1>Ready to Soar.<br/><em>Join the JYC Student Ecosystem.</em></h1>
-   <p>The annual induction and recruitment cycle opens for first-year and second-year students every semester. Explore your domain, prepare your portfolio, and become part of JIIT's apex student life.</p>
+   <p>Explore the published JYC communities and current recruitment notices. When an application is open, its official deadline and application link should be shown on the relevant community or recruitment page.</p>
    <div className="join-notify-box">
-    <button type="button" className="btn primary" onClick={e=>{e.currentTarget.textContent='✓ Alert Registered — We will remind you!';e.currentTarget.classList.add('secondary')}}>
-     Notify Me When Recruitment Opens 🔔
-    </button>
-    <small>Zero spam. You will be notified via browser notice when registrations go live.</small>
+    <Button onClick={()=>nav('/recruitment')}>View recruitment status ↗</Button>
+    <small>Only published opportunities and verified application links are treated as open. This page does not register a notification.</small>
    </div>
    <div className="hero-actions" style={{justifyContent:'center',marginTop:24}}>
-    <Button onClick={()=>nav('/clubs')}>Explore All 23 Communities ↗</Button>
-    <Button secondary onClick={()=>nav('/events')}>See Live Experiences →</Button>
+    <Button onClick={()=>nav('/clubs')}>Explore All Communities ↗</Button>
+    <Button secondary onClick={()=>nav('/events')}>See Published Events →</Button>
    </div>
   </div>
   <section className="join-roadmap-section reveal">
@@ -985,7 +983,7 @@ function JoinJYC(){
     <div><span className="eyebrow">APPLICATION ROADMAP</span><h2>How induction works.</h2><p>Four structured phases from campus newcomer to official community member.</p></div>
    </div>
    <div className="join-roadmap-grid">
-    {[{num:'01',title:'Explore Societies',text:'Discover all 23 active clubs across 5 community families.'},{num:'02',title:'Orientation & Inductions',text:'Attend live introductory workshops and interact with society heads.'},{num:'03',title:'Auditions & Code Sprints',text:'Showcase your coding, performance, design, writing or management skills.'},{num:'04',title:'Join the Cohort',text:'Receive your official badge, join the WhatsApp groups, and start organizing.'}].map(s=><article key={s.num} className="join-roadmap-card">
+    {[{num:'01',title:'Explore Societies',text:'Discover communities across technical, cultural, creative, literary and sports interests.'},{num:'02',title:'Orientation & Inductions',text:'Attend live introductory workshops and interact with society heads.'},{num:'03',title:'Auditions & Code Sprints',text:'Showcase your coding, performance, design, writing or management skills.'},{num:'04',title:'Join the Cohort',text:'Receive your official badge, join the WhatsApp groups, and start organizing.'}].map(s=><article key={s.num} className="join-roadmap-card">
      <span className="roadmap-num">{s.num}</span>
      <h3>{s.title}</h3>
      <p>{s.text}</p>
@@ -994,7 +992,7 @@ function JoinJYC(){
   </section>
   <section className="join-domains-section reveal">
    <div className="section-inline-head" style={{marginBottom:24}}>
-    <div><span className="eyebrow">ACTIVE RECRUITMENT DOMAINS</span><h2>Find where your passion belongs.</h2><p>Whether you write code, fly drones, dance, direct plays, design or play sports, there is a dedicated space for you.</p></div>
+    <div><span className="eyebrow">COMMUNITY AREAS</span><h2>Find where your passion belongs.</h2><p>Whether you write code, fly drones, dance, direct plays, design or play sports, there is a dedicated space for you.</p></div>
     <a className="text-link" href="/clubs">All clubs →</a>
    </div>
    <div className="join-domain-grid">
@@ -1205,8 +1203,14 @@ function EventDetail({data,id,session,notify}){
 function Announcements({data}){
  const updates=[];
  if(data.announcement?.on&&data.announcement?.text) updates.push({title:'JYC Update',text:data.announcement.text,link:data.announcement.link||''});
- const upcoming=data.events.filter(e=>e.published&&!e.archived&&eventState(e)!=='past').sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).slice(0,8);
- upcoming.forEach(e=>{if(safeExternalUrl(e.registrationUrl))updates.push({title:`Registration · ${e.title}`,text:`${fmtDate(e.date)} · ${e.venue||'Venue TBA'} · ${e.club||'JYC'}`,link:`/events/${slug(e.slug||e.title)}`})});
+ const upcoming=data.events.filter(e=>{
+  if(!e.published||e.archived||eventState(e)==='past'||(e.publicStatus==='planned'&&e.registrationVerified!==true))return false;
+  const url=safeExternalUrl(e.registrationUrl);
+  const deadline=String(e.registrationDeadline||'').trim();
+  const deadlineMs=deadline?Date.parse(/T\\d{2}:\\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
+  return Boolean(url)&&(!Number.isFinite(deadlineMs)||deadlineMs>Date.now());
+ }).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).slice(0,8);
+ upcoming.forEach(e=>updates.push({title:`Registration · ${e.title}`,text:`${fmtDate(e.date)} · ${e.venue||'Venue TBA'} · ${e.club||'JYC'}`,link:`/events/${slug(e.slug||e.title)}`}));
  return <section className="section page announcements-page unified-public-page"><Breadcrumbs items={[{label:'Announcements'}]}/><EcosystemContextRail/><div className="announcements-hero reveal"><div><span className="eyebrow">JYC UPDATES</span><h1>Know what needs your attention.</h1><p>Registrations, notices and published updates — kept simple, current and action-oriented.</p></div><div className="announcements-mark"><LogoImage alt="JIIT Youth Club"/><span>STAY UPDATED · STAY CONNECTED</span></div></div><div className="announcement-index reveal">{updates.length?updates.map((u,i)=><article key={i} className="announcement-card"><span>{String(i+1).padStart(2,'0')}</span><div><small>JYC UPDATE</small><h2>{u.title}</h2><p>{u.text}</p>{u.link&&<a className="text-link" href={u.link.startsWith('/')?u.link:safeExternalUrl(u.link)||'#'} target={u.link.startsWith('/')?'_self':'_blank'} rel={u.link.startsWith('/')?undefined:'noopener noreferrer'}>Open update →</a>}</div></article>):<State title="No announcements published." text="When JYC publishes a notice, registration update or important announcement, it will appear here."/>}</div><div className="announcement-footer-card reveal"><span className="eyebrow">OFFICIAL SOURCE OF TRUTH</span><h2>Follow JYC without missing the campus rhythm.</h2><p>Use Events for full event details, Clubs for communities and Gallery for the visual record.</p><div className="hero-actions"><Button onClick={()=>window.location.assign('/events')}>Explore events →</Button><Button secondary onClick={()=>window.location.assign('/clubs')}>Explore clubs →</Button></div></div></section>
 }
 function EditorialCard({item,index,label='PUBLIC RECORD'}){
