@@ -566,8 +566,8 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  const clean=p.replace(/\/$/,'')||'/';
  if(clean==='/admin'||clean.startsWith('/admin/'))return <Navigate to="/" replace/>;
  if(clean==='/leadership')return <Navigate to="/team" replace/>;
- if(clean==='/history')return <Navigate to="/about" replace/>;
- if(clean==='/achievements'||clean==='/best-of-jyc')return <Navigate to="/about" replace/>;
+ if(clean==='/history')return <>{schema}<JYCHistory data={data}/></>;
+ if(clean==='/achievements')return <>{schema}<Achievements data={data}/></>;if(clean==='/best-of-jyc')return <>{schema}<JYCBestOf data={data}/></>;
  if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;
  if(clean==='/moments')return <Navigate to="/gallery" replace/>;
  if(clean==='/planner'||clean==='/agenda')return <Navigate to="/events" replace/>;
