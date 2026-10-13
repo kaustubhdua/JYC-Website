@@ -30,7 +30,7 @@ const dateMs = e => {
   const raw = String(e?.date || '').trim();
   if (!raw) return Infinity;
   const time = String(e?.start || '').trim();
-  const candidate = /T\d{2}:\d{2}/.test(raw) ? raw : raw + 'T' + (/^\d{1,2}:\d{2}$/.test(time) ? time.padStart(5, '0') : '00:00');
+  const candidate = /[T ]\d{1,2}:\d{2}/.test(raw) ? raw.replace(' ', 'T') : raw + 'T' + (/^\d{1,2}:\d{2}$/.test(time) ? time.padStart(5, '0') : '00:00');
   const ms = Date.parse(candidate);
   return Number.isFinite(ms) ? ms : Infinity;
 };
@@ -295,7 +295,7 @@ export function JYCEditorialHome({ data }) {
                 type="button"
                 className={`jh-story-card jh-story-card-${index + 1}`}
                 key={story.id || story.url}
-                onClick={() => nav('/gallery')}
+                onClick={() => nav('/gallery?q=' + encodeURIComponent(story.association || story.caption || ''))}
                 onMouseMove={handleSpotlight}
                 aria-label={`Explore ${story.association} photography in the JYC gallery`}
               >
@@ -306,8 +306,8 @@ export function JYCEditorialHome({ data }) {
                   loading="lazy"
                   decoding="async"
                   sizes={index === 0 ? '(max-width: 760px) 100vw, 58vw' : '(max-width: 760px) 100vw, 34vw'}
-                  fallbackSrc={FALLBACK}
-                  fallbackAlt="Official JYC logo placeholder; photograph unavailable"
+                  fallbackSrc="/assets/photo-unavailable.svg"
+                  fallbackAlt="Photograph unavailable"
                 />
                 <span className="jh-story-shade" aria-hidden="true" />
                 <span className="jh-story-copy">
