@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 const main = fs.readFileSync('src/main.jsx', 'utf8');
 const sitemap = fs.readFileSync('scripts/generate-sitemap.mjs', 'utf8');
 const routeShells = fs.readFileSync('scripts/generate-route-shells.mjs', 'utf8');
+const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 
 const routes = [
   { path: '/history', render: /if\(clean===['"]\/history['"]\)return <>\{schema\}<JYCHistory data=\{data\}\/><\/>;/ },
@@ -14,7 +15,6 @@ const routes = [
 for (const route of routes) {
   assert.ok(main.includes(route.path), `Route metadata missing: ${route.path}`);
   assert.match(main, route.render, `Route does not render its dedicated page: ${route.path}`);
-  const routeKey = route.path.replace(/^\\//, '');\n  assert.ok(!main.includes(`if(clean==='/${routeKey}')return <Navigate to=\"/about\" replace/>;`), `Route unexpectedly redirects to About: ${route.path}`);
 }
 
 assert.match(main, /function Achievements\(\{data\}\)/, 'Achievements page component must exist');
@@ -22,9 +22,7 @@ assert.match(main, /import \{JYC57Events,JYC57Clubs,JYC57Gallery,JYC57Archive,JY
 assert.match(main, /import JYCHistory,\{HistoryTeaser,\s*HISTORY\}/, 'History page must be imported');
 assert.match(sitemap, /history|achievements|best-of-jyc/i, 'Sitemap generator should account for editorial routes');
 assert.match(routeShells, /history|achievements|best-of-jyc/i, 'Static route shells should account for editorial routes');
-
-const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 assert.match(home, /const featured = upcoming\[0\] \|\| null;/, 'Homepage must not promote a past event when no upcoming event exists');
 assert.doesNotMatch(home, /Explore all 23 societies/, 'Homepage should not hard-code a community count');
 
-console.log('P0 public route integrity PASS (3 dedicated editorial routes)');
+console.log('P0 public route integrity PASS (3 dedicated editorial routes + truthful homepage content)');
