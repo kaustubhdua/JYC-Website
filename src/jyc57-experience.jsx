@@ -126,7 +126,7 @@ export function JYC57Clubs({data}){
   <header className="jyc-clubs-header">
    <span className="jh-kicker">JYC 128 <b>COMMUNITIES</b></span>
    <h1>Explore the Club Ecosystem.</h1>
-   <p>Find your space across 23 technical, cultural, creative, literary and sports hubs at JIIT Sector 128.</p>
+   <p>Find your space across {clubs.length} published communities spanning technical, cultural, creative, literary and sports interests at JIIT Sector 128.</p>
   </header>
 
   {/* Sleek Filter Bar */}
