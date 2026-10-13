@@ -1207,7 +1207,7 @@ function Announcements({data}){
   if(!e.published||e.archived||eventState(e)==='past'||(e.publicStatus==='planned'&&e.registrationVerified!==true))return false;
   const url=safeExternalUrl(e.registrationUrl);
   const deadline=String(e.registrationDeadline||'').trim();
-  const deadlineMs=deadline?Date.parse(/T\\d{2}:\\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
+  const deadlineMs=deadline?Date.parse(/T\d{2}:\d{2}/.test(deadline)?deadline:deadline+'T23:59:59'):NaN;
   return Boolean(url)&&(!Number.isFinite(deadlineMs)||deadlineMs>Date.now());
  }).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).slice(0,8);
  upcoming.forEach(e=>updates.push({title:`Registration · ${e.title}`,text:`${fmtDate(e.date)} · ${e.venue||'Venue TBA'} · ${e.club||'JYC'}`,link:`/events/${slug(e.slug||e.title)}`}));
