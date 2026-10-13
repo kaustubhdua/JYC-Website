@@ -330,7 +330,7 @@ export function JYCEditorialHome({ data }) {
             <h2>Find your kind<br /><em className="jh-title-gradient">of people.</em></h2>
           </div>
           <button type="button" className="jh-text-link" onClick={() => nav('/clubs')}>
-            Explore all 23 societies <span>↗</span>
+            Explore all communities <span>↗</span>
           </button>
         </div>
         <LazyActivityBento activities={activities} nav={nav} />
