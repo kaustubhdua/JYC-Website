@@ -37,6 +37,10 @@ assert.ok(!main.includes('Alert Registered — We will remind you!') &&
   !main.includes('Explore All 23 Communities') &&
   !main.includes('23 named communities'),
   'public copy must not claim unimplemented notifications or stale fixed community counts');
+assert.ok(main.includes('function parseEventMoment(date,time,fallback=') &&
+  main.includes('const deadlineAllowsRegistration=!deadlineRaw||(Number.isFinite(deadlineMs)&&deadlineMs>Date.now())') &&
+  experience.includes('const eventMoment=') && experience.includes('const safeDate=(e)=>{const t=eventMoment'),
+  'event sorting and registration availability must use normalized date/time parsing');
 assert.ok(main.includes('deadlineMs>Date.now()') &&
   main.includes("e.publicStatus==='planned'&&e.registrationVerified!==true"),
   'announcement registration notices must exclude expired or unverified planned events');
