@@ -54,9 +54,9 @@ for (const route of routes) {
 
 test('history, achievements and Best of JYC render their dedicated pages', async ({ page }) => {
   const cases = [
-    ['/history', /A living record of JYC\\./i],
-    ['/achievements', /What the community has built\\./i],
-    ['/best-of-jyc', /The Best of JYC\\./i]
+    ['/history', /A living record of JYC\./i],
+    ['/achievements', /What the community has built\./i],
+    ['/best-of-jyc', /The Best of JYC\./i]
   ];
   for (const [route, heading] of cases) {
     await page.goto(base + route, { waitUntil: 'domcontentloaded' });
