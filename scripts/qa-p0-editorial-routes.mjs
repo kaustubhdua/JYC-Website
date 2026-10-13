@@ -6,6 +6,17 @@ const sitemap = fs.readFileSync('scripts/generate-sitemap.mjs', 'utf8');
 const routeShells = fs.readFileSync('scripts/generate-route-shells.mjs', 'utf8');
 const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 
+const routesStart = main.indexOf('function Routes(');
+const routesEnd = main.indexOf('function NavIcon(', routesStart);
+assert.ok(routesStart >= 0 && routesEnd > routesStart, 'Routes component boundaries must exist');
+const routesSource = main.slice(routesStart, routesEnd);
+const metadataHook = routesSource.indexOf('usePageMeta(');
+const schemaDeclaration = routesSource.indexOf('const schema=');
+const firstRenderReturn = routesSource.search(/return\s*<>|return\s*<Navigate|return\s*<section/);
+assert.ok(metadataHook >= 0 && schemaDeclaration > metadataHook, 'Route metadata and schema hooks must be declared before route rendering');
+assert.ok(firstRenderReturn > schemaDeclaration, 'Route rendering must not return before metadata/schema hooks; this prevents hook-order runtime errors');
+assert.doesNotMatch(routesSource.slice(0, schemaDeclaration), /if\s*\([^\n]*\)\s*return\s*</, 'No conditional JSX returns are allowed before all route hooks');
+
 const routes = [
   { path: '/history', render: /if\(clean===['"]\/history['"]\)return <>\{schema\}<JYCHistory data=\{data\}\/><\/>;/ },
   { path: '/achievements', render: /if\(clean===['"]\/achievements['"]\)return <>\{schema\}<Achievements data=\{data\}\/><\/>;/ },
