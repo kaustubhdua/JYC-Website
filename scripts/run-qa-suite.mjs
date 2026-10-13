@@ -35,7 +35,9 @@ const scripts = [
   'qa-reference-archive-readiness.mjs',
   'qa-current-release-coherence.mjs',
   'qa-current-release-integrity.mjs',
-  'qa-public-ux-refinements.mjs'
+  'qa-public-ux-refinements.mjs',
+  'qa-public-route-completeness.mjs',
+  'qa-visual-quality-contract.mjs'
 ];
 
 for (const script of scripts) {
