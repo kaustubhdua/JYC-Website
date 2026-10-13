@@ -6,6 +6,7 @@ const routeShells=fs.readFileSync('scripts/generate-route-shells.mjs','utf8');
 const sitemap=fs.readFileSync('scripts/generate-sitemap.mjs','utf8');
 const home=fs.readFileSync('src/jyc-editorial-home.jsx','utf8');
 const experience=fs.readFileSync('src/jyc57-experience.jsx','utf8');
+const publicEntry=fs.readFileSync('src/styles/public-entry.css','utf8');
 
 const cases=[
   ['/history','JYCHistory data={data}'],
@@ -26,5 +27,8 @@ assert.ok(sitemap.includes('/history')&&sitemap.includes('/achievements')&&sitem
 
 assert.ok(!home.includes('Explore all 23 societies'), 'homepage must not hard-code an unverified society count');
 assert.ok(!experience.includes('across 23 technical, cultural, creative, literary and sports hubs'), 'club directory must not hard-code an unverified community count');
+assert.ok(experience.includes('fallbackAlt="Official JYC logo placeholder; photograph unavailable"'), 'gallery fallback must not be announced as a real photograph');
+assert.ok(publicEntry.includes('grid-template-columns: repeat(12, minmax(0, 1fr)) !important')&&publicEntry.includes('nth-child(8n+1)')&&publicEntry.includes('grid-auto-rows: clamp(28px, 8.5vw, 38px) !important'), 'gallery must use a responsive editorial collage with varied card spans');
+assert.ok(publicEntry.includes('prefers-reduced-motion: no-preference')&&publicEntry.includes('prefers-reduced-motion: reduce'), 'collage image motion must respect reduced-motion settings');
 
 console.log('Public route completeness and content-truth contract: PASS (3 direct routes, metadata, shells, sitemap and unverified-count guards)');
