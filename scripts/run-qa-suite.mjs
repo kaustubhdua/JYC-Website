@@ -15,7 +15,6 @@ const scripts = [
   'qa-search.mjs',
   'qa-security.mjs',
   'qa-seo.mjs',
-  'qa-public-route-completeness.mjs',
   'qa-build-preflight.mjs',
   'qa-production.mjs',
   'qa-runtime-contract.mjs',
@@ -37,7 +36,9 @@ const scripts = [
   'qa-current-release-coherence.mjs',
   'qa-current-release-integrity.mjs',
   'qa-public-ux-refinements.mjs',
-  'qa-dynamic-route-shells.mjs'
+  'qa-dynamic-route-shells.mjs',
+  'qa-public-route-completeness.mjs',
+  'qa-visual-quality-contract.mjs'
 ];
 
 for (const script of scripts) {
