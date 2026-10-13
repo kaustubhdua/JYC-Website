@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+
+const main = fs.readFileSync('src/main.jsx', 'utf8');
+const sitemap = fs.readFileSync('scripts/generate-sitemap.mjs', 'utf8');
+const routeShells = fs.readFileSync('scripts/generate-route-shells.mjs', 'utf8');
+
+const routes = [
+  { path: '/history', render: /if\(clean===['"]\/history['"]\)return <>\{schema\}<JYCHistory data=\{data\}\/><\/>;/ },
+  { path: '/achievements', render: /if\(clean===['"]\/achievements['"]\)return <>\{schema\}<Achievements data=\{data\}\/><\/>;/ },
+  { path: '/best-of-jyc', render: /if\(clean===['"]\/best-of-jyc['"]\)return <>\{schema\}<JYCBestOf data=\{data\}\/><\/>;/ }
+];
+
+for (const route of routes) {
+  assert.ok(main.includes(route.path), `Route metadata missing: ${route.path}`);
+  assert.match(main, route.render, `Route does not render its dedicated page: ${route.path}`);
+  assert.doesNotMatch(main, new RegExp(`if\\(clean===['"]\\${route.path}['"]\\)return <Navigate to=["']/about`), `Route unexpectedly redirects to About: ${route.path}`);
+}
+
+assert.match(main, /function Achievements\(\{data\}\)/, 'Achievements page component must exist');
+assert.match(main, /import \{JYC57Events,JYC57Clubs,JYC57Gallery,JYC57Archive,JYCBestOf\}/, 'Best-of component must be imported');
+assert.match(main, /import JYCHistory,\{HistoryTeaser,\s*HISTORY\}/, 'History page must be imported');
+assert.match(sitemap, /history|achievements|best-of-jyc/i, 'Sitemap generator should account for editorial routes');
+assert.match(routeShells, /history|achievements|best-of-jyc/i, 'Static route shells should account for editorial routes');
+
+console.log('P0 public route integrity PASS (3 dedicated editorial routes)');
