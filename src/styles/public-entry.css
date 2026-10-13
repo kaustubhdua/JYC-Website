@@ -2,6 +2,7 @@
 @import './public-system.css';
 @import '../jyc-design-upgrades.css';
 @import './jyc-pro-redesign.css';
+@import './jyc-visual-quality.css';
 
 
 /* V68 — final shared-surface pass after legacy style layers. Keep the editorial home
@@ -55,109 +56,116 @@
   .public-app .jyc57-feature-card:hover img { transform:none !important; filter:none !important; }
 }
 
-
-/* Editorial photo collage — deliberately varied crops instead of a uniform thumbnail wall.
-   All spans are deterministic, responsive, and keep motion optional. */
-@media (min-width: 761px) {
-  .public-app .jyc57-featured-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-    grid-auto-rows: clamp(72px, 8.5vw, 132px) !important;
-    gap: 12px !important;
-  }
-  .public-app .jyc57-feature-card,
-  .public-app .jyc57-feature-card:nth-child(n) {
-    grid-column: span 3 !important;
-    grid-row: span 2 !important;
-    aspect-ratio: auto !important;
-    border-radius: 14px !important;
-  }
-  .public-app .jyc57-feature-card:nth-child(1) { grid-column: span 6 !important; grid-row: span 3 !important; }
-  .public-app .jyc57-feature-card:nth-child(2),
-  .public-app .jyc57-feature-card:nth-child(3) { grid-column: span 3 !important; grid-row: span 2 !important; }
-  .public-app .jyc57-feature-card:nth-child(4),
-  .public-app .jyc57-feature-card:nth-child(5) { grid-column: span 3 !important; grid-row: span 1 !important; }
-  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 6 !important; grid-row: span 1 !important; }
-
-  .public-app .jyc57-masonry {
-    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-    grid-auto-rows: clamp(10px, 1vw, 14px) !important;
-    gap: 12px !important;
-  }
-  .public-app .jyc57-masonry > .jyc57-photo {
-    grid-column: span 3 !important;
-    grid-row: span 30 !important;
-    aspect-ratio: auto !important;
-    border-radius: 12px !important;
-  }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 42 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+2) { grid-row: span 30 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+3) { grid-row: span 24 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 28 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+5) { grid-row: span 34 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 25 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+7) { grid-row: span 30 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n) { grid-column: span 6 !important; grid-row: span 36 !important; }
+/* V69 — flagship-fest art direction. Keep the year-round JYC shell editorial;
+   give the fest gateway a deeper, event-poster-like opening without forcing
+   a fest palette onto clubs, history, team or the rest of the portal. */
+.public-app .fests-page .compact-page-head {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 64px);
+  border: 1px solid color-mix(in srgb, var(--jyc-champagne, #bf9c6f) 42%, transparent);
+  border-radius: clamp(18px, 2.4vw, 30px);
+  background:
+    radial-gradient(ellipse at 88% 12%, color-mix(in srgb, var(--jyc-champagne, #bf9c6f) 18%, transparent), transparent 42%),
+    linear-gradient(128deg, #17151b 0%, #24202a 56%, #3a2022 100%);
+  color: #fffaf0;
+  box-shadow: 0 24px 64px rgba(20, 16, 22, .14);
 }
-@media (min-width: 621px) and (max-width: 760px) {
-  .public-app .jyc57-featured-grid { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; grid-auto-rows: 118px !important; }
-  .public-app .jyc57-feature-card,
-  .public-app .jyc57-feature-card:nth-child(n) { grid-column: span 3 !important; grid-row: span 2 !important; aspect-ratio: auto !important; }
-  .public-app .jyc57-feature-card:nth-child(1),
-  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 6 !important; grid-row: span 2 !important; }
-  .public-app .jyc57-masonry { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; grid-auto-rows: 12px !important; gap: 10px !important; }
-  .public-app .jyc57-masonry > .jyc57-photo { grid-column: span 3 !important; grid-row: span 26 !important; aspect-ratio: auto !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 34 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 32 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 22 !important; }
+.public-app .fests-page .compact-page-head::after {
+  content: "JYC / FESTIVAL ARCHIVE";
+  position: absolute;
+  z-index: -1;
+  right: clamp(16px, 3vw, 38px);
+  bottom: clamp(12px, 2vw, 24px);
+  color: rgba(255, 250, 240, .055);
+  font: 700 clamp(22px, 4.6vw, 64px)/1 "Space Grotesk", Inter, sans-serif;
+  letter-spacing: -.06em;
+  white-space: nowrap;
+  pointer-events: none;
 }
-@media (max-width: 620px) {
-  .public-app .jyc57-featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: clamp(30px, 9vw, 42px) !important; gap: 8px !important; }
-  .public-app .jyc57-feature-card,
-  .public-app .jyc57-feature-card:nth-child(n) { grid-column: span 1 !important; grid-row: span 4 !important; aspect-ratio: auto !important; border-radius: 12px !important; }
-  .public-app .jyc57-feature-card:nth-child(1) { grid-column: span 2 !important; grid-row: span 5 !important; }
-  .public-app .jyc57-feature-card:nth-child(4n+2) { grid-row: span 5 !important; }
-  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 2 !important; grid-row: span 4 !important; }
-
-  .public-app .jyc57-masonry { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: clamp(28px, 8.5vw, 38px) !important; gap: 8px !important; }
-  .public-app .jyc57-masonry > .jyc57-photo,
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(n) { grid-column: span 1 !important; grid-row: span 4 !important; aspect-ratio: auto !important; border-radius: 10px !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 2 !important; grid-row: span 5 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 5 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 3 !important; }
-}
-.public-app .jyc57-masonry > .jyc57-photo picture,
-.public-app .jyc57-masonry > .jyc57-photo picture img {
-  position: absolute !important;
-  inset: 0 !important;
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .public-app .jyc57-masonry > .jyc57-photo img,
-  .public-app .jyc57-feature-card img { transition: transform .35s ease, filter .35s ease !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:hover img,
-  .public-app .jyc57-feature-card:hover img { transform: scale(1.035) !important; filter: saturate(1.04) contrast(1.02) !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .public-app .jyc57-masonry > .jyc57-photo img,
-  .public-app .jyc57-feature-card img { transition: none !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:hover img,
-  .public-app .jyc57-feature-card:hover img { transform: none !important; filter: none !important; }
-}
-
-
-/* Type finishing: preserve the loaded Inter / Space Grotesk / JetBrains Mono pairing
-   while improving optical spacing and editorial wrapping across public routes. */
-.public-app :where(h1,h2,h3,h4) {
-  font-synthesis: none;
-  font-kerning: normal;
-  font-feature-settings: "kern" 1, "liga" 1;
+.public-app .fests-page .compact-page-head :where(h1,h2) {
+  max-width: 14ch;
+  color: #fffaf0;
+  font-family: "Space Grotesk", Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(36px, 5.6vw, 72px);
+  line-height: .98;
+  letter-spacing: -.055em;
   text-wrap: balance;
 }
-.public-app :where(p,li) { text-wrap: pretty; }
-.public-app :where(.eyebrow,.jh-kicker,.jh-section-number,.jh-overline) {
-  font-kerning: normal;
-  font-feature-settings: "kern" 1, "liga" 1;
+.public-app .fests-page .compact-page-head p {
+  max-width: 58ch;
+  color: rgba(255, 250, 240, .78);
+  font-size: clamp(15px, 1.35vw, 18px);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.public-app .fests-page .compact-page-head .eyebrow {
+  color: #e9c994;
+}
+.public-app .fests-page .compact-page-head .page-stat-row {
+  position: relative;
+  z-index: 1;
+  color: #fffaf0;
+}
+.public-app .fests-page .compact-page-head .page-stat-row b {
+  color: #f1d5a4;
+  font-variant-numeric: tabular-nums;
+}
+.public-app .fests-page .fests-social-rail {
+  margin-block: clamp(24px, 4vw, 48px);
+}
+.public-app .fests-page .fests-social-rail > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.public-app .fests-page .fests-social-rail a {
+  min-width: 0;
+  min-height: 76px;
+  padding: 16px;
+  border: 1px solid var(--line, rgba(21, 32, 48, .14));
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.public-app .fests-page .fests-social-rail a b,
+.public-app .fests-page .fests-social-rail a span {
+  overflow-wrap: anywhere;
+}
+.public-app .fests-page .fests-social-rail a b {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 15px;
+}
+.public-app .fests-page .fests-social-rail a span {
+  color: var(--muted, #62616a);
+  font-size: 12px;
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .public-app .fests-page .fests-social-rail a:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--jyc-champagne, #bf9c6f) 70%, transparent);
+    box-shadow: 0 10px 24px rgba(20, 16, 22, .08);
+  }
+}
+@media (max-width: 760px) {
+  .public-app .fests-page .fests-social-rail > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 420px) {
+  .public-app .fests-page .compact-page-head::after {
+    font-size: 22px;
+    white-space: normal;
+    max-width: 100%;
+    text-align: right;
+  }
+  .public-app .fests-page .fests-social-rail > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-app .fests-page .fests-social-rail a {
+    transition: none;
+  }
 }
