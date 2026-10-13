@@ -54,3 +54,95 @@
   .public-app .jyc57-photo:hover img,
   .public-app .jyc57-feature-card:hover img { transform:none !important; filter:none !important; }
 }
+
+
+/* Editorial photo collage — deliberately varied crops instead of a uniform thumbnail wall.
+   All spans are deterministic, responsive, and keep motion optional. */
+@media (min-width: 761px) {
+  .public-app .jyc57-featured-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    grid-auto-rows: clamp(72px, 8.5vw, 132px) !important;
+    gap: 12px !important;
+  }
+  .public-app .jyc57-feature-card,
+  .public-app .jyc57-feature-card:nth-child(n) {
+    grid-column: span 3 !important;
+    grid-row: span 2 !important;
+    aspect-ratio: auto !important;
+    border-radius: 14px !important;
+  }
+  .public-app .jyc57-feature-card:nth-child(1) { grid-column: span 6 !important; grid-row: span 3 !important; }
+  .public-app .jyc57-feature-card:nth-child(2),
+  .public-app .jyc57-feature-card:nth-child(3) { grid-column: span 3 !important; grid-row: span 2 !important; }
+  .public-app .jyc57-feature-card:nth-child(4),
+  .public-app .jyc57-feature-card:nth-child(5) { grid-column: span 3 !important; grid-row: span 1 !important; }
+  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 6 !important; grid-row: span 1 !important; }
+
+  .public-app .jyc57-masonry {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    grid-auto-rows: clamp(10px, 1vw, 14px) !important;
+    gap: 12px !important;
+  }
+  .public-app .jyc57-masonry > .jyc57-photo {
+    grid-column: span 3 !important;
+    grid-row: span 30 !important;
+    aspect-ratio: auto !important;
+    border-radius: 12px !important;
+  }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 42 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+2) { grid-row: span 30 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+3) { grid-row: span 24 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 28 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+5) { grid-row: span 34 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 25 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+7) { grid-row: span 30 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n) { grid-column: span 6 !important; grid-row: span 36 !important; }
+}
+@media (min-width: 621px) and (max-width: 760px) {
+  .public-app .jyc57-featured-grid { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; grid-auto-rows: 118px !important; }
+  .public-app .jyc57-feature-card,
+  .public-app .jyc57-feature-card:nth-child(n) { grid-column: span 3 !important; grid-row: span 2 !important; aspect-ratio: auto !important; }
+  .public-app .jyc57-feature-card:nth-child(1),
+  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 6 !important; grid-row: span 2 !important; }
+  .public-app .jyc57-masonry { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; grid-auto-rows: 12px !important; gap: 10px !important; }
+  .public-app .jyc57-masonry > .jyc57-photo { grid-column: span 3 !important; grid-row: span 26 !important; aspect-ratio: auto !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 34 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 32 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 22 !important; }
+}
+@media (max-width: 620px) {
+  .public-app .jyc57-featured-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: clamp(30px, 9vw, 42px) !important; gap: 8px !important; }
+  .public-app .jyc57-feature-card,
+  .public-app .jyc57-feature-card:nth-child(n) { grid-column: span 1 !important; grid-row: span 4 !important; aspect-ratio: auto !important; border-radius: 12px !important; }
+  .public-app .jyc57-feature-card:nth-child(1) { grid-column: span 2 !important; grid-row: span 5 !important; }
+  .public-app .jyc57-feature-card:nth-child(4n+2) { grid-row: span 5 !important; }
+  .public-app .jyc57-feature-card:nth-child(6) { grid-column: span 2 !important; grid-row: span 4 !important; }
+
+  .public-app .jyc57-masonry { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: clamp(28px, 8.5vw, 38px) !important; gap: 8px !important; }
+  .public-app .jyc57-masonry > .jyc57-photo,
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(n) { grid-column: span 1 !important; grid-row: span 4 !important; aspect-ratio: auto !important; border-radius: 10px !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 2 !important; grid-row: span 5 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 5 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 3 !important; }
+}
+.public-app .jyc57-masonry > .jyc57-photo picture,
+.public-app .jyc57-masonry > .jyc57-photo picture img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .public-app .jyc57-masonry > .jyc57-photo img,
+  .public-app .jyc57-feature-card img { transition: transform .35s ease, filter .35s ease !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:hover img,
+  .public-app .jyc57-feature-card:hover img { transform: scale(1.035) !important; filter: saturate(1.04) contrast(1.02) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-app .jyc57-masonry > .jyc57-photo img,
+  .public-app .jyc57-feature-card img { transition: none !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:hover img,
+  .public-app .jyc57-feature-card:hover img { transform: none !important; filter: none !important; }
+}
