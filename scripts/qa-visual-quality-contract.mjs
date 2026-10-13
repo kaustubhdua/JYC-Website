@@ -6,6 +6,7 @@ const visual = fs.readFileSync('src/styles/jyc-visual-quality.css', 'utf8');
 const experience = fs.readFileSync('src/jyc57-experience.jsx', 'utf8');
 const home = fs.readFileSync('src/jyc-editorial-home.css', 'utf8');
 const homeComponent = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
+const main = fs.readFileSync('src/main.jsx', 'utf8');
 
 const importIndex = entry.indexOf("@import './jyc-visual-quality.css';");
 const firstRuleIndex = entry.indexOf('.public-app :where');
@@ -30,5 +31,14 @@ assert.ok(homeComponent.includes("nav('/gallery?q=' + encodeURIComponent(story.a
   'homepage photo stories must deep-link to their matching filtered gallery results');
 assert.ok(experience.includes('across {clubs.length} published communities'),
   'club directory count must be derived from the current published list');
+
+assert.ok(!main.includes('Alert Registered — We will remind you!') &&
+  !main.includes('Notify Me When Recruitment Opens') &&
+  !main.includes('Explore All 23 Communities') &&
+  !main.includes('23 named communities'),
+  'public copy must not claim unimplemented notifications or stale fixed community counts');
+assert.ok(main.includes('deadlineMs>Date.now()') &&
+  main.includes("e.publicStatus==='planned'&&e.registrationVerified!==true"),
+  'announcement registration notices must exclude expired or unverified planned events');
 
 console.log('Visual quality contract: PASS (type, collage, reduced motion, image fallback, live counts)');
