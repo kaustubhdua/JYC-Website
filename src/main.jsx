@@ -131,7 +131,24 @@ async function uploadMedia(file,folder='general'){if(!file)throw Error('Choose a
 async function enablePushNotifications(){if(!('serviceWorker' in navigator)||!('PushManager' in window))throw Error('Web push is not supported in this browser.');const vapid=import.meta.env.VITE_VAPID_PUBLIC_KEY;if(!vapid)throw Error('VITE_VAPID_PUBLIC_KEY is not configured yet.');const permission=await Notification.requestPermission();if(permission!=='granted')throw Error('Notification permission was not granted.');const registration=await navigator.serviceWorker.ready;let subscription=await registration.pushManager.getSubscription();if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(vapid)});const {data:userData}=await supabase.auth.getUser();if(!userData?.user?.id)throw Error('Sign in before enabling JYC notifications.');const {error}=await supabase.from('jyc_push_subscriptions').upsert({endpoint:subscription.endpoint,subscription:subscription.toJSON(),user_id:userData.user.id},{onConflict:'endpoint'});if(error)throw error;return true}
 function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');const raw=atob(base64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
 
-function eventState(e){if(!e?.date)return 'draft';const start=Date.parse(`${e.date}T${e.start||'00:00'}`);const effectiveEndDate=e.dateEnd||e.date;const end=Date.parse(`${effectiveEndDate}T${e.end||'23:59'}`);const now=Date.now();if(!Number.isFinite(start)||!Number.isFinite(end))return 'draft';if(now<start)return 'upcoming';if(now<=end)return 'live';return 'past'}
+function parseEventMoment(date,time,fallback='00:00'){
+ const raw=String(date||'').trim();
+ if(!raw)return NaN;
+ if(/[T ]\\d{1,2}:\\d{2}/.test(raw))return Date.parse(raw.replace(' ','T'));
+ const clock=String(time||fallback).trim();
+ const normalized=/^\\d{1,2}:\\d{2}$/.test(clock)?clock.padStart(5,'0'):fallback;
+ return Date.parse(`${raw}T${normalized}`);
+}
+function eventState(e){
+ if(!e?.date)return 'draft';
+ const start=parseEventMoment(e.date,e.start,'00:00');
+ const end=parseEventMoment(e.dateEnd||e.date,e.end,'23:59');
+ const now=Date.now();
+ if(!Number.isFinite(start)||!Number.isFinite(end))return 'draft';
+ if(now<start)return 'upcoming';
+ if(now<=end)return 'live';
+ return 'past';
+}
 function fmtDate(s){if(!s)return 'Date TBA';return new Date(`${s}T12:00`).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
 function safeExternalUrl(value){const raw=String(value||'').trim();if(!raw||/[\u0000-\u001f\u007f]/.test(raw))return '';try{const u=new URL(raw,window.location.origin);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)return '';return u.href}catch{return ''}}
 function slug(s){return String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
@@ -1189,7 +1206,14 @@ function EventDetail({data,id,session,notify}){
  const relatedClub=data.clubs.find(c=>String(c.id)===String(e.clubId)||String(c.name||'').trim().toLowerCase()===String(e.club||'').trim().toLowerCase());
  const identity=eventIdentity(e);
  const identityStyle={'--hub-accent':identity.accent,'--hub-accent-soft':`color-mix(in srgb, ${identity.accent} 12%, transparent)`,'--hub-accent-line':`color-mix(in srgb, ${identity.accent} 28%, transparent)`,'--identity-shape':`var(--jyc-shape-${identity.shape||'event'})`};
- const eventRegistrationEnd=e.dateEnd||e.date;const eventEnded=eventRegistrationEnd?new Date(`${eventRegistrationEnd}T23:59:59`)<new Date():false;const registrationPublished=e.publicStatus!=='planned'||e.registrationVerified===true;const regOpen=registrationPublished&&!eventEnded&&(!e.registrationDeadline||new Date(e.registrationDeadline)>new Date())&&Boolean(safeExternalUrl(e.registrationUrl));
+ const eventRegistrationEnd=String(e.dateEnd||e.date||'').trim();
+ const eventEndMs=eventRegistrationEnd?( /^\\d{4}-\\d{2}-\\d{2}$/.test(eventRegistrationEnd)?Date.parse(eventRegistrationEnd+'T23:59:59'):Date.parse(eventRegistrationEnd)):NaN;
+ const eventEnded=Number.isFinite(eventEndMs)&&eventEndMs<Date.now();
+ const deadlineRaw=String(e.registrationDeadline||'').trim();
+ const deadlineMs=deadlineRaw?( /^\\d{4}-\\d{2}-\\d{2}$/.test(deadlineRaw)?Date.parse(deadlineRaw+'T23:59:59'):Date.parse(deadlineRaw)):NaN;
+ const deadlineAllowsRegistration=!deadlineRaw||(Number.isFinite(deadlineMs)&&deadlineMs>Date.now());
+ const registrationPublished=e.publicStatus!=='planned'||e.registrationVerified===true;
+ const regOpen=registrationPublished&&!eventEnded&&deadlineAllowsRegistration&&Boolean(safeExternalUrl(e.registrationUrl));
  const timeline=Array.isArray(e.timeline)?e.timeline:(Array.isArray(e.schedule)?e.schedule:[]);
  const relatedEvents=data.events.filter(x=>x.published&&!x.archived&&x.id!==e.id&&((e.clubId&&String(x.clubId)===String(e.clubId))||(e.club&&String(x.club||'').toLowerCase()===String(e.club).toLowerCase()))).sort((a,b)=>String(a.date||'').localeCompare(String(b.date||''))).slice(0,3);
  return <section className="section page event-detail-page event-identity-page" data-hub={slug(e.club||'JYC')} style={identityStyle}><Breadcrumbs items={[{label:'Events',href:'/events'},{label:e.title}]}/><Back label="Back to events" to="/events"/><nav className="event-jump-nav" aria-label="Event sections"><a href="#event-overview">Overview</a>{timeline.length>0&&<a href="#event-programme">Programme</a>}{(e.rules?.length||e.eligibility||e.prizes?.length||e.faqs?.length)&&<a href="#event-info">Rules & info</a>}{related.length>0&&<a href="#event-gallery">Gallery</a>}<a href="#event-register">Register</a></nav>
