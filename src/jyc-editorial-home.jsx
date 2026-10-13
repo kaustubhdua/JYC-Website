@@ -284,7 +284,7 @@ export function JYCEditorialHome({ data }) {
             </div>
             <div className="jh-photo-story-intro">
               <p>From packed stages to the moments between them — real photographs from JYC clubs, events and campus life.</p>
-              <button type="button" className="jh-text-link" onClick={() => nav('/gallery')}>
+              <button type="button" className="jh-text-link" onClick={() => nav('/gallery?q=' + encodeURIComponent(story.association || story.caption || ''))}>
                 Open full gallery <span>↗</span>
               </button>
             </div>
