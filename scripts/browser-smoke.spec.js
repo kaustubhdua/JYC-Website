@@ -52,6 +52,20 @@ for (const route of routes) {
 }
 
 
+test('history, achievements and Best of JYC render their dedicated pages', async ({ page }) => {
+  const cases = [
+    ['/history', /A living record of JYC\\./i],
+    ['/achievements', /What the community has built\\./i],
+    ['/best-of-jyc', /The Best of JYC\\./i]
+  ];
+  for (const [route, heading] of cases) {
+    await page.goto(base + route, { waitUntil: 'domcontentloaded' });
+    await waitForAppMount(page, route);
+    await expect(page.locator('h1').first()).toContainText(heading);
+    await expect.poll(() => new URL(page.url()).pathname).toBe(route);
+  }
+});
+
 test('JYC Now page stays within responsive guardrails', async ({ page }) => {
   await page.goto(base + '/updates', { waitUntil: 'domcontentloaded' });
   await expect(page.getByText('The organisation, in motion.')).toBeVisible();
