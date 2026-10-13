@@ -582,19 +582,6 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  const nav=useNavigate();
  const p=useLocation().pathname;
  const clean=p.replace(/\/$/,'')||'/';
- if(clean==='/admin'||clean.startsWith('/admin/'))return <Navigate to="/" replace/>;
- if(clean==='/leadership')return <Navigate to="/team" replace/>;
- if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;
- if(clean==='/moments')return <Navigate to="/gallery" replace/>;
- if(clean==='/planner'||clean==='/agenda')return <Navigate to="/events" replace/>;
- if(clean==='/discover')return <Navigate to="/clubs" replace/>;
- if(clean==='/guide'||clean==='/resources')return <Navigate to="/about" replace/>;
- if(clean==='/my-jyc'||clean==='/login'||clean==='/notifications')return <Navigate to="/" replace/>;
- ;
- if(clean==='/settings'||clean==='/download')return <Navigate to="/about" replace/>;
- if(clean==='/projects'||clean==='/projects/submit')return <Navigate to="/clubs" replace/>;
- if(clean==='/map')return <Navigate to="/events" replace/>;
- if(clean.startsWith('/qr/'))return <Navigate to="/events" replace/>
  const parts=clean.split('/').filter(Boolean);
  const slugId=parts[1]||'';
   const legacyEventSlugMap={'agentic-ai-2026':'jai-2026-jaypee-agentic-ai-hackathon'};
@@ -660,6 +647,16 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  const description=club?`${club.name} at JIIT Wish Town Campus, Sector 128, Noida. ${club.description||club.about||'Explore activities, events, community focus and official JYC information.'}`.slice(0,300):event?(event.description||`${event.title} — official JIIT Youth Club event at JIIT Noida.`):(clean.startsWith('/gallery/')?`Browse the ${decodeURIComponent(parts[1]||'').replace(/-/g,' ')} collection in the JYC 128 visual archive.`:(descriptions[clean]||'Official JIIT Youth Club website for JIIT Noida. Discover clubs, events, fests, recruitment and student activities.'));
  usePageMeta(title,description,canonicalPath,{noindex:privateRoute||unknownRoute,type:event?'event':'website',image:event?.poster||club?.logo||undefined,imageAlt:event?.title||club?.name||'JIIT Youth Club 128 official visual'});
  const schema=<JsonLd data={data} pageType={pageType} item={club||event} path={canonicalPath}/>;
+ // Resolve route aliases after all hooks have run, keeping hook order stable on navigation.
+ const routeRedirects={
+  '/admin':'/','/leadership':'/team','/event-calendar':'/calendar','/moments':'/gallery',
+  '/planner':'/events','/agenda':'/events','/discover':'/clubs','/guide':'/about','/resources':'/about',
+  '/my-jyc':'/','/login':'/','/notifications':'/','/settings':'/about','/download':'/about',
+  '/projects':'/clubs','/projects/submit':'/clubs','/map':'/events'
+ };
+ if(routeRedirects[clean])return <Navigate to={routeRedirects[clean]} replace/>;
+ if(clean.startsWith('/admin/')||clean.startsWith('/qr/'))return <Navigate to={clean.startsWith('/admin/')?'/':'/events'} replace/>;
+
  if(clean==='/')return <>{schema}<Home data={data}/></>;
  if(clean==='/history')return <>{schema}<JYCHistory data={data}/></>;
  if(clean==='/achievements')return <>{schema}<Achievements data={data}/></>;
@@ -766,6 +763,8 @@ const explore=[
     ['/events','Events','Upcoming, ongoing and completed experiences'],
     ['/calendar','Event Calendar','Browse JYC events by date'],
     ['/gallery','Gallery','Event memories, years and visual archive'],
+    ['/best-of-jyc','Best of JYC','A curated visual selection of published JYC moments'],
+    ['/achievements','Achievements','Source-backed milestones and community outcomes'],
     ['/updates','JYC Now','Recent verified updates from JYC and the hubs'],
     ['/announcements','Announcements','Registrations, notices and JYC updates'],
     ['/join-jyc','Join JYC','Official recruitment pathway and onboarding guide'],
@@ -805,6 +804,8 @@ function Search({data,admin,close}){
   ['JYC Team','Meet the people behind JYC.','PAGE','/team'],
   ['Contact JYC','Official JYC contact information.','PAGE','/contact'],
   ['JYC Archive','Published JYC events, clubs, gallery moments and campus stories.','PAGE','/archive'],
+  ['Best of JYC','Curated published JYC photography and memories.','PAGE','/best-of-jyc'],
+  ['Achievements','Source-backed JYC milestones and community outcomes.','PAGE','/achievements'],
   ['Announcements','JYC announcements, registration notices and updates.','PAGE','/announcements'],
   ['Achievements','JYC achievements, wall of fame and published outcomes.','PAGE','/achievements'],
   ['JYC Event Calendar','Published JYC events by date.','PAGE','/calendar'],

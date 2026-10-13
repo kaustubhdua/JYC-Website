@@ -183,3 +183,106 @@
   .public-app .jyc-best-of-page .jyc57-feature-card img { transition: none; }
   .public-app .jyc-best-of-page .jyc57-feature-card:hover img { transform: none; filter: none; }
 }
+
+
+/* Homepage editorial finishing: consistent display typography and an intentional,
+   responsive photo story, without changing the global brand or adding animation dependencies. */
+.public-app .jyc-editorial-home {
+  font-synthesis: none;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.public-app .jyc-editorial-home :where(h1,h2,h3) { text-wrap: balance; }
+.public-app .jyc-editorial-home .jh-hero h1 {
+  max-width: 10.5ch;
+  line-height: .99;
+  font-family: var(--jyc-font-display);
+  font-kerning: normal;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+}
+.public-app .jyc-editorial-home .jh-lead {
+  max-width: 58ch;
+  line-height: 1.72;
+  text-wrap: pretty;
+}
+.public-app .jyc-editorial-home :is(.jh-photo-story-head h2,.jh-section-head h2,.jh-community-copy h2,.jh-final h2) {
+  max-width: 14ch;
+  line-height: 1.04;
+  font-family: var(--jyc-font-display);
+  font-kerning: normal;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-wrap: balance;
+}
+.public-app .jyc-editorial-home .jh-story-card {
+  isolation: isolate;
+  border-radius: clamp(14px,1.5vw,22px);
+  background: var(--jh-surface-elevated);
+  box-shadow: 0 10px 32px rgba(26,25,29,.07);
+}
+.public-app .jyc-editorial-home .jh-story-photo {
+  display: block;
+  object-position: center;
+  backface-visibility: hidden;
+}
+.public-app .jyc-editorial-home .jh-story-shade {
+  background: linear-gradient(180deg,rgba(12,12,16,.02) 12%,rgba(12,12,16,.18) 42%,rgba(12,12,16,.88) 100%);
+}
+.public-app .jyc-editorial-home .jh-story-copy {
+  left: clamp(16px,2vw,26px);
+  right: clamp(16px,2vw,26px);
+  bottom: clamp(16px,2vw,26px);
+  gap: 8px;
+}
+.public-app .jyc-editorial-home .jh-story-copy small {
+  max-width: 100%;
+  color: #f0d7ad;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.public-app .jyc-editorial-home .jh-story-copy strong {
+  max-width: 22ch;
+  font-size: clamp(18px,1.7vw,24px);
+  line-height: 1.14;
+  text-wrap: balance;
+}
+.public-app .jyc-editorial-home .jh-photo-story-grid.has-three {
+  grid-template-columns: minmax(0,1.25fr) minmax(0,1fr);
+  gap: clamp(12px,1.8vw,24px);
+  align-items: stretch;
+}
+.public-app .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1 {
+  grid-row: span 2;
+  aspect-ratio: auto;
+  min-height: clamp(360px,42vw,600px);
+}
+.public-app .jyc-editorial-home .jh-photo-story-grid.has-three :is(.jh-story-card-2,.jh-story-card-3) {
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+}
+@media (max-width: 900px) {
+  .public-app .jyc-editorial-home .jh-photo-story-grid.has-three .jh-story-card-1 { min-height: 360px; }
+}
+@media (max-width: 680px) {
+  .public-app .jyc-editorial-home .jh-photo-story-head { align-items: flex-start; flex-direction: column; }
+  .public-app .jyc-editorial-home .jh-photo-story-grid.has-three { grid-template-columns: 1fr; }
+  .public-app .jyc-editorial-home .jh-photo-story-grid.has-three :is(.jh-story-card-1,.jh-story-card-2,.jh-story-card-3) {
+    grid-row: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .public-app .jyc-editorial-home .jh-story-card:hover { transform: translateY(-4px); }
+  .public-app .jyc-editorial-home .jh-story-card:hover .jh-story-photo { transform: scale(1.045); filter: saturate(1.04) contrast(1.02); }
+}
+@media (hover:none), (pointer:coarse) {
+  .public-app .jyc-editorial-home .jh-story-card:hover,
+  .public-app .jyc-editorial-home .jh-story-card:hover .jh-story-photo { transform: none; filter: none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-app .jyc-editorial-home .jh-story-card,
+  .public-app .jyc-editorial-home .jh-story-photo { animation: none !important; transition: none !important; }
+  .public-app .jyc-editorial-home .jh-story-card:hover,
+  .public-app .jyc-editorial-home .jh-story-card:hover .jh-story-photo { transform: none !important; filter: none !important; }
+}

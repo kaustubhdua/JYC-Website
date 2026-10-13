@@ -4,6 +4,17 @@ import assert from 'node:assert/strict';
 const main = fs.readFileSync('src/main.jsx', 'utf8');
 const shells = fs.readFileSync('scripts/generate-route-shells.mjs', 'utf8');
 
+const routesStart = main.indexOf('function Routes(');
+const routesEnd = main.indexOf('function NavIcon(', routesStart);
+assert.ok(routesStart >= 0 && routesEnd > routesStart, 'Routes component boundaries must exist');
+const routesSource = main.slice(routesStart, routesEnd);
+const metadataHook = routesSource.indexOf('usePageMeta(');
+const schemaDeclaration = routesSource.indexOf('const schema=');
+const firstRenderReturn = routesSource.search(/return\s*<>|return\s*<Navigate|return\s*<section/);
+assert.ok(metadataHook >= 0 && schemaDeclaration > metadataHook, 'Metadata and schema hooks must precede route rendering');
+assert.ok(firstRenderReturn > schemaDeclaration, 'No route may return before metadata/schema hooks run');
+assert.doesNotMatch(routesSource.slice(0, schemaDeclaration), /if\s*\([^\n]*\)\s*return\s*</, 'Route aliases must not return before hooks');
+
 const routes = [
   { path: '/history', component: 'JYCHistory' },
   { path: '/achievements', component: 'Achievements' },

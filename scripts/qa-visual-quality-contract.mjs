@@ -24,6 +24,15 @@ assert.ok(experience.includes('fallbackSrc="/assets/photo-unavailable.svg"') &&
   'gallery and Best of JYC photos must use a non-logo unavailable-photo fallback');
 assert.ok(visual.includes('.event-identity-page') && visual.includes('--event-accent: var(--hub-accent'),
   'published event identities must receive scoped visual accents rather than a global fest skin');
+
+assert.ok(entry.includes('.fests-page .compact-page-head') && entry.includes('.fests-social-rail'), 
+  'flagship fests must have a scoped responsive art direction');
+assert.ok(main.includes("['/best-of-jyc','Best of JYC','A curated visual selection of published JYC moments']") &&
+  main.includes("['/achievements','Achievements','Source-backed milestones and community outcomes']"),
+  'More sheet must surface editorial routes');
+assert.ok(main.includes("['Best of JYC','Curated published JYC photography and memories.','PAGE','/best-of-jyc']") &&
+  main.includes("['Achievements','Source-backed JYC milestones and community outcomes.','PAGE','/achievements']"),
+  'Global search must surface editorial routes');
 assert.ok(home.includes('.jh-photo-story-grid.has-three') &&
   home.includes('.jh-story-card-1') && home.includes('@media (max-width: 680px)'),
   'homepage editorial photo collage must retain responsive art direction');
