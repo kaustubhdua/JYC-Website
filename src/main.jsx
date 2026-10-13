@@ -134,9 +134,9 @@ function urlBase64ToUint8Array(base64String){const padding='='.repeat((4-base64S
 function parseEventMoment(date,time,fallback='00:00'){
  const raw=String(date||'').trim();
  if(!raw)return NaN;
- if(/[T ]\\d{1,2}:\\d{2}/.test(raw))return Date.parse(raw.replace(' ','T'));
+ if(/[T ]\d{1,2}:\d{2}/.test(raw))return Date.parse(raw.replace(' ','T'));
  const clock=String(time||fallback).trim();
- const normalized=/^\\d{1,2}:\\d{2}$/.test(clock)?clock.padStart(5,'0'):fallback;
+ const normalized=/^\d{1,2}:\d{2}$/.test(clock)?clock.padStart(5,'0'):fallback;
  return Date.parse(`${raw}T${normalized}`);
 }
 function eventState(e){
@@ -562,7 +562,7 @@ function JYCCalendarPage({data}){
  const downloadMonthICS=()=>{
   if(!monthEvents.length)return;
   const esc=v=>String(v||'').replace(/\\/g,'\\\\').replace(/[;,]/g,m=>'\\'+m).replace(/\\r?\\n/g,'\\n');
-  const iso=(date,time='09:00')=>{const match=String(time||'09:00').match(/^(\\d{1,2}):(\\d{2})/);if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(date))||!match)return '';return String(date).replace(/-/g,'')+'T'+String(Number(match[1])).padStart(2,'0')+match[2]+'00'};
+  const iso=(date,time='09:00')=>{const match=String(time||'09:00').match(/^(\d{1,2}):(\d{2})/);if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date))||!match)return '';return String(date).replace(/-/g,'')+'T'+String(Number(match[1])).padStart(2,'0')+match[2]+'00'};
   const rows=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//JYC//EN','CALSCALE:GREGORIAN','X-WR-CALNAME:JYC Events · '+year+'-'+String(m+1).padStart(2,'0')];
   monthEvents.forEach(e=>{const start=iso(e.date,e.start||'09:00'),end=iso(e.dateEnd||e.date,e.end||'23:59');if(!start||!end)return;rows.push('BEGIN:VEVENT','UID:'+esc(e.id)+'@jyc128','DTSTART:'+start,'DTEND:'+end,'SUMMARY:'+esc(e.title),'LOCATION:'+esc(e.venue),'DESCRIPTION:'+esc(e.description),'END:VEVENT')});
   rows.push('END:VCALENDAR');
@@ -1207,10 +1207,10 @@ function EventDetail({data,id,session,notify}){
  const identity=eventIdentity(e);
  const identityStyle={'--hub-accent':identity.accent,'--hub-accent-soft':`color-mix(in srgb, ${identity.accent} 12%, transparent)`,'--hub-accent-line':`color-mix(in srgb, ${identity.accent} 28%, transparent)`,'--identity-shape':`var(--jyc-shape-${identity.shape||'event'})`};
  const eventRegistrationEnd=String(e.dateEnd||e.date||'').trim();
- const eventEndMs=eventRegistrationEnd?( /^\\d{4}-\\d{2}-\\d{2}$/.test(eventRegistrationEnd)?Date.parse(eventRegistrationEnd+'T23:59:59'):Date.parse(eventRegistrationEnd)):NaN;
+ const eventEndMs=eventRegistrationEnd?( /^\d{4}-\d{2}-\d{2}$/.test(eventRegistrationEnd)?Date.parse(eventRegistrationEnd+'T23:59:59'):Date.parse(eventRegistrationEnd)):NaN;
  const eventEnded=Number.isFinite(eventEndMs)&&eventEndMs<Date.now();
  const deadlineRaw=String(e.registrationDeadline||'').trim();
- const deadlineMs=deadlineRaw?( /^\\d{4}-\\d{2}-\\d{2}$/.test(deadlineRaw)?Date.parse(deadlineRaw+'T23:59:59'):Date.parse(deadlineRaw)):NaN;
+ const deadlineMs=deadlineRaw?( /^\d{4}-\d{2}-\d{2}$/.test(deadlineRaw)?Date.parse(deadlineRaw+'T23:59:59'):Date.parse(deadlineRaw)):NaN;
  const deadlineAllowsRegistration=!deadlineRaw||(Number.isFinite(deadlineMs)&&deadlineMs>Date.now());
  const registrationPublished=e.publicStatus!=='planned'||e.registrationVerified===true;
  const regOpen=registrationPublished&&!eventEnded&&deadlineAllowsRegistration&&Boolean(safeExternalUrl(e.registrationUrl));
