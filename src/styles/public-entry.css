@@ -4,6 +4,8 @@
 @import './jyc-pro-redesign.css';
 
 
+@import './jyc-visual-quality.css';
+
 /* V68 — final shared-surface pass after legacy style layers. Keep the editorial home
    distinct while restoring subtle depth and image affordances on the wider public site. */
 .public-app :where(h1,h2,h3) { text-wrap: balance; }
