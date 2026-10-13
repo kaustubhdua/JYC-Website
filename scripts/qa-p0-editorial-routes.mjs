@@ -23,4 +23,8 @@ assert.match(main, /import JYCHistory,\{HistoryTeaser,\s*HISTORY\}/, 'History pa
 assert.match(sitemap, /history|achievements|best-of-jyc/i, 'Sitemap generator should account for editorial routes');
 assert.match(routeShells, /history|achievements|best-of-jyc/i, 'Static route shells should account for editorial routes');
 
+const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
+assert.match(home, /const featured = upcoming\[0\] \|\| null;/, 'Homepage must not promote a past event when no upcoming event exists');
+assert.doesNotMatch(home, /Explore all 23 societies/, 'Homepage should not hard-code a community count');
+
 console.log('P0 public route integrity PASS (3 dedicated editorial routes)');
