@@ -15,6 +15,7 @@ const scripts = [
   'qa-search.mjs',
   'qa-security.mjs',
   'qa-seo.mjs',
+  'qa-public-route-completeness.mjs',
   'qa-build-preflight.mjs',
   'qa-production.mjs',
   'qa-runtime-contract.mjs',
