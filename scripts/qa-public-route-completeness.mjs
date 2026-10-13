@@ -30,5 +30,6 @@ assert.ok(!experience.includes('across 23 technical, cultural, creative, literar
 assert.ok(experience.includes('fallbackAlt="Official JYC logo placeholder; photograph unavailable"'), 'gallery fallback must not be announced as a real photograph');
 assert.ok(publicEntry.includes('grid-template-columns: repeat(12, minmax(0, 1fr)) !important')&&publicEntry.includes('nth-child(8n+1)')&&publicEntry.includes('grid-auto-rows: clamp(28px, 8.5vw, 38px) !important'), 'gallery must use a responsive editorial collage with varied card spans');
 assert.ok(publicEntry.includes('prefers-reduced-motion: no-preference')&&publicEntry.includes('prefers-reduced-motion: reduce'), 'collage image motion must respect reduced-motion settings');
+assert.ok(publicEntry.includes('font-synthesis: none')&&publicEntry.includes('font-feature-settings: "kern" 1, "liga" 1')&&publicEntry.includes('text-wrap: pretty'), 'public typography must use intentional OpenType and editorial wrapping rules');
 
 console.log('Public route completeness and content-truth contract: PASS (3 direct routes, metadata, shells, sitemap and unverified-count guards)');
