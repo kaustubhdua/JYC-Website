@@ -43,11 +43,11 @@ jobs:
 
       - name: Run browser smoke and responsive QA against production preview
         run: npm run qa:browser
-      - name: Upload Playwright report on failure
-        if: failure()
+      - name: Upload Playwright reports and visual route captures
+        if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: jyc-playwright-report
+          name: jyc-playwright-and-visual-report
           path: |
             playwright-report
             test-results
