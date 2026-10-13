@@ -5,6 +5,7 @@ const entry = fs.readFileSync('src/styles/public-entry.css', 'utf8');
 const visual = fs.readFileSync('src/styles/jyc-visual-quality.css', 'utf8');
 const experience = fs.readFileSync('src/jyc57-experience.jsx', 'utf8');
 const home = fs.readFileSync('src/jyc-editorial-home.css', 'utf8');
+const homeComponent = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 
 const importIndex = entry.indexOf("@import './jyc-visual-quality.css';");
 const firstRuleIndex = entry.indexOf('.public-app :where');
@@ -25,6 +26,8 @@ assert.ok(visual.includes('.event-identity-page') && visual.includes('--event-ac
 assert.ok(home.includes('.jh-photo-story-grid.has-three') &&
   home.includes('.jh-story-card-1') && home.includes('@media (max-width: 680px)'),
   'homepage editorial photo collage must retain responsive art direction');
+assert.ok(homeComponent.includes("nav('/gallery?q=' + encodeURIComponent(story.association || story.caption || ''))"),
+  'homepage photo stories must deep-link to their matching filtered gallery results');
 assert.ok(experience.includes('across {clubs.length} published communities'),
   'club directory count must be derived from the current published list');
 
