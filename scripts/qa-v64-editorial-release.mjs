@@ -32,7 +32,6 @@ const hubDetails=read('src/v23.6-hub-details.js');
 const derivatives=read('scripts/generate-photo-derivatives.mjs');
 const productionMediaOptimizer=read('scripts/optimize-production-media.mjs');
 const imageManifestGenerator=read('scripts/generate-image-manifest.mjs');
-const bot=read('src/jyc-bot.jsx');
 const assistant=read('src/jyc-assistant.jsx');
 const now=read('src/jyc-now.jsx');
 const browser=read('scripts/browser-smoke.spec.js');
