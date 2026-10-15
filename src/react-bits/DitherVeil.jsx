@@ -372,6 +372,7 @@ void main() {
 
 const DitherVeil = ({
   src = DEFAULT_SRC,
+  srcSet,
   fallbackSrc = DEFAULT_SRC,
   originalFallbackSrc = null,
   fit = 'contain',
@@ -761,6 +762,7 @@ const DitherVeil = ({
       wake();
     };
     img.onerror = () => {
+      img.srcset = '';
       const candidates = [fallbackSrc, originalFallbackSrc].filter(Boolean);
       let next = Number(img.dataset.logoFallbackStage || 0);
       while (next < candidates.length && new URL(candidates[next], window.location.href).href === img.src) next += 1;
@@ -773,6 +775,7 @@ const DitherVeil = ({
       canvas.style.display = 'none';
       renderer?.gl?.getExtension('WEBGL_lose_context')?.loseContext();
     };
+    img.srcset = srcSet || '';
     img.src = src;
 
     const locate = e => {
@@ -836,7 +839,7 @@ const DitherVeil = ({
     };
   }, [src, fallbackSrc, originalFallbackSrc]);
 
-  return <div ref={containerRef} className={`dither-veil ${className}`.trim()} style={style}><img className="dither-veil__fallback" src={src} alt="" aria-hidden="true" width={160} height={160} loading="eager" fetchPriority="high" decoding="async" onError={event=>{const image=event.currentTarget;const candidates=[fallbackSrc,originalFallbackSrc].filter(Boolean);let next=Number(image.dataset.logoFallbackStage||0);while(next<candidates.length&&new URL(candidates[next],window.location.href).href===image.src)next+=1;if(next<candidates.length){image.dataset.logoFallbackStage=String(next+1);image.src=candidates[next]}else image.hidden=true}} /></div>;
+  return <div ref={containerRef} className={`dither-veil ${className}`.trim()} style={style}><img className="dither-veil__fallback" src={src} srcSet={srcSet} alt="" aria-hidden="true" width={160} height={160} loading="eager" fetchPriority="high" decoding="async" onError={event=>{const image=event.currentTarget;image.srcset='';const candidates=[fallbackSrc,originalFallbackSrc].filter(Boolean);let next=Number(image.dataset.logoFallbackStage||0);while(next<candidates.length&&new URL(candidates[next],window.location.href).href===image.src)next+=1;if(next<candidates.length){image.dataset.logoFallbackStage=String(next+1);image.src=candidates[next]}else image.hidden=true}} /></div>;
 };
 
 export default DitherVeil;
