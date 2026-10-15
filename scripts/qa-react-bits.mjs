@@ -23,7 +23,7 @@ const homeCss=read('src/jyc-editorial-home.css');
 const extraFeaturesSafe=()=>{const f=read('src/extra-features.jsx');return f.includes('LazyDriftWall')&&f.includes('Drift wall')};
 
 const checks=[
- ['React Bits dependencies declared',pkg.dependencies.motion==='14.1.0'&&pkg.dependencies['@hugeicons/react']==='1.1.10'&&pkg.dependencies['@hugeicons/core-free-icons']==='4.3.5'&&pkg.dependencies.ogl==='1.0.11'],
+ ['React Bits dependencies declared',pkg.dependencies.motion===lock.packages[''].dependencies.motion&&lock.packages['node_modules/motion']?.version===pkg.dependencies.motion&&pkg.dependencies['@hugeicons/react']==='1.1.10'&&pkg.dependencies['@hugeicons/core-free-icons']==='4.3.5'&&pkg.dependencies.ogl==='1.0.11'],
  ['lockfile root matches React Bits/runtime dependencies',lock.packages[''].dependencies.motion===pkg.dependencies.motion&&lock.packages[''].dependencies.ogl==='1.0.11'&&lock.packages['node_modules/ogl']?.version==='1.0.11'],
  ['React Bits micro components present',/BellToggle|JellyRadio|RubberSegment|BorderGlow/.test(micro)],
  ['React Bits motion controls are lazy-loaded',main.includes('LazyRubberSegment')&&main.includes('LazyBellToggle')],
