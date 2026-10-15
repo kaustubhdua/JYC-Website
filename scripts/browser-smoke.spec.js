@@ -909,7 +909,7 @@ test('responsive photo manifest retries after a transient request failure', asyn
   await page.locator('a[href="/gallery"]').first().click();
   await expect(page.locator('.jyc-gallery-hub-container')).toBeVisible();
   await expect.poll(() => attempts).toBeGreaterThan(1);
-  await expect.poll(() => page.locator('.jyc57-page picture source').count()).toBeGreaterThan(0);
+  await expect.poll(() => page.locator('.jyc-gallery-hub-container picture source').count()).toBeGreaterThan(0);
 });
 
 
@@ -929,9 +929,9 @@ test('responsive photo manifest retries after a successful but malformed payload
   await expect.poll(() => attempts).toBe(1);
   await page.waitForTimeout(150);
   await page.locator('a[href="/gallery"]').first().click();
-  await expect(page.locator('.jyc57-page')).toBeVisible();
+  await expect(page.locator('.jyc-gallery-hub-container')).toBeVisible();
   await expect.poll(() => attempts).toBeGreaterThan(1);
-  await expect.poll(() => page.locator('.jyc57-page picture source[srcset]').count()).toBeGreaterThan(0);
+  await expect.poll(() => page.locator('.jyc-gallery-hub-container picture source[srcset]').count()).toBeGreaterThan(0);
 });
 
 
@@ -1413,7 +1413,7 @@ test('Best of JYC frames navigate into the matching gallery photo', async ({ pag
   await expect(card).toBeVisible();
   await card.click({ timeout: 7000 });
   await expect(page).toHaveURL(/\/gallery\?photo=/);
-  await expect(page.locator('.jyc57-page')).toBeVisible();
+  await expect(page.locator('.jyc-gallery-hub-container')).toBeVisible();
 });
 
 
