@@ -190,6 +190,7 @@ checks.push([
     gallery.includes("loading={albumIndex < 3 ? 'eager' : 'lazy'}") &&
     gallery.includes("fetchPriority={albumIndex === 0 ? 'high' : undefined}")
 ]);
+checks.push(['public boot gate preserves the data-loading guard while avoiding a long artificial post-load wait',main.includes('const minimum=error?150:(readSiteCache()?120:250);')&&main.includes('if(loading)return;')&&main.includes('if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;')]);
 let failed=0;
 for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+' · '+name);if(!ok)failed++}
 if(failed)process.exit(1);
