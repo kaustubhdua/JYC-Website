@@ -35,6 +35,10 @@ async function inspectViewport(page){
     };
     const offscreen=[];
     const clipped=[];
+    const hiddenAnnouncementIssues=[...document.querySelectorAll('.flip-card__sr-only')].filter(el=>{
+      const s=getComputedStyle(el);
+      return el.getAttribute('aria-live')!=='polite'||s.position!=='absolute'||s.width!=='1px'||s.height!=='1px'||s.overflow!=='hidden'||s.whiteSpace!=='nowrap'||s.clip==='auto';
+    }).map(el=>({text:(el.textContent||'').trim().slice(0,80),ariaLive:el.getAttribute('aria-live')}));
     for(const el of document.querySelectorAll('.public-app *')){
       if(!visible(el))continue;
       const r=el.getBoundingClientRect();
@@ -43,7 +47,7 @@ async function inspectViewport(page){
         if(overflowX!=='hidden'&&overflowX!=='clip')offscreen.push({tag:el.tagName,cls:String(el.className||'').slice(0,100),left:r.left,right:r.right});
       }
       if(['H1','H2','H3','H4','P','A','BUTTON','SPAN','SMALL','STRONG'].includes(el.tagName)){
-        if(el.scrollWidth>el.clientWidth+2 && getComputedStyle(el).whiteSpace!=='nowrap'){
+        if(!el.matches('.flip-card__sr-only')&&el.scrollWidth>el.clientWidth+2 && getComputedStyle(el).whiteSpace!=='nowrap'){
           clipped.push({tag:el.tagName,text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),scrollWidth:el.scrollWidth,clientWidth:el.clientWidth});
         }
       }
@@ -66,6 +70,7 @@ async function inspectViewport(page){
       bodyOverflow:body.scrollWidth>vw+1,
       offscreen:offscreen.slice(0,12),
       clipped:clipped.slice(0,12),
+      hiddenAnnouncementIssues,
       overlaps,
       headingIssues,
       hasVisibleText:[...document.querySelectorAll('.public-app h1,.public-app h2,.public-app p,.public-app a,.public-app button')].some(visible)
@@ -122,6 +127,7 @@ test('sitewide routes have no overflow, clipping, off-screen content or fixed-co
     expect(result.bodyOverflow,route+' body overflow').toBe(false);
     expect(result.offscreen,route+' offscreen').toEqual([]);
     expect(result.clipped,route+' clipped text').toEqual([]);
+    expect(result.hiddenAnnouncementIssues,route+' screen-reader-only flip-card announcement').toEqual([]);
     expect(result.overlaps,route+' fixed overlap').toEqual([]);
     expect(result.headingIssues,route+' heading geometry').toEqual([]);
     expect(result.hasVisibleText,route+' visible content').toBe(true);
@@ -152,8 +158,8 @@ test('mobile pages remain centered and controls meet touch-safe sizing', async (
     await waitForPublicApp(page,route);
     const result=await page.evaluate(()=>{
       const visible=el=>{const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0};
-      const controls=[...document.querySelectorAll('.public-app button,.public-app .btn,.public-app .filter-toggle,.public-app .nav button')].filter(visible);
-      const tooSmall=controls.filter(el=>{const r=el.getBoundingClientRect();return r.width<40||r.height<40}).slice(0,12).map(el=>({tag:el.tagName,text:(el.textContent||'').trim().slice(0,60),w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}));
+      const controls=[...document.querySelectorAll('.public-app button:not(.jyc57-photo):not(.jyc57-feature-card),.public-app .btn,.public-app .filter-toggle,.public-app .nav button')].filter(visible);
+      const tooSmall=controls.filter(el=>{const r=el.getBoundingClientRect();return r.width<44||r.height<44}).slice(0,12).map(el=>({tag:el.tagName,text:(el.textContent||'').trim().slice(0,60),w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}));
       const containers=[...document.querySelectorAll('.public-app .section,.public-app .page,.public-app .section-head,.public-app .reference-section-head')].filter(visible);
       const outside=containers.filter(el=>{const r=el.getBoundingClientRect();return r.left<-1||r.right>innerWidth+1}).slice(0,8).map(el=>({cls:String(el.className||''),left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right}));
       return{tooSmall,outside};

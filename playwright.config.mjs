@@ -5,6 +5,7 @@ const mobileCore = /homepage accessibility and responsive guardrails|brand text 
 const mobile430 = /homepage accessibility and responsive guardrails|brand text contrast stays readable in both light and dark themes|mobile pages remain centered and controls meet touch-safe sizing|Search and More surfaces follow the light\/dark theme with readable text|featured event announcement never blocks mobile navigation|featured event poster uses the shared responsive image fallback contract/i;
 const tabletCore = /homepage accessibility and responsive guardrails|brand text contrast stays readable in both light and dark themes|tablet events hero keeps the headline inside its text frame|mobile pages remain centered and controls meet touch-safe sizing|responsive photos retry the original source when a derivative returns HTML with HTTP 200|featured event poster uses the shared responsive image fallback contract/i;
 const desktop1440 = /homepage accessibility and responsive guardrails|brand text contrast stays readable in both light and dark themes|sitewide routes have no overflow, clipping, off-screen content or fixed-control overlap|sitewide routes load every visible image successfully and expose alt text|gallery archive uses deterministic responsive image frames|homepage records Core Web Vitals under the browser harness|featured event announcement never blocks mobile navigation/i;
+const mobile320 = /320px viewport keeps public routes and gallery cards inside the page/i;
 const desktopCore = /capture route matrix|homepage accessibility and responsive guardrails|brand text contrast stays readable in both light and dark themes|sitewide routes have no overflow, clipping, off-screen content or fixed-control overlap|sitewide routes load every visible image successfully and expose alt text|gallery archive uses deterministic responsive image frames|homepage records Core Web Vitals under the browser harness|featured event announcement never blocks mobile navigation/i;
 
 export default defineConfig({
@@ -22,6 +23,7 @@ export default defineConfig({
     video: process.env.CI ? 'off' : 'retain-on-failure'
   },
   projects: [
+    { name: 'mobile-320', use: { viewport: { width: 320, height: 740 }, isMobile: true }, grep: mobile320 },
     { name: 'mobile-390', use: { viewport: { width: 390, height: 844 }, isMobile: true }, grep: mobileCore },
     { name: 'mobile-430', use: { viewport: { width: 430, height: 932 }, isMobile: true }, grep: mobile430 },
     { name: 'tablet-768', use: { viewport: { width: 768, height: 1024 } }, grep: tabletCore },

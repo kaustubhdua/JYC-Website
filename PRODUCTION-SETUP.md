@@ -1,8 +1,14 @@
 # JYC Production Setup
 
-## Database
+## Scope and safety
 
-Run these files in Supabase SQL Editor, in order:
+The public website release does not require database migrations, privileged Edge Function deployment, or activation of the retired admin platform. Those steps are optional and only apply to a separately approved backend/admin release.
+
+Before any approved JYC migration, verify the target project is `ogbanmjokjlxfuktkicj`, review the forward-only SQL and its RLS, storage-policy, and table impact, and preserve unrelated data. Never apply JYC migrations to Nihdhoom project `igqgtlmnwssjaoxkkzbm`.
+
+## Optional backend/admin database setup (not required for public-site release)
+
+Only for a separately approved backend/admin release, review and run these files in Supabase SQL Editor in order:
 
 1. `supabase/00-core-migration.sql`
 2. `supabase/relational-v2.sql`
@@ -14,9 +20,9 @@ Run these files in Supabase SQL Editor, in order:
 
 Do not run a name-based cleanup for **Abhivyakti**. Abhivyakti is a legitimate JYC community in the supplied hub directory, and the historical cleanup script is now non-destructive. If an unexpected record remains, verify it against an independent source-backed identifier before removing it.
 
-## Edge Functions
+## Optional backend/admin Edge Functions (not required for public-site release)
 
-Deploy:
+Only for a separately approved backend/admin release, deploy:
 
 ```bash
 npx supabase functions deploy admin-management

@@ -299,12 +299,12 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
 }
 
 
-/* Touch target floor for compact controls; image cards keep their own geometry. */
+/* Final public-control layer preserves the shared 44px touch-target contract. */
 .public-app button:not(.jyc57-photo):not(.jyc57-feature-card),
 .public-app .btn,
 .public-app .filter-toggle {
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 

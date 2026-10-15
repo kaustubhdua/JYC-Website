@@ -297,7 +297,7 @@ The connected production Supabase project is active and has been hardened and po
 - Seven deployed Edge Functions: admin management, notifications, backups, AI content assistance, error intake, media upload and public submissions.
 - Private backup storage and constrained public media storage.
 
-The remaining production gates are operational: configure required third-party Edge Function secrets, enable leaked-password protection in Supabase Auth, verify the connected Vercel production project, publish the current main revision once the Vercel Hobby deployment limit clears, review which archive visuals should be promoted as official current event records, and run final browser/performance QA against the real deployment.
+The remaining production gates are operational: configure required third-party Edge Function secrets, enable leaked-password protection in Supabase Auth, verify the connected Vercel production project, resolve the current Vercel deployment-rate limit through the normal owner/platform process, review which archive visuals should be promoted as official current event records, and run final browser/performance QA against the real deployment.
 
 ## Current release status
 
@@ -305,12 +305,14 @@ The remaining production gates are operational: configure required third-party E
 
 **V64.5.10 is the current source release.** This pass generates a dedicated 96px AVIF JYC mark for the floating assistant, precaches it under a refreshed service-worker cache, and reduces the artificial post-load boot delay without bypassing the data-loading guard. JYC Now now distinguishes remote live connector results from curated/database fallback and ignores empty connector configuration; RSS sources must use HTTPS. The release checklist now separates the public website from the optional admin platform, and production asset QA validates the built output so generated logo files are checked at the correct stage. The existing editorial hero, responsive image fallbacks, reduced-motion safeguards, team profile interactions and source-backed club/event content remain covered by the release QA suite.
 
-Package metadata, lockfile and the service-worker cache namespace are synchronized. Source-contract assertions are not a substitute for a successful production build or browser run. The latest GitHub Actions runs are failing before job steps/logs are exposed, and Vercel deployment limits/domain routing remain operational release gates; do not treat this branch as deployed or production-verified until those checks are green.
+Package metadata, lockfile and the service-worker cache namespace are synchronized. Source-contract assertions are not a substitute for a successful production build or browser run.
+
+**Verified release-status snapshot — 15 October 2026 (main before Run 20):** current `main` is `35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`. CI, Quality Gate, CodeQL and Lighthouse CI passed on that exact SHA; Browser QA failed 1 of 38 tests on `/team` at desktop-1280 because intentionally screen-reader-only FlipCard text (`Photo shown.`) was counted as clipped visible text ([browser run](https://github.com/kaustubhdua/JYC-Website/actions/runs/38723211136)). The Vercel status is `Deployment rate limited — retry in 24 hours`; the latest READY production deployment last verified is still on `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`, not current `main`. Do not describe the release as production-verified until a READY deployment matches the approved source SHA and browser QA passes.
 
 The highest-value remaining production work is operational/editorial rather than architectural:
 
 1. Keep the complete 873-file source archive catalogued and maintain editorial review when promoting new material into official event/club records.
-2. CI now enforces the production JS/CSS/image budget, public-route hygiene and expanded browser smoke suite; run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
+2. CI enforces the production JS/CSS/image budget and public-route hygiene; resolve the current browser regression, then run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
 3. Verify live Supabase content and every published club/event record.
 4. Verify the Vercel production deployment and its redirects/headers.
 5. Run a final performance pass after the real production image set is known.

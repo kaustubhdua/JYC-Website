@@ -152,13 +152,14 @@ For each route verify:
 
 ## J. Release
 
-- [x] GitHub main contains the current final source
-- [ ] Latest PR Quality Gate, CI, CodeQL and Browser QA need a usable successful run; recent runs failed before job steps/logs were exposed
+- [x] GitHub main contains the current final source (`35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`)
+- [x] Current-main CI (`38723211069`), Quality Gate (`38723211052`), CodeQL (`38723211111`) and Lighthouse CI (`38723211036`) passed on 2026-10-15
+- [ ] Browser QA (`38723211136`) is green; current run fails 1/38 on `/team` at desktop-1280 because screen-reader-only FlipCard announcement text is classified as clipped visible text
 - [ ] CodeQL open findings = 0, or every remaining finding has a documented justified disposition
 - [ ] Dependabot alerts = 0 high/critical
 - [ ] Supabase security advisor = 0 high/critical
-- [x] Vercel production deployment is READY for the current main line
-- [ ] verify the exact current main SHA is the production deployment; the current PR preview is separate from production
+- [ ] Vercel production deployment is READY for the current main line; the current Vercel status is `Deployment rate limited — retry in 24 hours`
+- [ ] Verify the exact current main SHA is the production deployment. Latest READY production SHA observed on 2026-10-15 is `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`, not current `main`.
 - [ ] production HTTP/security headers verified
 - [ ] all public routes smoke-tested on production
 - [ ] production media/link/content check complete
@@ -176,11 +177,13 @@ For each route verify:
 
 The website is 100% done only when sections A–J are either implemented and green, or a manual/account-level item has an explicit verified disposition. No “looks fine” release is allowed with open high/critical security findings, unknown production deployment state, broken media, wrong campus scope, or unverified browser behavior.
 
-## Live release state (2026-10-07)
+## Historical release snapshot (2026-10-07; superseded by the current release status above)
 
-- GitHub `main` currently points to `4172d294a5ab13efedc99bbe6f0852adca1086eb` (Dependabot merge updating Vite/Motion).
-- Vercel production is READY at deployment `dpl_HmQN44hacjado1jUFgwiez1wfavD`, built from the exact current `main` SHA `4172d294a5ab13efedc99bbe6f0852adca1086eb` and aliased to `jyc-website-eight.vercel.app`.
-- The latest completed Quality Gate, CI and CodeQL checks are green; Browser QA is still running in GitHub Actions.
+This section records the state observed on 7 October 2026. Its branch, deployment, and workflow claims are historical and must not be used as evidence that the current `main` revision is deployed or release-ready.
+
+- GitHub `main` pointed to `4172d294a5ab13efedc99bbe6f0852adca1086eb` (Dependabot merge updating Vite/Motion) at the time.
+- Vercel deployment `dpl_HmQN44hacjado1jUFgwiez1wfavD` was READY for that historical SHA and aliased to `jyc-website-eight.vercel.app`. This does not prove that the current `main` revision is deployed.
+- The latest completed Quality Gate, CI and CodeQL checks were green at the time; Browser QA was still running in GitHub Actions.
 - Vercel runtime observability shows one low-impact Node deprecation warning group on `/api/jyc-updates` (`url.parse()` warning), with no application exception group reported in the last 24h.
 - The screenshot-reported 142 open CodeQL findings remain an account-level disposition task; the current CodeQL workflow itself is green, so each historical alert still needs individual remediation/dismissal/verification in GitHub Security.
 - Do not declare 100% release-ready until browser QA, production route/security checks, CodeQL alert disposition, and the remaining manual GitHub/Supabase checks are closed.

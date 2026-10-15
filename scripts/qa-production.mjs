@@ -12,6 +12,7 @@ const pkg=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
 const main=read('src/main.jsx');
 const publicEntry=read('src/styles/public-entry.css');
+const setup=read('PRODUCTION-SETUP.md');
 if(/https:\/\/[^*\s]+\.supabase\.co/.test(vercel)) fail('Vercel CSP does not hard-code a single Supabase project'); else pass('Vercel CSP is deployable across Supabase projects');
 if(vercel.includes('X-Content-Type-Options')&&vercel.includes('X-Frame-Options')&&vercel.includes('Referrer-Policy')) pass('Baseline security headers present'); else fail('Baseline security headers incomplete');
 if(vercel.includes('Strict-Transport-Security')) pass('HSTS header present'); else fail('HSTS header missing');
@@ -44,6 +45,7 @@ if(contactSql.includes('public.jyc_project_submissions')&&contactSql.includes('A
 if(ai.includes("gpt-6-luna")) pass('AI content assistant uses a current configured model default'); else fail('AI content assistant model default is stale');
 if(ai.includes('if(!allowedOrigin(origin))')&&ai.includes('jyc_allow_ai_request')&&ai.includes('contentLength>24000')&&ai.includes('store:false')&&ai.includes('json_schema')) pass('AI content assistant has origin, size, distributed rate and structured-output guards'); else fail('AI content assistant request guards are incomplete');
 if(adminFn.includes("Deno.env.get('SITE_ORIGINS')") && !/https?:\/\/jycjiit\.vercel\.app(?=\/|[\s'\")]|$)/i.test(adminFn)) pass('Admin edge function uses deploy-time origin configuration'); else fail('Admin edge function still hard-codes a legacy production origin');
+if(setup.toLowerCase().includes('public website release does not require database migrations')&&setup.includes('Optional backend/admin database setup')&&setup.includes('Optional backend/admin Edge Functions')&&setup.includes('ogbanmjokjlxfuktkicj')&&setup.includes('igqgtlmnwssjaoxkkzbm')&&setup.toLowerCase().includes('never apply jyc migrations to nihdhoom')) pass('Production setup docs keep optional backend/admin migrations outside the public-site release and protect the JYC Supabase project'); else fail('Production setup docs blur public release scope or omit the JYC migration safety boundary');
 
 const failed=checks.filter(x=>!x[0]);
 if(failed.length){process.exitCode=1;console.error(`Production preflight failed: ${failed.length} check(s)`)}else console.log(`Production preflight complete: ${checks.length} checks passed`);
