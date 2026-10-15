@@ -266,7 +266,7 @@
  .jyc57-page .jyc57-club-card:nth-child(5n+1){grid-column:span 2;min-height:300px}
  .jyc57-page .jyc57-club-content{padding:14px}
  .jyc57-page .jyc57-club-content h2{font-size:clamp(20px,5vw,27px)}
- .jyc57-page .jyc57-club-content p{font-size:11px;-webkit-line-clamp:2}
+ .jyc57-page .jyc57-club-content p{font-size:12px;-webkit-line-clamp:2}
  .jyc57-page .jyc57-event-toolbar{align-items:stretch}
  .jyc57-page .jyc57-segment{width:100%}
  .jyc57-page .jyc57-segment button{flex:1 1 auto}
