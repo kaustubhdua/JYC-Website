@@ -2,9 +2,9 @@ name: JYC Lighthouse CI
 
 on:
   pull_request:
-    branches: [main, 'fix/**']
-  push:
     branches: [main]
+  push:
+    branches: [main, 'fix/**']
   workflow_dispatch:
 
 permissions:
