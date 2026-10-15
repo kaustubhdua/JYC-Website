@@ -343,3 +343,7 @@ body:has(.jyc57-lightbox[aria-modal="true"]) :is(.jyc-bot-shell,.mobile-dock) {
   color: #28242a !important;
   opacity: 1 !important;
 }
+
+/* Visual QA: feature heroes use a permanently dark textured surface in both themes. Keep light-theme copy ivory rather than inheriting dark ink from the paper theme. */
+html[data-theme="light"] .public-app .feature-hero :is(h1,h2,h3,h4,h5,h6){color:#FFF8E1!important}
+html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7!important}
