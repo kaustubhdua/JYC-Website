@@ -306,3 +306,10 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
   min-width: 40px;
   min-height: 40px;
 }
+
+
+/* A modal gallery lightbox owns the viewport and focus: hide floating launchers
+   and the persistent dock so they cannot cover photo actions or escape the dialog. */
+body:has(.jyc57-lightbox[aria-modal="true"]) :is(.jyc-bot-shell,.mobile-dock) {
+  display: none !important;
+}
