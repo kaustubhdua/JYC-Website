@@ -267,7 +267,7 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
   color: #76211D !important;
 }
 :root:not([data-theme="dark"]) .public-app :is(
-  .jh-lead,.jh-assistant-info p,.jh-community-copy p,.jh-final p,
+  .jh-lead,.jh-assistant-info p,.jh-community-copy p,
   .jh-pillar-card p,.jh-event-copy>p,.muted,.muted-text,.jyc57-empty p
 ) {
   color: #4B4650 !important;
