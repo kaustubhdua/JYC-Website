@@ -31,6 +31,8 @@ jobs:
         run: npm run build
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Validate Lighthouse server readiness matcher
+        run: node scripts/qa-lighthouse-readiness.mjs
       - name: Run Lighthouse CI
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
