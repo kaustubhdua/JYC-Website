@@ -1519,6 +1519,7 @@ test('JYC Now fallback cards and filters keep readable contrast in light and dar
   await waitForAppMount(page, 'JYC Now theme contrast');
   const card = page.locator('.jyc-now-card').first();
   await expect(card).toBeVisible();
+  await expect(page.locator('.jyc-now-status-line')).toContainText(/Curated source directory active|Live connectors active/);
   await expect(card.locator('h3')).toContainText(/JAI 2026|RIDE Hack|CICR/);
   const filter = page.locator('.jyc-now-filter-group button').first();
   await expect(filter).toBeVisible();
