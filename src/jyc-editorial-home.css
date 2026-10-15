@@ -198,7 +198,7 @@
 }
 
 .jh-overline {
-  font: 700 11px/1.5 'JetBrains Mono', monospace;
+  font: 700 12px/1.5 'JetBrains Mono', monospace;
   letter-spacing: 0.22em;
   color: var(--jh-muted);
   margin: 22px 0 0;
