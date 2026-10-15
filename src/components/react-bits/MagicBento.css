@@ -10,18 +10,18 @@
   outline-offset: 3px;
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .magic-bento-card__image {
+  .magic-bento-card__media img {
     transition: transform .45s cubic-bezier(.2,.8,.2,1), filter .45s ease;
   }
-  .magic-bento-card:hover .magic-bento-card__image,
-  .magic-bento-card:focus-within .magic-bento-card__image {
+  .magic-bento-card:hover .magic-bento-card__media img,
+  .magic-bento-card:focus-within .magic-bento-card__media img {
     transform: scale(1.035);
     filter: saturate(.92);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .magic-bento-card,
-  .magic-bento-card__image,
+  .magic-bento-card__media img,
   .magic-bento-card button {
     transition: none !important;
     animation: none !important;
