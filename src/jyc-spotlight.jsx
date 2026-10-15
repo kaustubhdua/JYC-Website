@@ -5,6 +5,7 @@ import {PDF_HUB_STORIES} from './pdf-hub-content.js';
 const slug=value=>String(value||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const mediaUrl=item=>item?.url||item?.src||item?.image||item?.imageUrl||'';
+const photoKey=value=>String(value||'').trim().split(/[?#]/,1)[0].toLowerCase();
 
 const photoFor=(gallery,clubName,event)=>{
   const rows=Array.isArray(gallery)?gallery:[];
@@ -35,7 +36,13 @@ export function JYCSpotlight({data}){
     const eventClub=event?.clubId?clubs.find(c=>String(c.id)===String(event.clubId)):clubs.find(c=>String(c.name||'').toLowerCase()===String(event?.club||'').toLowerCase());
     const community=eventClub||clubs.find(c=>c.pinned)||clubs[0]||null;
     const communityPhoto=photoFor(gallery,community?.name,event);
-    const archive=gallery.find(g=>mediaUrl(g)&&(!event?.id||String(g.eventId||'')===String(event.id)))||gallery.find(g=>mediaUrl(g));
+    const communityPhotoKey=photoKey(communityPhoto);
+    const eventPosterKey=photoKey(event?.poster);
+    const archiveCandidates=gallery.filter(g=>{
+      const url=mediaUrl(g),key=photoKey(url);
+      return url&&key&&key!==communityPhotoKey&&key!==eventPosterKey;
+    });
+    const archive=archiveCandidates.find(g=>event?.id&&String(g.eventId||'')===String(event.id))||archiveCandidates[0]||null;
     return {event,community,communityPhoto,archive};
   },[clubs,events,gallery]);
 
