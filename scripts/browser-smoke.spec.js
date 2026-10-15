@@ -1195,7 +1195,7 @@ test('gallery interaction contract covers filters, album routes, navigation, zoo
   await dialog.getByRole('button', { name: /Zoom In|Reset Zoom/ }).click();
   await expect.poll(() => image.evaluate(el => getComputedStyle(el).transform)).not.toBe(beforeTransform);
   await expect(dialog.getByRole('button', { name: /Share Photo|Link Copied/ })).toBeVisible();
-  await dialog.getByRole('button', { name: /Share photograph|Link copied/ }).click().catch(()=>{});
+  await dialog.getByRole('button', { name: /Share Photo|Link Copied/ }).click().catch(()=>{});
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
 });
