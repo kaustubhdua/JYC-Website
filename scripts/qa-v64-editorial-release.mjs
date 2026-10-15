@@ -183,6 +183,12 @@ const checks=[
  ['JYC Now cards and filters have dark-theme contrast and reduced-motion overrides',now.includes('html[data-theme="dark"] .jyc-now-card')&&now.includes('var(--jyc-muted-live')&&now.includes('prefers-reduced-motion:reduce')],
  ['browser suite verifies JYC Now light/dark contrast',browser.includes('JYC Now fallback cards and filters keep readable contrast in light and dark themes')&&browser.includes('cardTextContrast')&&browser.includes('paragraphContrast')&&browser.includes("toBeGreaterThanOrEqual(4.5)")],
 ];
+checks.push([
+  'gallery eagerly loads the first visible album row and prioritizes the first cover',
+  gallery.includes("publishedAlbums.slice(0, 12).map((album, albumIndex) => {") &&
+    gallery.includes("loading={albumIndex < 3 ? 'eager' : 'lazy'}") &&
+    gallery.includes("fetchPriority={albumIndex === 0 ? 'high' : undefined}")
+]);
 let failed=0;
 for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+' · '+name);if(!ok)failed++}
 if(failed)process.exit(1);
