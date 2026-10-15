@@ -297,3 +297,12 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
 .public-app .jh-final :is(.jh-section-number,p) {
   color: #fffaf0 !important;
 }
+
+
+/* Touch target floor for compact controls; image cards keep their own geometry. */
+.public-app button:not(.jyc57-photo):not(.jyc57-feature-card),
+.public-app .btn,
+.public-app .filter-toggle {
+  min-width: 40px;
+  min-height: 40px;
+}
