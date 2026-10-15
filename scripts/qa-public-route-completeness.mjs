@@ -22,12 +22,7 @@ const routes = [
 ];
 
 for (const route of routes) {
-  // Best of JYC is intentionally lazy-loaded so the photo-selection bundle is
-  // not shipped on every route; assert the route's lazy component, not the
-  // retired eager JSX form.
-  const expected = route.path === '/best-of-jyc'
-    ? "if(clean==='/best-of-jyc')return <>{schema}<LazyJYCBestOf data={data}/></>;"
-    : `if(clean==='${route.path}')return <>{schema}<${route.component} data={data}/></>;`;
+  const expected = `if(clean==='${route.path}')return <>{schema}<${route.component} data={data}/></>;`;
   assert.ok(main.includes(expected), `${route.path} must render its dedicated page component`);
   assert.ok(shells.includes(`'${route.path}'`), `${route.path} must have a direct-entry SEO shell`);
 }
