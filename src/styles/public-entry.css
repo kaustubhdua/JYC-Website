@@ -212,3 +212,30 @@ footer.jyc-footer.jyc-footer-v6 .footer-v6-inner .footer-bottom .jyc-creator-cre
 .jyc57-archive-nav>a{color:#825F2B!important}
 .jyc-section-head-bar>div>span{color:#625A52!important}
 .jyc57-media-filter+div>div>span,#jyc-gallery-years>span{color:#625A52!important}
+
+
+/* Release QA: correct final-layer contrast and touch-target fixes. */
+footer.jyc-footer .footer-v6-inner .footer-bottom .jyc-creator-credit {
+  color: #A8A3B0 !important;
+  opacity: 1 !important;
+}
+footer.jyc-footer .footer-v6-inner .footer-bottom .jyc-creator-credit a {
+  color: #D2B48C !important;
+  opacity: 1 !important;
+}
+html[data-theme="light"] .public-app .jyc-gallery-hero .jh-kicker b,
+html[data-theme="light"] .public-app .jyc-clubs-header .jh-kicker b {
+  color: #3F3024 !important;
+}
+html[data-theme="light"] .public-app .jh-final p,
+html[data-theme="light"] .public-app .jh-final .jh-section-number {
+  color: #FFF8E1 !important;
+  opacity: 1 !important;
+}
+.public-app .jyc57-breadcrumbs :is(a,button) {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
