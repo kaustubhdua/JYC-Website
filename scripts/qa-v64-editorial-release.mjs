@@ -3,6 +3,7 @@ import path from 'node:path';
 import {JYC_SOCIALS,is128SocialProfile} from '../src/jyc-socials.js';
 
 const root=process.cwd();
+const depthCss=fs.readFileSync(path.join(root,'src/v36-depth-polish.css'),'utf8');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const main=read('src/main.jsx');
 const entryCss=read('src/styles/public-entry.css');
@@ -52,7 +53,9 @@ const sitemap=read('scripts/generate-sitemap.mjs');
 const pkg=JSON.parse(read('package.json'));
 const ciWorkflow=read('.github/workflows/ci.yml');
 const qualityWorkflow=read('.github/workflows/jyc-quality.yml');
+const revealKeyframes=depthCss.match(/@keyframes jycV36Reveal\s*\{([\s\S]*?)\n\}/)?.[1]||'';
 const checks=[
+  ['scroll reveal animation preserves text contrast without opacity fades',Boolean(revealKeyframes)&&!/opacity\s*:/.test(revealKeyframes)&&/transform/.test(revealKeyframes)],
   ['homepage restores the editorial intro and source-linked JYC Now update feed',editorialHome.includes('jh-about-editorial')&&editorialHome.includes('<JYCNowStrip limit={3} compact={false} />')],
   ['homepage keeps student-centered identity copy, source-backed activity photography and photo stories before discovery',editorialHome.includes('<span>Find your people.</span>')&&editorialHome.includes('<span>Make your mark.</span>')&&editorialHome.includes('At JIIT 128.')&&editorialHome.includes("import { sourceEventMedia, sourceHubMedia }")&&editorialHome.includes('const photoHubs = { technical: \'CICR\', cultural: \'VamUnique\', literary: \'Eloquence\', fests: \'Aakriti\', sports: \'Sports\', creative: \'Aura\' }')&&editorialHome.includes('const image = source.photoItems.find(item => item?.url)?.url || \'\'')&&homeCss.includes('.jyc-editorial-home .magic-bento-card__media { display: block; }')&&editorialHome.includes('Campus life,')&&editorialHome.includes('as it happened.')&&editorialHome.includes('real photographs from JYC clubs, events and campus life.')&&!editorialHome.includes('jh-assistant-spotlight')&&!editorialHome.includes('JYC Spatial Assistant')&&editorialHome.indexOf('jh-photo-story')<editorialHome.indexOf('jh-pillars-section')],
   ['font requests only include used families and preconnect the font file origin',indexHtml.includes('href="https://fonts.googleapis.com"')&&indexHtml.includes('href="https://fonts.gstatic.com" crossorigin')&&!indexHtml.includes('family=Outfit')&&indexHtml.includes('family=Inter')&&indexHtml.includes('family=Space+Grotesk')&&indexHtml.includes('family=JetBrains+Mono')],
