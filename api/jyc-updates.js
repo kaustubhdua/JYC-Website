@@ -1,7 +1,7 @@
 const CACHE_MS=15*60*1000;
 const FETCH_TIMEOUT_MS=8000;
 const fetchWithTimeout=(url,options={})=>fetch(url,{...options,signal:AbortSignal.timeout(FETCH_TIMEOUT_MS)});
-let memory={at:0,items:[]};
+let memory={at:0,items:[],live:false,configured:false};
 const json=value=>{try{return JSON.parse(value||'{}')}catch{return {}}};
 const unique=rows=>{const seen=new Set();return rows.filter(x=>{const key=x.externalId||x.url;if(!key||seen.has(key))return false;seen.add(key);return true})};
 const safeRemoteUrl=value=>{const raw=String(value||'').trim();if(!raw||/[\u0000-\u001f\u007f]/.test(raw))return '';try{const u=new URL(raw);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)return '';const host=u.hostname.toLowerCase().replace(/^\[|\]$/g,'');const blocked=host==='localhost'||host==='metadata.google.internal'||host==='instance-data.ec2.internal'||host==='0.0.0.0'||host==='127.0.0.1'||host==='::1'||host==='169.254.169.254'||host.startsWith('10.')||host.startsWith('192.168.')||host.startsWith('169.254.')||host.startsWith('100.64.')||host.startsWith('fc')||host.startsWith('fd')||host.startsWith('fe80:')||host.startsWith('::ffff:')||/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)||host.endsWith('.local')||host.endsWith('.internal');if(blocked)return '';return u.href}catch{return ''}}
@@ -13,6 +13,14 @@ const cfg={
  rss:json(process.env.JYC_RSS_FEEDS),
  manual:Array.isArray(json(process.env.JYC_MANUAL_UPDATES))?json(process.env.JYC_MANUAL_UPDATES):[]
 };
+const hasEntries=value=>isRecord(value)&&Object.keys(value).length>0;
+const hasConfiguredSource=()=>Boolean(
+ (process.env.META_ACCESS_TOKEN&&hasEntries(cfg.instagram)&&Object.values(cfg.instagram).some(Boolean))||
+ (process.env.YOUTUBE_API_KEY&&hasEntries(cfg.youtube)&&Object.values(cfg.youtube).some(Boolean))||
+ (process.env.LINKEDIN_ACCESS_TOKEN&&hasEntries(cfg.linkedin)&&Object.values(cfg.linkedin).some(Boolean))||
+ (hasEntries(cfg.rss)&&Object.values(cfg.rss).some(value=>safeRemoteUrl(value)))||
+ cfg.manual.some(item=>safeRemoteUrl(item?.url))
+);
 async function instagram(hub,userId){
  const token=process.env.META_ACCESS_TOKEN;if(!token||!userId)return [];
  const u=new URL('https://graph.instagram.com/'+encodeURIComponent(userId)+'/media');
@@ -54,10 +62,11 @@ async function collect(){
  for(const [hub,id] of Object.entries(cfg.youtube||{}))tasks.push(youtube(hub,id));
  for(const [hub,id] of Object.entries(cfg.linkedin||{}))tasks.push(linkedin(hub,id));
  for(const [hub,url] of Object.entries(cfg.rss||{}))tasks.push(rss(hub,url));
- tasks.push(manual());
  const settled=await Promise.allSettled(tasks);
- const items=unique(settled.flatMap(x=>x.status==='fulfilled'?x.value:[]));
- return items.sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,60);
+ const remoteItems=unique(settled.flatMap(x=>x.status==='fulfilled'?x.value:[]));
+ const manualItems=await manual();
+ const items=unique([...remoteItems,...manualItems]).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,60);
+ return {items,live:remoteItems.length>0};
 }
 async function dbRead(){
  try{
@@ -81,17 +90,19 @@ export default async function handler(req,res){
  if(sync&&!process.env.JYC_SYNC_SECRET){res.status(503).json({error:'Sync is not configured'});return}
 if(sync&&req.headers['x-jyc-sync-secret']!==process.env.JYC_SYNC_SECRET){res.status(401).json({error:'Unauthorized'});return}
  if(sync)res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, max-age=0');
- if(!sync&&memory.items.length&&Date.now()-memory.at<CACHE_MS){res.setHeader('Cache-Control','s-maxage=900, stale-while-revalidate=1800');res.status(200).json({items:memory.items,live:true,cached:true});return}
+ if(!sync&&memory.items.length&&Date.now()-memory.at<CACHE_MS){res.setHeader('Cache-Control','s-maxage=900, stale-while-revalidate=1800');res.status(200).json({items:memory.items,live:memory.live,configured:memory.configured,cached:true});return}
  try{
-  let items=await collect();
+  const collected=await collect();
+  let items=collected.items;
   if(items.length)await dbWrite(items);
   if(!items.length)items=await dbRead();
-  memory={at:Date.now(),items};
+  const live=collected.live===true,configured=hasConfiguredSource();
+  memory={at:Date.now(),items,live,configured};
   res.setHeader('Cache-Control','s-maxage=900, stale-while-revalidate=1800');
-  res.status(200).json({items,live:items.length>0,configured:Boolean(process.env.META_ACCESS_TOKEN||process.env.YOUTUBE_API_KEY||process.env.LINKEDIN_ACCESS_TOKEN||process.env.JYC_RSS_FEEDS||process.env.JYC_MANUAL_UPDATES)});
+  res.status(200).json({items,live,configured});
  }catch(error){
-  const fallback=await dbRead();memory={at:Date.now(),items:fallback};
+  const fallback=await dbRead(),configured=hasConfiguredSource();memory={at:Date.now(),items:fallback,live:false,configured};
   res.setHeader('Cache-Control','s-maxage=300, stale-while-revalidate=600');
-  res.status(200).json({items:fallback,live:false,error:'connector refresh failed'});
+  res.status(200).json({items:fallback,live:false,configured,error:'connector refresh failed'});
  }
 }
