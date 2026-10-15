@@ -50,7 +50,7 @@ The source release is merged and automated validation is green; the website is n
 - [ ] **MANUAL:** enable Dependabot alerts in GitHub Advanced Security
 - [ ] **MANUAL:** enable Private vulnerability reporting
 - [ ] **MANUAL:** enable Secret scanning / Push protection where GitHub plan/settings expose it
-- [ ] **MANUAL:** inspect the 17 existing CodeQL findings individually; fix real findings, dismiss only documented false positives/test-only findings
+- [ ] **MANUAL:** inspect current GitHub code-scanning alerts individually; the earlier audit reported 17 findings, but the current open-alert count is not available through the connected GitHub tools. Fix real findings and document any justified dismissal.
 - [ ] Review current 49 Supabase multiple-permissive-policy warnings; consolidate only where predicates are equivalent without changing role access
 - [ ] Review current 80 unused-index INFO findings after production traffic exists; do not remove indexes solely because the project is currently low-traffic
 - [ ] **MANUAL:** remove/disable stale duplicate CodeQL configurations if GitHub reports multiple active origins
@@ -217,9 +217,9 @@ The website is 100% done only when sections A–J are either implemented and gre
 ### Validation status — do not overstate
 
 - Targeted source-contract checks are being expanded alongside each change. These are not equivalent to a production build or successful browser run.
-- GitHub Actions runs for the latest PR revisions have failed before exposing usable job steps/logs. The latest full npm build and Playwright result therefore remain unknown.
-- A Vercel preview for the light-theme CSS commit reached READY, but its deployment is protected by Vercel authentication in the available browser fetch; the exact latest PR head has not been visually verified in a browser.
-- Manual Vercel deployment was previously blocked by the deployment-rate limit. Do not promote or merge until a preview for the exact head is built and tested.
+- This validation note is historical and superseded by the verified 2026-10-15 checkpoint at the top of this roadmap. The latest release head passed JYC CI, Quality Gate, CodeQL, Browser QA (38 smoke + 3 visual-route tests) and Lighthouse CI.
+- The latest release-head Vercel preview is READY. Automated route screenshots are available in CI artifacts; independent human visual signoff remains open because the connected browser fetch cannot access the protected preview directly.
+- The release is already merged. Production deployment is still blocked by Vercel's daily deployment limit; do not bypass the quota. Publish after the platform allows deployment, then verify production routes and headers.
 - Custom-domain verification/routing and production-domain visual QA remain open; do not change DNS without verified ownership/authorization.
 
 ### Animation and design follow-up priorities
