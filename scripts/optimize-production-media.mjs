@@ -58,7 +58,7 @@ try{
   const webpBytes=fs.statSync(webpTemp).size;
   fs.renameSync(webpTemp,logoOutput);
   const avifTemp=logoAvifOutput+'.jyc-opt';
-  await image.clone().avif({quality:68,effort:5}).toFile(avifTemp);
+  await image.clone().avif({quality:80,effort:6}).toFile(avifTemp);
   const avifBytes=fs.statSync(avifTemp).size;
   fs.renameSync(avifTemp,logoAvifOutput);
   console.log('Generated official JYC logo derivatives from '+before+' bytes: WebP '+webpBytes+' bytes; AVIF '+avifBytes+' bytes.');
