@@ -71,6 +71,9 @@ for (const comp of requiredRoutes) {
   add(`Component ${comp} implemented and mounted`, mainJsx.includes(`function ${comp}`));
 }
 
+// 7.5. Fixed mobile chrome clearance.
+add('mobile page content clears the fixed navigation dock', publicCss.includes('padding-bottom:calc(96px + env(safe-area-inset-bottom))'));
+
 // 8. Output Results
 let failed = 0;
 for (const c of checks) {
