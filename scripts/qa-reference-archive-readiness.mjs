@@ -12,7 +12,7 @@ const hubContent=read('src/v21-hub-content.js');
 const checks=[
   ['homepage stories require an explicit image URL and a named source association',home.includes("const url = String(item?.url || '').trim()")&&home.includes("const association = String(item?.association || item?.albumName || '').trim()")],
   ['homepage stories only use photo media classified as event or club photography',home.includes("item?.mediaKind !== 'photo'")&&home.includes("!['event','club'].includes(role)")],
-  ['homepage stories exclude archived/unpublished items and source-archive labels',home.includes('item?.published === false')&&home.includes('item?.archived === true')&&home.includes('/jyc archive|source archive/i.test(association)')],
+  ['homepage stories exclude archived/unpublished items and source-archive labels',home.includes('item?.published === false')&&home.includes('item?.archived === true')&&home.includes('/jyc(?:\\s+photo)?\\s+archive|source archive/i.test(association)')],
   ['homepage stories deduplicate associations before selecting a small editorial set',home.includes('seen.has(association.toLowerCase())')&&home.includes('seen.add(association.toLowerCase())')&&home.includes('if (selected.length === 3) break;')],
   ['homepage story images use the shared responsive image component',home.includes('<ResponsivePhoto')&&home.includes('className="jh-story-photo"')&&(home.includes('fallbackSrc={FALLBACK}')||home.includes('fallbackSrc="/assets/photo-unavailable.svg"'))],
   ['homepage story images are lazy loaded with descriptive fallback text',home.includes('loading="lazy"')&&home.includes('decoding="async"')&&(home.includes('fallbackAlt="Official JYC logo placeholder; photograph unavailable"')||home.includes('fallbackAlt="Photograph unavailable"'))],
