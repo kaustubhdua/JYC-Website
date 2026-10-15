@@ -52,13 +52,13 @@ try{
   if(!fs.existsSync(logoSource))throw new Error('Official JYC logo source is missing: '+logoSource);
   fs.mkdirSync(path.dirname(logoOutput),{recursive:true});
   const before=fs.statSync(logoSource).size;
-  const image=sharp(logoSource).rotate().resize({width:768,withoutEnlargement:true});
+  const image=sharp(logoSource).rotate().resize({width:512,withoutEnlargement:true});
   const webpTemp=logoOutput+'.jyc-opt';
   await image.clone().webp({quality:92,effort:5,alphaQuality:100}).toFile(webpTemp);
   const webpBytes=fs.statSync(webpTemp).size;
   fs.renameSync(webpTemp,logoOutput);
   const avifTemp=logoAvifOutput+'.jyc-opt';
-  await image.clone().avif({quality:80,effort:6}).toFile(avifTemp);
+  await image.clone().avif({quality:68,effort:5}).toFile(avifTemp);
   const avifBytes=fs.statSync(avifTemp).size;
   fs.renameSync(avifTemp,logoAvifOutput);
   console.log('Generated official JYC logo derivatives from '+before+' bytes: WebP '+webpBytes+' bytes; AVIF '+avifBytes+' bytes.');
