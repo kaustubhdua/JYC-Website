@@ -904,7 +904,7 @@ body{background:var(--bg)!important;color:var(--ink)!important}
 }
 @media(max-width:620px){
   .public-app :where(.section,.page,.feature-page,.unified-public-page){width:min(100% - 28px,1240px)}
-  .public-app :where(.page,.unified-public-page){padding-top:24px;padding-bottom:72px}
+  .public-app :where(.page,.unified-public-page){padding-top:24px;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .public-app :where(.section:not(.page)){padding-top:64px;padding-bottom:64px}
   .public-app .ecosystem-context-rail{grid-template-columns:1fr}
   .public-app .ecosystem-context-label{grid-column:auto}
