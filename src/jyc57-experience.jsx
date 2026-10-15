@@ -395,11 +395,11 @@ export function JYC57Gallery({data}){
         {albumSlug && <button type="button" className="jyc-clear-filters-btn" onClick={() => nav('/gallery')}>All albums ↗</button>}
       </div>
       {!albumSlug && <div className="jyc-memories-grid">
-        {publishedAlbums.slice(0, 12).map(album => {
+        {publishedAlbums.slice(0, 12).map((album, albumIndex) => {
           const albumPhotos = items.filter(g => g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name);
           return <button type="button" key={album.id || album.slug} className="jyc-memory-card" onClick={() => nav(albumRoute(album.slug))}>
             <div className="jyc-memory-cover">
-              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading="lazy" sizes="(max-width: 600px) 100vw, 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder"/>
+              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading={albumIndex < 3 ? 'eager' : 'lazy'} fetchPriority={albumIndex === 0 ? 'high' : undefined} sizes="(max-width: 600px) 100vw, 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder"/>
             </div>
             <div className="jyc-memory-scrim" />
             <div className="jyc-memory-details">
