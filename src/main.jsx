@@ -94,6 +94,11 @@ function LogoImage({alt='',...props}){
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
  return <img {...props} src={logo} alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??(props.fetchPriority==='high'?'eager':'lazy')} decoding={props.decoding??'async'} onError={event=>{const image=event.currentTarget;if(logo!=='/JYC%20Logo(4).png'&&image.dataset.logoFallback!=='1'){image.dataset.logoFallback='1';image.src='/JYC%20Logo(4).png';return}setFailed(true)}}/>
 }
+function FooterLogoImage({alt='',...props}){
+ const [failed,setFailed]=useState(false);
+ if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
+ return <img {...props} src="/assets/jyc-logo-small.avif" alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??'lazy'} decoding={props.decoding??'async'} onError={()=>setFailed(true)}/>;
+}
 const isFestMode=data=>String(data?.mode||'events').toLowerCase()==='fest';
 const recruitmentEnabled=data=>data?.flags?.recruitmentHub!==false;
 
@@ -868,7 +873,7 @@ function Footer({data,admin}){
     <div className="footer-v6-inner">
       <div className="footer-v6-rail">
         <div className="footer-v6-brand">
-          <div className="footer-logo-lockup"><LogoImage alt="JYC logo"/></div>
+          <div className="footer-logo-lockup"><FooterLogoImage alt="JYC logo"/></div>
           <div><strong>JIIT YOUTH CLUB</strong><span>READY TO SOAR · JIIT SECTOR 128</span></div>
         </div>
         <span className="footer-v6-index">JYC / 128</span>
