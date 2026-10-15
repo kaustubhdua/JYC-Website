@@ -17,7 +17,10 @@ const json=(body:unknown,status=200,origin:string|null=null)=>new Response(JSON.
 }});
 
 async function fingerprint(req:Request){
-  const ip=(req.headers.get('x-forwarded-for')||req.headers.get('x-real-ip')||'unknown').split(',')[0].trim();
+  // Prefer Cloudflare's edge-authored client IP; otherwise use the rightmost
+  // proxy-appended X-Forwarded-For value instead of trusting a caller-controlled first entry.
+  const forwarded=(req.headers.get('x-forwarded-for')||'').split(',').map(value=>value.trim()).filter(Boolean);
+  const ip=(req.headers.get('cf-connecting-ip')||forwarded.at(-1)||req.headers.get('x-real-ip')||'unknown').slice(0,128);
   const ua=(req.headers.get('user-agent')||'unknown').slice(0,300);
   const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(ip+'|'+ua));
   return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
