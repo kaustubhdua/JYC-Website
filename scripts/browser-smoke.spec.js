@@ -1601,6 +1601,13 @@ test('sparse faculty layout uses only populated tracks and mobile home actions s
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'mobile homepage action clearance');
   await expect(page.locator('.jyc-editorial-home .hero-actions')).toBeVisible();
-  await expect(page.locator('.jyc-bot-shell')).toBeHidden();
+  const fixedOverlap = await page.evaluate(() => {
+    const box = selector => { const el = document.querySelector(selector); if (!el) return null; const r = el.getBoundingClientRect(); return { left:r.left, right:r.right, top:r.top, bottom:r.bottom }; };
+    const intersects = (a,b) => Boolean(a&&b&&Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))>0&&Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top))>0);
+    const bot = box('.jyc-bot-shell');
+    return { action:intersects(bot,box('.jyc-editorial-home .hero-actions')), nav:intersects(bot,box('.nav')) };
+  });
+  expect(fixedOverlap.action, 'mobile assistant must not cover homepage primary actions').toBe(false);
+  expect(fixedOverlap.nav, 'mobile assistant must not cover the navigation controls').toBe(false);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), 'mobile homepage should not overflow').toBeTruthy();
 });
