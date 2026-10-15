@@ -52,7 +52,7 @@ try{
   if(!fs.existsSync(logoSource))throw new Error('Official JYC logo source is missing: '+logoSource);
   fs.mkdirSync(path.dirname(logoOutput),{recursive:true});
   const before=fs.statSync(logoSource).size;
-  const image=sharp(logoSource).rotate().resize({width:1600,withoutEnlargement:true});
+  const image=sharp(logoSource).rotate().resize({width:768,withoutEnlargement:true});
   const webpTemp=logoOutput+'.jyc-opt';
   await image.clone().webp({quality:92,effort:5,alphaQuality:100}).toFile(webpTemp);
   const webpBytes=fs.statSync(webpTemp).size;
