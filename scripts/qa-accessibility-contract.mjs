@@ -3,7 +3,7 @@ import path from 'node:path';
 const root=process.cwd();
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const failures=[];
-const checksCount=15;
+const checksCount=16;
 const check=(name,ok)=>{console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failures.push(name)};
 const main=read('src/main.jsx');
 const campus=read('src/v14-platform-plus.jsx');
@@ -17,6 +17,7 @@ check('visible focus indicator is defined',/:focus-visible/.test(css)&&/outline:
 check('touch targets meet the project 44px contract',/min-width:\s*44px/.test(css)&&/min-height:\s*44px/.test(css));
 const finalControlRule=publicEntry.match(/\.public-app button:not\(\.jyc57-photo\):not\(\.jyc57-feature-card\),\s*\.public-app \.btn,\s*\.public-app \.filter-toggle\s*\{([^}]*)\}/);
 check('final public control layer preserves the 44px touch-target floor',Boolean(finalControlRule&&/min-width:\s*44px/.test(finalControlRule[1])&&/min-height:\s*44px/.test(finalControlRule[1])));
+check('screen-reader-only FlipCard announcements remain nowrap in the final stylesheet',/\.public-app \.flip-card__sr-only\s*\{[^}]*white-space:\s*nowrap\s*!important/s.test(publicEntry));
 check('reduced motion is explicitly supported',/prefers-reduced-motion:\s*reduce/.test(css));
 check('forced-colors support is present',/forced-colors:\s*active/.test(css));
 check('homepage browser QA checks missing image alt',browser.includes("img:not([alt])"));

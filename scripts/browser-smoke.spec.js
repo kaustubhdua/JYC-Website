@@ -280,7 +280,7 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
   await expect(page.locator('.jh-dither-mark .dither-veil')).toHaveCount(1, { timeout: 15000 });
   await expect(page.getByRole('img', { name: 'Official JIIT Youth Club 128 logo with an interactive Dither Veil effect' })).toBeVisible();
   const ditherSource=page.locator('.jh-dither-mark .dither-veil__fallback');
-  await expect(ditherSource).toHaveAttribute('src', '/assets/jyc-logo.avif');
+  await expect(ditherSource).toHaveAttribute('src', '/assets/jyc-logo-medium.avif');
   await expect.poll(()=>ditherSource.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
 
   const themeSamples = {};
@@ -802,7 +802,7 @@ test('Dither Veil keeps the official logo visible when AVIF is unavailable', asy
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'Dither logo format fallback');
   const fallback = page.locator('.jh-dither-mark .dither-veil__fallback');
-  await expect(fallback).toHaveAttribute('src', '/assets/jyc-logo.avif');
+  await expect(fallback).toHaveAttribute('src', '/assets/jyc-logo-medium.avif');
   await expect.poll(() => fallback.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
 });
 

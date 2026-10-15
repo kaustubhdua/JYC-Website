@@ -100,7 +100,7 @@ const derivative=read('scripts/generate-photo-derivatives.mjs');
 add('derivative generator matches supported image extensions',derivative.includes('/\\.(jpe?g|png|webp)$/i.test(file)'));
 const derivativeContract={
   usesSharp:derivative.includes("sharp(file)"),
-  widths:derivative.includes("const WIDTHS=[480,960,1600]"),
+  widths:derivative.includes("const WIDTHS=[240,480,960,1600]"),
   avif:/\.avif\(\{quality:\s*(?:4[5-9]|5[0-9]|6[0-9]),\s*effort:\s*[1-9]\d*\}/.test(derivative),
   webp:/\.webp\(\{quality:\s*(?:7[0-9]|8[0-9]|9[0-9]),\s*effort:\s*[1-9]\d*\}/.test(derivative),
   boundedConcurrency:/sharp\.concurrency\(/.test(derivative)&&/CONCURRENCY=/.test(derivative)

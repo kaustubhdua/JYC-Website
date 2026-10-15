@@ -150,9 +150,11 @@ For each route verify:
 - [ ] no dead links
 - [ ] no incorrect JIIT 62 content
 
-## J. Release
+## J. Release — base-main snapshot (15 October 2026; superseded by Run 20)
 
-- [x] GitHub main contains the current final source (`35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`)
+This section records the verified `main` baseline before Run 20 PR #231. Its SHA and workflow results are historical after that PR is merged; use the PR's exact-head checks and the production deployment SHA for release decisions.
+
+- [x] GitHub main contained the release source (`35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`)
 - [x] Current-main CI (`38723211069`), Quality Gate (`38723211052`), CodeQL (`38723211111`) and Lighthouse CI (`38723211036`) passed on 2026-10-15
 - [ ] Browser QA (`38723211136`) is green; current run fails 1/38 on `/team` at desktop-1280 because screen-reader-only FlipCard announcement text is classified as clipped visible text
 - [ ] CodeQL open findings = 0, or every remaining finding has a documented justified disposition
@@ -172,6 +174,11 @@ For each route verify:
 2. The provided GitHub Security screenshot reports 142 open code-scanning alerts, but the connected GitHub file API does not expose the alert list. They must be opened in Security and quality > Code scanning so each finding can be mapped to a source line and remediated or justified.
 3. Vercel previously hit the deployment-rate limit; do not repeatedly retry deployments until the limit clears.
 4. The local sandbox Chromium launch has been unreliable; GitHub Actions is the authoritative browser-QA environment once its workflow completes.
+5. The connected JYC Supabase project (`ogbanmjokjlxfuktkicj`) is ACTIVE_HEALTHY. The 2026-10-15 advisor returned eight SECURITY DEFINER function warnings: `jyc_read_site_data()` is intentionally callable by anon for filtered public content; seven admin/helper functions are authenticated-only and use active-role/club checks with an empty search path. RLS is enabled on the reviewed public tables. Keep these grants unchanged until a reviewed security migration confirms all RLS dependencies.
+6. Supabase Auth leaked-password protection is disabled. Enable it in the Auth settings before declaring the backend security review complete; no auth setting or database schema was changed in Run 20.
+7. The live `/api/jyc-updates` endpoint reports `live=false` and `configured=false`; the public page explicitly describes JYC Now as a curated editorial layer, not a live social-network feed. Official source configuration/credentials remain owner-side work.
+8. Vercel reports `jiityouthclub128.in` and `www.jiityouthclub128.in` as unverified. Do not change DNS until the owner confirms access to the authoritative DNS zone and preserves existing mail records.
+9. Production emitted Node `DEP0169` (`url.parse()`) warnings from `/api/jyc-updates` activity. The endpoint source uses WHATWG `new URL` and contains no direct deprecated `url.parse()` call; source of the warning is unconfirmed, so do not patch speculatively.
 
 ## Definition of done
 

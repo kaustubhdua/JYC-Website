@@ -13,7 +13,7 @@ import './jyc-editorial-home.css';
 
 const ORIGINAL_LOGO = '/JYC%20Logo(4).png';
 const FALLBACK = import.meta.env.PROD ? '/assets/jyc-logo.webp' : ORIGINAL_LOGO;
-const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo.avif' : FALLBACK;
+const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo-medium.avif' : FALLBACK;
 const handleHeroLogoFallback = event => {
   const image = event.currentTarget;
   const candidates = [FALLBACK, ORIGINAL_LOGO];

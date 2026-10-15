@@ -343,3 +343,9 @@ body:has(.jyc57-lightbox[aria-modal="true"]) :is(.jyc-bot-shell,.mobile-dock) {
   color: #28242a !important;
   opacity: 1 !important;
 }
+
+
+/* Screen-reader announcements stay accessible but must never expand into visible text. */
+.public-app .flip-card__sr-only {
+  white-space: nowrap !important;
+}
