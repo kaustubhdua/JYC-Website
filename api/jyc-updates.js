@@ -6,6 +6,7 @@ const json=value=>{try{return JSON.parse(value||'{}')}catch{return {}}};
 const unique=rows=>{const seen=new Set();return rows.filter(x=>{const key=x.externalId||x.url;if(!key||seen.has(key))return false;seen.add(key);return true})};
 const safeRemoteUrl=value=>{const raw=String(value||'').trim();if(!raw||/[\u0000-\u001f\u007f]/.test(raw))return '';try{const u=new URL(raw);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)return '';const host=u.hostname.toLowerCase().replace(/^\[|\]$/g,'');const blocked=host==='localhost'||host==='metadata.google.internal'||host==='instance-data.ec2.internal'||host==='0.0.0.0'||host==='127.0.0.1'||host==='::1'||host==='169.254.169.254'||host.startsWith('10.')||host.startsWith('192.168.')||host.startsWith('169.254.')||host.startsWith('100.64.')||host.startsWith('fc')||host.startsWith('fd')||host.startsWith('fe80:')||host.startsWith('::ffff:')||/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)||host.endsWith('.local')||host.endsWith('.internal');if(blocked)return '';return u.href}catch{return ''}}
 const cleanText=value=>String(value||'').replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
+const safeHttpsUrl=value=>{const safe=safeRemoteUrl(value);if(!safe)return '';try{return new URL(safe).protocol==='https:'?safe:''}catch{return ''}};
 const cfg={
  instagram:json(process.env.JYC_INSTAGRAM_ACCOUNTS),
  youtube:json(process.env.JYC_YOUTUBE_CHANNELS),
@@ -18,7 +19,7 @@ const hasConfiguredSource=()=>Boolean(
  (process.env.META_ACCESS_TOKEN&&hasEntries(cfg.instagram)&&Object.values(cfg.instagram).some(Boolean))||
  (process.env.YOUTUBE_API_KEY&&hasEntries(cfg.youtube)&&Object.values(cfg.youtube).some(Boolean))||
  (process.env.LINKEDIN_ACCESS_TOKEN&&hasEntries(cfg.linkedin)&&Object.values(cfg.linkedin).some(Boolean))||
- (hasEntries(cfg.rss)&&Object.values(cfg.rss).some(value=>safeRemoteUrl(value)))||
+ (hasEntries(cfg.rss)&&Object.values(cfg.rss).some(value=>safeHttpsUrl(value)))||
  cfg.manual.some(item=>safeRemoteUrl(item?.url))
 );
 async function instagram(hub,userId){
@@ -48,7 +49,7 @@ async function linkedin(hub,org){
  return (data.elements||[]).filter(x=>x.lifecycleState==='PUBLISHED').map(x=>({externalId:x.id,hub,platform:'LinkedIn',type:x.content?.media?'Post':'Update',title:cleanText(x.commentary).split('. ')[0]||hub+' LinkedIn update',summary:cleanText(x.commentary).slice(0,220),publishedAt:x.publishedAt?new Date(x.publishedAt).toISOString():x.createdAt?new Date(x.createdAt).toISOString():'',url:safeRemoteUrl('https://www.linkedin.com/feed/update/'+encodeURIComponent(x.id)),image:'',verified:true}));
 }
 async function rss(hub,feedUrl){
- const remoteFeed=safeRemoteUrl(feedUrl);if(!remoteFeed)return [];
+ const remoteFeed=safeHttpsUrl(feedUrl);if(!remoteFeed)return [];
 
  const r=await fetchWithTimeout(remoteFeed,{headers:{accept:'application/rss+xml, application/atom+xml, text/xml'}});if(!r.ok)throw Error('RSS '+r.status);
  const xml=await r.text();const blocks=xml.match(/<(?:item|entry)\b[\s\S]*?<\/(?:item|entry)>/gi)||[];
