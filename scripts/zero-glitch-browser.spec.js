@@ -36,9 +36,9 @@ async function inspectViewport(page){
     const offscreen=[];
     const clipped=[];
     const hiddenAnnouncementIssues=[...document.querySelectorAll('.flip-card__sr-only')].filter(el=>{
-      const s=getComputedStyle(el);
-      return el.getAttribute('aria-live')!=='polite'||s.position!=='absolute'||s.width!=='1px'||s.height!=='1px'||s.overflow!=='hidden'||s.whiteSpace!=='nowrap'||s.clip==='auto';
-    }).map(el=>({text:(el.textContent||'').trim().slice(0,80),ariaLive:el.getAttribute('aria-live')}));
+      const s=getComputedStyle(el),r=el.getBoundingClientRect();
+      return el.getAttribute('aria-live')!=='polite'||s.position!=='absolute'||r.width>1.5||r.height>1.5||s.overflowX!=='hidden'||s.overflowY!=='hidden'||s.whiteSpace!=='nowrap';
+    }).map(el=>({text:(el.textContent||'').trim().slice(0,80),ariaLive:el.getAttribute('aria-live'),position:getComputedStyle(el).position,width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,overflowX:getComputedStyle(el).overflowX,overflowY:getComputedStyle(el).overflowY,whiteSpace:getComputedStyle(el).whiteSpace}));
     for(const el of document.querySelectorAll('.public-app *')){
       if(!visible(el))continue;
       const r=el.getBoundingClientRect();
