@@ -230,7 +230,7 @@ function App(){const loc=useLocation();const [data,setData]=useState(()=>import.
  useEffect(()=>{
    const onImageError=e=>{
      const img=e.target;
-     if(!(img instanceof HTMLImageElement)||img.dataset.jycFallback==='1')return;
+     if(!(img instanceof HTMLImageElement)||img.closest('.jyc-responsive-picture')||img.dataset.jycFallback==='1')return;
      img.dataset.jycFallback='1';
      img.dataset.jycFallbackApplied='1';
      img.removeAttribute('srcset');
