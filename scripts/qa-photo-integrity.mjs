@@ -33,6 +33,7 @@ const depthCarouselSource=fs.readFileSync('src/components/react-bits/DepthCarous
 const magicBentoSource=fs.readFileSync('src/components/react-bits/MagicBento.jsx','utf8');
 const manifestLoaderSource=fs.readFileSync('src/jyc-image-manifest.js','utf8');
 const serviceWorkerSource=fs.readFileSync('public/sw.js','utf8');
+const indexHtmlSource=fs.readFileSync('index.html','utf8');
 const botSource=fs.readFileSync('src/jyc-bot.jsx','utf8');
 const imageManifestSource=fs.readFileSync('scripts/generate-image-manifest.mjs','utf8');
 const auditedCategories=['clubs/abhivyakti','clubs/panache','clubs/cypherx','festivals/aakriti','gallery/campus-events'];
