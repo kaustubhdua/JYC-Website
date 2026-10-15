@@ -1008,8 +1008,8 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
 
 /* V56.15.2 creator credit: intentionally tiny and understated. */
 .jyc-footer .footer-bottom .jyc-creator-credit{
-  font-size:9px!important;
-  line-height:1.3;
+  font-size:12px!important;
+  line-height:1.4;
   letter-spacing:.06em;
   text-transform:none;
   opacity:.58;
