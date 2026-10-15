@@ -41,6 +41,29 @@ Set private VAPID values as Supabase secrets:
 npx supabase secrets set VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:jyc.website@gmail.com
 ```
 
+
+## JYC Now live updates
+
+The public `/updates` route and homepage JYC Now strip call the server-only `/api/jyc-updates` endpoint. If no connector returns usable records, the UI must continue to show its curated fallback rather than claiming a live feed.
+
+Configure only sources you actually control in **Vercel Project Settings → Environment Variables**. Apply the variables to Production first, and Preview only when preview testing needs them:
+
+- `JYC_INSTAGRAM_ACCOUNTS`: JSON object mapping a JYC/community name to its Instagram Professional Account user ID; requires `META_ACCESS_TOKEN`.
+- `JYC_YOUTUBE_CHANNELS`: JSON object mapping community names to YouTube channel IDs; requires `YOUTUBE_API_KEY`.
+- `JYC_LINKEDIN_ORGS`: JSON object mapping community names to LinkedIn organization IDs/URNs; requires `LINKEDIN_ACCESS_TOKEN`.
+- `JYC_LINKEDIN_VERSION`: optional LinkedIn API version, kept aligned with the version supported by the account.
+- `JYC_RSS_FEEDS`: JSON object mapping community names to public HTTPS RSS/Atom feed URLs.
+- `JYC_MANUAL_UPDATES`: JSON array of manually curated items with verified official source URLs. Do not label a source verified unless it has been checked.
+- `JYC_SYNC_SECRET`: optional server-only secret for the protected sync mode. Never put it in a `VITE_*` variable or browser code.
+
+The API may optionally read/write published records through `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (or the supported server-side `SUPABASE_SECRET_KEY` name). Those are server-only values. Confirm that the URL points to the **JYC Supabase project**, not another application. Do not apply JYC schema changes to Nihdhoom or copy any service-role key into the browser.
+
+After configuring a source, redeploy and check `GET /api/jyc-updates` directly. A complete live-feed check requires `live: true`, at least one usable item, valid official source links, and no leaked secrets. `configured: true` alone is not enough: an empty JSON object or a connector with no usable records is not a working live feed. If no source credentials are available, explicitly accept the curated fallback for the public release and keep the UI's status wording truthful.
+
+## Custom-domain verification
+
+If `jiityouthclub128.in` and `www.jiityouthclub128.in` are intended to be public launch domains, open **Vercel → Project Settings → Domains** and follow the current verification instructions for each domain. Copy the exact TXT challenge Vercel displays into the DNS provider for the `_vercel` host, then retry verification in Vercel. Use the current DNS target Vercel shows for the apex and `www` records; do not guess A/CNAME values, replace the whole DNS zone, or disturb existing mail records. Verify both names and test HTTPS/redirect/canonical behavior before changing the canonical origin. If DNS is managed by another owner, this is an owner action.
+
 ## Local verification
 
 ```bash
@@ -77,20 +100,28 @@ VITE_VAPID_PUBLIC_KEY (when push is enabled)
 
 Do not add service-role or secret keys to Vercel frontend variables.
 
-## Final launch checklist
+## Public website release checklist
 
-- [ ] No legacy/demo club is visible.
-- [ ] Super Admin can log in.
-- [ ] Admin permissions match `ADMIN-ROLE-MATRIX.md`.
-- [ ] Homepage copy and layout can be edited.
-- [ ] Club pages render correctly.
-- [ ] Event publish flow works.
-- [ ] Gallery uploads work.
-- [ ] Fest Mode preview works before activation.
-- [ ] Mobile layout works.
-- [ ] `npm run build` passes.
-- [ ] GitHub Actions passes.
-- [ ] Vercel deployment works.
+- [ ] Public routes and representative dynamic routes render correctly; no legacy/demo club is visible.
+- [ ] Current event dates, venues, deadlines, official club links and campus scope are verified.
+- [ ] Public images decode, have appropriate alt text, use the intended crop, and fall back safely.
+- [ ] Light/dark themes, keyboard focus, reduced motion, mobile touch targets and 200%/400% zoom are reviewed.
+- [ ] Build, full static QA, Browser QA, CodeQL and Lighthouse CI pass on the exact release commit.
+- [ ] Gallery and homepage LCP are checked against the agreed budgets; production Core Web Vitals are measured after release.
+- [ ] The exact release commit has a READY Vercel preview and visual captures have human review.
+- [ ] JYC Now has either a verified live source with usable records or an explicitly accepted curated fallback.
+- [ ] Intended custom domains are verified and HTTPS/canonical redirects work, or the verified Vercel domain is explicitly accepted as the launch origin.
+- [ ] The production deployment is READY and built from the exact approved `main` SHA.
+- [ ] Production routes, security headers, sitemap/canonical metadata, offline recovery and service-worker updates are checked after deployment.
 
+## Optional admin-platform release (separate scope)
 
-> **Current release boundary:** The production public release intentionally does not expose the historical `/admin`, `/login`, `/my-jyc`, `/notifications`, or other retired student-platform routes. They resolve to safe public destinations. The backend/admin implementation remains repository infrastructure but is not part of the public-release acceptance gate unless a future release explicitly re-enables it.
+Only if a future release explicitly re-enables the retired admin platform, additionally verify:
+
+- [ ] Super Admin can log in and permissions match `ADMIN-ROLE-MATRIX.md`.
+- [ ] Homepage/content editing and club/event publishing flows work.
+- [ ] Gallery upload and media authorization work.
+- [ ] Fest Mode preview is validated before activation.
+- [ ] Admin and club-admin boundaries are tested with real authorized accounts.
+
+> **Public-release boundary:** The public release intentionally does not expose the historical `/admin`, `/login`, `/my-jyc`, `/notifications`, or other retired student-platform routes. They resolve to safe public destinations. Admin-platform checks are not a prerequisite unless that platform is explicitly re-enabled.
