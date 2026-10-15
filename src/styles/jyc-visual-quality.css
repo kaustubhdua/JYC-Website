@@ -297,18 +297,18 @@
   }
   .public-app .jyc57-masonry > .jyc57-photo {
     grid-column: span 3 !important;
-    grid-row: span 30 !important;
+    grid-row: span 24 !important;
     aspect-ratio: auto !important;
     border-radius: 12px !important;
   }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 42 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+2) { grid-row: span 30 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 26 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+2) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+3) { grid-row: span 24 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 28 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 18 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+5) { grid-row: span 34 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 25 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 20 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+7) { grid-row: span 30 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n) { grid-column: span 6 !important; grid-row: span 36 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n) { grid-column: span 6 !important; grid-row: span 30 !important; }
 }
 @media (min-width: 621px) and (max-width: 900px) {
   .public-app .jyc57-masonry {
@@ -316,9 +316,9 @@
     grid-auto-rows: 12px !important;
     gap: 10px !important;
   }
-  .public-app .jyc57-masonry > .jyc57-photo { grid-column: span 3 !important; grid-row: span 26 !important; aspect-ratio: auto !important; }
+  .public-app .jyc57-masonry > .jyc57-photo { grid-column: span 3 !important; grid-row: span 22 !important; aspect-ratio: auto !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+1) { grid-column: span 6 !important; grid-row: span 34 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 32 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 22 !important; }
 }
 @media (max-width: 620px) {
@@ -367,7 +367,7 @@ html[data-theme="light"] .public-app :is(
   color: #72502B !important;
 }
 html[data-theme="light"] .public-app a:not(.btn),
-html[data-theme="light"] .public-app :is(.jh-overline,.jh-section-number,.jh-about-kicker) {
+html[data-theme="light"] .public-app :is(.jh-overline,.jh-about-kicker) {
   color: #7B211D !important;
 }
 html[data-theme="light"] .public-app :is(.jh-lead,.jh-assistant-info p,.jh-community-copy p,.jh-final p,.jh-pillar-card p,.jh-event-copy>p) {
