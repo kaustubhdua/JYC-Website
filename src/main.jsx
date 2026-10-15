@@ -1,4 +1,4 @@
-import React,{lazy,Suspense,useEffect,useState} from 'react';
+import React,{lazy,Suspense,useEffect,useLayoutEffect,useState} from 'react';
 import {motion,useReducedMotion} from 'motion/react';
 import {LivingPhoto} from './jyc-living-photo.jsx';
 import {createRoot} from 'react-dom/client';
@@ -229,7 +229,7 @@ function App(){const loc=useLocation();const routeChunk=routeChunkKey(loc.pathna
  const resolve=async s=>{setSession(s);if(!s?.user){setAdmin(null);return}let q=await supabase.from('jyc_admins').select('role,display_name,is_active,club_id').eq('user_id',s.user.id).eq('is_active',true).maybeSingle();if(q.error){q=await supabase.from('jyc_admins').select('role,display_name,is_active').eq('user_id',s.user.id).eq('is_active',true).maybeSingle()}if(q.data)setAdmin({userId:s.user.id,email:s.user.email||'',name:q.data.display_name||'JYC Administrator',role:q.data.role||'jyc_admin',clubId:q.data.club_id||null});else setAdmin(null)};
  const commit=async(next,action,entity,id)=>{if(!admin?.userId)throw Error('Administrator session expired. Please log in again.');const saved=await saveData(next,admin.userId,action,entity,id);setData(saved);writeSiteCache(saved);try{const latest=await supabase.from('jyc_content_versions').select('version_number').eq('entity_type',entity||'site').eq('entity_id',String(id||'main')).order('version_number',{ascending:false}).limit(1).maybeSingle();const version=(latest.data?.version_number||0)+1;await supabase.from('jyc_content_versions').insert({entity_type:entity||'site',entity_id:String(id||'main'),version_number:version,snapshot:next,changed_by:admin.userId,change_summary:action})}catch{}try{if(admin.role==='club_admin'&&(entity==='club'||entity==='event'))await supabase.from('jyc_content_reviews').insert({entity_type:entity,entity_id:String(id||'main'),submitted_by:admin.userId,status:'submitted',review_note:'Submitted from Club Admin Control Center.'})}catch{}notify('Saved successfully');return saved};
  const notify=(m,type='success')=>{setToast({message:m,type});setTimeout(()=>setToast(null),2800)};
- useEffect(()=>{window.scrollTo({top:0,behavior:'auto'})},[loc.pathname]);
+ useLayoutEffect(()=>{window.scrollTo({top:0,behavior:'auto'})},[loc.pathname]);
  useEffect(()=>{
    const nodes=[...document.querySelectorAll('.reveal,.editorial-reveal')];
    if(!nodes.length)return;
