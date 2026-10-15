@@ -39,11 +39,16 @@ const LazyDepthCarousel=lazy(()=>import('./components/react-bits/DepthCarousel.j
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
 const LazyJYC57Archive=lazy(()=>import('./jyc57-archive.jsx').then(m=>({default:m.JYC57Archive})));
-const LazyJYCBrandEditorial = lazy(() => import('./jyc-next-experience.jsx').then(m => ({ default: m.JYCBrandEditorial })));
-const LazyJYC57Events = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Events })));
-const LazyJYC57Clubs = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Clubs })));
-const LazyJYC57Gallery = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Gallery })));
-const LazyJYCBestOf = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYCBestOf })));
+// Start the active route's lazy chunk while site data and the boot screen are loading. This preserves code splitting without swapping a tiny fallback for a full page after first paint (which creates large CLS on direct route loads).
+const initialRoutePath = typeof window === 'undefined' ? '/' : (window.location.pathname.replace(/\/+$/, '') || '/');
+const initialJyc57Experience = ['/clubs','/events','/best-of-jyc'].includes(initialRoutePath) || initialRoutePath === '/gallery' || initialRoutePath.startsWith('/gallery/') ? import('./jyc57-experience.jsx') : null;
+const initialJycBrandEditorial = initialRoutePath === '/about' ? import('./jyc-next-experience.jsx') : null;
+const loadJyc57Experience = () => initialJyc57Experience || import('./jyc57-experience.jsx');
+const LazyJYCBrandEditorial = lazy(() => (initialJycBrandEditorial || import('./jyc-next-experience.jsx')).then(m => ({ default: m.JYCBrandEditorial })));
+const LazyJYC57Events = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Events })));
+const LazyJYC57Clubs = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Clubs })));
+const LazyJYC57Gallery = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Gallery })));
+const LazyJYCBestOf = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYCBestOf })));
 
 
 
