@@ -55,7 +55,7 @@ const LazyJYC57Clubs = lazy(() => loadJyc57Experience().then(m => ({ default: m.
 const LazyJYC57Gallery = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Gallery })));
 const LazyJYCBestOf = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYCBestOf })));
 
-function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
+function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
 const loadedRouteChunks=new Set();
 function loadRouteChunk(path){const key=routeChunkKey(path);if(key==='brand-editorial')return loadJycBrandEditorial();if(key==='jyc57-experience')return loadJyc57Experience();if(key==='jyc57-archive')return loadJyc57Archive();return Promise.resolve()}
 
