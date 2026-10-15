@@ -1568,6 +1568,8 @@ create table if not exists public.jyc_project_submissions(
 );
 alter table public.jyc_project_submissions enable row level security;
 drop policy if exists "Public can submit projects" on public.jyc_project_submissions;
+drop policy if exists "public submit projects" on public.jyc_project_submissions;
+revoke insert on public.jyc_project_submissions from public, anon, authenticated;
 -- Public project writes are accepted only through the public-submission Edge Function.
 revoke insert on public.jyc_project_submissions from anon, authenticated;
 drop policy if exists "Admins can read project submissions" on public.jyc_project_submissions;
