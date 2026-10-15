@@ -347,3 +347,9 @@ body:has(.jyc57-lightbox[aria-modal="true"]) :is(.jyc-bot-shell,.mobile-dock) {
 /* Visual QA: feature heroes use a permanently dark textured surface in both themes. Keep light-theme copy ivory rather than inheriting dark ink from the paper theme. */
 html[data-theme="light"] .public-app .feature-hero :is(h1,h2,h3,h4,h5,h6){color:#FFF8E1!important}
 html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7!important}
+
+/* Restore the empty-state layout in the active consolidated public CSS entry. */
+.public-app .feature-empty{display:flex;flex-direction:column;gap:8px}
+.public-app .feature-empty.large{min-height:180px;justify-content:center;align-items:center;text-align:center;padding:clamp(24px,4vw,48px)}
+.public-app .feature-empty.large>strong{display:block;max-width:28ch;margin:0;line-height:1.25}
+.public-app .feature-empty.large>span{display:block;max-width:65ch;line-height:1.65}
