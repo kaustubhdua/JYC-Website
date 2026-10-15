@@ -257,7 +257,7 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
 }
 :root:not([data-theme="dark"]) .public-app :is(
   .eyebrow,.tag,.text-link,.reference-view-all,.card-topline,.club-index,
-  .latest-index,.moment-tile small,.jh-overline,.jh-section-number,
+  .latest-index,.moment-tile small,.jh-overline,
   .jh-about-kicker,.jyc57-gallery-meta,.jyc57-gallery-eyebrow,
   .jyc57-filter-group>span,.jyc57-pill,.gallery-source-ledger>span
 ) {
@@ -271,4 +271,29 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
   .jh-pillar-card p,.jh-event-copy>p,.muted,.muted-text,.jyc57-empty p
 ) {
   color: #4B4650 !important;
+}
+
+
+/* Exact Lighthouse findings: tune contrast per surface instead of forcing one
+   foreground color across both paper panels and the red CTA panel. */
+.jyc-footer .jyc-creator-credit { color: #d6d2db !important; }
+.jyc-footer .jyc-creator-credit a { color: #e2c89f !important; }
+.public-app :is(.jyc-gallery-hero,.jyc-clubs-header) .jh-kicker b {
+  color: #3f2a12 !important;
+}
+.public-app .about-source-note { color: #4b4650 !important; }
+.public-app .about-next-v28 .eyebrow { color: #65451f !important; }
+.public-app .about-next-v28 h2 { color: #28242a !important; }
+.public-app .about-next-v28 .btn:not(.secondary) {
+  background: #a82420 !important;
+  border-color: #a82420 !important;
+  color: #fffaf0 !important;
+}
+.public-app .about-next-v28 .btn.secondary {
+  background: #fff !important;
+  border-color: #a82420 !important;
+  color: #28242a !important;
+}
+.public-app .jh-final :is(.jh-section-number,p) {
+  color: #fffaf0 !important;
 }
