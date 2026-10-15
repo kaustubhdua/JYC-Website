@@ -1,9 +1,26 @@
 # JYC Website — 100% Completion Roadmap
 
-Updated: 2026-10-10
+Updated: 2026-10-15
 
 This is the execution ledger for taking the JIIT Youth Club 128 website from the current codebase to a release-ready state. Items marked **DONE** are implemented in the repository; **BLOCKED/MANUAL** items require a GitHub/Vercel/Supabase account action that the code connector cannot perform.
 
+
+## Current verified release checkpoint — 2026-10-15
+
+- [x] Public release PR #229 merged as commit 35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3; source release is V64.5.10.
+- [x] Exact release-head GitHub workflows passed: JYC CI, Quality Gate, CodeQL, Browser QA (38 smoke + 3 visual-route tests), and Lighthouse CI.
+- [x] Exact-head Vercel preview is READY: https://jyc-website-d9cs89hm1-jyc-website.vercel.app
+- [x] Lighthouse: accessibility 100 and SEO 100 across all seven audited routes, zero color-contrast findings, Gallery LCP 2487ms.
+- [x] Vercel production environment SUPABASE_URL and VITE_SUPABASE_URL were checked without exposing values; both point to the intended JYC project ogbanmjokjlxfuktkicj. No environment values were changed.
+- [x] Read-only Supabase audit: project is ACTIVE_HEALTHY, 53 public tables have RLS enabled, and 77 migration records are present. No migration was applied.
+- [ ] BLOCKED — production deployment: production still serves 7ebef7bdbc5d744c8fc505c10663e70770f38c8a; Vercel's daily deployment limit returned payment_required / build-rate-limit. Wait for the platform reset; do not bypass or retry repeatedly.
+- [ ] OWNER ACTION — domains: jiityouthclub128.in and www.jiityouthclub128.in remain unverified. Add the exact TXT verification records shown in Vercel at the DNS provider, then verify HTTPS and canonical redirects.
+- [ ] OWNER ACTION — live updates: no Instagram/YouTube/LinkedIn/RSS connector variables are configured in Vercel. Provide authorized source credentials/feed URLs or explicitly accept the truthful curated fallback; do not claim the feed is live without remote records.
+- [ ] OWNER ACTION — Auth: enable Supabase leaked-password protection in the Auth dashboard.
+- [ ] OWNER REVIEW — security: inspect current GitHub code-scanning/Dependabot alerts and repository security settings; the CodeQL workflow passes, but workflow success alone does not clear historical alerts.
+- [ ] OWNER REVIEW — visual/content: review the captured route screenshots and verify current archive/event source records before final public launch signoff.
+
+The source release is merged and automated validation is green; the website is not yet production-deployed from the release SHA. Do not mark the final release gate complete until production reports READY on the approved main SHA and representative production routes, headers, service-worker behavior and content are rechecked.
 ## A. Product and UX
 
 - [x] Editorial JYC visual system with light/dark themes
@@ -34,8 +51,8 @@ This is the execution ledger for taking the JIIT Youth Club 128 website from the
 - [ ] **MANUAL:** enable Private vulnerability reporting
 - [ ] **MANUAL:** enable Secret scanning / Push protection where GitHub plan/settings expose it
 - [ ] **MANUAL:** inspect the 17 existing CodeQL findings individually; fix real findings, dismiss only documented false positives/test-only findings
-- [ ] Review remaining 48 Supabase multiple-permissive-policy warnings; consolidate only where predicates are equivalent without changing role access
-- [ ] Review 61 unused-index INFO findings after production traffic exists; do not remove indexes solely because the project is currently low-traffic
+- [ ] Review current 49 Supabase multiple-permissive-policy warnings; consolidate only where predicates are equivalent without changing role access
+- [ ] Review current 80 unused-index INFO findings after production traffic exists; do not remove indexes solely because the project is currently low-traffic
 - [ ] **MANUAL:** remove/disable stale duplicate CodeQL configurations if GitHub reports multiple active origins
 - [ ] **MANUAL:** add merge protection requiring the security/quality checks once the checks have a stable green run
 
@@ -57,7 +74,7 @@ This is the execution ledger for taking the JIIT Youth Club 128 website from the
 - [x] JIIT 128 public filtering
 - [x] Browser service-role exclusion checks
 - [x] RLS/security contracts in repository QA
-- [x] Ran the live Supabase security advisor on 2026-10-07; no ERROR/CRITICAL lints were reported
+- [x] Ran the live Supabase security advisor on 2026-10-15; no ERROR/CRITICAL lints were reported (WARN-level items remain and are listed in the current checkpoint)
 - [x] Removed 7 exact duplicate RLS policies from production; Supabase performance warning count dropped from 56 to 48
 - [ ] Verify every exposed table has intentional RLS and no accidental public write policy
 - [ ] Verify storage policies and upload MIME/size limits in production
@@ -153,7 +170,7 @@ For each route verify:
 ## J. Release
 
 - [x] GitHub main contains the current final source
-- [ ] Latest PR Quality Gate, CI, CodeQL and Browser QA need a usable successful run; recent runs failed before job steps/logs were exposed
+- [x] Latest release-head JYC CI, Quality Gate, CodeQL, Browser QA and Lighthouse CI passed (run IDs 38722188189, 38722188247, 38722188019, 38722188099, 38722188025)
 - [ ] CodeQL open findings = 0, or every remaining finding has a documented justified disposition
 - [ ] Dependabot alerts = 0 high/critical
 - [ ] Supabase security advisor = 0 high/critical
