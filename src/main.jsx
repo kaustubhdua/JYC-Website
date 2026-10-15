@@ -94,6 +94,11 @@ function LogoImage({alt='',...props}){
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
  return <img {...props} src={logo} alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??(props.fetchPriority==='high'?'eager':'lazy')} decoding={props.decoding??'async'} onError={event=>{const image=event.currentTarget;if(logo!=='/JYC%20Logo(4).png'&&image.dataset.logoFallback!=='1'){image.dataset.logoFallback='1';image.src='/JYC%20Logo(4).png';return}setFailed(true)}}/>
 }
+function BrandLogoImage({alt='',...props}){
+ const [failed,setFailed]=useState(false);
+ if(failed)return <LogoImage {...props} alt={alt} loading={props.loading??'eager'} fetchPriority={props.fetchPriority??'high'}/>;
+ return <img {...props} src="/assets/jyc-logo-small.avif" alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??'eager'} fetchPriority={props.fetchPriority??'high'} decoding={props.decoding??'async'} onError={()=>setFailed(true)}/>;
+}
 function FooterLogoImage({alt='',...props}){
  const [failed,setFailed]=useState(false);
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
@@ -734,7 +739,7 @@ function Navbar({data,admin,theme,setTheme}){
   });
  return <>
  <header className="nav"><div className="nav-inner">
-   <button type="button" className="brand" onClick={()=>{setOpen(false);nav('/')}}><span className="brand-mark"><LogoImage alt="JIIT Youth Club logo"/></span><span>JIIT YOUTH CLUB</span></button>
+   <button type="button" className="brand" onClick={()=>{setOpen(false);nav('/')}}><span className="brand-mark"><BrandLogoImage alt="JIIT Youth Club logo"/></span><span>JIIT YOUTH CLUB</span></button>
    <nav className={open?'open':''}>{navButtons}<button type="button" className={`nav-more-trigger ${moreOpen?'active':''}`} onClick={()=>{setOpen(false);setMoreOpen(v=>!v)}} aria-expanded={moreOpen}>More <span aria-hidden="true">⌄</span></button></nav>
    <button type="button" className="nav-join-cta" onClick={()=>nav('/join-jyc')}>Join JYC <span>↗</span></button>
    <Theme theme={theme} setTheme={setTheme}/><button type="button" className={`hamb ${open?'open':''}`} onClick={()=>setOpen(v=>!v)} aria-label="Menu" aria-expanded={open}><i/><i/><i/></button>
