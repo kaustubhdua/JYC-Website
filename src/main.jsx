@@ -38,17 +38,26 @@ const LazyBellToggle=lazy(()=>import('./react-bits/JYCMicro.jsx').then(m=>({defa
 const LazyDepthCarousel=lazy(()=>import('./components/react-bits/DepthCarousel.jsx'));
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
-const LazyJYC57Archive=lazy(()=>import('./jyc57-archive.jsx').then(m=>({default:m.JYC57Archive})));
+let jyc57ArchivePromise;
+const loadJyc57Archive=()=>jyc57ArchivePromise||(jyc57ArchivePromise=import('./jyc57-archive.jsx'));
+const LazyJYC57Archive=lazy(()=>loadJyc57Archive().then(m=>({default:m.JYC57Archive})));
 // Start the active route's lazy chunk while site data and the boot screen are loading. This preserves code splitting without swapping a tiny fallback for a full page after first paint (which creates large CLS on direct route loads).
 const initialRoutePath = typeof window === 'undefined' ? '/' : (window.location.pathname.replace(/\/+$/, '') || '/');
 const initialJyc57Experience = ['/clubs','/events','/best-of-jyc'].includes(initialRoutePath) || initialRoutePath === '/gallery' || initialRoutePath.startsWith('/gallery/') ? import('./jyc57-experience.jsx') : null;
 const initialJycBrandEditorial = initialRoutePath === '/about' ? import('./jyc-next-experience.jsx') : null;
-const loadJyc57Experience = () => initialJyc57Experience || import('./jyc57-experience.jsx');
-const LazyJYCBrandEditorial = lazy(() => (initialJycBrandEditorial || import('./jyc-next-experience.jsx')).then(m => ({ default: m.JYCBrandEditorial })));
+let jyc57ExperiencePromise=initialJyc57Experience;
+let jycBrandEditorialPromise=initialJycBrandEditorial;
+const loadJyc57Experience=()=>jyc57ExperiencePromise||(jyc57ExperiencePromise=import('./jyc57-experience.jsx'));
+const loadJycBrandEditorial=()=>jycBrandEditorialPromise||(jycBrandEditorialPromise=import('./jyc-next-experience.jsx'));
+const LazyJYCBrandEditorial=lazy(()=>loadJycBrandEditorial().then(m=>({default:m.JYCBrandEditorial})));
 const LazyJYC57Events = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Events })));
 const LazyJYC57Clubs = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Clubs })));
 const LazyJYC57Gallery = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Gallery })));
 const LazyJYCBestOf = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYCBestOf })));
+
+function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
+const loadedRouteChunks=new Set();
+function loadRouteChunk(path){const key=routeChunkKey(path);if(key==='brand-editorial')return loadJycBrandEditorial();if(key==='jyc57-experience')return loadJyc57Experience();if(key==='jyc57-archive')return loadJyc57Archive();return Promise.resolve()}
 
 
 
@@ -205,11 +214,11 @@ function SiteAtmosphere(){
 }
 
 function EventReminderControl({event,notify}){if(!event?.date||eventState(event)==='past')return null;const[enabled,setEnabled]=useState(()=>hasLocalReminder(event?.id));useEffect(()=>{const on=e=>{if(e.detail?.eventId===event?.id)setEnabled(Boolean(e.detail.enabled))};window.addEventListener('jyc-reminder-changed',on);return()=>window.removeEventListener('jyc-reminder-changed',on)},[event?.id]);const change=async next=>{try{if(next){if('Notification' in window&&Notification.permission!=='granted'){const permission=await Notification.requestPermission();if(permission!=='granted')throw new Error('Browser notifications were not enabled.');}await scheduleEventReminder(event);setEnabled(true);notify?.('JYC will remind you one hour before this event.','success')}else{clearLocalReminder(event.id);setEnabled(false)}}catch(error){setEnabled(false);notify?.(error?.message||'Could not set the event reminder.','error')}};return <Suspense fallback={<button type="button" className="btn secondary" disabled>Notify me</button>}><LazyBellToggle pressed={enabled} offLabel="Notify me" onLabel="Reminder set" label="Set a one-hour JYC event reminder" onChange={change}/></Suspense>}
-function App(){const loc=useLocation();const [data,setData]=useState(()=>import.meta.env.DEV?publicDemoData():norm(empty));const [loading,setLoading]=useState(true);const [bootReady,setBootReady]=useState(false);const [bootStage,setBootStage]=useState('INITIALIZING');const [error,setError]=useState('');const [online,setOnline]=useState(()=>navigator.onLine!==false);const [theme,setTheme]=useState(()=>{
+function App(){const loc=useLocation();const routeChunk=routeChunkKey(loc.pathname);const [readyRoutePath,setReadyRoutePath]=useState(null);const [data,setData]=useState(()=>import.meta.env.DEV?publicDemoData():norm(empty));const [loading,setLoading]=useState(true);const [bootReady,setBootReady]=useState(false);const [bootStage,setBootStage]=useState('INITIALIZING');const [error,setError]=useState('');const [online,setOnline]=useState(()=>navigator.onLine!==false);const [theme,setTheme]=useState(()=>{
   const saved=storageGet('jyc-theme',null);
   if(saved==='dark'||saved==='light')return saved;
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light';
-});const [session,setSession]=useState(null);const [admin,setAdmin]=useState(null);const [toast,setToast]=useState(null);const [confirm,setConfirm]=useState(null);
+});const [session,setSession]=useState(null);const [admin,setAdmin]=useState(null);const [toast,setToast]=useState(null);const [confirm,setConfirm]=useState(null);useEffect(()=>{let alive=true;const path=loc.pathname;const key=routeChunkKey(path);if(!key||loadedRouteChunks.has(key)){setReadyRoutePath(path);return()=>{alive=false}}setReadyRoutePath(null);loadRouteChunk(path).then(()=>{if(alive){loadedRouteChunks.add(key);setReadyRoutePath(path)}}).catch(()=>{if(alive)setReadyRoutePath(path)});return()=>{alive=false}},[loc.pathname]);
 
  useEffect(()=>{const onToast=e=>notify(e.detail?.message||'',e.detail?.type||'success');const onConfirm=e=>setConfirm(e.detail||null);window.addEventListener('jyc-toast',onToast);window.addEventListener('jyc-confirm',onConfirm);return()=>{window.removeEventListener('jyc-toast',onToast);window.removeEventListener('jyc-confirm',onConfirm)}},[]);
  useEffect(()=>{const on=()=>setOnline(true),off=()=>setOnline(false);window.addEventListener('online',on);window.addEventListener('offline',off);return()=>{window.removeEventListener('online',on);window.removeEventListener('offline',off)}},[]);
@@ -260,7 +269,7 @@ function App(){const loc=useLocation();const [data,setData]=useState(()=>import.
  useEffect(()=>{const report=(message,stack)=>{if(!supabase?.__configured||!supabase?.functions||typeof supabase.functions.invoke!=='function')return;Promise.resolve(supabase.functions.invoke('error-report',{body:{message:String(message||'Unknown error').slice(0,2000),stack:stack||null,path:location.pathname,user_agent:navigator.userAgent}})).catch(()=>{})};const onError=e=>report(e.message,e.error?.stack);const onReject=e=>report(e.reason?.message||e.reason,e.reason?.stack);window.addEventListener('error',onError);window.addEventListener('unhandledrejection',onReject);return()=>{window.removeEventListener('error',onError);window.removeEventListener('unhandledrejection',onReject)}},[]);
  useEffect(()=>{if(loading)return;const minimum=error?150:(readSiteCache()?120:250);const id=setTimeout(()=>setBootReady(true),minimum);return()=>clearTimeout(id)},[loading,error]);
  useEffect(()=>{if(!bootReady){delete document.documentElement.dataset.jycContentReady;return}document.documentElement.dataset.jycContentReady='true';return()=>{delete document.documentElement.dataset.jycContentReady}},[bootReady,loc.pathname]);
-  if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;
+  const routeWaiting=Boolean(routeChunk&&!loadedRouteChunks.has(routeChunk)&&readyRoutePath!==loc.pathname);if(!bootReady||routeWaiting)return <Loading stage={routeWaiting?'LOADING':bootStage} cached={Boolean(readSiteCache())}/>;
   const connectionNotice=(!online||error)?<div className={`connection-notice ${readSiteCache()?'cached':'offline'} ${error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'setup-needed':''}`} role="status"><span>{!online?'You are offline. JYC will keep using cached content until the connection returns.':error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'JYC data service needs setup.':readSiteCache()?`Showing the last saved JYC snapshot · ${formatCacheAge(siteCacheAge())}.`:'JYC content is currently offline.'}</span><button type="button" onClick={()=>window.dispatchEvent(new CustomEvent('jyc-refresh-data'))}>Refresh</button></div>:null;
  const isAdmin=loc.pathname.startsWith('/admin');
  const content=<div className="app-frame"><SkipLink/><ScrollProgress/><BackToTop/>{!isAdmin&&<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>}{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><JYCEditorialSystem><Suspense fallback={<div className="section page route-loading" role="status" aria-live="polite">Loading this JYC page…</div>}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense></JYCEditorialSystem></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {!isAdmin&&<Suspense fallback={null}><LazyJYCBot data={data}/></Suspense>} {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<FeaturedEventPopup />
