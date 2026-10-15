@@ -40,7 +40,9 @@ const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
 let jyc57ArchivePromise;
 const loadJyc57Archive=()=>jyc57ArchivePromise||(jyc57ArchivePromise=import('./jyc57-archive.jsx'));
-const LazyJYC57Archive=lazy(()=>loadJyc57Archive().then(m=>({default:m.JYC57Archive})));
+let jyc57ArchiveComponentPromise;
+const loadJyc57ArchiveComponent=()=>jyc57ArchiveComponentPromise||(jyc57ArchiveComponentPromise=loadJyc57Archive().then(m=>({default:m.JYC57Archive})));
+const LazyJYC57Archive=lazy(()=>loadJyc57ArchiveComponent());
 // Start the active route's lazy chunk while site data and the boot screen are loading. This preserves code splitting without swapping a tiny fallback for a full page after first paint (which creates large CLS on direct route loads).
 const initialRoutePath = typeof window === 'undefined' ? '/' : (window.location.pathname.replace(/\/+$/, '') || '/');
 const initialJyc57Experience = ['/clubs','/events','/best-of-jyc'].includes(initialRoutePath) || initialRoutePath === '/gallery' || initialRoutePath.startsWith('/gallery/') ? import('./jyc57-experience.jsx') : null;
@@ -49,15 +51,19 @@ let jyc57ExperiencePromise=initialJyc57Experience;
 let jycBrandEditorialPromise=initialJycBrandEditorial;
 const loadJyc57Experience=()=>jyc57ExperiencePromise||(jyc57ExperiencePromise=import('./jyc57-experience.jsx'));
 const loadJycBrandEditorial=()=>jycBrandEditorialPromise||(jycBrandEditorialPromise=import('./jyc-next-experience.jsx'));
-const LazyJYCBrandEditorial=lazy(()=>loadJycBrandEditorial().then(m=>({default:m.JYCBrandEditorial})));
-const LazyJYC57Events = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Events })));
-const LazyJYC57Clubs = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Clubs })));
-const LazyJYC57Gallery = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYC57Gallery })));
-const LazyJYCBestOf = lazy(() => loadJyc57Experience().then(m => ({ default: m.JYCBestOf })));
+let jycBrandEditorialComponentPromise;
+const loadJycBrandEditorialComponent=()=>jycBrandEditorialComponentPromise||(jycBrandEditorialComponentPromise=loadJycBrandEditorial().then(m=>({default:m.JYCBrandEditorial})));
+const jyc57ComponentPromises=Object.create(null);
+const loadJyc57Component=name=>jyc57ComponentPromises[name]||(jyc57ComponentPromises[name]=loadJyc57Experience().then(m=>({default:m[name]})));
+const LazyJYCBrandEditorial=lazy(()=>loadJycBrandEditorialComponent());
+const LazyJYC57Events=lazy(()=>loadJyc57Component('JYC57Events'));
+const LazyJYC57Clubs=lazy(()=>loadJyc57Component('JYC57Clubs'));
+const LazyJYC57Gallery=lazy(()=>loadJyc57Component('JYC57Gallery'));
+const LazyJYCBestOf=lazy(()=>loadJyc57Component('JYC57BestOf'));
 
-function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
+function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
 const loadedRouteChunks=new Set();
-function loadRouteChunk(path){const key=routeChunkKey(path);if(key==='brand-editorial')return loadJycBrandEditorial();if(key==='jyc57-experience')return loadJyc57Experience();if(key==='jyc57-archive')return loadJyc57Archive();return Promise.resolve()}
+function loadRouteChunk(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';const key=routeChunkKey(clean);if(key==='brand-editorial')return loadJycBrandEditorialComponent();if(key==='jyc57-experience'){if(clean==='/clubs')return loadJyc57Component('JYC57Clubs');if(clean==='/events')return loadJyc57Component('JYC57Events');if(clean==='/best-of-jyc')return loadJyc57Component('JYC57BestOf');return loadJyc57Component('JYC57Gallery')}if(key==='jyc57-archive')return loadJyc57ArchiveComponent();return Promise.resolve()}
 
 
 
