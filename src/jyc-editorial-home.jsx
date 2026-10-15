@@ -17,6 +17,7 @@ const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo.avif' : FALLBACK;
 const DITHER_SRCSET = import.meta.env.PROD ? '/assets/jyc-logo-hero.avif 1x, /assets/jyc-logo.avif 2x' : undefined;
 const handleHeroLogoFallback = event => {
   const image = event.currentTarget;
+  image.srcset = '';
   const candidates = [FALLBACK, ORIGINAL_LOGO];
   let next = Number(image.dataset.logoFallbackStage || 0);
   while (next < candidates.length && new URL(candidates[next], window.location.href).href === image.src) next += 1;
