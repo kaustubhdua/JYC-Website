@@ -43,7 +43,8 @@ async function inspectViewport(page){
         if(overflowX!=='hidden'&&overflowX!=='clip')offscreen.push({tag:el.tagName,cls:String(el.className||'').slice(0,100),left:r.left,right:r.right});
       }
       if(['H1','H2','H3','H4','P','A','BUTTON','SPAN','SMALL','STRONG'].includes(el.tagName)){
-        if(el.scrollWidth>el.clientWidth+2 && getComputedStyle(el).whiteSpace!=='nowrap'){
+        // Intentionally clipped screen-reader/live-region labels (for example a 1px "Photo shown." status) are not visible text overflow.
+        if(r.width>2 && r.height>2 && el.scrollWidth>el.clientWidth+2 && getComputedStyle(el).whiteSpace!=='nowrap'){
           clipped.push({tag:el.tagName,text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),scrollWidth:el.scrollWidth,clientWidth:el.clientWidth});
         }
       }
