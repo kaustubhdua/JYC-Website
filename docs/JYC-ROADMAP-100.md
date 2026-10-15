@@ -4,6 +4,18 @@ Updated: 2026-10-16
 
 This is the execution ledger for taking the JIIT Youth Club 128 website from the current codebase to a release-ready state. Items marked **DONE** are implemented in the repository; **BLOCKED/MANUAL** items require a GitHub/Vercel/Supabase account action that the code connector cannot perform.
 
+## Current release checkpoint — 2026-10-16
+
+- [x] Main includes the JYC Now undefined-record guard and its regression coverage through merge commit `abbd7d9c22e42ae426cdc4448419005282d89a45`.
+- [x] Latest production deployment is READY: `dpl_7b5pgLHfbvyFgJDiusuXkjArfsK5`, alias `jyc-website-eight.vercel.app`, commit `6b43c70ebfd0e95ab02c020b0a5e546edffcdae3`.
+- [ ] **BLOCKED — exact-main production parity:** production is READY, but it is not the exact latest `main` SHA. The Vercel check for `abbd7d9c22e42ae426cdc4448419005282d89a45` reports `build-rate-limit`. Deploy the approved main SHA after the normal platform limit clears, then verify production routes and headers.
+- [ ] **OWNER ACTION — custom domains:** `jiityouthclub128.in` and `www.jiityouthclub128.in` remain unverified; add Vercel's DNS TXT records only if the domain is controlled by the owner.
+- [ ] **OWNER ACTION — JYC Now:** live connectors remain unconfigured; the curated fallback must remain clearly labelled unless authorized feeds/credentials are supplied.
+- [ ] **OWNER ACTION — Supabase Auth:** leaked-password protection remains disabled; enable it in the Auth dashboard.
+- [ ] **OWNER REVIEW — security:** review historical CodeQL/Dependabot findings and the SECURITY DEFINER RPC/function warnings; green CI does not dismiss historical findings.
+- [ ] **OWNER REVIEW — visual/content:** review CI screenshots, route content, current event dates and archive provenance before final public launch signoff.
+
+The source tree is progressing and the production alias is healthy, but 100% release readiness is not established until exact-main production parity and the owner-side launch gates above are verified.
 ## A. Product and UX
 
 - [x] Editorial JYC visual system with light/dark themes
@@ -164,7 +176,8 @@ Current source SHA: `828aa7167a6feac152e4d75a2f79b9b204a81132` (PR #231 merged).
 - [ ] CodeQL open findings = 0, or every remaining finding has a documented justified disposition
 - [ ] Dependabot alerts = 0 high/critical
 - [ ] Supabase security advisor findings have reviewed dispositions; do not alter role-scoped grants speculatively
-- [ ] Vercel production deployment is READY for the current main line. Latest READY deployment checked is still on `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`; Vercel reports deployment rate limiting.
+- [x] A Vercel production deployment is READY at `jyc-website-eight.vercel.app` on `6b43c70ebfd0e95ab02c020b0a5e546edffcdae3`.
+- [ ] Vercel production deployment matches the latest `main` SHA `abbd7d9c22e42ae426cdc4448419005282d89a45`; current Vercel check reports `build-rate-limit`.
 - [ ] Verify a READY production deployment has the exact approved `main` SHA
 - [ ] Human visual review and production smoke tests pass on that deployment
 - [ ] Supabase Auth leaked-password protection enabled and verified
