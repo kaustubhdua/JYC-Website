@@ -7,7 +7,10 @@ const files=['src/jyc-source-media.js','src/source-archive-index.js','src/pdf-hu
 const source=files.map(read).join('\n');
 const optimizer=read('scripts/optimize-production-media.mjs');
 const postbuildGeneratedAssets=new Set();
+if(optimizer.includes("const logoTinyAvifOutput=path.join(root,'assets','jyc-logo-48.avif')")&&optimizer.includes("resize({width:48,withoutEnlargement:true})"))postbuildGeneratedAssets.add('/assets/jyc-logo-48.avif');
 if(optimizer.includes("const logoSmallAvifOutput=path.join(root,'assets','jyc-logo-small.avif')")&&optimizer.includes("resize({width:96,withoutEnlargement:true})"))postbuildGeneratedAssets.add('/assets/jyc-logo-small.avif');
+if(optimizer.includes("const logoMediumAvifOutput=path.join(root,'assets','jyc-logo-medium.avif')")&&optimizer.includes("resize({width:192,withoutEnlargement:true})"))postbuildGeneratedAssets.add('/assets/jyc-logo-medium.avif');
+if(optimizer.includes("const logoBrandAvifOutput=path.join(root,'assets','jyc-logo-270.avif')")&&optimizer.includes("resize({width:270,withoutEnlargement:true})"))postbuildGeneratedAssets.add('/assets/jyc-logo-270.avif');
 const urls=[...source.matchAll(/['"](\/assets\/[^'"]+)['"]/g)].map(m=>m[1]);
 const unique=[...new Set(urls)];
 let fail=0;
@@ -16,7 +19,7 @@ for(const url of unique){
   const disk=path.join(root,'public',url.replace(/^\//,''));
   if(!fs.existsSync(disk)&&!postbuildGeneratedAssets.has(url))missing.push(url);
 }
-if(postbuildGeneratedAssets.has('/assets/jyc-logo-small.avif'))console.log('PASS: compact assistant/footer logo is declared as a postbuild-generated asset.');
+if(postbuildGeneratedAssets.has('/assets/jyc-logo-48.avif')&&postbuildGeneratedAssets.has('/assets/jyc-logo-small.avif')&&postbuildGeneratedAssets.has('/assets/jyc-logo-medium.avif')&&postbuildGeneratedAssets.has('/assets/jyc-logo-270.avif'))console.log('PASS: 48px, 96px, 192px and 270px logo variants are declared as postbuild-generated assets.');
 const assetFiles=[];
 for(const dir of ['public/assets/hub-photos','public/assets/hub-photos-extra','public/assets/hub-stories']){
   const abs=path.join(root,dir);
