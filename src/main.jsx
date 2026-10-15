@@ -21,12 +21,10 @@ import {JYC_EVENT_CATEGORIES,JYC_COMMUNITY_DISCOVERY,JYC_PUBLIC_ACTIVITIES} from
 import {JYC_SOCIALS,festSocialProfile,socialProfile,is128SocialProfile} from './jyc-socials.js';
 import {JYCNowStrip,JYCNowPage,HubLatestUpdates} from './jyc-now.jsx';
 import JYCHistory,{HistoryTeaser,HISTORY} from './jyc-history-page.jsx';
-import {JYCBrandEditorial} from './jyc-next-experience.jsx';
 import {JYCEditorialHome} from './jyc-editorial-home.jsx';
 import {ResponsivePhoto} from './jyc-responsive-photo.jsx';
 import { teamPhotoFor } from './jyc-team-media.js';
 import {FeaturedEventPopup} from './featured-event-popup.jsx';
-import {JYC57Events,JYC57Clubs,JYC57Gallery,JYCBestOf} from './jyc57-experience.jsx';
 
 
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
@@ -41,6 +39,11 @@ const LazyDepthCarousel=lazy(()=>import('./components/react-bits/DepthCarousel.j
 const LazyDriftWall=lazy(()=>import('./components/react-bits/DriftWall.jsx'));
 const LazyFlipCard=lazy(()=>import('./components/react-bits/FlipCard.jsx'));
 const LazyJYC57Archive=lazy(()=>import('./jyc57-archive.jsx').then(m=>({default:m.JYC57Archive})));
+const LazyJYCBrandEditorial = lazy(() => import('./jyc-next-experience.jsx').then(m => ({ default: m.JYCBrandEditorial })));
+const LazyJYC57Events = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Events })));
+const LazyJYC57Clubs = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Clubs })));
+const LazyJYC57Gallery = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYC57Gallery })));
+const LazyJYCBestOf = lazy(() => import('./jyc57-experience.jsx').then(m => ({ default: m.JYCBestOf })));
 
 
 
@@ -255,7 +258,7 @@ function App(){const loc=useLocation();const [data,setData]=useState(()=>import.
   if(!bootReady)return <Loading stage={bootStage} cached={Boolean(readSiteCache())}/>;
   const connectionNotice=(!online||error)?<div className={`connection-notice ${readSiteCache()?'cached':'offline'} ${error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'setup-needed':''}`} role="status"><span>{!online?'You are offline. JYC will keep using cached content until the connection returns.':error==='JYC data service is not deployed. Run supabase/FINAL-PRODUCTION-REPAIR.sql in the connected Supabase project, then refresh.'?'JYC data service needs setup.':readSiteCache()?`Showing the last saved JYC snapshot · ${formatCacheAge(siteCacheAge())}.`:'JYC content is currently offline.'}</span><button type="button" onClick={()=>window.dispatchEvent(new CustomEvent('jyc-refresh-data'))}>Refresh</button></div>:null;
  const isAdmin=loc.pathname.startsWith('/admin');
- const content=<div className="app-frame"><SkipLink/><ScrollProgress/><BackToTop/>{!isAdmin&&<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>}{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><JYCEditorialSystem><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></JYCEditorialSystem></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {!isAdmin&&<Suspense fallback={null}><LazyJYCBot data={data}/></Suspense>} {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<FeaturedEventPopup />
+ const content=<div className="app-frame"><SkipLink/><ScrollProgress/><BackToTop/>{!isAdmin&&<Suspense fallback={null}><LazyJYCInnovationMotion/></Suspense>}{!isAdmin&&<><Navbar data={data} admin={admin} theme={theme} setTheme={setTheme}/></>} {connectionNotice}<div id="main-content" className={isAdmin?'app admin-app':'app public-app'}><div className="route-stage" key={`${loc.pathname}${loc.search}`}><JYCEditorialSystem><Suspense fallback={<div className="section page route-loading" role="status" aria-live="polite">Loading this JYC page…</div>}><Routes data={data} admin={admin} session={session} setAdmin={setAdmin} commit={commit} notify={notify} theme={theme} setTheme={setTheme}/></Suspense></JYCEditorialSystem></div></div>{!isAdmin&&<Footer data={data} admin={admin}/>} {!isAdmin&&<Suspense fallback={null}><LazyJYCBot data={data}/></Suspense>} {toast&&<div className={`toast toast-${toast.type||'success'}`} role="status"><span>{toast.type==='error'?'!':'✓'}</span>{toast.message}</div>} {confirm&&<ConfirmDialog request={confirm} onClose={ok=>{confirm.resolve?.(ok);setConfirm(null)}}/>}<FeaturedEventPopup />
       <InstallPrompt/></div>;
  return <MaintenanceGate data={isAdmin?{maintenance:{on:false}}:data}>{content}</MaintenanceGate>}
 
@@ -672,10 +675,10 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  if(clean==='/')return <>{schema}<Home data={data}/></>;
  if(clean==='/history')return <>{schema}<JYCHistory data={data}/></>;
  if(clean==='/achievements')return <>{schema}<Achievements data={data}/></>;
- if(clean==='/best-of-jyc')return <>{schema}<JYCBestOf data={data}/></>;
- if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<JYC57Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
- if(clean==='/events')return <>{schema}<JYC57Events data={data}/></>;if(clean==='/fests')return <>{schema}<FestsPage data={data}/></>;if(clean.startsWith('/events/')&&legacyEventRedirect)return <Navigate to={'/events/'+legacyEventRedirect} replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session} notify={notify}/></>;
- if(clean==='/gallery'||clean.startsWith('/gallery/'))return <>{schema}<JYC57Gallery data={data}/></>;if(clean==='/leadership')return <Navigate to="/team" replace/>;if(clean==='/team')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <>{schema}<Suspense fallback={<div className="jyc57-empty" role="status">Loading the JYC archive…</div>}><LazyJYC57Archive data={data}/></Suspense></>;
+ if(clean==='/best-of-jyc')return <>{schema}<LazyJYCBestOf data={data}/></>;
+ if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<LazyJYC57Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
+ if(clean==='/events')return <>{schema}<LazyJYC57Events data={data}/></>;if(clean==='/fests')return <>{schema}<FestsPage data={data}/></>;if(clean.startsWith('/events/')&&legacyEventRedirect)return <Navigate to={'/events/'+legacyEventRedirect} replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session} notify={notify}/></>;
+ if(clean==='/gallery'||clean.startsWith('/gallery/'))return <>{schema}<LazyJYC57Gallery data={data}/></>;if(clean==='/leadership')return <Navigate to="/team" replace/>;if(clean==='/team')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <>{schema}<Suspense fallback={<div className="jyc57-empty" role="status">Loading the JYC archive…</div>}><LazyJYC57Archive data={data}/></Suspense></>;
  if(clean==='/announcements')return <>{schema}<Announcements data={data}/></>;
  if(clean==='/updates')return <>{schema}<JYCNowPage data={data}/></>;
  if(clean==='/join-jyc')return <>{schema}<JoinJYC/></>;if(clean==='/recruitment')return <>{schema}{recruitmentEnabled(data)?<RecruitmentHub data={data}/>:<JoinJYC/>}</>;if(clean==='/event-calendar')return <Navigate to="/calendar" replace/>;if(clean==='/calendar')return <>{schema}<JYCCalendarPage data={data}/></>;if(clean==='/moments')return <Navigate to="/gallery" replace/>;if(clean==='/discover')return <Navigate to="/clubs" replace/>;if(clean==='/resources')return <Navigate to="/about" replace/>;if(clean==='/guide')return <Navigate to="/about" replace/>;if(clean==='/my-jyc'||clean==='/login'||clean==='/notifications')return <Navigate to="/" replace/>;;if(clean==='/settings'||clean==='/download')return <Navigate to="/about" replace/>;if(clean.startsWith('/qr/'))return <Navigate to="/events" replace/>;if(clean==='/admin'||clean.startsWith('/admin/'))return <Navigate to="/" replace/>;return <section className="section page not-found-page"><div className="not-found-art"><span>404</span><i aria-hidden="true">JYC</i></div><span className="eyebrow">JYC · ROUTE MISSED</span><h1>This route is not part of the published JYC experience.</h1><p>The page you requested is not part of the published JYC experience.</p><div className="detail-actions"><Button onClick={()=>nav('/')}>Return home</Button><Button secondary onClick={()=>nav('/clubs')}>Explore clubs</Button></div></section>
@@ -1052,7 +1055,7 @@ function About({data}){
    <div className="about-hero-copy"><span className="eyebrow">ABOUT JYC · JIIT 128</span><h1>The student ecosystem behind campus life.</h1><p>{h.aboutText||'JIIT Youth Club connects students, communities, leadership and campus experiences across JIIT Sector 128.'}</p><div className="about-hero-actions"><Button onClick={()=>nav('/clubs')}>Find your community ↗</Button><Button secondary onClick={()=>nav('/events')}>See what is happening →</Button></div></div>
    <div className="about-hero-mark"><div><LogoImage alt="JIIT Youth Club"/></div><span>VOICE · TALENT · SPIRIT</span></div>
   </div>
-  <JYCBrandEditorial compact/>
+  <LazyJYCBrandEditorial compact/>
   <section className="v40-about-snapshot reveal" aria-label="JYC at a glance">
    <div className="v40-about-snapshot-intro"><span className="eyebrow">JYC AT A GLANCE</span><h2>One coordinating body. A whole campus ecosystem.</h2><p>JYC connects faculty guidance, student leadership, communities, volunteers and experiences so students can move from discovering an interest to actually participating.</p></div>
    <div className="v40-about-metrics"><article><strong>{JYC_HUB_FAMILIES.length}</strong><span>community families</span></article><article><strong>{Object.keys(JYC_HUB_CONTENT).length}</strong><span>named communities</span></article><article><strong>{PDF_HUB_PROGRAMME.length}</strong><span>programme strands</span></article><article><strong>{data.team.filter(m=>m.published===true).length}</strong><span>published people</span></article></div>
