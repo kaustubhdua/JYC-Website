@@ -152,7 +152,7 @@ export function JYCEditorialHome({ data }) {
     const photoHubs = { technical: 'CICR', cultural: 'VamUnique', literary: 'Eloquence', fests: 'Aakriti', sports: 'Sports', creative: 'Aura' };
     return PILLARS.map(p => {
       const source = sourceHubMedia(photoHubs[p.id]);
-      const image = source.photoItems.find(item => item?.url)?.url || '';
+      const image = rankDiverseJycPhotos((source?.photoItems || []).filter(item => item?.url && (item.mediaKind || 'photo') === 'photo'), { limit: 1, maxPerAssociation: 1 })[0]?.url || '';
       return { id:p.id, label:p.family.toUpperCase(), title:p.title, description:p.desc, href:p.id === 'fests' ? '/events' : '/clubs', image };
     });
   }, []);
