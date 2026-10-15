@@ -58,9 +58,12 @@ Verify:
 - `/gallery`
 - `/team`
 - `/contact`
-- `/admin`
+- `/calendar`
+- `/best-of-jyc`
+- `/fests`
+- `/join-jyc`
 
-Also test one complete Club Admin flow and one Super Admin flow before deployment.
+The public-release scope intentionally excludes the retired `/admin`, `/login`, `/my-jyc`, and `/notifications` surfaces. Verify those routes resolve to their safe public destinations and are not indexable. Club Admin and Super Admin workflow tests are required only for a separate release that explicitly re-enables the admin platform; they are not a prerequisite for the public website release.
 
 ## Vercel
 
