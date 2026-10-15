@@ -2,7 +2,7 @@ name: JYC CodeQL
 
 on:
   push:
-    branches: [main, master, 'jyc/**']
+    branches: [main, master, 'jyc/**', 'fix/**']
   pull_request:
     branches: [main, master]
   schedule:
