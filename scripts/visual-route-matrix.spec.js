@@ -29,8 +29,19 @@ test.describe('JYC visual capture and measurable design contracts', () => {
         await page.locator('.public-app').waitFor({ state: 'visible', timeout: 25000 });
         await page.waitForFunction(() => document.documentElement.dataset.jycContentReady === 'true', { timeout: 20000 });
         await page.evaluate(() => document.fonts.ready);
-        await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;animation-duration:0s!important;transition:none!important;transition-duration:0s!important;caret-color:transparent!important}.fest-countdown{visibility:hidden!important}.jyc-featured-event-overlay{display:none!important}'});
+        await page.addStyleTag({content:'*,*::before,*::after{animation:none!important;animation-duration:0s!important;transition:none!important;transition-duration:0s!important;scroll-behavior:auto!important;caret-color:transparent!important}.fest-countdown{visibility:hidden!important}.jyc-featured-event-overlay{display:none!important}'});
         await page.mouse.move(-1, -1);
+        // Walk the full document so lazy images load before visual capture; otherwise fullPage screenshots can falsely show empty image placeholders below the fold.
+        await page.evaluate(async () => {
+          const step = Math.max(320, Math.floor(window.innerHeight * 0.75));
+          const max = document.documentElement.scrollHeight;
+          for (let y = 0; y < max; y += step) {
+            window.scrollTo(0, y);
+            await new Promise(resolve => setTimeout(resolve, 40));
+          }
+          window.scrollTo(0, 0);
+          await new Promise(resolve => setTimeout(resolve, 100));
+        });
         const metrics = await page.evaluate(() => {
           const visible = el => {
             const style = getComputedStyle(el);
