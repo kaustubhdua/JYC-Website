@@ -360,3 +360,22 @@ html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7
 .public-app .feature-empty.large{min-height:180px;justify-content:center;align-items:center;text-align:center;padding:clamp(24px,4vw,48px)}
 .public-app .feature-empty.large>strong{display:block;max-width:28ch;margin:0;line-height:1.25}
 .public-app .feature-empty.large>span{display:block;max-width:65ch;line-height:1.65}
+
+
+/* Sparse team tiers should not paint unused grid tracks. */
+.public-app .team-layer-grid--two{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  max-width:560px;
+  margin-inline:auto;
+  gap:16px!important;
+  background:transparent!important;
+}
+@media(max-width:620px){
+  /* Keep the fixed assistant from covering the homepage's primary actions. */
+  body:has(.jyc-editorial-home) .jyc-bot-shell{display:none!important}
+  .public-app .team-layer-grid--two{
+    grid-template-columns:minmax(0,1fr)!important;
+    max-width:100%;
+    gap:12px!important;
+  }
+}

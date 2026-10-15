@@ -1577,3 +1577,29 @@ test('featured accordion gallery keeps five source-backed panels usable without 
   await page.locator('.jyc57-lightbox .jyc57-close').click();
   await expect(page.locator('.jyc57-lightbox[role="dialog"]')).toHaveCount(0);
 });
+
+
+test('sparse faculty layout uses only populated tracks and mobile home actions stay unobstructed', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'sparse faculty grid');
+  const grid = page.locator('.team-layer-grid--two');
+  await expect(grid).toBeVisible();
+  const desktopLayout = await grid.evaluate(el => ({
+    columns: getComputedStyle(el).gridTemplateColumns.split(' ').length,
+    cards: el.children.length,
+    width: el.getBoundingClientRect().width,
+    background: getComputedStyle(el).backgroundColor
+  }));
+  expect(desktopLayout.cards, 'two faculty profiles should produce exactly two cards').toBe(2);
+  expect(desktopLayout.columns, 'two faculty profiles should not leave a third empty grid track').toBe(2);
+  expect(desktopLayout.width, 'two-card faculty grid should be centered and bounded').toBeLessThanOrEqual(560);
+  expect(desktopLayout.background, 'sparse faculty grid should not paint an empty third track').toBe('rgba(0, 0, 0, 0)');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'mobile homepage action clearance');
+  await expect(page.locator('.jyc-editorial-home .hero-actions')).toBeVisible();
+  await expect(page.locator('.jyc-bot-shell')).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), 'mobile homepage should not overflow').toBeTruthy();
+});
