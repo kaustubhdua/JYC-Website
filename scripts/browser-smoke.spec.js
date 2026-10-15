@@ -907,7 +907,7 @@ test('responsive photo manifest retries after a transient request failure', asyn
   await page.waitForTimeout(200);
 
   await page.locator('a[href="/gallery"]').first().click();
-  await expect(page.locator('.jyc57-gallery-page')).toBeVisible();
+  await expect(page.locator('.jyc-gallery-hub-container')).toBeVisible();
   await expect.poll(() => attempts).toBeGreaterThan(1);
   await expect.poll(() => page.locator('.jyc57-gallery-page picture source').count()).toBeGreaterThan(0);
 });
@@ -1188,13 +1188,13 @@ test('gallery interaction contract covers filters, album routes, navigation, zoo
   await expect(dialog).toBeVisible();
   const counter=dialog.locator('.jyc57-counter');
   const before=await counter.textContent();
-  await dialog.getByRole('button', { name: 'Next photograph' }).click();
+  await dialog.getByRole('button', { name: 'Next photo' }).click();
   await expect(counter).not.toHaveText(before || '');
   const image=dialog.locator('.jyc57-lightbox-media img');
   const beforeTransform=await image.evaluate(el => getComputedStyle(el).transform);
-  await dialog.getByRole('button', { name: 'Zoom' }).click();
+  await dialog.getByRole('button', { name: /Zoom In|Reset Zoom/ }).click();
   await expect.poll(() => image.evaluate(el => getComputedStyle(el).transform)).not.toBe(beforeTransform);
-  await expect(dialog.getByRole('button', { name: /Share photograph|Link copied/ })).toBeVisible();
+  await expect(dialog.getByRole('button', { name: /Share Photo|Link Copied/ })).toBeVisible();
   await dialog.getByRole('button', { name: /Share photograph|Link copied/ }).click().catch(()=>{});
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
@@ -1396,6 +1396,7 @@ test('closed recruitment state still offers useful next steps', async ({ page })
 });
 
 test('featured event announcement never blocks mobile navigation', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'JYC homepage');
   await page.waitForTimeout(700);
@@ -1444,7 +1445,7 @@ test('responsive photos retry the original source when a derivative returns HTML
 
   await testPage.goto(base + '/team', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(testPage, 'derivative HTTP 200 HTML fallback');
-  const picture = testPage.locator('.team-photo-editorial .jyc-responsive-picture').first();
+  const picture = testPage.locator('.team-photo-editorial .jyc-responsive-picture').filter({ has: testPage.locator('img[src*="/assets/team/"]') }).first();
   await picture.scrollIntoViewIfNeeded();
   await expect.poll(() => derivativeRequests, { timeout: 12000 }).toBeGreaterThan(0);
 
