@@ -239,3 +239,36 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
   align-items: center;
   justify-content: center;
 }
+
+
+/* Release QA: keep public navigation and editorial copy legible at every viewport.
+   This final layer intentionally follows legacy CSS so breakpoint behavior is deterministic. */
+.mobile-dock { display: none !important; }
+@media (max-width: 760px) {
+  .mobile-dock {
+    display: grid !important;
+    position: fixed !important;
+    left: max(10px, env(safe-area-inset-left)) !important;
+    right: max(10px, env(safe-area-inset-right)) !important;
+    bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    z-index: 12000 !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+:root:not([data-theme="dark"]) .public-app :is(
+  .eyebrow,.tag,.text-link,.reference-view-all,.card-topline,.club-index,
+  .latest-index,.moment-tile small,.jh-overline,.jh-section-number,
+  .jh-about-kicker,.jyc57-gallery-meta,.jyc57-gallery-eyebrow,
+  .jyc57-filter-group>span,.jyc57-pill,.gallery-source-ledger>span
+) {
+  color: #65451F !important;
+}
+:root:not([data-theme="dark"]) .public-app a:not(.btn):not(.nav-join-cta) {
+  color: #76211D;
+}
+:root:not([data-theme="dark"]) .public-app :is(
+  .jh-lead,.jh-assistant-info p,.jh-community-copy p,.jh-final p,
+  .jh-pillar-card p,.jh-event-copy>p,.muted,.muted-text,.jyc57-empty p
+) {
+  color: #4B4650 !important;
+}
