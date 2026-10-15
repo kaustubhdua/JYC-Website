@@ -336,7 +336,8 @@ test('homepage renders the official logo through Dither Veil and a magnetic acti
   await expect(page.getByRole('img', { name: 'Official JIIT Youth Club 128 logo with an interactive Dither Veil effect' })).toBeVisible();
   const ditherSource=page.locator('.jh-dither-mark .dither-veil__fallback');
   await expect(ditherSource).toHaveAttribute('src', '/assets/jyc-logo.avif');
-  await expect.poll(()=>ditherSource.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+  await expect(ditherSource).toHaveAttribute('srcset', '/assets/jyc-logo-hero.avif 1x, /assets/jyc-logo.avif 2x');
+  await expect.poll(()=>ditherSource.evaluate(img=>img.complete&&img.naturalWidth>0&&img.currentSrc.includes('jyc-logo-hero.avif'))).toBe(true);
 
   const themeSamples = {};
   for (const theme of ['light', 'dark']) {
@@ -772,7 +773,7 @@ test('public images load, stay inside the viewport, and use centered focal posit
       .map(img => img.complete ? true : new Promise(resolve => { const done=()=>resolve(true); img.addEventListener('load',done,{once:true}); img.addEventListener('error',done,{once:true}); setTimeout(done,10000); }))));
     const result = await page.locator('main img, footer img').evaluateAll(images => images
       .filter(img => {
-        if(['/JYC%20Logo(4).png','/assets/jyc-logo.webp','/jyc-logo-official.webp','/assets/jyc-logo.avif'].includes(new URL(img.currentSrc||img.src,window.location.href).pathname)) return false;
+        if(['/JYC%20Logo(4).png','/assets/jyc-logo.webp','/jyc-logo-official.webp','/assets/jyc-logo.avif','/assets/jyc-logo-hero.avif'].includes(new URL(img.currentSrc||img.src,window.location.href).pathname)) return false;
         const r=img.getBoundingClientRect();
         return r.bottom>0 && r.top<window.innerHeight && r.width>0 && r.height>0;
       })
@@ -852,12 +853,12 @@ test('homepage hero uses the official JYC logo through Dither Veil without a con
 });
 
 
-test('Dither Veil keeps the official logo visible when AVIF is unavailable', async ({ page }) => {
-  await page.route('**/assets/jyc-logo.avif', route => route.abort('failed'));
+test('Dither Veil falls back to the full official logo when the compact AVIF is unavailable', async ({ page }) => {
+  await page.route('**/assets/jyc-logo-hero.avif', route => route.abort('failed'));
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'Dither logo format fallback');
   const fallback = page.locator('.jh-dither-mark .dither-veil__fallback');
-  await expect(fallback).toHaveAttribute('src', '/assets/jyc-logo.avif');
+  await expect(fallback).toHaveAttribute('src', '/assets/jyc-logo.webp');
   await expect.poll(() => fallback.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
 });
 
