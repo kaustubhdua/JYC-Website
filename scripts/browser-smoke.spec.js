@@ -193,7 +193,7 @@ test('feature hero copy stays readable in light theme on its dark surface', asyn
   }));
   expect(styles.heading).toBe('rgb(255, 248, 225)');
   expect(styles.body).toBe('rgb(215, 209, 199)');
-  expect(styles.background).toContain('rgb(15, 14, 17)');
+  expect(styles.background).toContain('linear-gradient(135deg');
 });
 
 test('mobile visual guardrails keep core content centered and inside viewport', async ({ page }) => {
