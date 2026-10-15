@@ -313,3 +313,33 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
 body:has(.jyc57-lightbox[aria-modal="true"]) :is(.jyc-bot-shell,.mobile-dock) {
   display: none !important;
 }
+
+/* Lighthouse follow-up: pin the measured About-page foregrounds at the route root.
+   These selectors intentionally outrank legacy route/button rules that otherwise
+   wash the editorial text and CTA into the paper background. */
+#main-content.public-app .route-stage > section.section .about-source-note {
+  color: #4b4650 !important;
+  opacity: 1 !important;
+}
+#main-content.public-app .route-stage > section.section .about-next-v28 .eyebrow {
+  color: #65451f !important;
+  opacity: 1 !important;
+}
+#main-content.public-app .route-stage > section.section .about-next-v28 h2 {
+  color: #28242a !important;
+  opacity: 1 !important;
+}
+#main-content.public-app .route-stage > section.section .about-next-v28 button.btn:not(.secondary) {
+  background-color: #a82420 !important;
+  background-image: none !important;
+  border-color: #a82420 !important;
+  color: #fffaf0 !important;
+  opacity: 1 !important;
+}
+#main-content.public-app .route-stage > section.section .about-next-v28 button.btn.secondary {
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: #a82420 !important;
+  color: #28242a !important;
+  opacity: 1 !important;
+}
