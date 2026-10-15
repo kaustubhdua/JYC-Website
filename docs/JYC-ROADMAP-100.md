@@ -1,6 +1,6 @@
 # JYC Website — 100% Completion Roadmap
 
-Updated: 2026-10-10
+Updated: 2026-10-16
 
 This is the execution ledger for taking the JIIT Youth Club 128 website from the current codebase to a release-ready state. Items marked **DONE** are implemented in the repository; **BLOCKED/MANUAL** items require a GitHub/Vercel/Supabase account action that the code connector cannot perform.
 
@@ -150,22 +150,27 @@ For each route verify:
 - [ ] no dead links
 - [ ] no incorrect JIIT 62 content
 
-## J. Release — base-main snapshot (15 October 2026; superseded by Run 20)
+## J. Release — current main snapshot (16 October 2026)
 
-This section records the verified `main` baseline before Run 20 PR #231. Its SHA and workflow results are historical after that PR is merged; use the PR's exact-head checks and the production deployment SHA for release decisions.
+Current source SHA: `828aa7167a6feac152e4d75a2f79b9b204a81132` (PR #231 merged).
 
-- [x] GitHub main contained the release source (`35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`)
-- [x] Current-main CI (`38723211069`), Quality Gate (`38723211052`), CodeQL (`38723211111`) and Lighthouse CI (`38723211036`) passed on 2026-10-15
-- [ ] Browser QA (`38723211136`) is green; current run fails 1/38 on `/team` at desktop-1280 because screen-reader-only FlipCard announcement text is classified as clipped visible text
+- [x] Current-main CI (`38789119846`) passed
+- [x] Current-main Quality Gate (`38789119876`) passed
+- [x] Current-main CodeQL (`38789120155`) passed
+- [x] Current-main Browser QA (`38789119865`) passed: 39/39 tests plus three visual route checks; the dedicated 320px viewport project is included
+- [x] Current-main Lighthouse CI (`38789119910`) passed on seven routes
+- [x] Production build generated 4,172 responsive photo derivatives; 36 were skipped and zero failed. Logo optimization emitted 48px, 96px, 192px and 270px AVIF variants.
+- [x] Automated accessibility score 100, Best Practices 100 and SEO 100 on all seven Lighthouse routes
 - [ ] CodeQL open findings = 0, or every remaining finding has a documented justified disposition
 - [ ] Dependabot alerts = 0 high/critical
-- [ ] Supabase security advisor = 0 high/critical
-- [ ] Vercel production deployment is READY for the current main line; the current Vercel status is `Deployment rate limited — retry in 24 hours`
-- [ ] Verify the exact current main SHA is the production deployment. Latest READY production SHA observed on 2026-10-15 is `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`, not current `main`.
-- [ ] production HTTP/security headers verified
-- [ ] all public routes smoke-tested on production
-- [ ] production media/link/content check complete
-- [x] release notes updated
+- [ ] Supabase security advisor findings have reviewed dispositions; do not alter role-scoped grants speculatively
+- [ ] Vercel production deployment is READY for the current main line. Latest READY deployment checked is still on `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`; Vercel reports deployment rate limiting.
+- [ ] Verify a READY production deployment has the exact approved `main` SHA
+- [ ] Human visual review and production smoke tests pass on that deployment
+- [ ] Supabase Auth leaked-password protection enabled and verified
+- [ ] Custom domains verified, or the Vercel alias explicitly accepted as launch origin
+- [ ] JYC Now official live source intentionally configured, or curated fallback explicitly accepted
+- [ ] production media/link/content review complete
 - [ ] only then declare the site 100% release-ready
 
 ## Current blockers

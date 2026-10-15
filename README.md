@@ -307,14 +307,18 @@ The remaining production gates are operational: configure required third-party E
 
 Package metadata, lockfile and the service-worker cache namespace are synchronized. Source-contract assertions are not a substitute for a successful production build or browser run.
 
-**Verified release-status snapshot — 15 October 2026 (main before Run 20):** current `main` is `35d692f67ddd1c6f7df1d00be5a0bf4bca75d3f3`. CI, Quality Gate, CodeQL and Lighthouse CI passed on that exact SHA; Browser QA failed 1 of 38 tests on `/team` at desktop-1280 because intentionally screen-reader-only FlipCard text (`Photo shown.`) was counted as clipped visible text ([browser run](https://github.com/kaustubhdua/JYC-Website/actions/runs/38723211136)). The Vercel status is `Deployment rate limited — retry in 24 hours`; the latest READY production deployment last verified is still on `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`, not current `main`. Do not describe the release as production-verified until a READY deployment matches the approved source SHA and browser QA passes.
+**Verified release-status snapshot — 16 October 2026 (Run 20 merged):** current `main` is `828aa7167a6feac152e4d75a2f79b9b204a81132`, merged from [PR #231](https://github.com/kaustubhdua/JYC-Website/pull/231). CI, Quality Gate, CodeQL, Browser QA and Lighthouse CI all pass on that exact SHA ([CI](https://github.com/kaustubhdua/JYC-Website/actions/runs/38789119846), [Quality Gate](https://github.com/kaustubhdua/JYC-Website/actions/runs/38789119876), [CodeQL](https://github.com/kaustubhdua/JYC-Website/actions/runs/38789120155), [Browser QA](https://github.com/kaustubhdua/JYC-Website/actions/runs/38789119865), [Lighthouse CI](https://github.com/kaustubhdua/JYC-Website/actions/runs/38789119910)). Browser QA passes 39/39 tests plus three visual route checks, including the dedicated 320px layout suite. Lighthouse CI scores on seven routes are Performance 86–89, Accessibility 100, Best Practices 100 and SEO 100; measured LCP is 2.2–2.5s in this lab run. These are automated test results, not field Core Web Vitals.
 
-The highest-value remaining production work is operational/editorial rather than architectural:
+**The source release is validated, but production is not yet verified.** The latest READY Vercel production deployment still points to `7ebef7bdbc5d744c8fc505c10663e70770f38c8a`, not current `main`, and Vercel continues to report a deployment-rate limit. The currently reachable Vercel alias returns HTTP 200 for `/`, `/team` and `/gallery`, and sends the expected security headers, but those smoke checks do not prove the new SHA is deployed. Supabase Auth leaked-password protection remains disabled; `/api/jyc-updates` reports `live=false` and `configured=false` (the site correctly presents a curated fallback); and `jiityouthclub128.in` plus `www.jiityouthclub128.in` remain unverified. Human visual review, production smoke testing on the exact release, branch-protection review, security-alert disposition and owner confirmation of the intended launch domain/feed remain release gates.
 
-1. Keep the complete 873-file source archive catalogued and maintain editorial review when promoting new material into official event/club records.
-2. CI enforces the production JS/CSS/image budget and public-route hygiene; resolve the current browser regression, then run the same browser suite against the deployed site at desktop/tablet/mobile sizes and both themes.
-3. Verify live Supabase content and every published club/event record.
-4. Verify the Vercel production deployment and its redirects/headers.
-5. Run a final performance pass after the real production image set is known.
+The highest-value remaining work is operational/editorial rather than another speculative code rewrite:
+
+1. Wait for the normal Vercel deployment limit to clear, then use the standard owner/platform deployment path and verify the READY deployment SHA equals the approved `main` SHA. Do not bypass quota limits or repeatedly retry.
+2. Run human visual review and smoke-test key public routes, navigation, forms, image fallbacks, mobile layout, redirects and headers on that exact production deployment.
+3. Enable Supabase Auth leaked-password protection in project settings and verify it; do not change database grants or apply migrations without a separately reviewed plan.
+4. Verify the custom-domain TXT challenges with the DNS owner and preserve existing mail records; otherwise explicitly accept the verified Vercel alias as the launch origin.
+5. Configure a verified JYC Now source with owner-controlled credentials or explicitly accept the clearly labelled curated fallback.
+6. Review remaining GitHub CodeQL/dependency and Supabase advisor findings individually; retain the current role-scoped function grants until any change is backed by a reviewed security migration.
+7. Continue editorial review of event dates, venues, official club/social links and archive material before promoting it as current official content.
 
 No new student-platform features should be added to the public site unless the JYC product scope is explicitly changed.
