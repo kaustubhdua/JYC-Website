@@ -267,7 +267,7 @@ html[data-theme="dark"] .public-app [style*="--hub-accent"]{--hub-accent:var(--j
 
 
 /* Shared reveal language: small, purposeful motion instead of decorative clutter. */
-.public-app .reveal{opacity:0;transform:translateY(16px);transition:opacity .65s var(--jyc-ease),transform .65s var(--jyc-ease);transition-delay:var(--reveal-delay,0ms)}
+.public-app .reveal{opacity:1;transform:translateY(16px);transition:transform .65s var(--jyc-ease);transition-delay:var(--reveal-delay,0ms)}
 .public-app .reveal.is-visible{opacity:1;transform:none}
 .public-app .card:hover,.public-app .activity-card:hover,.public-app .home-team-card:hover,.public-app .hub-story-card:hover,.public-app .jyc-journal-card:hover,.public-app .past-card:hover,.public-app .contact-card:hover{transform:translateY(-5px)!important;box-shadow:0 22px 48px rgba(20,25,39,.13)!important;border-color:rgba(191,156,111,.55)!important}
 html[data-theme="dark"] .public-app .card:hover,html[data-theme="dark"] .public-app .activity-card:hover,html[data-theme="dark"] .public-app .home-team-card:hover,html[data-theme="dark"] .public-app .hub-story-card:hover,html[data-theme="dark"] .public-app .jyc-journal-card:hover,html[data-theme="dark"] .public-app .past-card:hover,html[data-theme="dark"] .public-app .contact-card:hover{box-shadow:0 24px 60px rgba(0,0,0,.38)!important}
