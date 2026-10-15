@@ -355,3 +355,21 @@
   .public-app .jyc57-masonry > .jyc57-photo img { transition: none !important; }
   .public-app .jyc57-masonry > .jyc57-photo:hover img { transform: none !important; filter: none !important; }
 }
+
+
+/* Accessible light-theme accents: champagne is a brand surface, not a body-text
+   color. Use a darker ink tone wherever accent color conveys readable text. */
+html[data-theme="light"] .public-app :is(
+  .eyebrow,.tag,.text-link,.reference-view-all,.card-topline,.club-index,
+  .latest-index,.moment-tile small,.jh-overline,.jh-section-number,
+  .jh-about-kicker,.jyc57-gallery-meta,.jyc57-gallery-eyebrow
+) {
+  color: #72502B !important;
+}
+html[data-theme="light"] .public-app a:not(.btn),
+html[data-theme="light"] .public-app :is(.jh-overline,.jh-section-number,.jh-about-kicker) {
+  color: #7B211D !important;
+}
+html[data-theme="light"] .public-app :is(.jh-lead,.jh-assistant-info p,.jh-community-copy p,.jh-final p,.jh-pillar-card p,.jh-event-copy>p) {
+  color: #4F4B54 !important;
+}
