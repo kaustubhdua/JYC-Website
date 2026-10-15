@@ -202,6 +202,25 @@ test('recruitment empty state stacks its title and description', async ({ page }
   expect(layout).toEqual({ display: 'flex', direction: 'column', heading: 'block', body: 'block', gap: '8px' });
 });
 
+test('scrolling About page records layout-shift sources for CI diagnosis', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__jycShiftSources = [];
+    new PerformanceObserver(list => {
+      for (const entry of list.getEntries()) {
+        if (entry.hadRecentInput || entry.value < 0.001) continue;
+        window.__jycShiftSources.push({ value: entry.value, sources: (entry.sources || []).map(source => ({ tag: source.node?.tagName, id: source.node?.id, className: typeof source.node?.className === 'string' ? source.node.className : '', text: source.node?.textContent?.trim().slice(0, 80), previousRect: source.previousRect, currentRect: source.currentRect })) });
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(base + '/about', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { name: 'The student ecosystem behind campus life.' })).toBeVisible({ timeout: 20000 });
+  await page.evaluate(async () => { const step = Math.max(500, window.innerHeight * 0.75); for (let y = 0; y < document.documentElement.scrollHeight; y += step) { window.scrollTo(0, y); await new Promise(resolve => setTimeout(resolve, 100)); } window.scrollTo(0, 0); });
+  await page.waitForTimeout(250);
+  const diagnostic = await page.evaluate(() => ({ total: window.__jycShiftSources.reduce((sum, item) => sum + item.value, 0), shifts: window.__jycShiftSources }));
+  console.log('JYC_SCROLL_CLS_DIAGNOSTIC', JSON.stringify(diagnostic));
+});
+
 test('feature hero copy stays readable in light theme on its dark surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base + '/recruitment', { waitUntil: 'domcontentloaded' });
