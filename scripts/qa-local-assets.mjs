@@ -46,8 +46,9 @@ for(const file of files){
   for(const m of text.matchAll(/(?:src|poster|href|content|url)\s*=\s*[{(]?\s*['\"](\/(?:assets|models|jyc-[^'\"]+|offline\.html|manifest\.json|robots\.txt|sitemap\.xml|llms\.txt)[^'\"]*)['\"]/g)) dynamicLocalRefs.add(m[1].split('?')[0]);
 }
 for(const asset of dynamicLocalRefs) if(!refs.has(asset)) refs.set(asset,['dynamic-local-reference']);
+const assetRoot=fs.existsSync(path.join(root,'dist'))?path.join(root,'dist'):path.join(root,'public');
 for(const [asset,owners] of refs){
-  const target=path.join(root,'public',asset.replace(/^\//,''));
+  const target=path.join(assetRoot,asset.replace(/^\//,''));
   if(!fs.existsSync(target)) missing.push({asset,owners});
 }
 
