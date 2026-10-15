@@ -171,7 +171,7 @@ export function JYCEditorialHome({ data }) {
       const url = String(item?.url || '').trim();
       const association = String(item?.association || item?.albumName || '').trim();
       const role = String(item?.role || '').toLowerCase();
-      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || /jyc archive|source archive/i.test(association) || seen.has(association.toLowerCase())) continue;
+      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || /jyc(?:\s+photo)?\s+archive|source archive/i.test(association) || seen.has(association.toLowerCase())) continue;
       seen.add(association.toLowerCase());
       selected.push({ ...item, association });
       if (selected.length === 3) break;
