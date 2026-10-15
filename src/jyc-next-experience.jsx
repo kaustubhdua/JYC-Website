@@ -43,7 +43,7 @@ export function JYCBrandEditorial({compact=false}){
    <div className="jyc-brand-editorial-actions"><button type="button" className="btn" onClick={()=>nav('/about')}>Read the JYC story ↗</button><button type="button" className="text-link" onClick={()=>nav('/clubs')}>Explore communities →</button></div>
   </div>
   <div className="jyc-brand-editorial-mark" aria-label="JIIT Youth Club official identity">
-   <div className="jyc-brand-editorial-logo"><img src="/assets/jyc-logo.avif" alt="JIIT Youth Club official emblem" width={512} height={512} loading={compact?'lazy':'eager'} decoding="async"/></div>
+   <div className="jyc-brand-editorial-logo"><img src="/assets/jyc-logo.avif" srcSet="/assets/jyc-logo-48.avif 48w, /assets/jyc-logo-small.avif 96w, /assets/jyc-logo-medium.avif 192w, /assets/jyc-logo-270.avif 270w, /assets/jyc-logo.avif 512w" sizes="(max-width: 600px) 70vw, 270px" alt="JIIT Youth Club official emblem" width={512} height={512} loading={compact?'lazy':'eager'} decoding="async"/></div>
    <span className="jyc-brand-editorial-rule"><i/>JYC 128<i/></span>
    <strong>VOICE · TALENT · SPIRIT</strong>
    <small>JIIT WISH TOWN CAMPUS</small>

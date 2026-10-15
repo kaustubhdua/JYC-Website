@@ -6,7 +6,7 @@ const {JYC_SOURCE_ARCHIVE_PHOTO_ITEMS}=await import('../src/jyc-source-media.js'
 const allowedArchive=new Set(JYC_SOURCE_ARCHIVE_PHOTO_ITEMS.map(item=>String(item?.url||'')));
 const root=path.resolve('public/assets');
 const outputRoot=path.resolve('public/assets/photo-derivatives');
-const WIDTHS=[240,480,960,1600];
+const WIDTHS=[240,320,360,480,960,1600];
 // Keep Vercel's small build machines responsive: Sharp already uses native workers,
 // so a small JS work queue avoids turning derivative generation into a serial bottleneck
 // without oversubscribing a 2-core builder.

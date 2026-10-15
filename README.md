@@ -1,6 +1,6 @@
 # JIIT Youth Club 128 — Official Website
 
-> **Current release: V64.5.11 — Responsive image delivery and accessibility hardening**
+> **Current release: V64.5.12 — Right-sized gallery and brand imagery**
 
 [![Quality](https://github.com/kaustubhdua/JYC-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/ci.yml) [![CodeQL](https://github.com/kaustubhdua/JYC-Website/actions/workflows/codeql.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/codeql.yml) [![JYC Quality](https://github.com/kaustubhdua/JYC-Website/actions/workflows/jyc-quality.yml/badge.svg)](https://github.com/kaustubhdua/JYC-Website/actions/workflows/jyc-quality.yml)
 
@@ -303,7 +303,7 @@ The remaining production gates are operational: configure required third-party E
 
 - **Latest UI/media review:** [JYC UI/UX, Media & Release Audit — 11 October 2026](docs/JYC-UIUX-MEDIA-DEEP-AUDIT-2026-10-11.md). It records photo fallback hardening, verified event-source corrections, animation guardrails, and remaining release gates.
 
-**V64.5.11 is the current source release.** This pass generates a dedicated 96px AVIF JYC mark for the floating assistant, precaches it under a refreshed service-worker cache, and reduces the artificial post-load boot delay without bypassing the data-loading guard. JYC Now now distinguishes remote live connector results from curated/database fallback and ignores empty connector configuration; RSS sources must use HTTPS. The release checklist now separates the public website from the optional admin platform, and production asset QA validates the built output so generated logo files are checked at the correct stage. The existing editorial hero, responsive image fallbacks, reduced-motion safeguards, team profile interactions and source-backed club/event content remain covered by the release QA suite.
+**V64.5.12 is the current source release candidate.** This pass adds 240/320/360/480/960/1600px photo derivatives, corrects Gallery sizes to match rendered cards, adds a 270px AVIF brand mark and a 48px AVIF compact mark, and refreshes the offline cache. The earlier 96px/192px variants remain available for larger marks and the Dither Veil. JYC Now distinguishes remote live connector results from curated/database fallback and ignores empty connector configuration; RSS sources must use HTTPS. The release checklist separates the public website from the optional admin platform, and production asset QA validates generated assets at the correct build stage. The editorial hero, responsive image fallbacks, reduced-motion safeguards, team interactions and source-backed club/event content remain covered by release QA.
 
 Package metadata, lockfile and the service-worker cache namespace are synchronized. Source-contract assertions are not a substitute for a successful production build or browser run.
 

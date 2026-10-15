@@ -88,19 +88,21 @@ import {SkipLink,InstallPrompt,MaintenanceGate,ErrorBoundary,EventTools,Download
 import {readSiteCache,writeSiteCache,siteCacheAge,formatCacheAge,armStoredReminders,googleCalendarUrl,hasLocalReminder,scheduleEventReminder,clearLocalReminder} from './v15-functional.js';
 
 const logo='/assets/jyc-logo.avif';
+const logoTiny='/assets/jyc-logo-48.avif';
 const logoSmall='/assets/jyc-logo-small.avif';
 function LogoImage({alt='',...props}){
  const requestedWidth=Number(props.width??48);
- const src=requestedWidth<=64&&!String(props.className||'').includes('team-photo-missing-logo')?logoSmall:logo;
+ const portraitPlaceholder=String(props.className||'').includes('team-photo-missing-logo');
+ const src=!portraitPlaceholder&&requestedWidth<=48?logoTiny:!portraitPlaceholder&&requestedWidth<=96?logoSmall:logo;
  const [failed,setFailed]=useState(false);
  useEffect(()=>setFailed(false),[src]);
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
- return <img {...props} src={src} alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??(props.fetchPriority==='high'?'eager':'lazy')} decoding={props.decoding??'async'} onError={event=>{const image=event.currentTarget;const stage=Number(image.dataset.logoFallbackStage||0);if(src===logoSmall&&stage===0){image.dataset.logoFallbackStage='1';image.src=logo;return}if(stage<2){image.dataset.logoFallbackStage='2';image.src='/JYC%20Logo(4).png';return}setFailed(true)}}/>
+ return <img {...props} src={src} alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??(props.fetchPriority==='high'?'eager':'lazy')} decoding={props.decoding??'async'} onError={event=>{const image=event.currentTarget;const stage=Number(image.dataset.logoFallbackStage||0);if(src===logoTiny&&stage===0){image.dataset.logoFallbackStage='1';image.src=logoSmall;return}if((src===logoTiny||src===logoSmall)&&stage<2){image.dataset.logoFallbackStage='2';image.src=logo;return}if(stage<3){image.dataset.logoFallbackStage='3';image.src='/JYC%20Logo(4).png';return}setFailed(true)}}/>
 }
 function FooterLogoImage({alt='',...props}){
  const [failed,setFailed]=useState(false);
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
- return <img {...props} src="/assets/jyc-logo-small.avif" alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??'lazy'} decoding={props.decoding??'async'} onError={()=>setFailed(true)}/>;
+ return <img {...props} src="/assets/jyc-logo-48.avif" alt={alt} width={props.width??48} height={props.height??48} loading={props.loading??'lazy'} decoding={props.decoding??'async'} onError={()=>setFailed(true)}/>;
 }
 const isFestMode=data=>String(data?.mode||'events').toLowerCase()==='fest';
 const recruitmentEnabled=data=>data?.flags?.recruitmentHub!==false;

@@ -23,6 +23,7 @@ const homeCss=read('src/jyc-editorial-home.css');
 const design=read('src/jyc-design-upgrades.css');
 const proRedesign=read('src/styles/jyc-pro-redesign.css');
 const editorialHome=read('src/jyc-editorial-home.jsx');
+const brandExperience=read('src/jyc-next-experience.jsx');
 const flip=read('src/components/react-bits/FlipCard.jsx');
 const indexHtml=read('index.html');
 const bootTheme=read('public/boot-theme.js');
@@ -100,8 +101,10 @@ const checks=[
   ['contact route exposes a primary H1',main.includes('function SectionHead({eyebrow,title,text,level=2})')&&main.includes('<SectionHead level={1} eyebrow="COMMUNICATION HUB"')&&main.includes('Stay connected with JYC.')],
  ['photo derivative encoding uses build-friendly effort settings',derivatives.includes('.avif({quality:52,effort:2})')&&derivatives.includes('.webp({quality:82,effort:3})')&&derivatives.includes('completed%25===0')],
  ['production media build emits a compact official-logo WebP derivative',productionMediaOptimizer.includes("const logoOutput=path.join(root,'assets','jyc-logo.webp')")&&productionMediaOptimizer.includes("path.resolve('public/JYC Logo(4).png')")&&productionMediaOptimizer.includes("webp({quality:92,effort:5,alphaQuality:100})")],
- ['small assistant logo is generated at 96px and used by the floating assistant',productionMediaOptimizer.includes("const logoSmallAvifOutput=path.join(root,'assets','jyc-logo-small.avif')")&&productionMediaOptimizer.includes("resize({width:96,withoutEnlargement:true})")&&bot.includes('poster="/assets/jyc-logo-small.avif"')&&bot.includes('<img src="/assets/jyc-logo-small.avif"')],
+ ['48px assistant logo is generated and used by the floating assistant',productionMediaOptimizer.includes("const logoTinyAvifOutput=path.join(root,'assets','jyc-logo-48.avif')")&&productionMediaOptimizer.includes("resize({width:48,withoutEnlargement:true})")&&bot.includes('poster="/assets/jyc-logo-48.avif"')&&bot.includes('<img src="/assets/jyc-logo-48.avif"')],
+ ['96px logo is generated for compact marks',productionMediaOptimizer.includes("const logoSmallAvifOutput=path.join(root,'assets','jyc-logo-small.avif')")&&productionMediaOptimizer.includes("resize({width:96,withoutEnlargement:true})")&&main.includes("const logoSmall='/assets/jyc-logo-small.avif'")&&main.includes('requestedWidth<=96')],
  ['192px logo derivative is generated and used by the Dither Veil',productionMediaOptimizer.includes("const logoMediumAvifOutput=path.join(root,'assets','jyc-logo-medium.avif')")&&productionMediaOptimizer.includes("resize({width:192,withoutEnlargement:true})")&&editorialHome.includes("const DITHER_SOURCE = import.meta.env.PROD ? '/assets/jyc-logo-medium.avif' : FALLBACK")&&browser.includes("toHaveAttribute('src', '/assets/jyc-logo-medium.avif')")],
+ ['270px logo derivative is generated and used responsively by the brand editorial lockup',productionMediaOptimizer.includes("const logoBrandAvifOutput=path.join(root,'assets','jyc-logo-270.avif')")&&productionMediaOptimizer.includes("resize({width:270,withoutEnlargement:true})")&&brandExperience.includes('jyc-logo-270.avif 270w')&&brandExperience.includes('sizes="(max-width: 600px) 70vw, 270px"')],
  ['GLB bot renders after model-viewer loads without a circular availability gate',bot.includes('modelReady&&!modelFailed?<model-viewer')&&bot.includes('onLoad={handleModelLoad}')&&bot.includes('setModelAvailable(true)')],
  ['GLB bot failure restores the safe fallback state',bot.includes('onError={handleModelError}')&&bot.includes('setModelAvailable(false)')&&bot.includes('setModelFailed(true)')],
  ['GLB bot animation respects reduced-motion preference',bot.includes("prefers-reduced-motion: reduce")&&bot.includes("if(prefersReducedMotion()){setMotion('');return}")],
