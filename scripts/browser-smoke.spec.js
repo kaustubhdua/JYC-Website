@@ -929,7 +929,7 @@ test('responsive photo manifest retries after a successful but malformed payload
   await expect.poll(() => attempts).toBe(1);
   await page.waitForTimeout(150);
   await page.locator('a[href="/gallery"]').first().click();
-  await expect(page.locator('.jyc57-gallery-page')).toBeVisible();
+  await expect(page.locator('.jyc57-page')).toBeVisible();
   await expect.poll(() => attempts).toBeGreaterThan(1);
   await expect.poll(() => page.locator('.jyc57-gallery-page picture source[srcset]').count()).toBeGreaterThan(0);
 });
