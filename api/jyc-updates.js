@@ -69,7 +69,7 @@ async function collect(){
  const items=sanitizeItems([...remoteItems,...manualItems]).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,60);
  return {items,live:remoteItems.length>0};
 }
-const boundedText=(value,max=220)=>String(value??'').replace(/[\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]/g,' ').replace(/\\s+/g,' ').trim().slice(0,max);
+const boundedText=(value,max=220)=>String(value??'').split('').filter(char=>{const code=char.charCodeAt(0);return !((code>=0&&code<=8)||(code>=11&&code<=12)||(code>=14&&code<=31)||code===127)}).join('').replace(/\s+/g,' ').trim().slice(0,max);
 const sanitizeItem=row=>{
  if(!row||typeof row!=='object'||Array.isArray(row))return null;
  const externalId=boundedText(row.externalId??row.external_id,180);
