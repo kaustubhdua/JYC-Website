@@ -3,7 +3,7 @@ name: JYC CI
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches: [main, master, 'fix/**']
   pull_request:
     branches: [main, master]
 
