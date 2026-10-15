@@ -215,7 +215,7 @@ test('scrolling About page records layout-shift sources for CI diagnosis', async
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base + '/about', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { name: 'The student ecosystem behind campus life.' })).toBeVisible({ timeout: 20000 });
-  await page.evaluate(async () => { const step = Math.max(500, window.innerHeight * 0.75); for (let y = 0; y < document.documentElement.scrollHeight; y += step) { window.scrollTo(0, y); await new Promise(resolve => setTimeout(resolve, 100)); } window.scrollTo(0, 0); });
+  await page.evaluate(async () => { const step = Math.max(500, window.innerHeight * 0.75); const maxY = document.documentElement.scrollHeight; for (let y = 0; y < maxY; y += step) { window.scrollTo(0, y); await new Promise(resolve => setTimeout(resolve, 100)); } window.scrollTo(0, 0); });
   await page.waitForTimeout(250);
   const diagnostic = await page.evaluate(() => ({ total: window.__jycShiftSources.reduce((sum, item) => sum + item.value, 0), shifts: window.__jycShiftSources }));
   console.log('JYC_SCROLL_CLS_DIAGNOSTIC', JSON.stringify(diagnostic));
