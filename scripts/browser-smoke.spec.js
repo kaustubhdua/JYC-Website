@@ -1434,6 +1434,16 @@ test('responsive photos retry the original source when a derivative returns HTML
   const testPage = await context.newPage();
   let derivativeRequests = 0;
 
+  // Keep the source image deterministic and valid so this test exercises the
+  // derivative failure path rather than an unrelated missing portrait in fixture data.
+  await testPage.route('**/assets/team/**', async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="720" viewBox="0 0 600 720"><rect width="600" height="720" fill="#f5f1e6"/><circle cx="300" cy="220" r="90" fill="#a82420"/><path d="M120 680c10-180 110-260 180-260s170 80 180 260" fill="#bf9c6f"/></svg>'
+    });
+  });
+
   await testPage.route('**/assets/photo-derivatives/**', async route => {
     derivativeRequests += 1;
     await route.fulfill({
