@@ -305,9 +305,9 @@
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+2) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+3) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+4) { grid-row: span 18 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+5) { grid-row: span 34 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+5) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+6) { grid-row: span 20 !important; }
-  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+7) { grid-row: span 30 !important; }
+  .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n+7) { grid-row: span 24 !important; }
   .public-app .jyc57-masonry > .jyc57-photo:nth-child(8n) { grid-column: span 6 !important; grid-row: span 30 !important; }
 }
 @media (min-width: 621px) and (max-width: 900px) {
