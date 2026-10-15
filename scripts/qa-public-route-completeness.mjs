@@ -22,12 +22,10 @@ const routes = [
 ];
 
 for (const route of routes) {
-  // Best of JYC is intentionally lazy-loaded so the photo-selection bundle is
-  // not shipped on every route; assert the route's lazy component, not the
-  // retired eager JSX form.
-  const expected = route.path === '/best-of-jyc'
-    ? "if(clean==='/best-of-jyc')return <>{schema}<LazyJYCBestOf data={data}/></>;"
-    : `if(clean==='${route.path}')return <>{schema}<${route.component} data={data}/></>;`;
+  // Assert the component actually wired to the current public route.
+  // Keep this contract aligned with the production router, not an assumed
+  // lazy-loading implementation that is not present in this release.
+  const expected = `if(clean==='${route.path}')return <>{schema}<${route.component} data={data}/></>;`;
   assert.ok(main.includes(expected), `${route.path} must render its dedicated page component`);
   assert.ok(shells.includes(`'${route.path}'`), `${route.path} must have a direct-entry SEO shell`);
 }
