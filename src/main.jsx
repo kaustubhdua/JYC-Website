@@ -61,9 +61,9 @@ const LazyJYC57Clubs=lazy(()=>loadJyc57Component('JYC57Clubs'));
 const LazyJYC57Gallery=lazy(()=>loadJyc57Component('JYC57Gallery'));
 const LazyJYCBestOf=lazy(()=>loadJyc57Component('JYC57BestOf'));
 
-function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
+function routeChunkKey(path){const clean=String(path||'/').split('?')[0].replace(/\/+$/,'')||'/';if(clean==='/about')return 'brand-editorial';if(clean==='/clubs'||clean==='/events'||clean==='/best-of-jyc'||clean==='/gallery'||clean.startsWith('/gallery/'))return 'jyc57-experience';if(clean==='/archive')return 'jyc57-archive';return null}
 const loadedRouteChunks=new Set();
-function loadRouteChunk(path){const clean=String(path||'/').split('?')[0].replace(/\\/+$/,'')||'/';const key=routeChunkKey(clean);if(key==='brand-editorial')return loadJycBrandEditorialComponent();if(key==='jyc57-experience'){if(clean==='/clubs')return loadJyc57Component('JYC57Clubs');if(clean==='/events')return loadJyc57Component('JYC57Events');if(clean==='/best-of-jyc')return loadJyc57Component('JYC57BestOf');return loadJyc57Component('JYC57Gallery')}if(key==='jyc57-archive')return loadJyc57ArchiveComponent();return Promise.resolve()}
+function loadRouteChunk(path){const clean=String(path||'/').split('?')[0].replace(/\/+$/,'')||'/';const key=routeChunkKey(clean);if(key==='brand-editorial')return loadJycBrandEditorialComponent();if(key==='jyc57-experience'){if(clean==='/clubs')return loadJyc57Component('JYC57Clubs');if(clean==='/events')return loadJyc57Component('JYC57Events');if(clean==='/best-of-jyc')return loadJyc57Component('JYC57BestOf');return loadJyc57Component('JYC57Gallery')}if(key==='jyc57-archive')return loadJyc57ArchiveComponent();return Promise.resolve()}
 
 
 
