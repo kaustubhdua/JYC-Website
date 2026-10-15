@@ -263,8 +263,8 @@ html[data-theme="light"] .public-app .jh-final .jh-section-number {
 ) {
   color: #65451F !important;
 }
-:root:not([data-theme="dark"]) .public-app a:not(.btn):not(.nav-join-cta) {
-  color: #76211D;
+:root:not([data-theme="dark"]) .public-app :is(.text-link,.reference-view-all,.jh-overline,.jh-about-kicker) {
+  color: #76211D !important;
 }
 :root:not([data-theme="dark"]) .public-app :is(
   .jh-lead,.jh-assistant-info p,.jh-community-copy p,.jh-final p,
