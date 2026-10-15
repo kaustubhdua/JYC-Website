@@ -42,7 +42,7 @@ const checks=[
  ['public gallery has published album routes',main.includes("clean.startsWith('/gallery/')")&&read('src/jyc57-experience.jsx').includes("/gallery/'+encodeURIComponent(value)")&&read('src/jyc57-experience.jsx').includes("jyc_media_albums")],
  ['public gallery supports mobile swipe and zoom',read('src/jyc57-experience.jsx').includes('onTouchStart')&&read('src/jyc57-experience.jsx').includes('setZoom')],
  ['public gallery uses metadata filters and progressive rendering',read('src/jyc57-experience.jsx').includes('visibleCount')&&read('src/jyc57-experience.jsx').includes('setVisibleCount(n => n + 36)')&&read('src/jyc57-experience.jsx').includes('g.association')&&read('src/jyc57-experience.jsx').includes('g.year')&&read('src/jyc57-experience.jsx').includes('eventCategory')],
- ['archive route is code-split into a dedicated lazy-loaded module',main.includes("const loadJyc57Archive=()=>jyc57ArchivePromise||(jyc57ArchivePromise=import('./jyc57-archive.jsx'))")&&main.includes("const LazyJYC57Archive=lazy(()=>loadJyc57Archive().then(m=>({default:m.JYC57Archive})))")&&!main.includes("JYC57Archive} from './jyc57-experience.jsx'")&&read('src/jyc57-archive.jsx').includes('export function JYC57Archive')],
+ ['archive route is code-split into a dedicated lazy-loaded module',main.includes("const LazyJYC57Archive=lazy(()=>import('./jyc57-archive.jsx')")&&!main.includes("JYC57Archive} from './jyc57-experience.jsx'")&&read('src/jyc57-archive.jsx').includes('export function JYC57Archive')],
 ];
 let failed=0; for(const [name,ok] of checks){console.log((ok?'PASS':'FAIL')+': '+name);if(!ok)failed++}
 if(failed)process.exit(1);
