@@ -181,6 +181,27 @@ test('brand text contrast stays readable in both light and dark themes', async (
   }
 });
 
+test('lazy route entry avoids a large initial layout shift', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__jycCls = 0;
+    try { new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__jycCls += entry.value; }).observe({ type: 'layout-shift', buffered: true }); } catch {}
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(base + '/about', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { name: 'The student ecosystem behind campus life.' })).toBeVisible({ timeout: 20000 });
+  await page.waitForTimeout(250);
+  expect(await page.evaluate(() => window.__jycCls || 0)).toBeLessThan(0.1);
+});
+
+test('recruitment empty state stacks its title and description', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(base + '/recruitment', { waitUntil: 'domcontentloaded' });
+  const empty = page.locator('.feature-empty.large');
+  await expect(empty).toBeVisible();
+  const layout = await empty.evaluate(el => ({ display: getComputedStyle(el).display, direction: getComputedStyle(el).flexDirection, heading: getComputedStyle(el.querySelector('strong')).display, body: getComputedStyle(el.querySelector('span')).display, gap: getComputedStyle(el).rowGap }));
+  expect(layout).toEqual({ display: 'flex', direction: 'column', heading: 'block', body: 'block', gap: '8px' });
+});
+
 test('feature hero copy stays readable in light theme on its dark surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base + '/recruitment', { waitUntil: 'domcontentloaded' });
