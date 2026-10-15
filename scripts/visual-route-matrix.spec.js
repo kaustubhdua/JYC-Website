@@ -83,6 +83,8 @@ test.describe('JYC visual capture and measurable design contracts', () => {
         const routeName = route === '/' ? 'home' : route.slice(1).replaceAll('/', '-');
         const snapshotName = `${viewport.name}-${routeName}.png`;
         const baselinePath = testInfo.snapshotPath(snapshotName);
+        // Bootstrap only on an explicitly marked push; normal runs must compare committed baselines.
+        // The workflow uploads these generated files as an artifact for review and a follow-up commit.
         if (process.env.JYC_UPDATE_VISUAL_BASELINES === 'true') {
           fs.mkdirSync(path.dirname(baselinePath), { recursive: true });
           await page.screenshot({ path: baselinePath, animations: 'disabled' });
