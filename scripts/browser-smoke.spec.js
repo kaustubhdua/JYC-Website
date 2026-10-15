@@ -181,6 +181,21 @@ test('brand text contrast stays readable in both light and dark themes', async (
   }
 });
 
+test('feature hero copy stays readable in light theme on its dark surface', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(base + '/recruitment', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'feature hero contrast');
+  await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'light'));
+  const styles = await page.locator('.feature-hero').evaluate(el => ({
+    heading: getComputedStyle(el.querySelector('h1')).color,
+    body: getComputedStyle(el.querySelector('p')).color,
+    background: getComputedStyle(el).backgroundImage
+  }));
+  expect(styles.heading).toBe('rgb(255, 248, 225)');
+  expect(styles.body).toBe('rgb(215, 209, 199)');
+  expect(styles.background).toContain('rgb(15, 14, 17)');
+});
+
 test('mobile visual guardrails keep core content centered and inside viewport', async ({ page }) => {
   test.setTimeout(120000);
   for (const width of [320, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
