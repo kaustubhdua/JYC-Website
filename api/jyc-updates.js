@@ -66,14 +66,31 @@ async function collect(){
  const settled=await Promise.allSettled(tasks);
  const remoteItems=unique(settled.flatMap(x=>x.status==='fulfilled'?x.value:[]));
  const manualItems=await manual();
- const items=unique([...remoteItems,...manualItems]).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,60);
+ const items=sanitizeItems([...remoteItems,...manualItems]).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,60);
  return {items,live:remoteItems.length>0};
 }
+const boundedText=(value,max=220)=>String(value??'').replace(/[\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]/g,' ').replace(/\\s+/g,' ').trim().slice(0,max);
+const sanitizeItem=row=>{
+ if(!row||typeof row!=='object'||Array.isArray(row))return null;
+ const externalId=boundedText(row.externalId??row.external_id,180);
+ const title=boundedText(row.title,180);
+ const url=safeRemoteUrl(row.url??row.post_url);
+ if(!externalId||!title||!url)return null;
+ const image=safeRemoteUrl(row.image??row.image_url);
+ const publishedAtRaw=row.publishedAt??row.published_at??'';
+ const publishedAt=publishedAtRaw&&Number.isFinite(Date.parse(publishedAtRaw))?new Date(publishedAtRaw).toISOString():'';
+ return {
+  externalId,title,summary:boundedText(row.summary,220),url,image,
+  publishedAt,hub:boundedText(row.hub,100),platform:boundedText(row.platform,40)||'Web',
+  type:boundedText(row.type,40)||'Update',verified:row.verified===true
+ };
+};
+const sanitizeItems=rows=>unique((Array.isArray(rows)?rows:[]).map(sanitizeItem).filter(Boolean)).slice(0,60);
 async function dbRead(){
  try{
   const base=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_SECRET_KEY;if(!base||!key)return [];
   const u=base.replace(/\/$/,'')+'/rest/v1/aggregated_posts?select=*&published=eq.true&order=published_at.desc&limit=60';
-  const r=await fetchWithTimeout(u,{headers:{apikey:key,Authorization:'Bearer '+key}});if(!r.ok)return [];return await r.json();
+  const r=await fetchWithTimeout(u,{headers:{apikey:key,Authorization:'Bearer '+key}});if(!r.ok)return [];const rows=await r.json();return sanitizeItems(rows);
  }catch{return []}
 }
 async function dbWrite(items){
@@ -94,7 +111,7 @@ if(sync&&req.headers['x-jyc-sync-secret']!==process.env.JYC_SYNC_SECRET){res.sta
  if(!sync&&memory.items.length&&Date.now()-memory.at<CACHE_MS){res.setHeader('Cache-Control','s-maxage=900, stale-while-revalidate=1800');res.status(200).json({items:memory.items,live:memory.live,configured:memory.configured,cached:true});return}
  try{
   const collected=await collect();
-  let items=collected.items;
+  let items=sanitizeItems(collected.items);
   if(items.length)await dbWrite(items);
   if(!items.length)items=await dbRead();
   const live=collected.live===true,configured=hasConfiguredSource();
@@ -102,7 +119,7 @@ if(sync&&req.headers['x-jyc-sync-secret']!==process.env.JYC_SYNC_SECRET){res.sta
   res.setHeader('Cache-Control','s-maxage=900, stale-while-revalidate=1800');
   res.status(200).json({items,live,configured});
  }catch(error){
-  const fallback=await dbRead(),configured=hasConfiguredSource();memory={at:Date.now(),items:fallback,live:false,configured};
+  const fallback=sanitizeItems(await dbRead()),configured=hasConfiguredSource();memory={at:Date.now(),items:fallback,live:false,configured};
   res.setHeader('Cache-Control','s-maxage=300, stale-while-revalidate=600');
   res.status(200).json({items:fallback,live:false,configured,error:'connector refresh failed'});
  }
