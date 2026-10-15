@@ -48,6 +48,7 @@ for(const file of raster){
 const logoSource=path.resolve('public/JYC Logo(4).png');
 const logoOutput=path.join(root,'assets','jyc-logo.webp');
 const logoAvifOutput=path.join(root,'assets','jyc-logo.avif');
+const logoSmallAvifOutput=path.join(root,'assets','jyc-logo-small.avif');
 try{
   if(!fs.existsSync(logoSource))throw new Error('Official JYC logo source is missing: '+logoSource);
   fs.mkdirSync(path.dirname(logoOutput),{recursive:true});
@@ -61,9 +62,13 @@ try{
   await image.clone().avif({quality:80,effort:6}).toFile(avifTemp);
   const avifBytes=fs.statSync(avifTemp).size;
   fs.renameSync(avifTemp,logoAvifOutput);
-  console.log('Generated official JYC logo derivatives from '+before+' bytes: WebP '+webpBytes+' bytes; AVIF '+avifBytes+' bytes.');
+  const smallAvifTemp=logoSmallAvifOutput+'.jyc-opt';
+  await sharp(logoSource).rotate().resize({width:96,withoutEnlargement:true}).avif({quality:80,effort:6}).toFile(smallAvifTemp);
+  const smallAvifBytes=fs.statSync(smallAvifTemp).size;
+  fs.renameSync(smallAvifTemp,logoSmallAvifOutput);
+  console.log('Generated official JYC logo derivatives from '+before+' bytes: WebP '+webpBytes+' bytes; AVIF '+avifBytes+' bytes; 96px AVIF '+smallAvifBytes+' bytes.');
 }catch(error){
-  for(const temp of [logoOutput+'.jyc-opt',logoAvifOutput+'.jyc-opt'])fs.rmSync(temp,{force:true});
+  for(const temp of [logoOutput+'.jyc-opt',logoAvifOutput+'.jyc-opt',logoSmallAvifOutput+'.jyc-opt'])fs.rmSync(temp,{force:true});
   failed++;
   console.warn('Official JYC logo derivative failed:',error?.message||error);
 }
