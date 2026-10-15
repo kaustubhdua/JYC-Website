@@ -217,7 +217,7 @@ const derivativeWorkers=Array.from({length:Math.min(6,derivativeFiles.length)},a
   const file=derivativeFiles[index];
   try{
    const rel=path.relative(derivativeRoot,file).replaceAll(path.sep,'/');
-   const match=rel.match(/-(240|480|960|1600)\.(avif|webp)$/i);
+   const match=rel.match(/-(240|320|360|480|960|1600)\.(avif|webp)$/i);
    if(!match){derivativeMismatches.push({file:path.relative('public',file),error:'unexpected derivative filename'});continue}
    const requestedWidth=Number(match[1]),base=rel.replace(/-\d+\.(?:avif|webp)$/i,'');
    const source=['.png','.jpg','.jpeg','.webp'].map(ext=>path.join(imageRoot,base+ext)).find(candidate=>fs.existsSync(candidate));
