@@ -10,7 +10,7 @@ check('event search URLs prefer stored slugs',main.includes('slug(e.slug||e.titl
 check('gallery event cards use canonical eventPath',gallery.includes('onClick={()=>nav(eventPath(e))}'));
 check('club cards use canonical slugs',gallery.includes("encodeURIComponent(slugify(c.name))"));
 check('archive rows use canonical eventPath',gallery.includes('jyc57-archive-row')&&gallery.includes('onClick={()=>nav(eventPath(e))}'));
-check('gallery related community uses a slug',gallery.includes("slugify(String(active.association).split(' · ')[0])"));
+check('gallery community filter recognises source-backed clubs and hubs',gallery.includes("const isCommunity = /club|community|hub|society/i.test(mediaHay)")&&gallery.includes("Object.keys(JYC_HUB_CONTENT).some(name=>mediaHay.includes(name.toLowerCase()))"));
 check('legacy motion event routes prefer stored slugs',motion.includes('slug18(e.slug||e.title)'));
 check('legacy motion club routes prefer stored slugs',motion.includes('slug18(c.slug||c.name)'));
 check('spotlight event route prefers stored slug',spotlight.includes('spotlight.event.slug||spotlight.event.title'));
