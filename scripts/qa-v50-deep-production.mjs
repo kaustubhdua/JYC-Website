@@ -17,6 +17,7 @@ check('JAI popup uses official 128 source',popup.includes(jaiSite)&&popup.includ
 check('JAI popup is homepage-scoped',popup.includes("window.location.pathname==='/'")&&popup.includes("if(!onHome||Date.now()>EVENT_END||!open)return null;")&&popup.includes("2026-10-31T23:59:59+05:30"));
 check('JAI popup is dismissible and reduced-motion safe',popup.includes('localStorage')&&popup.includes("e.key==='Escape'")&&popup.includes('prefers-reduced-motion:reduce'));
 check('JAI popup has official registration and site actions',popup.includes('unstop.com/o/XAfa40i')&&popup.includes('Register on Unstop')&&popup.includes('Official site'));
+check('JAI popup removes registration CTA after the verified deadline',popup.includes("EVENT_REGISTRATION_DEADLINE=Date.parse('2026-10-10T23:59:00+05:30')")&&popup.includes('registrationOpen?')&&popup.includes('jyc-featured-registration-closed')&&popup.includes('Registration closed · deadline passed'));
 
 if(failures.length)process.exit(1);
 console.log('V50 DEEP PRODUCTION QA PASS');
