@@ -138,6 +138,11 @@ test('mobile homepage logo and primary actions stay clear of the fixed navigatio
 
 test('homepage accessibility and responsive guardrails', async ({ page }) => {
   await page.goto(base, { waitUntil: 'domcontentloaded' });
+  const themeToggle = page.locator('button.theme-toggle');
+  await expect(themeToggle).toBeVisible();
+  const visibleThemeLabel = (await themeToggle.innerText()).replace(/\\s+/g, ' ').trim();
+  const themeAccessibleName = await themeToggle.getAttribute('aria-label');
+  expect(themeAccessibleName, 'theme toggle accessible name must include its visible label').toContain(visibleThemeLabel);
 
   const missingAlt = await page.locator('img:not([alt])').count();
   expect(missingAlt).toBe(0);
