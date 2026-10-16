@@ -36,6 +36,30 @@ const LOGO_FALLBACK='/assets/jyc-logo.avif';
 const identityPalette=['#A82420','#BF9C6F','#D2B48C','#C92A2A'];
 const identityAccent=value=>{let hash=0;for(const ch of String(value||'JYC'))hash=(hash*31+ch.charCodeAt(0))>>>0;return identityPalette[hash%identityPalette.length]};
 const eventCardPhoto=event=>event?.poster||event?.banner||sourceEventMedia(event)?.photoItems?.find(item=>item?.url)?.url||'';
+const PHOTO_SUBJECTS = [
+ ['induction', /induction|orientation|freshers/i],
+ ['cultural-fest', /converge|ebullience|fest|ethnic day|impressions/i],
+ ['technology', /hack|hackathon|code|robot|drone|ai summit|technology/i],
+ ['performance', /dance|music|theatre|stage|performance|singing/i],
+ ['community', /club|community|society|hub|volunteer|meeting/i],
+ ['sports', /sport|cricket|football|badminton|match|tournament/i],
+ ['workshop', /workshop|session|seminar|talk|lecture/i]
+];
+const photoSubject=(item,index=0)=>{
+ const text=`${item?.caption||''} ${item?.title||''} ${item?.association||''} ${item?.albumName||''} ${item?.category||''} ${item?.event||''}`.toLowerCase();
+ return PHOTO_SUBJECTS.find(([,pattern])=>pattern.test(text))?.[0] || 'campus-life';
+};
+const photoAspect=(item,index=0)=>{
+ const width=Number(item?.width||item?.dimensions?.width||0),height=Number(item?.height||item?.dimensions?.height||0);
+ if(width>0&&height>0){
+  const ratio=width/height;
+  if(ratio>1.52)return 'landscape';
+  if(ratio<.78)return 'portrait';
+  return 'square';
+ }
+ const ratio=(index*7+3)%11;
+ return ratio<4?'landscape':ratio<7?'square':'portrait';
+};
 const photoObjectPosition=photo=>{
  const rawX=photo?.focalX??photo?.focal_x;
  const rawY=photo?.focalY??photo?.focal_y;
@@ -284,6 +308,27 @@ export function JYC57Gallery({data}){
   const categories = useMemo(() => ['All', ...new Set(items.map(g => g.category).filter(Boolean))], [items]);
   const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
   const ARCHIVE_IA = ['COLLECTIONS','MOMENTS','YEARS','COMMUNITIES'];
+  const heroPhotos = useMemo(() => {
+    const pool = filtered.length ? filtered : items;
+    const bySubject = new Map();
+    for (const item of pool) {
+      const subject = photoSubject(item);
+      const rows = bySubject.get(subject) || [];
+      if (rows.length < 4) rows.push(item);
+      bySubject.set(subject, rows);
+    }
+    const selectedSubjects = [...bySubject.keys()];
+    const chosen = [];
+    let round = 0;
+    while (chosen.length < 6 && selectedSubjects.some(key => (bySubject.get(key) || []).length > round)) {
+      for (const key of selectedSubjects) {
+        const item = bySubject.get(key)?.[round];
+        if (item && chosen.length < 6) chosen.push(item);
+      }
+      round++;
+    }
+    return chosen;
+  }, [filtered, items]);
 
   useEffect(() => {
     let alive = true;
@@ -406,6 +451,26 @@ export function JYC57Gallery({data}){
       <span className="jyc57-gallery-meta" aria-live="polite">{filtered.length} photographs {albumSlug ? 'in this collection' : 'in the archive'}</span>
     </header>
     <nav className="jyc57-archive-nav" aria-label="Gallery archive navigation">{ARCHIVE_IA.map(label=><a key={label} href={`#jyc-gallery-${label.toLowerCase()}`}>{label}</a>)}</nav>
+    <section className="jyc57-editorial-wall" aria-label="Featured JYC photographs">
+      <div className="jyc57-editorial-wall-head">
+        <span className="eyebrow">THE VISUAL RECORD</span>
+        <h2>Campus life, in its own light.</h2>
+        <p>Curated moments from published JYC photography. Open any image for its full-size view and available source context.</p>
+      </div>
+      <div className="jyc57-editorial-grid">
+        {heroPhotos.map((photo,index)=>{
+          const shape=photoAspect(photo,index);
+          const subject=photoSubject(photo,index);
+          return <button type="button" key={photo.id||photo.url} className={`jyc57-editorial-photo ${shape} ${index===0?'feature':''}`} style={{'--photo-index':index}} onClick={()=>openPhoto(photo)} aria-label={`Open photograph: ${photo.caption||photo.title||photo.association||'JYC campus moment'}`}>
+            <ResponsivePhoto src={photo.url} alt={photo.alt||photo.alt_text||photo.caption||photo.title||`JYC campus photograph ${index+1}`} loading={index<2?'eager':'lazy'} fetchPriority={index===0?'high':undefined} sizes="(max-width: 620px) 50vw, (max-width: 960px) 33vw, 420px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder; photograph unavailable"/>
+            <span className="jyc57-editorial-vignette"/>
+            <span className="jyc57-photo-index">{String(index+1).padStart(2,'0')}</span>
+            <span className="jyc57-photo-caption"><small>{subject.replaceAll('-',' ')}</small><strong>{photo.caption||photo.title||photo.albumName||photo.association||'A JYC campus moment'}</strong></span>
+            <span className="jyc57-editorial-open" aria-hidden="true">↗</span>
+          </button>;
+        })}
+      </div>
+    </section>
 
     {/* Published albums and source-backed collections; counts come from actual photo records. */}
     <section id="jyc-gallery-collections" className="jyc-memories-section">
@@ -421,7 +486,8 @@ export function JYC57Gallery({data}){
           const albumPhotos = items.filter(g => g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name);
           return <button type="button" key={album.id || album.slug} className="jyc-memory-card" onClick={() => nav(albumRoute(album.slug))}>
             <div className="jyc-memory-cover">
-              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading={albumIndex < 3 ? 'eager' : 'lazy'} fetchPriority={albumIndex === 0 ? 'high' : undefined} sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 699px) calc(100vw - 40px), (max-width: 900px) calc(50vw - 30px), (max-width: 1063px) calc(50vw - 42px), 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder"/>
+              <div className="jyc-memory-cover-fallback" aria-hidden="true"><span>{String(album.name || 'JYC').trim().slice(0,1).toUpperCase()}</span><small>JYC VISUAL ARCHIVE</small></div>
+              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading={albumIndex < 3 ? 'eager' : 'lazy'} fetchPriority={albumIndex === 0 ? 'high' : undefined} sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 699px) calc(100vw - 40px), (max-width: 900px) calc(50vw - 30px), (max-width: 1063px) calc(50vw - 42px), 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt={`Official JYC logo placeholder; ${album.name} cover unavailable`}/>
             </div>
             <div className="jyc-memory-scrim" />
             <div className="jyc-memory-details">
