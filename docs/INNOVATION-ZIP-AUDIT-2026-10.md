@@ -1,75 +1,135 @@
-# Innovation JIIT ZIP Audit — source inventory and reuse guidance
+# Innovation JIIT ZIP Audit — direct attachment inspection
 
-## Scope and verification boundary
-The uploaded `Innovationjiit.in-main.zip` is 326,270,015 bytes (~326 MB). The full uploaded binary could not be opened directly inside the isolated code sandbox. I cloned the corresponding public repository `https://github.com/Omtripathi007/Innovationjiit.in` as a source-equivalent review at shallow commit `41f1fbb` (`fixed google SEO picture shit (kartik->Mukuu)`). This lets us examine the active repository text/assets, but it does **not** prove that the ZIP bytes are identical to that commit. This audit does not claim literal byte-for-byte verification of the ZIP.
+**Audit date:** 16 October 2026  
+**Input inspected:** Innovationjiit.in-main.zip (326,270,015 bytes)  
+**JYC repository:** kaustubhdua/JYC-Website
 
-## Inventory
-- 55 text/code files scanned: HTML, CSS, JS, Markdown, JSON and TXT; approximately 55,604 source lines.
-- 451 tracked/worktree files in the clone, including 337 image files and other binary media/docs.
-- Root `index.html`: 183,066 characters / 3,471 lines, 15 H1 matches, 39 H2, 79 H3, 127 anchor/button elements, and 81 image tags.
-- The `innovation-2.0` implementation has 7 main page files (home/about/domains/events/gallery/projects/team, plus contact), an 8,330-line stylesheet, a 733-line JS file and 529-line team-showcase JS.
-- The `ride-hack-2026` microsite has 6 HTML pages (home/events/contact/team/speakers/sponsors), a 1,432-line stylesheet and a 594-line animated-background module.
-- `innovation hold` and `innovation-2.0` are near-identical duplicate site trees. Their home page, main CSS and main JS are byte-identical; team-related files differ slightly. Only one canonical implementation should be maintained.
+## 1. Evidence and scope
 
-## What JYC should adopt from Innovation
-1. **Identity-first page opening:** clear purpose, large but well-composed headline and one primary + one secondary CTA. JYC’s left-side identity text and right-side Dither Veil logo concept is right; make logo fallback instant and effects progressive.
-2. **Clear information architecture:** separate About/story, community/domain discovery, Events, Gallery/Archive, Team and Contact. JYC already has most of these destinations, so polish their page-specific presentation instead of porting a second architecture.
-3. **Editorial photography:** use real event photos as the core visual material, create varied but stable feature frames, albums, captions and timeline moments. Every image in JYC must be selected from the existing manifest with verified association, focal point, provenance, alt text, responsive derivative and fallback. Do not import Innovation images or reuse a repeated stock/image placeholder to fill layouts.
-4. **Narrative event detail:** story and organiser, date/venue/audience, accurate registration state and URL, event details/resources, results/photos, and related programmes. JYC’s event and archive routes should remain the source of truth, including past/upcoming separation.
-5. **Distinct page art direction:** an Events page should read dates/status first; Gallery should feel photo-led; Team should foreground real faces/roles; About should tell a concise source-backed story. Avoid using the same generic card grid everywhere.
-6. **Flagship microsite pattern:** the RIDE Hack sub-site shows a more intense campaign shell for its own programme/tracks, speaker/team and grants. Apply this only to an officially published active JYC flagship programme with verified assets and dates, not as a site-wide JYC theme.
+The supplied ZIP was opened and integrity-tested. ZipFile.testzip() returned no corrupt member. It contains 300 archive entries; 264 extracted filesystem files; 39 text/code files among HTML/CSS/JS/Markdown totalling approximately 48,353 lines and 1.50 MB of source text; 202 image-file entries including duplicate trees; 6 DOCX files; and 2 PDFs. Images are grouped under assets/images with hero, events, teams, gallery, ridehack, climate, innovate2025 and miscellaneous subfolders.
 
-## Confirmed quality issues found in the reference source
-These are reference-source observations, not statements about JYC.
-- Root `index.html` contains the misspelling **“Upcomming Events”** more than once, **“Prizes worth more than 25 Lacks !!”**, and the impossible date string **“AUGUST 25-25, 2026”** / day **“25-25”**. Do not copy these strings or assume listed event dates/registration URLs remain valid.
-- Root homepage includes 3 “Content Creator” placeholders from `via.placeholder.com/180` and emails `neha@example.com`, `karan@example.com`, `sneha@example.com`. These are not publish-ready profiles.
-- Root home has one image without `alt`, several duplicate IDs (`eventsPageRegisterBtn`, `eventsPageRideHackDetailBtn`, `webDevTeamCard`, `contentTeamCard`), 47 literal `href="#"` anchors and at least 14 external target links without `rel`.
-- Root home contains 229 inline-style attributes and a large repeated/duplicated event surface. It uses Windows backslash asset paths and remote logo/image dependencies. Root CSS is 10,241 lines with many transform/animation/backdrop-filter rules but no `prefers-reduced-motion` query.
-- The `innovation-2.0` homepage is better structured and its sampled main pages have no missing `alt` or duplicate IDs, but `main.css` is still 8,330 lines, has 28 media queries, 19 `!important` rules, only one focus selector match and a single reduced-motion block. Contact and team stylesheets have no explicit reduced-motion block. The README claims WCAG AA and “60 FPS”; a source scan alone does not substantiate full WCAG conformance or that frame rate.
-- Team JS/data includes the placeholder copy **“Tagline or quote placeholder”**; test rendered carousel/profile content too, not only static HTML.
-- The RIDE Hack microsite has over 140 inline styles on its largest HTML page and 139 `!important` declarations in its CSS. `speakers.html` has awkward placeholder headline copy **“SOME THING SPECIAL Coming Soon...”** and inactive/coming-soon content mixed into the event funnel.
-- The root source mixes event records and page modules from 2025/2026 with different registration notices. Given the present date 16 October 2026, past dates should be archived, and any upcoming event or registration state needs fresh organiser verification rather than inference from the bundle.
-- Root HTML references a Google thumbnail for the SIH logo; images are reused repeatedly across cards. This is a fragile dependency and visual repetition problem.
+The archive includes three overlapping site generations:
+- Root legacy website: index.html (about 3,370 lines), 15 H1 tags, 63 image tags, 43 literal href="#" links and 228 inline style attributes.
+- innovation-2.0: a modular multi-page site covering home, about, domains, events, gallery, projects, team and contact, with JavaScript and CSS modules.
+- innovation hold: an older copy of nearly the same site tree.
 
-## shadcn/ui, Magic UI and Tremor adoption
-### shadcn/ui — accessibility/composition patterns
-Do not replace the React app. Evaluate targeted component adaptations only when current controls have a tested gap:
-- `Dialog` / `Sheet` for accessible mobile navigation or contextual details;
-- `Tabs` for Gallery/Event scopes, with clear URL/state and keyboard handling;
-- `Command`, `Popover`, `Select`, `Checkbox` for search/filter only if they simplify the current implementation;
-- `Accordion` for long event FAQs/details;
-- `Skeleton`, `Alert`, `Toast` for loading/error/success states.
-Before adopting, check installed dependency base (Radix vs Base UI), current React Router behavior, license/version provenance and package/bundle impact. Each dialog must handle Escape, tab sequence, focus restore, outside dismissal and touch. Don’t add a wholesale shadcn CLI/theme migration just for the appearance.
+Key files in innovation-2.0 and innovation hold are byte-identical for index, main CSS, main JavaScript, and sampled About, Events and Gallery pages. Their Team page and team JavaScript differ, so they are near-duplicate site generations rather than wholly identical. The shared main stylesheet is about 8,330 lines; the root legacy stylesheet is 10,241 lines and the root JavaScript about 1,760 lines.
 
-### Magic UI — restrained effects only
-JYC already has Motion, GSAP, OGL-powered React Bits Dither Veil, Magic Bento, depth carousel and DriftWall. Do **not** add a second motion runtime. Reuse/adapt:
-- Bento grid composition (keep current Magic Bento and improve the crop/rhythm rather than mounting a duplicate);
-- low-cost blur/opacity entrance on a few section headings;
-- one optional fine-pointer spotlight/edge treatment on one or two featured cards;
-- static or slow low-motion grid/light pattern in one region only;
-- marquee only for genuine logos/partners if it pauses, works by keyboard and is disabled/replaced for reduced motion.
-Avoid global cursor replacement, continuous whole-site 3D, stacked shimmer/sparkle/particles, always-on animated backdrops and high-cost WebGL on mobile.
+This report is based directly on the supplied ZIP, not only its upstream public repository. Static source inspection does not prove every runtime interaction, accessibility criterion or performance claim. It also is not a claim that every image and document in the archive was individually reviewed by a human.
 
-### Tremor — surface consistency, not dashboard UI
-Tremor is oriented toward reusable information/data UI. Borrow its component discipline and compact hierarchy for verified achievements, event status pills, dates and small structured facts only when they improve comprehension. Do not add KPI dashboards, invented counts, chart panels or a new package to a photography-led campus community website.
+## 2. What to adapt from Innovation
 
-## JYC-specific design decisions
-- Preserve JYC’s own warm paper/ivory, deep ink, oxblood/red, restrained champagne/brass palette. Innovation’s dark purple/pink/cyan palette belongs to its identity.
-- Typography: purposeful display headings, comfortable body text, small metadata only; use fluid `clamp()` sizes, readable line lengths and robust wrapping. Never shrink important copy just to fit a card.
-- “3D” should primarily come from composed depth, perspective, lighting, real photographs, responsive card elevation and selective interaction—not perpetual movement. One dominant effect per section.
-- Preserve existing routes, source-backed data, responsive media system, gallery lightbox and Team interactions if verified. Any photo/route change must use canonical existing records.
-- Respect reduced motion, 320px screens, keyboard/focus, contrast, screen reader names and static Dither logo fallback. Content must remain available without WebGL.
-- Do not import Innovation’s assets, code blobs, names, contact information, profiles, form destinations or event dates as JYC content.
+1. **Purpose-first hero.** One clear JYC proposition, a strong headline, short supporting copy, one primary CTA and one secondary CTA. Preserve the requested composition: JYC text on the left and the official JYC logo with the existing Dither Veil on the right.
+2. **Authentic-photo storytelling.** Lead with one strong photograph and support it with a smaller, intentionally composed set of images. Use only JYC's existing provenance-backed photo manifest in JYC; never transfer Innovation's people, logos, imagery or content.
+3. **Page-specific structure.** The reference separates About, Domains, Events, Projects, Gallery, Team and Contact. JYC already has similar destinations, so improve each existing route and preserve the current routing/data model rather than importing a second architecture.
+4. **Practical event details.** Place title, date, venue/audience, status, details and the correct official action where visitors can understand them quickly. Registration state and URLs must come from verified JYC records.
+5. **Editorial collage discipline.** Use one dominant frame and supporting frames with intentional crops and stable dimensions. Avoid random scrapbook decoration, repeated-image filler, face cropping and text-on-image without adequate contrast.
+6. **Event-specific campaign identity.** A flagship JYC event can earn a more immersive sub-brand only when an officially published programme, real assets, correct dates and verified action links exist. This is not a reason to replace JYC's year-round identity.
+7. **Responsive and reusable styles.** Adapt the reference's use of CSS variables, grids, and page-specific modules as principles; do not copy its oversized legacy stylesheets.
+8. **Progressive enhancement.** Important copy, navigation and the logo must remain available if WebGL, shader compilation, images, external APIs or animation fail. Motion must not gate content.
 
-## Implementation plan
-1. Establish the route and component inventory and inspect the current CSS cascade before redesign; consolidate tokens carefully with before/after evidence rather than adding endless override files.
-2. Resolve P0 route, content, registration-status and image/fallback defects first.
-3. Polish hero → homepage activity/event/photo sections; then Gallery/Archive, Events/details, Clubs/details, Team, About, Calendar, Announcements/Updates, Recruitment/Join, Achievements/Best-of and Contact individually.
-4. Use a single reusable design token source, common container/spacing/type scale, predictable button/card states, consistent borders/radii and shared interaction states.
-5. Make every primary control work by pointer, touch and keyboard. Verify filters, query state, direct route refresh/back, lightbox navigation/Escape/focus return, registration windows, forms and error/empty states.
-6. Run Node 24: `npm ci`, `npm run build`, `npm run qa`, `npm run qa:seo`, `npm run qa:photos`, `npm run qa:v64-editorial`, `npm run qa:photo-intelligence`, `npm run qa:performance`, browser smoke and route/viewport tests. Keep screenshot evidence for desktop/tablet/phone/narrow phone, light/dark (where supported), and reduced motion.
-7. Review Core Web Vitals, dependency risk, public/admin access boundaries, URL safety, SEO/canonical/sitemap consistency and external link security.
-8. Merge only after all required CI gates and the updated preview are inspected; do not declare completion on build alone.
+## 3. Confirmed issues in the supplied reference ZIP
 
-## Limitation
-This report scans all non-binary text/code files in the accessible public repository clone and inventories image/file counts and source-level issues. The attached 326 MB ZIP itself could not be byte-inspected directly because the binary mount is isolated from this sandbox; the report explicitly treats the public repository source as the closest available equivalent. It does not claim all live Innovation pages were manually browser-tested.
+These observations describe Innovation source files, not JYC defects.
+
+### Root legacy index.html
+- The misspelling “Upcomming Events” appears twice.
+- “Prizes worth more than 25 Lacks !!” appears twice.
+- The impossible date string “25-25” / “AUGUST 25-25, 2026” appears twice.
+- Three profile images use via.placeholder.com/180 and sample profile emails include neha@example.com, karan@example.com and sneha@example.com.
+- One image tag has no alt attribute.
+- There are 43 literal href="#" references. Some may be placeholders handled by JavaScript, so they should be audited, not automatically labelled as broken.
+- The root document contains 228 inline style attributes and a very large combined page, increasing maintenance and review burden.
+- Event and team markup includes IDs that appear duplicated across repeated card/modal markup (including eventsPageRegisterBtn, eventsPageRideHackDetailBtn, webDevTeamCard and contentTeamCard); confirm via a DOM-aware duplicate-ID test before treating each case as a proven runtime defect.
+- Registration Closed/success/Coming Soon states coexist with Register Now funnels in the legacy event experience. Do not copy any such state or link without fresh organiser verification.
+- External target=_blank links do not consistently pair with safe rel attributes.
+- Root CSS/JS are large monolithic files, and some assets are very large originals; responsive derivatives and deliberate loading priority are necessary.
+
+### innovation-2.0 and innovation hold
+- The modular multi-page implementation is the more useful architecture reference compared with the root legacy file.
+- pages/events.html has an href="#" View Projects CTA.
+- The Team page gets dynamic entries from team-showcase JavaScript, whose data includes the placeholder “Tagline or quote placeholder”. Static HTML inspection alone would miss it.
+- Input placeholders such as you@example.com are form guidance, not verified contact information; distinguish these from actual profile emails.
+- The main stylesheet is still roughly 8,330 lines. The duplicate hold tree should not be maintained as a second canonical implementation.
+- README claims about WCAG AA and 60 FPS are not substantiated by source inspection alone. Require actual accessibility, runtime and performance tests.
+- The archive includes HEIC/HEIF files and at least one image that the local image-inspection library could not decode. Ensure browser delivery has a supported derivative and a reliable fallback.
+
+### Visual direction
+
+The innovation-2.0 home uses a scrapbook collage language—tape-like photo edges, stickers, doodles and playful accents. This is a distinctive visual motif but is not automatically the premium 3D direction JYC should copy wholesale. Borrow the asymmetric photo composition, page-level hierarchy and real imagery; retain JYC's paper/ivory, deep ink, oxblood and champagne/brass identity. The legacy site's more saturated purple/pink/blue palette belongs to Innovation, not JYC.
+
+## 4. How to use the UI libraries
+
+### shadcn/ui — accessible primitives, selectively adapted
+Use the official component patterns when the current JYC implementation has a verified gap:
+- Dialog/Sheet for mobile navigation or contextual modals outside the already working gallery lightbox.
+- Tabs for album/event sections when selected state, keyboard navigation and URL behavior are well-defined.
+- Command/Popover/Select/Checkbox only if they simplify existing search and filters.
+- Accordion for event FAQs and long detail sections.
+- Skeleton, Alert and Toast for loading, empty, validation, failure and success states.
+- Button/field patterns for consistent sizing, focus and error display.
+
+Do not wholesale convert the React app, force a global theme reset, or migrate between Radix/Base UI primitives just because upstream patterns change. JYC already uses React 19, React Router 7, Motion, GSAP, OGL/React Bits Dither Veil, Magic Bento, DepthCarousel, DriftWall, and custom gallery/team experiences. Adapt one component at a time, check its source/license and dependency impact, and test keyboard, focus restoration, Escape, outside dismissal, touch and reduced-motion.
+
+### Magic UI — restrained depth and motion
+Reuse/adapt:
+- Bento composition (polish the existing Magic Bento rather than adding a second grid system).
+- Small blur/opacity entrances on selected section headings.
+- An optional fine-pointer spotlight/edge treatment on one or two featured cards.
+- One static or low-motion grid/light-field background in one region if it supports hierarchy.
+- A meaningful partner-logo rail only when verified partner data exists; it must pause and respect keyboard/reduced-motion.
+
+Do not add another animation runtime. Avoid global cursor replacements, perpetual animated backgrounds, stacked sparkles/shimmers/particles, whole-site WebGL, hover-only information and effects that compete with the JYC logo or event photos. Prefer transform/opacity motion and stop offscreen loops where practical.
+
+### Tremor — information design, not dashboard aesthetics
+Borrow consistency and compact hierarchy for factual metadata: event date/status chips, source-backed achievements and small verified statistics. JYC is a campus culture/community site, not an analytics dashboard. Do not add decorative charts, invented counts, dashboard grids or a new dependency for a badge a local component can already handle.
+
+## 5. JYC-specific implementation decisions
+
+### Design system
+- Preserve warm ivory/paper, deep ink, oxblood/red for the primary action, restrained champagne/brass for secondary accents, and fine warm-neutral borders.
+- Establish one canonical token source for colors, type roles, spacing, radii, content widths, surfaces, shadows, focus rings and motion durations.
+- Inventory CSS imports and the effective cascade first. Remove conflicts carefully rather than appending an endless override stylesheet.
+- Use the font families already configured only in defined display/body/metadata roles. Use fluid sizing, balanced headlines, comfortable line height and sensible line lengths. Never shrink important text to make a card fit.
+- Give 3D depth through composition, layered planes, perspective, subtle directional shadows, lighting, photo crops and selective pointer interactions—not WebGL on every element.
+
+### Homepage
+- Left: a truthful JYC statement, concise copy, Explore Clubs and View Events.
+- Right: official JYC logo plus existing Dither Veil, with an immediate static-logo fallback and tested dimensions at narrow mobile widths.
+- Continue with a concise introduction; source-verified photo Bento; one accurate featured event; more event discovery; curated photo story; latest verified update; About/Team; and an appropriate recruitment/contact action.
+- Never invent dates, event states, achievements or counts. Past/closed registration must not look open.
+
+### Public pages
+- About/History: concise accurate story, source-backed milestones and relevant photos.
+- Clubs/Hubs and details: working search/filter/reset, clear categories, proper logos, source photo, useful descriptions, canonical routes and verified recruitment/social state.
+- Events/Fests/details: date/status first, correct active/live/past grouping, approved registration URL, venue/eligibility/rules/FAQ/photos when available and no stale CTA.
+- Gallery/Archive: featured editorial frames, varied deterministic responsive grid, album discovery, no repeated fillers or stretching, stable geometry, previous/next, Escape, arrows, touch/swipe, count, captions, focus trapping/restoration and safe fallback.
+- Team: correct portraits/names/roles. Flip cards must be accessible to keyboard and touch, with no content exposed only on hover. Missing portrait should use a neutral contained placeholder, never crop a logo into a face.
+- Achievements/Best of JYC: only verifiable records and sourced photographs.
+- Recruitment/Join: truthful open/closed/not-configured state and known official destination.
+- Announcements/JYC Now/Calendar: accurate dates and statuses, useful no-result states, deep links and browser history.
+- Contact: validated inputs, clearly focused errors, success/failure state and verified contact methods.
+- Control Center: separate administrative/security audit; do not include it in public styling or weaken access controls.
+
+### Accessibility, reliability, performance and SEO
+- Test pointer, touch and keyboard for primary journeys; show focus, label controls, make errors meaningful, manage dialog focus, support reduced motion and avoid hover-only content.
+- Use WCAG 2.2 as the audit reference. Test 320px, 360px, 390px, 430px, 768px, 1024px, 1280px, 1440px and 1920px, plus supported themes, reduced motion, direct routes, refresh, back/forward, slow requests and network failures.
+- Evaluate Core Web Vitals targets at the 75th percentile: LCP ≤2.5s, INP ≤200ms and CLS ≤0.1. Do not claim measured success without field/lab evidence.
+- Prioritise the hero; lazy-load appropriate below-fold imagery; reserve dimensions; keep derivatives and the manifest authoritative; verify source, association, crop, alt text and actual visible decode.
+- Check route titles/canonicals/OG/sitemap, safe external links, form validation, dependency risk, secrets/configuration, input/URL handling and public/admin separation.
+
+## 6. Execution sequence and completion gate
+
+1. Record the exact main SHA, open PRs, current statuses, route registry, stylesheet import graph/cascade, components, data models, media manifest, dependencies and QA coverage.
+2. Use the supplied ZIP directly as a design reference; do not copy its assets, branding or content.
+3. Fix P0 broken routes, stale dates/status/registration, image fallbacks and primary interactions.
+4. Consolidate authoritative design tokens and readable typography.
+5. Verify Dither Veil at every target viewport and under WebGL failure/reduced motion.
+6. Improve the homepage and photo story, then Gallery/Archive, Events, Clubs, Team, About, Achievements, Recruitment, Updates, Calendar and Contact individually.
+7. Reuse component-library patterns only for a demonstrated accessibility/interaction gap. Do not add overlapping motion frameworks.
+8. Use Node 24 (package.json requires >=24 <25), npm ci, production build, full static QA, media/photo integrity, responsive, security, SEO, performance and Playwright/browser interactions.
+9. Inspect actual preview screenshots across routes/viewports. Fix measured overflow, clipping, low contrast, wrong image/crop, stale content and nonfunctional controls.
+10. Reconcile overlapping PRs and test the exact head commit. Never force-merge a conflict or treat a stale deployment as proof.
+11. Report exact commit/PR/preview links, actual test exits, route status, remaining defects and infrastructure/credentials blockers honestly.
+
+**Definition of complete:** every public route and critical action has a recorded visual and functional assessment, content/images/statuses are verified, release build and required checks pass, and the preview tied to the exact commit has been inspected. No claim of completion without evidence.
