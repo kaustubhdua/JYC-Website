@@ -301,6 +301,22 @@ test('event detail route opens from the event directory', async ({ page }) => {
 });
 
 
+test('team accent and gallery album titles stay readable on the paper theme', async ({ page }) => {
+  await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'team heading contrast');
+  const teamAccent = page.locator('.team-hero-panel h1 em');
+  await expect(teamAccent).toBeVisible();
+  await expect(teamAccent).toHaveCSS('color', 'rgb(141, 100, 47)');
+
+  await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'gallery cover contrast');
+  const album = page.locator('.jyc-memory-card').first();
+  await expect(album).toBeVisible();
+  await expect(album.locator('.jyc-memory-cover-fallback')).toBeAttached();
+  await expect(album.locator('.jyc-memory-title')).toHaveCSS('color', 'rgb(255, 249, 235)');
+  await expect(album.locator('.jyc-memory-count')).toHaveCSS('color', 'rgb(242, 215, 167)');
+});
+
 test('JAI event does not advertise an expired registration QR as open', async ({ page }) => {
   await page.goto(base + '/events/jai-2026-jaypee-agentic-ai-hackathon', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'JAI expired registration state');
