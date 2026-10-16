@@ -1,0 +1,190 @@
+/* JYC cool editorial colour system v1.
+   One semantic palette mapped onto the existing style generations; preserve official
+   logos, photography and event-owned poster art. Keep this file last in public-entry. */
+:root {
+  color-scheme: light;
+  --jyc-color-bg: #F3F6FC;
+  --jyc-color-surface: #FFFFFF;
+  --jyc-color-surface-raised: #F8FAFF;
+  --jyc-color-ink: #14203A;
+  --jyc-color-muted: #53617A;
+  --jyc-color-line: #D9E1EF;
+  --jyc-color-primary: #2855D9;
+  --jyc-color-primary-hover: #1D43B5;
+  --jyc-color-primary-soft: #E8EEFF;
+  --jyc-color-secondary: #E65D4F;
+  --jyc-color-secondary-hover: #C7463A;
+  --jyc-color-highlight: #D5E76D;
+  --jyc-color-focus: #244FCB;
+  --jyc-color-success: #19734A;
+  --jyc-color-warning: #8A5700;
+  --jyc-color-danger: #B42332;
+  --jyc-color-info: #2457A7;
+  --jyc-color-overlay: rgb(10 18 37 / 72%);
+  --jyc-color-shadow: 20 32 58;
+  --jyc-color-radius-sm: 10px;
+  --jyc-color-radius-md: 18px;
+  --jyc-color-radius-lg: 28px;
+  --jyc-color-content: 1320px;
+  --jyc-color-ease: cubic-bezier(.2,.75,.25,1);
+
+  /* Compatibility aliases for the existing public style generations. */
+  --jyc-bg: var(--jyc-color-bg);
+  --jyc-surface: var(--jyc-color-surface);
+  --jyc-ink: var(--jyc-color-ink);
+  --jyc-muted: var(--jyc-color-muted);
+  --jyc-line: var(--jyc-color-line);
+  --jyc-accent: var(--jyc-color-primary);
+  --jyc-gold: var(--jyc-color-secondary);
+  --jyc-focus: var(--jyc-color-focus);
+  --jyc-final-bg: var(--jyc-color-bg);
+  --jyc-final-surface: var(--jyc-color-surface);
+  --jyc-final-ink: var(--jyc-color-ink);
+  --jyc-final-muted: var(--jyc-color-muted);
+  --jyc-final-line: var(--jyc-color-line);
+  --jyc-final-gold: var(--jyc-color-secondary);
+  --jyc-final-red: var(--jyc-color-primary);
+  --jyc-ex-paper: var(--jyc-color-bg);
+  --jyc-ex-paper-raised: var(--jyc-color-surface-raised);
+  --jyc-ex-ink: var(--jyc-color-ink);
+  --jyc-ex-muted: var(--jyc-color-muted);
+  --jyc-ex-line: var(--jyc-color-line);
+  --jyc-ex-oxblood: var(--jyc-color-primary);
+  --jyc-ex-oxblood-deep: #172B68;
+  --jyc-ex-champagne: var(--jyc-color-secondary);
+  --jyc-ex-shadow-soft: 0 12px 34px rgb(var(--jyc-color-shadow) / 8%);
+  --jyc-ex-shadow-hover: 0 20px 48px rgb(var(--jyc-color-shadow) / 15%);
+  --jyc-design-accent: var(--jyc-color-primary);
+  --jyc-design-copper: var(--jyc-color-secondary);
+  --jyc-design-sage: var(--jyc-color-highlight);
+  --jyc-design-blue: var(--jyc-color-primary);
+  --jyc-design-lilac: #AEBEFF;
+  --tech-bg: var(--jyc-color-bg);
+  --tech-surface: var(--jyc-color-surface);
+  --tech-surface-elevated: var(--jyc-color-surface-raised);
+  --tech-border: var(--jyc-color-line);
+  --tech-gold: var(--jyc-color-secondary);
+  --tech-crimson: var(--jyc-color-primary);
+  --tech-cyan: var(--jyc-color-primary);
+  --tech-text-primary: var(--jyc-color-ink);
+  --tech-text-secondary: var(--jyc-color-muted);
+  --tech-text-muted: var(--jyc-color-muted);
+  --bg-main: var(--jyc-color-bg);
+  --bg-card: var(--jyc-color-surface);
+  --surface: var(--jyc-color-surface);
+  --text-primary: var(--jyc-color-ink);
+  --text-secondary: var(--jyc-color-muted);
+  --text-muted: var(--jyc-color-muted);
+  --border-tech: var(--jyc-color-line);
+  --accent-gold: var(--jyc-color-secondary);
+  --accent-red: var(--jyc-color-primary);
+}
+html[data-theme="light"] {
+  color-scheme: light;
+  --jyc-color-bg: #F3F6FC;
+  --jyc-color-surface: #FFFFFF;
+  --jyc-color-surface-raised: #F8FAFF;
+  --jyc-color-ink: #14203A;
+  --jyc-color-muted: #53617A;
+  --jyc-color-line: #D9E1EF;
+  --jyc-color-primary: #2855D9;
+  --jyc-color-primary-hover: #1D43B5;
+  --jyc-color-primary-soft: #E8EEFF;
+  --jyc-color-secondary: #E65D4F;
+  --jyc-color-secondary-hover: #C7463A;
+  --jyc-color-highlight: #D5E76D;
+  --jyc-color-focus: #244FCB;
+  --jyc-color-success: #19734A;
+  --jyc-color-warning: #8A5700;
+  --jyc-color-danger: #B42332;
+  --jyc-color-info: #2457A7;
+  --jyc-color-overlay: rgb(10 18 37 / 72%);
+  --jyc-color-shadow: 20 32 58;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --jyc-color-bg: #0C1222;
+  --jyc-color-surface: #141D33;
+  --jyc-color-surface-raised: #1A2742;
+  --jyc-color-ink: #F4F7FF;
+  --jyc-color-muted: #BAC6DE;
+  --jyc-color-line: #34415C;
+  --jyc-color-primary: #86A7FF;
+  --jyc-color-primary-hover: #A8BEFF;
+  --jyc-color-primary-soft: #202F50;
+  --jyc-color-secondary: #FF8B7E;
+  --jyc-color-secondary-hover: #FFAA9F;
+  --jyc-color-highlight: #D5E76D;
+  --jyc-color-focus: #D5E76D;
+  --jyc-color-success: #75D5A3;
+  --jyc-color-warning: #FFD27A;
+  --jyc-color-danger: #FF9AA4;
+  --jyc-color-info: #9FC3FF;
+  --jyc-color-overlay: rgb(0 0 0 / 78%);
+  --jyc-color-shadow: 0 0 0;
+  --jyc-ex-oxblood-deep: #182B51;
+  --jyc-design-lilac: #AEBEFF;
+}
+
+/* Shared public shell and common neutral surfaces inherit the semantic palette. */
+html, body { background: var(--jyc-color-bg); color: var(--jyc-color-ink); }
+body { background-color: var(--jyc-color-bg) !important; }
+.public-app, .jyc-editorial-home.jyc-home {
+  background-color: var(--jyc-color-bg);
+  color: var(--jyc-color-ink);
+}
+.public-app :where(.page,.section,.unified-public-page,.page-shell) {
+  color: var(--jyc-color-ink);
+}
+.public-app :where(.card,.event-card,.event-tile,.club-card,.team-card,.contact-card,
+  .announcement-card,.event-related-card,.hub-card,.achievement-feature,.state,.empty-state,
+  .gallery-empty,.no-results,.jyc57-photo,.jyc57-feature-card) {
+  border-color: var(--jyc-color-line);
+}
+.public-app :where(input,select,textarea) {
+  color: var(--jyc-color-ink);
+  border-color: var(--jyc-color-line);
+  background-color: var(--jyc-color-surface);
+}
+.public-app :where(input,select,textarea)::placeholder { color: var(--jyc-color-muted); opacity: 1; }
+.public-app :where(a,button,[role="button"],input,select,textarea,summary,[tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid var(--jyc-color-focus);
+  outline-offset: 3px;
+}
+.public-app :where(.btn-primary,.button-primary,.jh-btn-primary,.primary-action,
+  button[type="submit"],input[type="submit"]) {
+  background-color: var(--jyc-color-primary);
+  border-color: var(--jyc-color-primary);
+  color: #FFFFFF;
+}
+.public-app :where(.btn-primary,.button-primary,.jh-btn-primary,.primary-action,
+  button[type="submit"],input[type="submit"]):hover {
+  background-color: var(--jyc-color-primary-hover);
+  border-color: var(--jyc-color-primary-hover);
+}
+.public-app :where(.eyebrow,.overline,.jh-overline,.section-kicker) {
+  color: var(--jyc-color-primary);
+}
+.public-app :where(.breadcrumbs,[aria-label="Breadcrumb"],.muted,.text-muted,.metadata,.meta) {
+  color: var(--jyc-color-muted);
+}
+.public-app :where(.state,.empty-state,.gallery-empty,.no-results) {
+  background: var(--jyc-color-surface-raised);
+  color: var(--jyc-color-ink);
+}
+.public-app .jyc-home .jh-hero-drift-wall {
+  border-color: color-mix(in srgb, var(--jyc-color-primary) 46%, transparent);
+}
+.public-app .jyc-home .jh-hero-logo-plaque {
+  border-color: rgb(255 255 255 / 24%);
+}
+/* Event posters and approved documentary photography retain their original colours. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .public-app :where(a,button,[role="button"],.card,.event-card,.club-card,.team-card) {
+    transition-duration: .01ms !important;
+  }
+}
+@media (forced-colors: active) {
+  .public-app :where(a,button,input,select,textarea) { forced-color-adjust: auto; }
+}
