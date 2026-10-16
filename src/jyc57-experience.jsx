@@ -430,6 +430,26 @@ export function JYC57Gallery({data}){
       <span className="jyc57-gallery-meta" aria-live="polite">{filtered.length} photographs {albumSlug ? 'in this collection' : 'in the archive'}</span>
     </header>
     <nav className="jyc57-archive-nav" aria-label="Gallery archive navigation">{ARCHIVE_IA.map(label=><a key={label} href={`#jyc-gallery-${label.toLowerCase()}`}>{label}</a>)}</nav>
+    <section className="jyc57-editorial-wall" aria-label="Featured JYC photographs">
+      <div className="jyc57-editorial-wall-head">
+        <span className="eyebrow">THE VISUAL RECORD</span>
+        <h2>Campus life, in its own light.</h2>
+        <p>Curated moments from published JYC photography. Open any image for its full-size view and available source context.</p>
+      </div>
+      <div className="jyc57-editorial-grid">
+        {heroPhotos.map((photo,index)=>{
+          const shape=photoAspect(photo,index);
+          const subject=photoSubject(photo,index);
+          return <button type="button" key={photo.id||photo.url} className={`jyc57-editorial-photo ${shape} ${index===0?'feature':''}`} style={{'--photo-index':index}} onClick={()=>openPhoto(photo)} aria-label={`Open photograph: ${photo.caption||photo.title||photo.association||'JYC campus moment'}`}>
+            <ResponsivePhoto src={photo.url} alt={photo.alt||photo.alt_text||photo.caption||photo.title||`JYC campus photograph ${index+1}`} loading={index<2?'eager':'lazy'} fetchPriority={index===0?'high':undefined} sizes="(max-width: 620px) 50vw, (max-width: 960px) 33vw, 420px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder; photograph unavailable"/>
+            <span className="jyc57-editorial-vignette"/>
+            <span className="jyc57-photo-index">{String(index+1).padStart(2,'0')}</span>
+            <span className="jyc57-photo-caption"><small>{subject.replaceAll('-',' ')}</small><strong>{photo.caption||photo.title||photo.albumName||photo.association||'A JYC campus moment'}</strong></span>
+            <span className="jyc57-editorial-open" aria-hidden="true">↗</span>
+          </button>;
+        })}
+      </div>
+    </section>
 
     {/* Published albums and source-backed collections; counts come from actual photo records. */}
     <section id="jyc-gallery-collections" className="jyc-memories-section">
