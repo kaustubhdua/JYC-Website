@@ -21,6 +21,7 @@ const checks=[
   [theme.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'),'body copy has an explicit readable theme color'],
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
+  [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"'),'PWA icon uses the configured WebP asset with matching MIME type'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jh-photo-frame'),'editorial hero image is prioritized for first paint'],
   [editorialHome.includes('jh-hero')&&read('src/jyc-editorial-home.css').includes('--jh-bg:#f5f1e6')&&read('src/jyc-editorial-home.css').includes('--jh-gold:#bf9c6f')&&read('src/jyc-editorial-home.css').includes('[data-theme=dark] .jyc-home'),'editorial homepage follows the JYC palette in light and dark mode'],
   [read('src/jyc-innovation-motion.jsx').includes('Public card tilt was intentionally retired')&&!read('src/jyc-innovation-motion.css').includes('perspective(1100px) rotateX(var(--tilt-x))'),'public card tilt is retired for V1 stability'],
