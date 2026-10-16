@@ -497,7 +497,7 @@ drop policy if exists "public read published events" on public.jyc_events;
 create policy "public read published events" on public.jyc_events for select to anon, authenticated using (status in ('published','ongoing','past'));
 
 drop policy if exists "public read approved gallery" on public.jyc_gallery_items;
-create policy "public read approved gallery" on public.jyc_gallery_items for select to anon, authenticated using (status='approved');
+create policy "public read approved gallery" on public.jyc_gallery_items for select to anon, authenticated using (status='approved' and media_kind='photo' and rights_status='cleared' and focal_x is not null and focal_y is not null and nullif(public_url,'') is not null);
 
 drop policy if exists "public read visible announcements" on public.jyc_announcements;
 create policy "public read visible announcements" on public.jyc_announcements for select to anon, authenticated using (is_visible=true and (starts_at is null or starts_at<=now()) and (ends_at is null or ends_at>=now()));
