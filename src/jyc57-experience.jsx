@@ -466,7 +466,7 @@ export function JYC57Gallery({data}){
           return <button type="button" key={photo.id||photo.url} className={`jyc57-editorial-photo ${shape} ${index===0?'feature':''}`} style={{'--photo-index':index}} onClick={()=>openPhoto(photo)} aria-label={`${subject.replaceAll('-',' ')} ${photo.caption||photo.title||photo.albumName||photo.association||'A JYC campus moment'}`}>
             <ResponsivePhoto src={photo.url} alt={photo.alt||photo.alt_text||photo.caption||photo.title||`JYC campus photograph ${index+1}`} loading={index<2?'eager':'lazy'} fetchPriority={index===0?'high':undefined} sizes="(max-width: 620px) 50vw, (max-width: 960px) 33vw, 420px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder; photograph unavailable"/>
             <span className="jyc57-editorial-vignette"/>
-            <span className="jyc57-photo-index">{String(index+1).padStart(2,'0')}</span>
+            <span className="jyc57-photo-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span>
             <span className="jyc57-photo-caption"><small>{subject.replaceAll('-',' ')}</small><strong>{photo.caption||photo.title||photo.albumName||photo.association||'A JYC campus moment'}</strong></span>
             <span className="jyc57-editorial-open" aria-hidden="true">↗</span>
           </button>;
