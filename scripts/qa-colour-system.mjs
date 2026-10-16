@@ -11,6 +11,7 @@ const checks = [
   [palette.includes('--jyc-color-focus: #D5E76D') && palette.includes('outline: 3px solid var(--jyc-color-focus)'), 'focus indicator is tokenized'],
   [palette.includes('--jyc-color-success') && palette.includes('--jyc-color-warning') && palette.includes('--jyc-color-danger') && palette.includes('--jyc-color-info'), 'semantic feedback tokens exist'],
   [palette.includes('--jyc-final-bg: var(--jyc-color-bg)') && palette.includes('--tech-bg: var(--jyc-color-bg)'), 'existing token families map to the new palette'],
+  [palette.includes('--jh-accent: var(--jyc-color-primary)') && palette.includes('html[data-theme="dark"] .jyc-editorial-home.jyc-home'), 'homepage light and dark theme tokens map to the semantic palette'],
   [palette.includes('prefers-reduced-motion: reduce') && palette.includes('forced-colors: active'), 'reduced-motion and forced-colour safeguards remain'],
   [palette.includes('Event posters and approved documentary photography retain their original colours'), 'brand photography and poster art are explicitly protected'],
 ];
