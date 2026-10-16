@@ -41,21 +41,36 @@ export function JYCBot({data}){
  const handleModelLoad=()=>{setModelAvailable(true);setModelFailed(false)};
  const handleModelError=()=>{setModelAvailable(false);setModelFailed(true)};
  const runContextAnimation=()=>{const map={home:['wave','peek'],clubs:['idle','think'],events:['tap','celebrate'],gallery:['dance','peek'],team:['wave','think']};const intents=map[context]||['idle'];const intent=intents[animationCursor.current%intents.length];animationCursor.current+=1;triggerMotion(`is-${intent}`,760,intent)};
- const openAssistant=()=>{loadModelViewer();preloadModelAsset();const sequence=[['is-wave',900,'wave'],['is-bounce',820,'bounce'],['is-tap',520,'tap'],['is-celebrate',900,'celebrate'],['is-dance',980,'dance'],['is-peek',760,'peek']];const next=sequence[animationCursor.current%sequence.length];animationCursor.current+=1;triggerMotion(next[0],next[1],next[2]);setAssistantOpen(true)};
+ const openAssistant=()=>{window.clearTimeout(idleTimer.current);loadModelViewer();preloadModelAsset();triggerMotion('is-wave',760,'wave');setAssistantOpen(true)};
  useEffect(()=>()=>{window.clearTimeout(motionTimer.current);window.clearTimeout(animationStopTimer.current);window.clearInterval(idleTimer.current)},[]);
  useEffect(()=>{if(modelReady&&modelAvailable&&!modelFailed&&!prefersReducedMotion())triggerMotion('is-wave',760,'wave')},[modelReady,modelAvailable,modelFailed]);
  useEffect(()=>{
-  if(prefersReducedMotion())return;
-  const animPool=['wave','dance','bounce','tap','celebrate','peek','think'];
-  const interval=window.setInterval(()=>{
-    if(document.hidden||assistantOpen)return;
-    const randomIntent=animPool[Math.floor(Math.random()*animPool.length)];
-    const durations={wave:850,dance:980,bounce:820,tap:520,celebrate:900,peek:760,think:760};
-    triggerMotion(`is-${randomIntent}`,durations[randomIntent]||800,randomIntent);
-  },8800);
-  idleTimer.current=interval;
-  return ()=>window.clearInterval(interval);
- },[assistantOpen]);
+  window.clearTimeout(idleTimer.current);
+  if(assistantOpen||prefersReducedMotion()||document.hidden)return;
+  let cancelled=false;
+  const scheduleNext=()=>{
+    // Bounded, low-frequency idle behavior. Avoid surprise dances, repeated greetings,
+    // and perpetual interval work; each action completes before another is scheduled.
+    const delay=14000+Math.floor(Math.random()*9000);
+    idleTimer.current=window.setTimeout(()=>{
+      if(cancelled||document.hidden||assistantOpen||prefersReducedMotion())return;
+      const choices=[{intent:'peek',weight:4},{intent:'think',weight:3},{intent:'tap',weight:2},{intent:'wave',weight:1}];
+      const total=choices.reduce((sum,item)=>sum+item.weight,0);
+      let pick=Math.random()*total;
+      const selected=choices.find(item=>(pick-=item.weight)<=0)?.intent||'peek';
+      const durations={wave:760,peek:760,think:760,tap:520};
+      triggerMotion(`is-${selected}`,durations[selected],selected);
+      scheduleNext();
+    },delay);
+  };
+  const onVisibilityChange=()=>{
+    window.clearTimeout(idleTimer.current);
+    if(!document.hidden&&!cancelled&&!assistantOpen&&!prefersReducedMotion())scheduleNext();
+  };
+  document.addEventListener('visibilitychange',onVisibilityChange);
+  scheduleNext();
+  return ()=>{cancelled=true;window.clearTimeout(idleTimer.current);document.removeEventListener('visibilitychange',onVisibilityChange)};
+ },[assistantOpen,loc.pathname]);
  return <div className={`jyc-bot-shell ${assistantOpen?'is-open':''}`} data-context={context}>
   <button className={`jyc-bot-orb ${motion}`} type="button" aria-label={botLabel} aria-expanded={assistantOpen} onPointerEnter={()=>{loadModelViewer();preloadModelAsset();triggerMotion('is-hover',520,'idle')}} onFocus={()=>{loadModelViewer();preloadModelAsset()}} onClick={openAssistant}><span className="jyc-bot-status" aria-hidden="true"/><span className="jyc-bot-model-wrap">{modelReady&&!modelFailed?<model-viewer ref={modelRef} className="jyc-bot-glb" data-jyc-glb-src="/models/jyc-spatial.glb" src="/models/jyc-spatial.glb" poster="/assets/jyc-logo-48.avif" camera-orbit="0deg 75deg auto" loading="eager" reveal="auto" disable-zoom disable-pan interaction-prompt="none" shadow-intensity="0.45" shadow-softness="0.75" exposure="1.15" alt="Interactive 3D JYC spatial assistant" onLoad={handleModelLoad} onError={handleModelError}></model-viewer>:<span className="jyc-bot-model-fallback" aria-hidden="true"><img src="/assets/jyc-logo-48.avif" alt="" width={44} height={44} loading="lazy" decoding="async"/><span className="bot-orbit-dot"/></span>}</span><span className="jyc-bot-label">{botLabel}</span></button>
   <div className="jyc-bot-hint" aria-hidden="true">JYC Assistant · click to explore</div>
