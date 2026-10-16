@@ -10,6 +10,11 @@ The checkpoint further below records an earlier deployment state and must be rea
 - [ ] A follow-up branch `fix/contact-form-validation-and-release-ux` adds accessible contact-form validation and a browser regression. It is not production until its PR checks pass and the change is merged/deployed.
 - [ ] Visual sign-off remains pending because the live browser-inspection service was unavailable in this execution. Do not mark every route, photo crop or paragraph as manually inspected.
 - [ ] Owner-side operational gates remain: official domain/DNS, live JYC Now connectors, Supabase Auth leaked-password protection, security finding disposition, media rights/provenance, live backend authorization checks, real-device performance/Core Web Vitals and install/offline recovery.
+- [x] Read-only Supabase audit confirms the JYC project is ACTIVE_HEALTHY and RLS is enabled on the inspected public/storage tables.
+- [x] Content audit: 23/23 normalized clubs are published; 8/32 normalized event records are published and 24 remain under review. Two events are future-dated: JAI 2026 (published deadline passed on 10 October) and RIDE Hack'26 (no registration URL). The follow-up branch closes the stale JAI QR/registration state and includes a browser regression.
+- [ ] Gallery editorial gate: 52 approved gallery items have alt text and public URLs, but all 52 remain rights_status='review'; 31 album shells are unpublished, 6 gallery items are unalbumed, and focal coordinates are unset for all 52. Do not auto-clear rights, publish albums, or invent crop coordinates.
+- [ ] Supabase Security Advisor still reports leaked-password protection disabled; enable it in Auth settings. It also reports one intentionally public SECURITY DEFINER read RPC and seven authenticated SECURITY DEFINER helpers/save functions. Their grants and role checks were inspected; retain intentional boundaries and complete an owner-side security review rather than blindly revoking them.
+- [ ] Supabase Performance Advisor reports 79 unused-index INFO findings. Do not drop indexes without workload/production-traffic evidence.
 
 
 Updated: 2026-10-16
