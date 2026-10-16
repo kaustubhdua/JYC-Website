@@ -12,7 +12,7 @@ This note records how the requested open-source repositories inform JYC without 
 | [Magic UI](https://github.com/magicuidesign/magicui) | Small, purposeful motion and visual emphasis | Keep the existing JYC Dither Veil hero and Magic Bento discovery cards. Motion must remain optional for reduced-motion users and must not obscure content or block navigation. |
 | [Tremor](https://github.com/tremorlabs/tremor) | Data visualization and dashboard patterns | Do not add chart/dashboard dependencies to the public editorial site; they do not solve a current public-site need. Revisit only for a clearly scoped internal analytics dashboard. |
 | [Corsair](https://github.com/corsairdev/corsair) | Scoped integrations and credential boundaries for agents | Treat as a backend integration reference only. Do not introduce a new integration platform or expose credentials to the browser without a concrete, approved integration requirement. |
-| [GenAI_Agents](https://github.com/NirDiamant/GenAI_Agents) | Evaluation, orchestration, and human-in-the-loop workflow ideas | Use as learning material, not a production dependency. The public JYC site intentionally does not add an unrequested public AI assistant. |
+| [GenAI_Agents](https://github.com/NirDiamant/GenAI_Agents) | Evaluation, orchestration, and human-in-the-loop workflow ideas | Use as learning material, not a production dependency. Its repository license is non-commercial, so do not copy or adapt its code into the JYC site without written permission and license review. The public JYC site intentionally does not add an unrequested public AI assistant. |
 
 ## Applied change in this follow-up
 
