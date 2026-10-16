@@ -961,7 +961,7 @@ function Theme({theme,setTheme}){
    window.setTimeout(()=>document.documentElement.classList.remove('theme-is-switching'),420);
   }
  };
- return <button type="button" className={`theme-toggle theme-toggle-rb ${theme==='dark'?'is-dark':'is-light'}`} onClick={switchMode} aria-label={`Switch to ${theme==='dark'?'light':'dark'} mode`} title={`Switch to ${theme==='dark'?'light':'dark'} mode`}>
+ return <button type="button" className={`theme-toggle theme-toggle-rb ${theme==='dark'?'is-dark':'is-light'}`} onClick={switchMode} aria-label={`${theme==='dark'?'Dark':'Light'} Mode; switch to ${theme==='dark'?'light':'dark'} mode`} title={`Switch to ${theme==='dark'?'light':'dark'} mode`}>
   <span className="theme-toggle-track" aria-hidden="true">
    <span className="theme-toggle-orb"><span>{theme==='dark'?'☾':'☀'}</span></span>
   </span>
