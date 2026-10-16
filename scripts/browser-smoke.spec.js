@@ -106,6 +106,9 @@ test('mobile homepage logo and primary actions stay clear of the fixed navigatio
   test.skip(!viewport || viewport.width > 680);
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'mobile hero and dock geometry');
+  // The bot is a lazy-loaded chunk behind Suspense; wait for its actual mount before measuring geometry.
+  // This preserves the overlap assertions instead of treating an early null query as a geometry failure.
+  await expect(page.locator('.jyc-bot-shell')).toBeAttached({ timeout: 15000 });
   const geometry = await page.evaluate(() => {
     const rect = selector => {
       const element = document.querySelector(selector);
@@ -124,6 +127,8 @@ test('mobile homepage logo and primary actions stay clear of the fixed navigatio
     };
   });
   expect(geometry.dock, 'the mobile navigation dock should be present').not.toBeNull();
+  expect(geometry.badge, 'the academic-year badge should be present').not.toBeNull();
+  expect(geometry.bot, 'the floating assistant should be mounted before overlap is measured').not.toBeNull();
   expect(geometry.logo, 'the homepage logo plaque should be present').not.toBeNull();
   expect(geometry.mark, 'the Dither Veil mark container should be present').not.toBeNull();
   expect(geometry.plaqueFooter, 'the official-mark caption should be present').not.toBeNull();
