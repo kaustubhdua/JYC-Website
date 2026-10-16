@@ -46,9 +46,10 @@ export function JYCBot({data}){
  useEffect(()=>{if(modelReady&&modelAvailable&&!modelFailed&&!prefersReducedMotion())triggerMotion('is-wave',760,'wave')},[modelReady,modelAvailable,modelFailed]);
  useEffect(()=>{
   window.clearTimeout(idleTimer.current);
-  if(assistantOpen||prefersReducedMotion()||document.hidden)return;
+  if(assistantOpen||prefersReducedMotion())return;
   let cancelled=false;
   const scheduleNext=()=>{
+    if(cancelled||document.hidden||assistantOpen||prefersReducedMotion())return;
     // Bounded, low-frequency idle behavior. Avoid surprise dances, repeated greetings,
     // and perpetual interval work; each action completes before another is scheduled.
     const delay=14000+Math.floor(Math.random()*9000);
@@ -63,13 +64,20 @@ export function JYCBot({data}){
       scheduleNext();
     },delay);
   };
+  const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
   const onVisibilityChange=()=>{
     window.clearTimeout(idleTimer.current);
     if(!document.hidden&&!cancelled&&!assistantOpen&&!prefersReducedMotion())scheduleNext();
   };
+  const onMotionPreferenceChange=()=>{
+    window.clearTimeout(idleTimer.current);
+    if(!motionPreference.matches&&!document.hidden&&!cancelled&&!assistantOpen)scheduleNext();
+    if(motionPreference.matches)setMotion('');
+  };
   document.addEventListener('visibilitychange',onVisibilityChange);
+  motionPreference.addEventListener?.('change',onMotionPreferenceChange);
   scheduleNext();
-  return ()=>{cancelled=true;window.clearTimeout(idleTimer.current);document.removeEventListener('visibilitychange',onVisibilityChange)};
+  return ()=>{cancelled=true;window.clearTimeout(idleTimer.current);document.removeEventListener('visibilitychange',onVisibilityChange);motionPreference.removeEventListener?.('change',onMotionPreferenceChange)};
  },[assistantOpen,loc.pathname]);
  return <div className={`jyc-bot-shell ${assistantOpen?'is-open':''}`} data-context={context}>
   <button className={`jyc-bot-orb ${motion}`} type="button" aria-label={botLabel} aria-expanded={assistantOpen} onPointerEnter={()=>{loadModelViewer();preloadModelAsset();triggerMotion('is-hover',520,'idle')}} onFocus={()=>{loadModelViewer();preloadModelAsset()}} onClick={openAssistant}><span className="jyc-bot-status" aria-hidden="true"/><span className="jyc-bot-model-wrap">{modelReady&&!modelFailed?<model-viewer ref={modelRef} className="jyc-bot-glb" data-jyc-glb-src="/models/jyc-spatial.glb" src="/models/jyc-spatial.glb" poster="/assets/jyc-logo-48.avif" camera-orbit="0deg 75deg auto" loading="eager" reveal="auto" disable-zoom disable-pan interaction-prompt="none" shadow-intensity="0.45" shadow-softness="0.75" exposure="1.15" alt="Interactive 3D JYC spatial assistant" onLoad={handleModelLoad} onError={handleModelError}></model-viewer>:<span className="jyc-bot-model-fallback" aria-hidden="true"><img src="/assets/jyc-logo-48.avif" alt="" width={44} height={44} loading="lazy" decoding="async"/><span className="bot-orbit-dot"/></span>}</span><span className="jyc-bot-label">{botLabel}</span></button>
