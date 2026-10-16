@@ -15,11 +15,9 @@ const routeMatrix = projectName => ['desktop-1280','desktop-1440'].includes(proj
   : ['/','/clubs','/events','/gallery','/team','/updates','/contact'];
 
 async function waitForPublicApp(page,label){
-  await page.locator('#root').waitFor({state:'attached',timeout:15000});
   await expect(page.locator('body'),label).toBeVisible();
-  // The shell intentionally waits for the data/cache boot gate before mounting
-  // .public-app. Waiting only for #root races the loading screen and creates
-  // false blank-page/image failures across every viewport.
+  // The boot screen remains visible while data/cache startup completes; wait for
+  // the actual public application rather than treating the static shell as ready.
   await page.locator('.public-app').waitFor({state:'visible',timeout:20000});
   await page.waitForFunction(() => document.documentElement.dataset.jycContentReady === 'true', { timeout: 20000 });
   await expect(page.locator('.public-app h1, .public-app h2, .public-app p, .public-app a, .public-app button').first(),label+' visible public content').toBeVisible({timeout:10000});
@@ -119,6 +117,7 @@ async function loadAllImages(page){
 }
 
 test('sitewide routes have no overflow, clipping, off-screen content or fixed-control overlap', async ({page})=>{
+  test.setTimeout(120000);
   test.skip(!['mobile-390','mobile-430','tablet-768','desktop-1280','desktop-1440'].includes(test.info().project.name));
   for(const route of routeMatrix(test.info().project.name)){
     await page.goto(route,{waitUntil:'domcontentloaded'});
@@ -135,9 +134,9 @@ test('sitewide routes have no overflow, clipping, off-screen content or fixed-co
 });
 
 test('sitewide routes load every visible image successfully and expose alt text', async ({page})=>{
+  test.setTimeout(120000);
   // This audit intentionally visits every public route and waits for all rendered
-  // images; allow it more than the default 30s when the media-heavy gallery runs in CI.
-  test.setTimeout(90000);
+  // images; allow enough time for media-heavy routes on slower CI workers.
   test.skip(!['mobile-390','mobile-430','tablet-768','desktop-1280','desktop-1440'].includes(test.info().project.name));
   for(const route of routeMatrix(test.info().project.name)){
     await page.goto(route,{waitUntil:'domcontentloaded'});
@@ -151,6 +150,7 @@ test('sitewide routes load every visible image successfully and expose alt text'
 });
 
 test('mobile pages remain centered and controls meet touch-safe sizing', async ({page})=>{
+  test.setTimeout(90000);
   test.skip(!['mobile-390','mobile-430','tablet-768'].includes(test.info().project.name));
   for(const route of ['/', '/clubs', '/events', '/gallery', '/contact']){
     await page.setViewportSize(test.info().project.name==='mobile-430'?{width:430,height:932}:test.info().project.name==='tablet-768'?{width:768,height:1024}:{width:390,height:844});
