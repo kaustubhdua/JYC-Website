@@ -1,6 +1,6 @@
 # JYC Completion Ledger
 
-Last updated: 2026-10-17 UTC  
+Last updated: 2026-10-17 UTC (after PR check-log review)  
 Baseline main: `1da5867a4f4920f4854810efd275d59bf44c344d`
 
 This is an evidence ledger, not a declaration of completion. A task is only marked verified when the named check or owner review has actually succeeded.
@@ -15,8 +15,8 @@ This is an evidence ledger, not a declaration of completion. A task is only mark
 
 ## Work in review
 
-- [ ] PR #257 — [Unified cool editorial colour system](https://github.com/kaustubhdua/JYC-Website/pull/257). Adds a semantic cool-ivory/navy/cobalt/coral palette, light/dark mappings, focus/feedback tokens and source QA. **Not merged; do not mark visually approved until CI, contrast and screenshot review pass.**
-- [ ] PR #256 — [Falcon idle motion lifecycle](https://github.com/kaustubhdua/JYC-Website/pull/256). Focused animation lifecycle change. **Not merged; verify latest CI and route/browser QA before merge.**
+- [ ] PR #257 — [Unified cool editorial colour system](https://github.com/kaustubhdua/JYC-Website/pull/257). Adds a semantic cool-ivory/navy/cobalt/coral palette, theme mappings, focus/feedback tokens and source QA. A source review found the initial light/dark homepage mapping accidentally applied light values to both themes; a follow-up commit separates the theme maps and sets dark primary-button text to navy. **Not merged; source contract has not been executed after this fix, and contrast/screenshots remain unverified.**
+- [ ] PR #256 — [Falcon idle motion lifecycle](https://github.com/kaustubhdua/JYC-Website/pull/256). Focused animation lifecycle change. The recorded head's CI, Quality Gate and CodeQL passed, but Browser QA failed (40 passed / 3 failed: homepage logo/plaque/dock geometry at 320px, 390px and 430px) and Lighthouse CI failed the accessible-name/visible-label assertion across six routes plus responsive image sizing on Gallery. **Do not merge until those defects are fixed and checks rerun.**
 
 ## Release blockers / owner-dependent actions
 
