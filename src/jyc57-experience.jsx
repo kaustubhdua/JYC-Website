@@ -463,7 +463,7 @@ export function JYC57Gallery({data}){
         {heroPhotos.map((photo,index)=>{
           const shape=photoAspect(photo,index);
           const subject=photoSubject(photo,index);
-          return <button type="button" key={photo.id||photo.url} className={`jyc57-editorial-photo ${shape} ${index===0?'feature':''}`} style={{'--photo-index':index}} onClick={()=>openPhoto(photo)} aria-label={`Open photograph: ${photo.caption||photo.title||photo.association||'JYC campus moment'}`}>
+          return <button type="button" key={photo.id||photo.url} className={`jyc57-editorial-photo ${shape} ${index===0?'feature':''}`} style={{'--photo-index':index}} onClick={()=>openPhoto(photo)} aria-label={`${subject.replaceAll('-',' ')} ${photo.caption||photo.title||photo.albumName||photo.association||'A JYC campus moment'}`}>
             <ResponsivePhoto src={photo.url} alt={photo.alt||photo.alt_text||photo.caption||photo.title||`JYC campus photograph ${index+1}`} loading={index<2?'eager':'lazy'} fetchPriority={index===0?'high':undefined} sizes="(max-width: 620px) 50vw, (max-width: 960px) 33vw, 420px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder; photograph unavailable"/>
             <span className="jyc57-editorial-vignette"/>
             <span className="jyc57-photo-index">{String(index+1).padStart(2,'0')}</span>
