@@ -70,7 +70,7 @@ const PILLARS = [
     family: 'Technical',
     title: 'Technical & Innovation',
     tag: 'AI · ROBOTICS · CP · WEB · CYBERSEC',
-    desc: 'Hackathons, open-source dev-sprints, AI research, and combat robotics across OSDC, Knuth, CICR, GDG & uCR.',
+    desc: 'Hackathons, open-source dev-sprints, AI research and robotics across JIIT-128 communities including CICR, JODC, Dronotics and Zencoders.',
     icon: '⚡'
   },
   {
