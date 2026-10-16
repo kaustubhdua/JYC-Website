@@ -78,6 +78,33 @@
   --border-tech: var(--jyc-color-line);
   --accent-gold: var(--jyc-color-secondary);
   --accent-red: var(--jyc-color-primary);
+  --jh-bg: var(--jyc-color-bg);
+  --jh-surface: var(--jyc-color-surface);
+  --jh-surface-elevated: var(--jyc-color-surface-raised);
+  --jh-surface-glass: color-mix(in srgb, var(--jyc-color-surface) 92%, transparent);
+  --jh-ink: var(--jyc-color-ink);
+  --jh-muted: var(--jyc-color-muted);
+  --jh-accent: var(--jyc-color-primary);
+  --jh-accent-glow: color-mix(in srgb, var(--jyc-color-primary) 12%, transparent);
+  --jh-cyan: var(--jyc-color-primary);
+  --jh-cyan-glow: color-mix(in srgb, var(--jyc-color-primary) 8%, transparent);
+  --jh-line: var(--jyc-color-line);
+  --jh-line-accent: color-mix(in srgb, var(--jyc-color-secondary) 42%, transparent);
+}
+html[data-theme="light"] .jyc-editorial-home.jyc-home,
+html[data-theme="dark"] .jyc-editorial-home.jyc-home {
+  --jh-bg: var(--jyc-color-bg);
+  --jh-surface: var(--jyc-color-surface);
+  --jh-surface-elevated: var(--jyc-color-surface-raised);
+  --jh-surface-glass: color-mix(in srgb, var(--jyc-color-surface) 92%, transparent);
+  --jh-ink: var(--jyc-color-ink);
+  --jh-muted: var(--jyc-color-muted);
+  --jh-accent: var(--jyc-color-primary);
+  --jh-accent-glow: color-mix(in srgb, var(--jyc-color-primary) 12%, transparent);
+  --jh-cyan: var(--jyc-color-primary);
+  --jh-cyan-glow: color-mix(in srgb, var(--jyc-color-primary) 8%, transparent);
+  --jh-line: var(--jyc-color-line);
+  --jh-line-accent: color-mix(in srgb, var(--jyc-color-secondary) 42%, transparent);
 }
 html[data-theme="light"] {
   color-scheme: light;
