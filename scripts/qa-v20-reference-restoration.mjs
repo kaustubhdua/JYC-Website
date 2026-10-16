@@ -24,6 +24,8 @@ assert.ok(css.includes('.team-hero-panel h1 em') && css.includes('-webkit-text-f
 assert.ok(css.includes('.jyc-memories-grid .jyc-memory-title') && css.includes('color: #fff9eb !important'), 'gallery album titles must have high contrast over the photo scrim');
 assert.ok(css.includes('.jyc-brand-editorial-mark') && css.includes('linear-gradient(145deg,#fff9eb,#f4ead5)'), 'About identity panel must use the warm V20 brand surface rather than an empty black slab');
 assert.ok(css.includes('.clubs-page-v41 .club-card-v41 .card-body h3') && css.includes('color: #211a13 !important'), 'club-card headings must stay dark on the light content plane');
+assert.ok(css.includes('.contact-page .contact-card p') && css.includes('height: auto !important') && css.includes('min-height: 0 !important'), 'contact cards must size to their content instead of reserving blank height');
+
 
 assert.ok(browser.includes('JAI event does not advertise an expired registration QR as open'), 'browser regression for expired registration must exist');
 
