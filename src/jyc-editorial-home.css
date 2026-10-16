@@ -1730,9 +1730,15 @@
 }
 
 
-/* The legacy overlay inset assumes a wide two-column hero; reset it when the hero stacks. */
-@media (max-width: 1024px) {
-  .jyc-editorial-home .jh-hero-logo-plaque { position: relative; inset: auto; width: 100%; max-width: 100%; min-width: 0; }
+/* Keep the logo plaque in the visual column's layout instead of using the legacy absolute overlay.
+   This prevents the mark from escaping the column at intermediate desktop widths. */
+.jyc-editorial-home.jyc-home .jh-hero-logo-plaque {
+  position: relative;
+  inset: auto;
+  box-sizing: border-box;
+  width: min(100%, 570px);
+  max-width: 100%;
+  min-width: 0;
 }
 
 /* Narrow-phone containment: the plaque includes its padding in the viewport width. */
