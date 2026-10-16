@@ -17,6 +17,7 @@ const checks = [
   [layer.includes('.jh-overline{color:var(--jh-muted,var(--jyc-muted-ink));font-size:12px;letter-spacing:.16em}'), 'hero eyebrow text stays at the 12px minimum readable type size'],
   [layer.includes('translateY(-3px)') && layer.includes('hover:hover'), 'card motion is restricted to fine pointers'],
   [!home.includes('across OSDC, Knuth, CICR, GDG & uCR') && home.includes('CICR, JODC, Dronotics and Zencoders'), 'homepage community copy uses verified JIIT-128 hub identities'],
+  [home.includes("sourceType === 'presentation-export'") && home.includes('visual material from supplied .*presentation'), 'homepage photo stories exclude uncurated presentation exports and visual composites'],
   [!html.includes('<link rel="icon" href="/JYC%20Logo(4).png"') && html.includes('<link rel="icon" type="image/webp" href="/assets/jyc-logo.webp" />'), 'browser favicon uses the optimized logo rather than the oversized original PNG'],
 ];
 for (const [ok, name] of checks) { console.log((ok ? 'PASS: ' : 'FAIL: ') + name); assert.ok(ok, name); }
