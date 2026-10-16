@@ -22,6 +22,31 @@ const LOGO_FALLBACK='/assets/jyc-logo.avif';
 const identityPalette=['#A82420','#BF9C6F','#D2B48C','#C92A2A'];
 const identityAccent=value=>{let hash=0;for(const ch of String(value||'JYC'))hash=(hash*31+ch.charCodeAt(0))>>>0;return identityPalette[hash%identityPalette.length]};
 const eventCardPhoto=event=>event?.poster||event?.banner||sourceEventMedia(event)?.photoItems?.find(item=>item?.url)?.url||'';
+const PHOTO_SUBJECTS = [
+ ['induction', /induction|orientation|freshers/i],
+ ['cultural-fest', /converge|ebullience|fest|ethnic day|impressions/i],
+ ['technology', /hack|hackathon|code|robot|drone|ai summit|technology/i],
+ ['performance', /dance|music|theatre|stage|performance|singing/i],
+ ['community', /club|community|society|hub|volunteer|meeting/i],
+ ['sports', /sport|cricket|football|badminton|match|tournament/i],
+ ['workshop', /workshop|session|seminar|talk|lecture/i]
+];
+const photoSubject=(item,index=0)=>{
+ const text=`${item?.caption||''} ${item?.title||''} ${item?.association||''} ${item?.albumName||''} ${item?.category||''} ${item?.event||''}`.toLowerCase();
+ return PHOTO_SUBJECTS.find(([,pattern])=>pattern.test(text))?.[0] || 'campus-life';
+};
+const photoAspect=(item,index=0)=>{
+ const width=Number(item?.width||item?.dimensions?.width||0),height=Number(item?.height||item?.dimensions?.height||0);
+ if(width>0&&height>0){
+  const ratio=width/height;
+  if(ratio>1.52)return 'landscape';
+  if(ratio<.78)return 'portrait';
+  return 'square';
+ }
+ const ratio=(index*7+3)%11;
+ return ratio<4?'landscape':ratio<7?'square':'portrait';
+};
+
 const clubCardPhoto=club=>{const clubName=typeof club==='object'&&club!==null?club.name:club;const source=sourceHubMedia(clubName);return club?.hubPhotos?.[0]||source?.photos?.[0]||source?.photoItems?.find(item=>item?.url)?.url||source?.visuals?.[0]||(club?.banner&&club.banner!==club.logo?club.banner:'')||''};
 function magneticMove(event){
  if(event.pointerType!=='mouse'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
