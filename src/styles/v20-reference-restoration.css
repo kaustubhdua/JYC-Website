@@ -672,3 +672,33 @@ html[data-theme="dark"] .public-app .clubs-page-v41 .club-card-v41 .card-body h3
 html[data-theme="dark"] .public-app .clubs-page-v41 .club-card-v41 .card-body p {
   color: #c4b9aa !important;
 }
+
+/* Contact link cards are content-led actions, not tall empty placeholders. */
+.public-app .contact-page .contact-card {
+  min-height: 0 !important;
+  padding: 22px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 5px;
+}
+.public-app .contact-page .contact-card > span:first-child {
+  margin-bottom: 4px;
+}
+.public-app .contact-page .contact-card h3 {
+  margin: 0 0 2px !important;
+}
+.public-app .contact-page .contact-card p {
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 8px !important;
+  background: none !important;
+  line-height: 1.55;
+}
+.public-app .contact-page .contact-card .contact-arrow {
+  margin-top: auto;
+}
+@media (max-width: 760px) {
+  .public-app .contact-page .contact-card { padding: 18px !important; }
+}
