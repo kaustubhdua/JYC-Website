@@ -375,9 +375,9 @@ function Team({data}){
    <div className="team-hero-identity" aria-hidden="true"><div className="team-hero-logo"><LogoImage alt=""/></div><b>PEOPLE · PURPOSE · PARTICIPATION</b></div>
   </div>
   <div className="team-command-strip reveal">
-   <article><b>{faculty.length}</b><span>Faculty guidance</span></article>
-   <article><b>{apex.length}</b><span>Apex leadership</span></article>
-   <article><b>{core.length}</b><span>Core / heads</span></article>
+   <article><b>{faculty.length || '—'}</b><span>{faculty.length ? 'Faculty profiles' : 'Faculty profiles awaiting publication'}</span></article>
+   <article><b>{apex.length || '—'}</b><span>{apex.length ? 'Apex leaders' : 'Apex profiles awaiting publication'}</span></article>
+   <article><b>{core.length || '—'}</b><span>{core.length ? 'Core team profiles' : 'Core profiles awaiting publication'}</span></article>
    <article><b>{JYC_HUB_FAMILIES.length}</b><span>Community families</span></article>
   </div>
   <section className="team-structure-visual reveal"><span className="eyebrow">ORGANIZATIONAL STRUCTURE</span><h2>Faculty → Apex → Core → Clubs & Hubs.</h2><div className="team-structure-flow"><div><b>01</b><strong>Faculty Coordinators</strong><span>Guidance & institutional support</span></div><i>↓</i><div><b>02</b><strong>JYC Apex</strong><span>Student leadership & coordination</span></div><i>↓</i><div><b>03</b><strong>Core Team</strong><span>Committee heads & operations</span></div><i>↓</i><div><b>04</b><strong>Clubs & Hubs</strong><span>Communities · coordinators · volunteers</span></div></div></section>
