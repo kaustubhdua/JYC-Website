@@ -189,7 +189,7 @@ export function JYCEditorialHome({ data }) {
 
 
   return (
-    <main className="jyc-editorial-home jyc-home">
+    <main className="jyc-editorial-home jyc-home" aria-label="JIIT Youth Club public homepage">
       {/* HERO SECTION */}
       <section className="jh-hero" aria-labelledby="jh-title">
         <div className="jh-hero-copy">
@@ -394,7 +394,7 @@ export function JYCEditorialHome({ data }) {
         {upcoming.slice(1).length > 0 && (
           <div className="jh-event-list">
             {upcoming.slice(1).map(e => (
-              <button type="button" key={e.id || e.title} onClick={() => nav(eventPath(e))}>
+              <button type="button" key={e.id || e.title} onClick={() => nav(eventPath(e))} aria-label={`View ${e.title}, ${dateLabel(e.date)}`}>
                 <span>{dateLabel(e.date)}</span>
                 <strong>{e.title}</strong>
                 <small>{e.club || 'JYC'} · {e.venue || 'JIIT 128'}</small>
@@ -439,7 +439,7 @@ export function JYCEditorialHome({ data }) {
             </div>
             {team.length ? (
               team.map((m, i) => (
-                <button type="button" key={m.id || i} onClick={() => nav('/team')}>
+                <button type="button" key={m.id || i} onClick={() => nav('/team')} aria-label={`Meet ${m.name || 'JYC team member'}, ${m.role || m.position || 'JYC Apex'}`}>
                   <span className="jh-team-monogram" aria-hidden="true">
                     {teamPhotoFor(m)
                       ? <ResponsivePhoto className="jh-team-thumb" src={teamPhotoFor(m)} alt="" loading="lazy" decoding="async" sizes="48px" fallbackSrc="/assets/jyc-logo.webp" fallbackAlt="" />
