@@ -92,6 +92,29 @@ test('contact form validates required fields and email accessibly before submiss
   await expect(form.locator('#contact-email-error')).toHaveText('Enter a valid email address.');
   await expect(form.locator('input[name="email"]')).toHaveAttribute('aria-invalid', 'true');
   await expect(form.locator('.contact-form-error')).toHaveCount(0);
+
+  for (const theme of ['light', 'dark']) {
+    await page.evaluate(value => document.documentElement.setAttribute('data-theme', value), theme);
+    const contrast = await form.locator('#contact-email-error').evaluate(el => {
+      const parse = value => {
+        const match = String(value || '').match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\)/i);
+        return match ? [Number(match[1]), Number(match[2]), Number(match[3]), match[4] === undefined ? 1 : Number(match[4])] : null;
+      };
+      const luminance = rgb => rgb.slice(0, 3).map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+      let background = [255, 255, 255, 1];
+      let node = el;
+      while (node && node !== document.documentElement) {
+        const candidate = parse(getComputedStyle(node).backgroundColor);
+        if (candidate && candidate[3] > .95) { background = candidate; break; }
+        node = node.parentElement;
+      }
+      const foreground = parse(getComputedStyle(el).color);
+      if (!foreground) return null;
+      const a = luminance(foreground), b = luminance(background);
+      return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+    });
+    expect(contrast, theme + ' contact validation error contrast').toBeGreaterThanOrEqual(4.5);
+  }
 });
  
 test('JYC Now page stays within responsive guardrails', async ({ page }) => {
