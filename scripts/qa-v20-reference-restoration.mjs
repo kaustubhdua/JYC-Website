@@ -23,6 +23,8 @@ assert.ok(gallery.includes('jyc-memory-cover-fallback') && gallery.includes('cov
 assert.ok(css.includes('.team-hero-panel h1 em') && css.includes('-webkit-text-fill-color: #8d642f !important'), 'team hero accent must remain readable on the light paper theme');
 assert.ok(css.includes('.jyc-memories-grid .jyc-memory-title') && css.includes('color: #fff9eb !important'), 'gallery album titles must have high contrast over the photo scrim');
 assert.ok(css.includes('.jyc-brand-editorial-mark') && css.includes('linear-gradient(145deg,#fff9eb,#f4ead5)'), 'About identity panel must use the warm V20 brand surface rather than an empty black slab');
+assert.ok(css.includes('.clubs-page-v41 .club-card-v41 .card-body h3') && css.includes('color: #211a13 !important'), 'club-card headings must stay dark on the light content plane');
+
 assert.ok(browser.includes('JAI event does not advertise an expired registration QR as open'), 'browser regression for expired registration must exist');
 
 console.log('PASS: V20 palette, photo framing, responsive motion and expired registration contracts');
