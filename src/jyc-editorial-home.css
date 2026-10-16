@@ -524,13 +524,16 @@
 .jh-hero-logo-plaque {
   position: relative;
   z-index: 1;
-  width: min(440px, 90vw);
+  box-sizing: border-box;
+  width: min(440px, 100%);
+  max-width: 100%;
+  min-width: 0;
   aspect-ratio: 1 / 1.08;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: clamp(12px, 3.2vw, 30px);
   background: var(--jh-surface-glass);
   border: 1px solid var(--jh-line-accent);
   border-radius: var(--jh-radius-lg);
@@ -571,6 +574,8 @@
 
 .jh-dither-mark {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -1722,4 +1727,21 @@
     transform: none !important;
     filter: none !important;
   }
+}
+
+
+/* The legacy overlay inset assumes a wide two-column hero; reset it when the hero stacks. */
+@media (max-width: 1024px) {
+  .jyc-editorial-home .jh-hero-logo-plaque { position: relative; inset: auto; width: 100%; max-width: 100%; min-width: 0; }
+}
+
+/* Narrow-phone containment: the plaque includes its padding in the viewport width. */
+@media (max-width: 420px) {
+  .jyc-editorial-home .jh-hero-visual { min-width: 0; width: 100%; padding-inline: 0; }
+  .jyc-editorial-home .jh-hero-logo-plaque { position: relative; inset: auto; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; padding: 12px; border-radius: 16px; }
+  .jyc-editorial-home .jh-dither-mark { min-width: 0; }
+  .jyc-editorial-home .jh-dither-veil-effect,
+  .jyc-editorial-home .jh-hero-logo { max-width: min(250px, 100%); max-height: none; }
+  .jyc-editorial-home .jh-plaque-footer { gap: 8px; flex-wrap: wrap; }
+  .jyc-editorial-home .jh-logo-caption { font-size: 10px; letter-spacing: .08em; }
 }
