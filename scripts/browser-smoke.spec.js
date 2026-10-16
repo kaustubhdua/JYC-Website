@@ -115,13 +115,23 @@ test('mobile homepage logo and primary actions stay clear of the fixed navigatio
     };
     return {
       dock: rect('.mobile-dock'),
+      badge: rect('.jh-cyber-badge'),
+      bot: rect('.jyc-bot-shell'),
       logo: rect('.jh-hero-logo-plaque'),
+      mark: rect('.jh-dither-mark'),
+      plaqueFooter: rect('.jh-plaque-footer'),
       actions: rect('.jh-hero-actions')
     };
   });
   expect(geometry.dock, 'the mobile navigation dock should be present').not.toBeNull();
   expect(geometry.logo, 'the homepage logo plaque should be present').not.toBeNull();
+  expect(geometry.mark, 'the Dither Veil mark container should be present').not.toBeNull();
+  expect(geometry.plaqueFooter, 'the official-mark caption should be present').not.toBeNull();
   expect(geometry.actions, 'the homepage actions should be present').not.toBeNull();
+  expect(geometry.bot.bottom <= geometry.badge.top || geometry.bot.top >= geometry.badge.bottom, 'the floating assistant must not cover the academic-year badge').toBe(true);
+  expect(geometry.bot.bottom <= geometry.actions.top || geometry.bot.top >= geometry.actions.bottom, 'the floating assistant must not cover primary hero actions').toBe(true);
+  expect(geometry.mark.bottom, 'the full JYC mark must finish before the plaque caption begins').toBeLessThanOrEqual(geometry.plaqueFooter.top);
+  expect(geometry.plaqueFooter.bottom, 'the plaque must contain the full caption without clipping').toBeLessThanOrEqual(geometry.logo.bottom);
   expect(geometry.logo.bottom, 'the fixed dock must not cover the JYC logo plaque').toBeLessThanOrEqual(geometry.dock.top + 1);
   expect(geometry.actions.bottom, 'the fixed dock must not cover the hero actions').toBeLessThanOrEqual(geometry.dock.top + 1);
 });
