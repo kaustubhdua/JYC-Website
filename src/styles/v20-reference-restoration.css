@@ -771,39 +771,6 @@ html[data-theme="dark"] .public-app .jyc-brand-editorial-logo {
   }
 }
 
-/* Club cards need a paper content plane under their image plane in light mode. */
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .card-body {
-  background: linear-gradient(145deg,#fff9eb,#f4ead5) !important;
-  color: #211a13 !important;
-}
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .card-body h3 {
-  color: #211a13 !important;
-  -webkit-text-fill-color: #211a13 !important;
-}
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .card-body p {
-  color: #55493b !important;
-}
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .club-identity-mini>b,
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .chips span,
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .club-card-footer {
-  color: #72502b !important;
-}
-html[data-theme="light"] .public-app .clubs-page-v41 .club-card-v41 .chips span {
-  border-color: rgba(129,94,45,.28) !important;
-  background: rgba(255,249,235,.72) !important;
-}
-html[data-theme="dark"] .public-app .clubs-page-v41 .club-card-v41 .card-body {
-  background: linear-gradient(145deg,#27212a,#17141a) !important;
-  color: #fff8e1 !important;
-}
-html[data-theme="dark"] .public-app .clubs-page-v41 .club-card-v41 .card-body h3 {
-  color: #fff8e1 !important;
-  -webkit-text-fill-color: #fff8e1 !important;
-}
-html[data-theme="dark"] .public-app .clubs-page-v41 .club-card-v41 .card-body p {
-  color: #c4b9aa !important;
-}
-
 /* Contact link cards are content-led actions, not tall empty placeholders. */
 .public-app .contact-page .contact-card {
   min-height: 0 !important;
