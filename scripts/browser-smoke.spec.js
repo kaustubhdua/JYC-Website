@@ -301,6 +301,19 @@ test('event detail route opens from the event directory', async ({ page }) => {
 });
 
 
+test('JAI event does not advertise an expired registration QR as open', async ({ page }) => {
+  await page.goto(base + '/events/jai-2026-jaypee-agentic-ai-hackathon', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'JAI expired registration state');
+
+  const qr = page.locator('.event-jai-qr');
+  await expect(qr.locator('.event-jai-registration-closed')).toBeVisible();
+  await expect(qr.locator('.event-jai-registration-closed')).toContainText('Registration closed');
+  await expect(qr.locator('img')).toHaveCount(0);
+  await expect(qr.getByText('Scan to register', { exact: true })).toHaveCount(0);
+  await expect(qr.getByRole('link', { name: /Open registration/i })).toHaveCount(0);
+  await expect(page.locator('#event-register').getByRole('button', { name: /REGISTRATION LINK UNAVAILABLE/i })).toBeDisabled();
+});
+
 test('homepage renders the official logo through Dither Veil and a magnetic activity Bento', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
