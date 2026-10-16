@@ -312,9 +312,9 @@ test('team accent and gallery album titles stay readable on the paper theme', as
 
   await page.goto(base + '/clubs', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'club card contrast');
-  const clubCard = page.locator('.club-card-v41').first();
-  await expect(clubCard.locator('.card-body h3')).toHaveCSS('color', 'rgb(33, 26, 19)');
-  await expect(clubCard.locator('.card-body p')).toHaveCSS('color', 'rgb(85, 73, 59)');
+  const clubCard = page.locator('.jyc57-club-card').first();
+  await expect(clubCard.locator('.jyc57-club-content h2')).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(clubCard.locator('.jyc57-club-content p')).toHaveCSS('color', 'rgba(255, 255, 255, 0.72)');
 
   await page.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'gallery cover contrast');
