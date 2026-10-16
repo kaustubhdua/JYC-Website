@@ -364,3 +364,8 @@
 @media (prefers-reduced-motion: reduce) {
   .public-app .contact-page .contact-form :where(input,textarea) { transition: none !important; }
 }
+
+/* Expired/unknown registration is a status, not a stale QR action. */
+.public-app .event-jai-registration-closed { display: grid; gap: 9px; max-width: 320px; padding: 16px; border: 1px solid var(--jyc-ex-line); border-radius: 16px; background: var(--jyc-ex-paper-raised); color: var(--jyc-ex-ink); text-align: center; }
+.public-app .event-jai-registration-closed strong { color: var(--jyc-ex-oxblood); font-size: 13px; letter-spacing: .02em; }
+.public-app .event-jai-registration-closed span { color: var(--jyc-ex-muted); font-size: 12px; line-height: 1.6; }
