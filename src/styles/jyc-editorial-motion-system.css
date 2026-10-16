@@ -40,3 +40,66 @@
 @media(max-width:700px){.jyc-editorial-home .jh-hero{width:calc(100% - 36px);padding-block:34px 48px;grid-template-columns:minmax(0,1fr);gap:26px}.jyc-editorial-home .jh-hero-copy{order:0}.jyc-editorial-home .jh-hero-visual{order:1}.jyc-editorial-home .jh-hero h1{max-width:12ch;font-size:clamp(42px,12vw,62px)!important;line-height:.98!important}.jyc-editorial-home .jh-lead{font-size:16px}.jyc-editorial-home .jh-actions{gap:10px;margin-top:24px}.jyc-editorial-home .jh-btn{flex:1 1 155px;padding-inline:16px}.jyc-editorial-home .jh-hero-dither-visual,.jyc-editorial-home .jh-hero-logo-plaque{min-height:min(82vw,390px)}.jyc-editorial-home .jh-hero-stats-row{grid-template-columns:repeat(2,minmax(0,1fr))}.jyc-editorial-home .jh-hero-stats-row .jh-stat-item{min-width:0}}
 @media(max-width:380px){.jyc-editorial-home .jh-hero{width:calc(100% - 28px)}.jyc-editorial-home .jh-hero h1{font-size:40px!important}.jyc-editorial-home .jh-btn{width:100%;flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){.jyc-editorial-home *,.public-app :where(.club-card,.event-card,.activity-card,.team-layer-card,.hub-story-card,.jyc-journal-card,.event-related-card),.public-app :where(.club-card img,.event-card img,.activity-card img,.team-layer-card img,.hub-story-card img,.jyc-journal-card img,.event-related-card img){animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.jyc-editorial-home .jh-ambient-orb{animation:none!important}}
+
+
+/* Final mobile hero order: identity → Dither Veil mark → actions. The fixed
+   dock remains available but never sits on top of the brand or primary actions. */
+@media (max-width: 680px) {
+  .jyc-editorial-home.jyc-home .jh-hero {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "badge" "overline" "title" "lead" "visual" "actions" !important;
+    gap: 8px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 12px 0 12px !important;
+    align-items: start !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-hero-copy { display: contents !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-cyber-badge { grid-area: badge !important; justify-self: start; margin: 0 !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-overline { grid-area: overline !important; max-width: 100% !important; margin: 0 !important; font-size: 12px !important; line-height: 1.5 !important; letter-spacing: .12em !important; overflow-wrap: anywhere !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > h1 { grid-area: title !important; margin: 0 !important; max-width: 100% !important; font-size: clamp(36px, 9.5vw, 44px) !important; line-height: .98 !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-lead { grid-area: lead !important; margin: 0 !important; font-size: 15px !important; line-height: 1.45 !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-visual,
+  .jyc-editorial-home.jyc-home .jh-hero-dither-visual {
+    grid-area: visual !important;
+    min-height: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-hero-logo-plaque {
+    position: relative !important;
+    inset: auto !important;
+    width: min(100%, 220px) !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    padding: 8px !important;
+    margin: 0 auto !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-dither-mark { width: 100% !important; max-width: 170px !important; min-width: 0 !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions {
+    grid-area: actions !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    align-self: start !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn { min-width: 0 !important; min-height: 46px !important; padding: 10px 8px !important; font-size: 13px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn:nth-child(3) { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 360px) {
+  .jyc-editorial-home.jyc-home .jh-hero { gap: 4px !important; padding-block: 6px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > h1 { font-size: clamp(32px, 10.2vw, 36px) !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-lead { font-size: 14px !important; line-height: 1.4 !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-logo-plaque { width: min(100%, 124px) !important; padding: 6px !important; }
+  .jyc-editorial-home.jyc-home .jh-dither-mark { max-width: 92px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions { grid-template-columns: minmax(0, 1fr) !important; gap: 6px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn { min-height: 40px !important; padding: 8px 10px !important; }
+}
