@@ -49,10 +49,10 @@
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-areas: "badge" "overline" "title" "lead" "visual" "actions" !important;
-    gap: 8px !important;
+    gap: 5px !important;
     min-height: 0 !important;
     height: auto !important;
-    padding: 12px 0 12px !important;
+    padding: 8px 0 !important;
     align-items: start !important;
   }
   .jyc-editorial-home.jyc-home .jh-hero-copy { display: contents !important; }
@@ -77,11 +77,25 @@
     min-width: 0 !important;
     min-height: 0 !important;
     height: auto !important;
-    aspect-ratio: 1 / 1 !important;
+    aspect-ratio: auto !important;
     padding: 8px !important;
     margin: 0 auto !important;
   }
-  .jyc-editorial-home.jyc-home .jh-dither-mark { width: 100% !important; max-width: 170px !important; min-width: 0 !important; }
+  .jyc-editorial-home.jyc-home .jh-dither-mark {
+    width: min(100%, 140px) !important;
+    max-width: 140px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    flex: 0 0 auto !important;
+  }
+  .jyc-editorial-home.jyc-home .jh-plaque-footer { display: flex !important; flex-wrap: nowrap !important; justify-content: center !important; gap: 4px !important; margin-top: 8px !important; padding-top: 8px !important; }
+  .jyc-editorial-home.jyc-home .jh-logo-caption { font-size: 9px !important; letter-spacing: .02em !important; white-space: nowrap !important; }
+  .jyc-editorial-home.jyc-home .jh-status-live-tag { font-size: 8px !important; letter-spacing: .04em !important; white-space: nowrap !important; }
+  .jyc-editorial-home.jyc-home .jh-status-live-tag { display: none !important; }
+  .jyc-editorial-home.jyc-home .jh-photo-label,
+  .jyc-editorial-home.jyc-home .jh-photo-index { display: none !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions {
     grid-area: actions !important;
     display: grid !important;
@@ -94,12 +108,17 @@
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn { min-width: 0 !important; min-height: 46px !important; padding: 10px 8px !important; font-size: 13px !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn:nth-child(3) { grid-column: 1 / -1 !important; }
 }
+/* The floating assistant is non-essential on narrow home screens and otherwise covers the academic-year badge. */
+@media (max-width: 420px) {
+  body:has(.jyc-editorial-home.jyc-home) .jyc-bot-shell { display: none !important; }
+}
 @media (max-width: 360px) {
-  .jyc-editorial-home.jyc-home .jh-hero { gap: 4px !important; padding-block: 6px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero { gap: 3px !important; padding-block: 4px !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > h1 { font-size: clamp(32px, 10.2vw, 36px) !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-lead { font-size: 14px !important; line-height: 1.4 !important; }
-  .jyc-editorial-home.jyc-home .jh-hero-logo-plaque { width: min(100%, 124px) !important; padding: 6px !important; }
-  .jyc-editorial-home.jyc-home .jh-dither-mark { max-width: 92px !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-logo-plaque { width: min(100%, 180px) !important; padding: 6px !important; }
+  .jyc-editorial-home.jyc-home .jh-dither-mark { width: min(100%, 78px) !important; max-width: 78px !important; }
+  .jyc-editorial-home.jyc-home .jh-logo-caption { font-size: 8px !important; letter-spacing: 0 !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions { grid-template-columns: minmax(0, 1fr) !important; gap: 6px !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn { min-height: 40px !important; padding: 8px 10px !important; }
 }
