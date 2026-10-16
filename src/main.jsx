@@ -10,6 +10,7 @@ import {jycToast} from './lib/ui';
 import './styles/public-entry.css';
 import './styles/jyc-experience-system.css';
 import './styles/v20-reference-restoration.css';
+import './styles/innovation-inspired-3d.css';
 import {JYCEditorialSystem} from './jyc-editorial-system.jsx';
 import {JYC_HUB_CONTENT, JYC_HUB_FAMILIES, hubProfile} from './v21-hub-content.js';
 import {JYC_HUB_SOURCE_REGISTRY,JYC_HUB_SOURCE_ONLY} from './jyc-hub-registry.js';
