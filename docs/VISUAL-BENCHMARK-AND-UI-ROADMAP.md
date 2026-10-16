@@ -152,3 +152,80 @@ A page is not “done” because build passed. It should pass:
 - https://www.espektro.in/
 - https://www.vgupanache.com/
 - https://github.com/kaustubhdua/JYC-Website
+
+## Follow-up execution brief — route QA and design-library integration (2026-10-16)
+
+This supplement turns the benchmark into a model-executable plan. It is intentionally source-first: do not guess event facts, club details, routes, image IDs, or registrations, and do not do a big-bang UI rewrite.
+
+### Current implementation evidence checked during follow-up
+
+- The public app is React 19 + Vite 8 + React Router 7. The lockfile's runtime constraint is Node `>=24 <25`; use Node 24 for release validation, not Node 22.
+- Existing first-party visual stack includes the JYC editorial homepage, React Bits-derived Dither Veil using OGL/WebGL, Magic Bento, Motion, GSAP, responsive image delivery and a custom gallery lightbox/team-card experience. Avoid duplicating those responsibilities with new libraries.
+- The site already has 34 canonical static QA contracts via `npm run qa`, route-shell generation, sitemap generation, image derivatives, Playwright visual route matrix, security/SEO checks and media integrity checks.
+- Existing route QA documents a possible functional discrepancy: `/achievements` and `/best-of-jyc` may redirect to About even though dedicated components/metadata exist. Confirm current routing in `src/main.jsx`; wire dedicated pages only if still present and appropriate, otherwise intentionally remove stale links/metadata/sitemap entries.
+- Existing public CSS includes `src/styles/public-entry.css`, `src/styles/jyc-experience-system.css`, `src/styles/v20-reference-restoration.css` and editorial-home motion/page styles. The recent innovation styling branch adds another 137-line global layer. Do not stack new overrides blindly; consolidate after inspecting effective styles and screenshot evidence.
+- Source manifests report hundreds of images with several thousand derivative entries, so the job is visual review of actual selected assets and crop behaviour, not simply regenerating another manifest.
+- Existing PR #252 is an Innovation-inspired CSS polish and has a ready preview URL, but a fresh build plus browser checks must validate the current head. Other open PRs touch overlapping public styles and screenshots. Inspect current PR/head/base state and avoid merges on unverified or conflicting stacks.
+
+### Reference-library adoption map
+
+#### Tremor — selective reuse, no dashboard graft
+Use its component-design discipline for numeric facts only where there is a verified source: small achievement/statistic treatments, structured event metadata, status badges and information hierarchy. Public JYC is an editorial student-club experience, not an analytics dashboard; do not add chart dashboards, KPI grids or heavy dependencies for decorative metrics. First check actual installed packages, lockfile, and relevant component API. If a small accessible badge/stat primitive already exists in local components, prefer it.
+
+#### shadcn/ui — copy/adapt individual components, no wholesale migration
+Use the repository as a source for accessible composition patterns and copy only needed component implementations after checking local framework, CSS conventions, keyboard behaviour and license. Highest-value candidates: Dialog/Sheet for mobile navigation or accessible modal, Tabs for gallery/event segmentation, Command/Popover for search and filters, Select/Checkbox for filters, Accordion for event details, Skeleton for stable loading and Alert/Toast for status feedback. Preserve existing React Router, current page logic, app shell and working lightbox. Do not run a global initialization or change Radix/Base UI primitives just because shadcn's defaults changed. If adapting a component, record source/version/license and test keyboard, focus restoration, Escape/outside dismissal, touch, reduced motion and error states.
+
+#### Magic UI — the visual-motion reference, selectively adapted
+High-fit elements:
+1. `bento-grid` layout principles for the homepage's activity/club discovery (reuse existing Magic Bento first; improve art direction and layout rather than mounting a duplicate).
+2. `blur-fade` / modest text entrance for a few major section headings only.
+3. `magic-card` / spotlight edge as a restrained pointer-only enhancement on one or two featured cards, only if it works without pointer and has no mobile overhead.
+4. `animated-grid-pattern` or `warp-background` as a static/low-motion background treatment in one area only; do not put continuous canvas effects behind every page.
+5. `marquee` only for a short, meaningful partner/hub rail and only if pause/keyboard/reduced-motion behaviours are sound.
+6. Use `globe`, heavy particles, continuous WebGL, cursor replacement and stacked shimmer effects only if a real content need and measured performance budget justify them.
+The current app already uses Motion, GSAP, OGL and React Bits, so implement lightweight CSS/Motion versions when possible rather than adding Framer Motion/duplicate animation runtimes.
+
+### UX design blueprint
+
+- Keep the JYC ownable warm editorial palette: warm ivory/paper, deep ink, restrained oxblood, champagne/brass. One brand action colour; muted accents for decoration only.
+- Display type: current Space Grotesk (only if confirmed in current source) for purposeful large headlines; readable sans body for paragraphs; monospace metadata sparingly. Use responsive `clamp()`, comfortable line-height and measured line lengths; do not shrink text to fit cards.
+- Strong page art direction:
+  - Home: left-side JYC proposition and actions, right official JYC logo with Dither Veil, one real photographic story/featured-event image, activity Bento, truthful next-up event, latest updates, team/about and final CTA.
+  - Clubs: search, active-filter chips and reset, meaningful club cards, canonical detail links, verified identity/logo, real photo, recruitment/social status.
+  - Event directory/detail: date/status-first cards, active/upcoming/past groups, verified official registration window and URL, poster/venue/eligibility/rulebook/FAQ/source, no stale register action.
+  - Gallery/archive: editorial featured images + varied but deterministic grid, genuine album metadata, responsive derivatives, shareable lightbox state, keyboard/touch navigation, Escape, focus restoration, visible fallbacks.
+  - Team: accurate portraits and names/roles; flipping is optional and must have a keyboard/touch equivalent, with no content hidden exclusively on hover.
+  - About/history: a single JYC story, official source attribution, real milestones and timeline.
+  - Contact/recruitment/calendar/updates/achievements/best-of: page-specific hierarchy, useful states, verified links and route metadata consistent with the actual output.
+  - Admin/control center: review separately; do not include in public visual redesign or weaken access controls.
+- Motion: one dominant effect per section. Prefer transform/opacity, no content gates, no layout-shifting, pause out-of-view loops, reduced-motion equivalent and static logo/image fallbacks. Dither Veil must not stop the brand logo from appearing if WebGL, image load or shader compilation fails.
+- Photographs: use only genuine approved JYC assets; no stock replacement, no repeating an image to fill a layout, no logo disguised as a photo, no guessed association. Every hero/album/team image must be checked for identity, subject, crop, aspect ratio, alt text, responsive size, provenance and fallback.
+
+### Route and viewport release matrix
+
+Use the maintained actual route registry and Playwright suites as the source of truth rather than a hand-maintained list that drifts. At minimum capture public routes at 1440×900, 1280×900, 1024×768, 768×1024, 430×932, 390×844, 360×800 and 320×740. Include light/dark where supported and reduced-motion state. For each route, verify:
+- correct H1/title/canonical/description/OG metadata;
+- route survives direct open, refresh, back and forward navigation;
+- no uncaught exception, broken first-party image, overflow, clipped text or obscured CTA;
+- images have alt text and reserved dimensions; event/date/status/link is source-accurate;
+- every button/filter/search/dialog/form/link works with keyboard, pointer and touch;
+- useful loading/empty/error state;
+- screenshot inspected against an intentional page-specific design;
+- no public/admin boundary leakage.
+
+### Required execution sequence and definitions of done
+
+1. Record the current main SHA, open PRs, CI state and latest tested production deployment. Do not treat a stale green deployment as proof for a new branch.
+2. Audit source, current route registry, imports/cascade, dependencies, package engine, image manifest, content/status models and QA coverage. Resolve existing route/metadata mismatch before broad styling.
+3. Establish design tokens in one authoritative file and document which existing CSS layers are obsolete. Remove duplicate/conflicting styling only in safe, test-backed changes.
+4. Fix P0 routes, image fallbacks, registration/event status and broken interactions.
+5. Polish the identity hero and design-system primitives, then the homepage, gallery, events, clubs and team, then remaining public pages.
+6. Add accessible component primitives only where existing components have a tested gap. No unrequested framework migration and no duplicate animation library.
+7. Run with Node 24: `npm ci`, `npm run build`, `npm run qa`, `npm run qa:browser`, `npm run qa:responsive`, `npm run qa:security`, `npm run qa:seo`, `npm run qa:photos`, `npm run qa:v64-editorial`, `npm run qa:photo-intelligence`, `npm run qa:performance`, and Playwright route/viewport checks. Do not report any test pass unless its actual exit code is zero.
+8. Review generated route shells/sitemap and built media, run dependency audit and inspect high-risk authorization/URL handling without mutating production Supabase or secrets.
+9. Inspect screenshots of real changed pages. Fix every observed contrast, spacing, crop, layout, and interaction defect. Capture final evidence.
+10. Keep changes in logical branches/commits and resolve overlapping PRs based on head/base ancestry. Do not force merge a conflicting or unvalidated PR. Require green CI/browser/security/SEO and a ready preview. Preview quota or runner outages must be documented as infrastructure blockers, not misreported as product passes.
+11. Final completion report must contain exact commit/PR/deployment links, actual test results, known limitations, and a route-by-route checklist. Do not call the website complete while any public route or critical interaction is unreviewed.
+
+### Critical engineering note
+A CSS-only finish is not the full redesign, and a production build is not equivalent to browser QA. The target is a coherent, intentional, maintainable visual system across all public routes, built on verified JYC content and tested interactions.
