@@ -495,3 +495,147 @@ html[data-theme="dark"] .public-app .team-photo-editorial {
   border-color: rgba(194,154,89,.32);
   box-shadow: inset 0 0 0 1px rgba(255,248,225,.06), 0 12px 28px rgba(0,0,0,.24);
 }
+
+/* Screenshot-driven contrast fixes: light surfaces must not inherit the old dark-theme text gradient. */
+html[data-theme="light"] .public-app .team-hero-panel h1 em {
+  background: none !important;
+  color: #8d642f !important;
+  -webkit-text-fill-color: #8d642f !important;
+  text-shadow: none !important;
+}
+html[data-theme="dark"] .public-app .team-hero-panel h1 em {
+  background: none !important;
+  color: #e4c48b !important;
+  -webkit-text-fill-color: #e4c48b !important;
+}
+html[data-theme="light"] .public-app .jyc-editorial-home .jh-photo-label,
+html[data-theme="light"] .public-app .jyc-editorial-home .jh-photo-index,
+html[data-theme="light"] .public-app .jyc-editorial-home .jh-logo-caption,
+html[data-theme="light"] .public-app .jyc-editorial-home .jh-plaque-footer {
+  color: #72502b !important;
+  opacity: 1 !important;
+}
+
+/* The About identity tile should use the same warm brand surface, not a mostly empty black slab. */
+html[data-theme="light"] .public-app .jyc-brand-editorial-mark {
+  min-height: 300px;
+  padding: clamp(22px,3vw,36px);
+  border: 1px solid rgba(129,94,45,.24);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(194,154,89,.24), transparent 58%),
+    linear-gradient(145deg,#fff9eb,#f4ead5);
+  box-shadow: inset 0 1px rgba(255,255,255,.95), 0 18px 42px rgba(67,46,20,.10);
+}
+html[data-theme="light"] .public-app .jyc-brand-editorial-logo {
+  width: min(250px,78%);
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid rgba(154,112,56,.25);
+  border-radius: 50%;
+  background: radial-gradient(circle,#fff9eb 20%,#f0dfbf 100%);
+  box-shadow: 0 14px 32px rgba(67,46,20,.12), inset 0 1px rgba(255,255,255,.95);
+}
+html[data-theme="light"] .public-app .jyc-brand-editorial-mark strong {
+  color: #211a13;
+}
+html[data-theme="light"] .public-app .jyc-brand-editorial-mark small {
+  color: #72502b;
+}
+html[data-theme="dark"] .public-app .jyc-brand-editorial-mark {
+  min-height: 300px;
+  padding: clamp(22px,3vw,36px);
+  border: 1px solid rgba(194,154,89,.24);
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 30%,rgba(194,154,89,.15),transparent 58%),linear-gradient(145deg,#27212a,#17141a);
+}
+html[data-theme="dark"] .public-app .jyc-brand-editorial-logo {
+  width: min(250px,78%);
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid rgba(194,154,89,.28);
+  border-radius: 50%;
+  background: radial-gradient(circle,#2b2630 20%,#17141a 100%);
+}
+
+/* Gallery cards always retain a visible designed fallback even when both the cover
+   and its logo fallback fail to decode or are unavailable offline. */
+.public-app .jyc-memory-cover {
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(circle at 50% 35%,rgba(194,154,89,.26),transparent 58%),linear-gradient(145deg,#2a2330,#17141a);
+}
+.public-app .jyc-memory-cover-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #f2d7a7;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(194,154,89,.28),transparent 45%),
+    linear-gradient(145deg,#2a2330,#17141a);
+}
+.public-app .jyc-memory-cover-fallback span {
+  display: grid;
+  place-items: center;
+  width: clamp(72px,8vw,112px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(242,215,167,.42);
+  border-radius: 50%;
+  color: #f2d7a7;
+  font: 700 clamp(36px,4vw,56px)/1 'Space Grotesk',system-ui,sans-serif;
+  text-shadow: 0 4px 18px rgba(0,0,0,.4);
+  box-shadow: 0 12px 32px rgba(0,0,0,.2), inset 0 0 0 7px rgba(242,215,167,.06);
+}
+.public-app .jyc-memory-cover-fallback small {
+  color: #f2d7a7;
+  font: 700 9px/1.4 'Space Grotesk',system-ui,sans-serif;
+  letter-spacing: .18em;
+}
+.public-app .jyc-memory-cover .jyc-responsive-picture {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.public-app .jyc-memory-cover .jyc-responsive-picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.public-app .jyc-memory-scrim {
+  background: linear-gradient(180deg,rgba(9,8,13,.05) 0%,rgba(9,8,13,.42) 38%,rgba(9,8,13,.92) 100%) !important;
+}
+.public-app .jyc-memories-grid .jyc-memory-title {
+  color: #fff9eb !important;
+  -webkit-text-fill-color: #fff9eb !important;
+  font-size: clamp(19px,1.7vw,24px);
+  line-height: 1.18;
+  text-shadow: 0 2px 14px rgba(0,0,0,.42);
+}
+.public-app .jyc-memories-grid .jyc-memory-count {
+  color: #f2d7a7 !important;
+  font-weight: 700;
+}
+.public-app .jyc-memories-grid .jyc-memory-action {
+  color: #fff9eb !important;
+  opacity: 1;
+}
+@media (max-width: 760px) {
+  html[data-theme="light"] .public-app .jyc-brand-editorial-mark,
+  html[data-theme="dark"] .public-app .jyc-brand-editorial-mark {
+    min-height: 0;
+    padding: 22px 16px;
+  }
+  html[data-theme="light"] .public-app .jyc-brand-editorial-logo,
+  html[data-theme="dark"] .public-app .jyc-brand-editorial-logo {
+    width: min(190px,58%);
+  }
+}
