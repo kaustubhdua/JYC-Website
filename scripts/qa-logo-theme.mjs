@@ -14,7 +14,7 @@ const checks=[
   [theme.includes('min-width:44px')&&theme.includes('min-height:44px'),'interactive targets must meet the 44px touch target used by the final public layer'],
   [main.includes("theme==='dark'?'#0f0e11':'#f5f1e6'"),'browser theme-color must match the logo palette'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color must match the logo palette'],
-  [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"'),'PWA manifest logo path and declared MIME type must agree'],
+  [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"')&&manifest.includes('"sizes": "1600x1600"'),'PWA manifest logo path, MIME type and intrinsic dimensions must agree'],
   [main.includes('PDF_HUB_GALLERY')&&main.includes('PDF_HUB_EXTRA_GALLERY'),'homepage must retain supplied hub archive media'],
   [theme.includes('.public-app [style*="--hub-accent"]'),'hub/event accent colors must be constrained to the shared logo system']
 ];
