@@ -1010,6 +1010,20 @@ test('responsive pictures recover when generated AVIF and WebP derivatives all f
 });
 
 
+test('featured JAI popup does not show registration after the verified deadline', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-16T12:00:00.000Z') });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(base, { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, 'featured JAI popup deadline');
+  await page.clock.runFor(10000);
+
+  const dialog = page.getByRole('dialog', { name: /JAI 2026/i });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('link', { name: /Register on Unstop/i })).toHaveCount(0);
+  await expect(dialog.getByText('Registration closed · deadline passed')).toBeVisible();
+  await expect(dialog.getByRole('link', { name: /Official site/i })).toBeVisible();
+});
+
 test('featured event poster uses the shared responsive image fallback contract', async ({ page }) => {
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'featured event photo fallback');
