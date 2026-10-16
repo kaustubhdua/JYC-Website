@@ -12,7 +12,7 @@ export default defineConfig({
   testDir: './scripts',
   timeout: 30000,
   expect: { timeout: 7000 },
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? Math.max(1, Number(process.env.JYC_PLAYWRIGHT_WORKERS || 2)) : undefined,
   fullyParallel: false,
   reporter: [['line']],
   use: {
