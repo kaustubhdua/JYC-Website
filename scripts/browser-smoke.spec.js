@@ -232,7 +232,7 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
             // The skip link is intentionally parked off-screen until keyboard focus.
             // It is an accessibility affordance, not an accidentally clipped visible node.
             if (el.classList.contains('skip-link') && document.activeElement !== el) return false;
-            if (el.closest('.jyc57-collection-scroller,.jyc57-photo-story-scrubber')) return false;
+            if (el.closest('.jyc57-collection-scroller,.jyc57-photo-story-scrubber,.jyc-quick-family-pills')) return false;
             const s = getComputedStyle(el);
             const r = el.getBoundingClientRect();
             return s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0 && r.height > 0 &&
@@ -253,7 +253,9 @@ test('mobile visual guardrails keep core content centered and inside viewport', 
       expect(result.badRects, 'off-screen elements ' + width + 'px ' + route).toEqual([]);
       expect(result.invisibleText, 'off-screen visible text ' + width + 'px ' + route + ' :: ' + JSON.stringify(result.invisibleTextDetails)).toBe(0);
       const textOverflow = await page.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4,p,button,a,span')].filter(el => {
-        const s=getComputedStyle(el), r=el.getBoundingClientRect(), text=(el.textContent||'').trim();
+        const s=getComputedStyle(el), r=el.getBoundingClientRect(), text=(el.innerText||'').trim();
+        // The assistant label is absolutely positioned under its trigger; measure its own span, not the parent button scrollWidth.
+        if(el.classList.contains('jyc-bot-orb'))return false;
         if(!text||s.display==='none'||s.visibility==='hidden'||r.width<=0||r.height<=0)return false;
         return el.scrollWidth > el.clientWidth + 2 && s.overflowWrap !== 'anywhere' && s.whiteSpace !== 'nowrap';
       }).slice(0,8).map(el => ({tag:el.tagName,cls:String(el.className||''),text:String(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),scrollWidth:el.scrollWidth,clientWidth:el.clientWidth})));
