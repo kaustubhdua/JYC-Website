@@ -19,6 +19,10 @@ assert.ok(css.includes('.team-photo-editorial img') && css.includes('.event-deta
 assert.ok(gallery.includes('className="jyc57-masonry"') && gallery.includes('className={`jyc57-photo photo-'), 'gallery uses the expected responsive collage components');
 assert.ok(main.includes('event-jai-registration-closed') && main.includes('regOpen&&registrationTarget'), 'expired JAI registration must not expose an active QR/link');
 assert.ok(fallback.includes("registrationDeadline:'2026-10-10T23:59:00+05:30'"), 'JAI fallback must retain the verified deadline');
+assert.ok(gallery.includes('jyc-memory-cover-fallback') && gallery.includes('cover unavailable'), 'album cards must retain a designed fallback when cover and logo assets fail');
+assert.ok(css.includes('.team-hero-panel h1 em') && css.includes('-webkit-text-fill-color: #8d642f !important'), 'team hero accent must remain readable on the light paper theme');
+assert.ok(css.includes('.jyc-memories-grid .jyc-memory-title') && css.includes('color: #fff9eb !important'), 'gallery album titles must have high contrast over the photo scrim');
+assert.ok(css.includes('.jyc-brand-editorial-mark') && css.includes('linear-gradient(145deg,#fff9eb,#f4ead5)'), 'About identity panel must use the warm V20 brand surface rather than an empty black slab');
 assert.ok(browser.includes('JAI event does not advertise an expired registration QR as open'), 'browser regression for expired registration must exist');
 
 console.log('PASS: V20 palette, photo framing, responsive motion and expired registration contracts');
