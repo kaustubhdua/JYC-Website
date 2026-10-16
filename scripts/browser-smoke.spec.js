@@ -1495,8 +1495,8 @@ test('responsive photos retry the original source when a derivative returns HTML
   let derivativeRequests = 0;
 
   // Keep the source image deterministic and valid so this test exercises the
-  // derivative failure path rather than an unrelated missing portrait in fixture data.
-  await testPage.route('**/assets/team/**', async route => {
+  // derivative failure path rather than an unrelated missing CMS/team record.
+  await testPage.route('**/assets/source-archive/**', async route => {
     await route.fulfill({
       status: 200,
       contentType: 'image/svg+xml',
@@ -1513,9 +1513,9 @@ test('responsive photos retry the original source when a derivative returns HTML
     });
   });
 
-  await testPage.goto(base + '/team', { waitUntil: 'domcontentloaded' });
+  await testPage.goto(base + '/gallery', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(testPage, 'derivative HTTP 200 HTML fallback');
-  const picture = testPage.locator('.team-photo-editorial .jyc-responsive-picture').filter({ has: testPage.locator('img[src*="/assets/team/"]') }).first();
+  const picture = testPage.locator('.jyc57-photo .jyc-responsive-picture').filter({ has: testPage.locator('img[src*="/assets/source-archive/"]') }).first();
   await picture.scrollIntoViewIfNeeded();
   await expect.poll(() => derivativeRequests, { timeout: 12000 }).toBeGreaterThan(0);
 
