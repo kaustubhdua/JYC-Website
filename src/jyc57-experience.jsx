@@ -399,7 +399,8 @@ export function JYC57Gallery({data}){
           const albumPhotos = items.filter(g => g.albumSlug === album.slug || g.albumId === album.id || g.albumName === album.name || g.association === album.name);
           return <button type="button" key={album.id || album.slug} className="jyc-memory-card" onClick={() => nav(albumRoute(album.slug))}>
             <div className="jyc-memory-cover">
-              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading={albumIndex < 3 ? 'eager' : 'lazy'} fetchPriority={albumIndex === 0 ? 'high' : undefined} sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 699px) calc(100vw - 40px), (max-width: 900px) calc(50vw - 30px), (max-width: 1063px) calc(50vw - 42px), 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt="Official JYC logo placeholder"/>
+              <div className="jyc-memory-cover-fallback" aria-hidden="true"><span>{String(album.name || 'JYC').trim().slice(0,1).toUpperCase()}</span><small>JYC VISUAL ARCHIVE</small></div>
+              <ResponsivePhoto src={album.cover_url || albumPhotos[0]?.url || LOGO_FALLBACK} alt={album.name} loading={albumIndex < 3 ? 'eager' : 'lazy'} fetchPriority={albumIndex === 0 ? 'high' : undefined} sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 699px) calc(100vw - 40px), (max-width: 900px) calc(50vw - 30px), (max-width: 1063px) calc(50vw - 42px), 360px" fallbackSrc={LOGO_FALLBACK} fallbackAlt={`Official JYC logo placeholder; ${album.name} cover unavailable`}/>
             </div>
             <div className="jyc-memory-scrim" />
             <div className="jyc-memory-details">
