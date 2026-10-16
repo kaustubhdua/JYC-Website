@@ -172,7 +172,10 @@ export function JYCEditorialHome({ data }) {
       const url = String(item?.url || '').trim();
       const association = String(item?.association || item?.albumName || '').trim();
       const role = String(item?.role || '').toLowerCase();
-      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || /jyc(?:\s+photo)?\s+archive|source archive/i.test(association) || seen.has(association.toLowerCase())) continue;
+      const sourceType = String(item?.sourceType || '').toLowerCase();
+      const editorialLabel = String(item?.caption || '') + ' ' + String(item?.alt || '');
+      // Presentation exports remain in the full gallery; the homepage collage uses actual photography.
+      if (!url || !association || item?.mediaKind !== 'photo' || !['event','club'].includes(role) || item?.published === false || item?.archived === true || sourceType === 'presentation-export' || /visual material from supplied .*presentation|(?:^|\\W)(?:poster|banner|illustration|graphic|artwork|qr code)(?:\\W|$)/i.test(editorialLabel) || /jyc(?:\\s+photo)?\\s+archive|source archive/i.test(association) || seen.has(association.toLowerCase())) continue;
       seen.add(association.toLowerCase());
       selected.push({ ...item, association });
       if (selected.length === 3) break;
