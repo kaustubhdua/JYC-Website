@@ -308,27 +308,7 @@ export function JYC57Gallery({data}){
   const categories = useMemo(() => ['All', ...new Set(items.map(g => g.category).filter(Boolean))], [items]);
   const years = useMemo(() => ['All', ...new Set(items.map(g => String(g.year || g.date || '').slice(0,4)).filter(y => /^\d{4}$/.test(y)))].sort((a,b) => a === 'All' ? -1 : b === 'All' ? 1 : Number(b)-Number(a)), [items]);
   const ARCHIVE_IA = ['COLLECTIONS','MOMENTS','YEARS','COMMUNITIES'];
-  const heroPhotos = useMemo(() => {
-    const pool = filtered.length ? filtered : items;
-    const bySubject = new Map();
-    for (const item of pool) {
-      const subject = photoSubject(item);
-      const rows = bySubject.get(subject) || [];
-      if (rows.length < 4) rows.push(item);
-      bySubject.set(subject, rows);
-    }
-    const selectedSubjects = [...bySubject.keys()];
-    const chosen = [];
-    let round = 0;
-    while (chosen.length < 6 && selectedSubjects.some(key => (bySubject.get(key) || []).length > round)) {
-      for (const key of selectedSubjects) {
-        const item = bySubject.get(key)?.[round];
-        if (item && chosen.length < 6) chosen.push(item);
-      }
-      round++;
-    }
-    return chosen;
-  }, [filtered, items]);
+
 
   useEffect(() => {
     let alive = true;
@@ -410,6 +390,28 @@ export function JYC57Gallery({data}){
        return matchesQuery && matchesCategory && matchesYear && matchesAlbum && matchesMedia;
     });
   }, [items, query, eventCategory, year, albumSlug, currentAlbum, mediaFilter]);
+
+  const heroPhotos = useMemo(() => {
+    const pool = filtered.length ? filtered : items;
+    const bySubject = new Map();
+    for (const item of pool) {
+      const subject = photoSubject(item);
+      const rows = bySubject.get(subject) || [];
+      if (rows.length < 4) rows.push(item);
+      bySubject.set(subject, rows);
+    }
+    const selectedSubjects = [...bySubject.keys()];
+    const chosen = [];
+    let round = 0;
+    while (chosen.length < 6 && selectedSubjects.some(key => (bySubject.get(key) || []).length > round)) {
+      for (const key of selectedSubjects) {
+        const item = bySubject.get(key)?.[round];
+        if (item && chosen.length < 6) chosen.push(item);
+      }
+      round++;
+    }
+    return chosen;
+  }, [filtered, items]);
 
   const selectedIndex = selected === null ? -1 : filtered.findIndex(g => g.url === selected.url);
   const setFilter = filter => setMediaFilter(filter);
