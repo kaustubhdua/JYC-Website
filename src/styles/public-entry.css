@@ -1,4 +1,5 @@
 /* Single public CSS entry point. Keep order aligned with the former main.jsx imports. */
+@import './jyc-visual-consistency.css';
 @import './public-system.css';
 @import '../jyc-design-upgrades.css';
 @import './jyc-pro-redesign.css';
@@ -379,4 +380,3 @@ html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7
     gap:12px!important;
   }
 }
-@import './jyc-visual-consistency.css';
