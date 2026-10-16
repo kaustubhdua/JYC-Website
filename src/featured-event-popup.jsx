@@ -4,6 +4,7 @@ import {createPortal} from 'react-dom';
 const FEATURED_EVENT_DISMISS_KEY='jyc-featured-jai-2026-dismissed-until';
 const FEATURED_EVENT_DISMISS_MS=3*24*60*60*1000;
 const EVENT_END=Date.parse('2026-10-31T23:59:59+05:30');
+const EVENT_REGISTRATION_DEADLINE=Date.parse('2026-10-10T23:59:00+05:30');
 const EVENT_POPUP_DELAY_MS=10000;
 const EVENT_PATH='/events/jai-2026-jaypee-agentic-ai-hackathon';
 const EVENT={
@@ -21,6 +22,7 @@ const focusable='a[href],button:not([disabled]),textarea:not([disabled]),input:n
 
 export function FeaturedEventPopup(){
   const onHome=typeof window==='undefined'||window.location.pathname==='/'||window.location.pathname==='';
+  const registrationOpen=Date.now()<=EVENT_REGISTRATION_DEADLINE;
   const [open,setOpen]=useState(false);
   const closeRef=useRef(null);
   const dialogRef=useRef(null);
@@ -91,11 +93,11 @@ export function FeaturedEventPopup(){
         <div className="jyc-featured-track-row">{EVENT.tracks.map(track=><span key={track}>{track}</span>)}</div>
         <div className="jyc-featured-event-actions">
           <a className="btn" href={EVENT_PATH}>View JAI 2026 ↗</a>
-          <a className="btn secondary" href={EVENT.register} target="_blank" rel="noopener noreferrer">Register on Unstop ↗</a>
+          {registrationOpen?<a className="btn secondary" href={EVENT.register} target="_blank" rel="noopener noreferrer">Register on Unstop ↗</a>:<span className="jyc-featured-registration-closed" role="status">Registration closed · deadline passed</span>}
           <a className="btn secondary" href={EVENT.official} target="_blank" rel="noopener noreferrer">Official site ↗</a>
           <a className="jyc-featured-discord" href={EVENT.discord} target="_blank" rel="noopener noreferrer">Join Discord</a>
         </div>
-        <p className="jyc-featured-event-note">This announcement is shown periodically so the flagship registration window stays visible without interrupting every visit.</p>
+        <p className="jyc-featured-event-note">This announcement is shown periodically to keep flagship event details visible. Registration actions appear only while the verified registration window is open.</p>
       </div>
     </section>
     <style>{`
