@@ -10,7 +10,7 @@
   "icons": [
     {
       "src": "/assets/jyc-logo.webp",
-      "sizes": "512x512",
+      "sizes": "1600x1600",
       "type": "image/webp",
       "purpose": "any maskable"
     }
@@ -23,7 +23,7 @@
       "icons": [
         {
           "src": "/assets/jyc-logo.webp",
-          "sizes": "512x512"
+          "sizes": "1600x1600"
         }
       ]
     },
@@ -34,7 +34,7 @@
       "icons": [
         {
           "src": "/assets/jyc-logo.webp",
-          "sizes": "512x512"
+          "sizes": "1600x1600"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "icons": [
         {
           "src": "/assets/jyc-logo.webp",
-          "sizes": "512x512"
+          "sizes": "1600x1600"
         }
       ]
     }
