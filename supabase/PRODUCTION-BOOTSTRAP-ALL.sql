@@ -1578,3 +1578,12 @@ drop policy if exists "Admins can update project submissions" on public.jyc_proj
 create policy "Admins can update project submissions" on public.jyc_project_submissions for update to authenticated using (exists(select 1 from public.jyc_admins a where a.user_id=auth.uid() and a.is_active=true)) with check (exists(select 1 from public.jyc_admins a where a.user_id=auth.uid() and a.is_active=true));
 create index if not exists jyc_project_submissions_created_idx on public.jyc_project_submissions(created_at desc);
 
+
+-- Keep direct public gallery access least-privileged even when this bootstrap is
+-- applied to a project whose default grants are broader than the migration baseline.
+REVOKE ALL PRIVILEGES ON TABLE public.jyc_gallery_items FROM anon;
+REVOKE ALL PRIVILEGES ON TABLE public.jyc_media_albums FROM anon;
+GRANT SELECT ON TABLE public.jyc_gallery_items TO anon;
+GRANT SELECT ON TABLE public.jyc_media_albums TO anon;
+REVOKE REFERENCES, TRIGGER ON TABLE public.jyc_gallery_items FROM authenticated;
+REVOKE REFERENCES, TRIGGER ON TABLE public.jyc_media_albums FROM authenticated;
