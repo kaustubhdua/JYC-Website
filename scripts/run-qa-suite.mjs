@@ -41,6 +41,7 @@ const scripts = [
   'qa-v20-reference-restoration.mjs',
   'qa-visual-quality-contract.mjs',
   'qa-visual-redesign.mjs',
+  'qa-colour-system.mjs',
   'qa-experience-system.mjs'
 ];
 
