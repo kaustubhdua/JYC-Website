@@ -4,10 +4,10 @@
 
 The checkpoint further below records an earlier deployment state and must be read as historical evidence, not current status.
 
-- [x] PR #244 redesign is merged to main at `2ceb1789b8218450707516b737c54635b7593c4e`.
-- [x] Vercel reports production deployment `dpl_2NqBhEMA8scNgVL6vuzTyBsQbKoD` as READY for that exact SHA.
-- [x] Latest repository search found no open PRs or issues at the time of this check.
-- [ ] A follow-up branch `fix/contact-form-validation-and-release-ux` adds accessible contact-form validation and a browser regression. It is not production until its PR checks pass and the change is merged/deployed.
+- [x] PR #244 redesign merged to `main` at `2ceb1789b8218450707516b737c54635b7593c4e`; Vercel was READY for that exact commit at the earlier checkpoint.
+- [x] PR #245 contact-form validation merged to `main` at `053beadbd6e0c46c23edaf1e5af6242280d7855c`. CI, Quality Gate, Lighthouse, CodeQL and Browser QA passed for its reviewed head.
+- [ ] Production is now behind `main`: latest Vercel production deployment still serves `2ceb1789b8218450707516b737c54635b7593c4e`. The newer main commit could not deploy because Vercel returned `api-deployments-free-per-day` rate limiting. Do not claim the contact-form fix is live yet.
+- [ ] PR #246 (`Close expired JAI registration state and reconcile release audit`) is open. It closes expired JAI registration CTAs in the event detail and featured popup, and adds browser/static regressions. Its CI must pass and its exact-commit preview must be available before merge/sign-off.
 - [ ] Visual sign-off remains pending because the live browser-inspection service was unavailable in this execution. Do not mark every route, photo crop or paragraph as manually inspected.
 - [ ] Owner-side operational gates remain: official domain/DNS, live JYC Now connectors, Supabase Auth leaked-password protection, security finding disposition, media rights/provenance, live backend authorization checks, real-device performance/Core Web Vitals and install/offline recovery.
 - [x] Read-only Supabase audit confirms the JYC project is ACTIVE_HEALTHY and RLS is enabled on the inspected public/storage tables.
