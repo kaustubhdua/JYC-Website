@@ -1361,27 +1361,27 @@ test('team flip-card biographies and LinkedIn links remain readable in both them
 });
 
 
-test('failed team portraits fall through the optimized logo to the original PNG safely', async ({ page }) => {
+test('failed team portraits use the neutral unavailable-photo fallback, never a logo', async ({ page }) => {
   await page.route('**/assets/team/**', route => route.abort());
-  await page.route('**/assets/jyc-logo.avif', route => route.abort());
+  await page.route('**/assets/photo-derivatives/**', route => route.abort());
   await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'team portrait fallback');
 
   const portrait = page.locator('.team-photo-editorial img').first();
   await expect(portrait).toBeVisible();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '2');
-  await expect(portrait).toHaveAttribute('alt', 'Official JYC logo placeholder; portrait unavailable');
-  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
-  await expect.poll(() => portrait.evaluate(img => getComputedStyle(img).objectFit)).toBe('contain');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '1');
+  await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
+  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
   await expect.poll(() => portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect(portrait).not.toHaveAttribute('src', /jyc-logo|JYC%20Logo/i);
 
-  // A parent/theme render must not restore the failed original portrait URL.
+  // A parent/theme render must preserve the explicit neutral portrait fallback.
   const themeToggle = page.locator('.theme-toggle').first();
   await expect(themeToggle).toBeVisible();
   await themeToggle.click();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '2');
-  await expect(portrait).toHaveAttribute('alt', 'Official JYC logo placeholder; portrait unavailable');
-  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '1');
+  await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
+  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
 });
 
 
