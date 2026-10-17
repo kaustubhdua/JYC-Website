@@ -261,7 +261,7 @@ html[data-theme="dark"] {
   min-height: var(--jyc-control-height);
 }
 .public-app :where(a,button,input,select,textarea,[role="button"],[tabindex]):focus-visible {
-  outline: 3px solid var(--jyc-brand-champagne);
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
   box-shadow: none;
 }
