@@ -491,13 +491,18 @@ html[data-theme="dark"] .jyc-editorial-home.jyc-home .jh-lead {
 }
 
 
-/* Keep the compact overline available to sighted users and route-level checks. */
+/* The campus identifier is meaningful content, not disposable microcopy.
+   Keep it comfortably readable on small screens and aligned with the 12px
+   mobile typography contract used by the editorial home. */
 @media (max-width: 680px) {
   .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-overline {
     display: block !important;
-    font-size: 9px !important;
-    line-height: 1.15 !important;
-    letter-spacing: .08em !important;
+    max-width: 34ch !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    letter-spacing: .025em !important;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
     margin: 0 !important;
   }
 }
