@@ -83,3 +83,14 @@ Latest branch head: `e51821edfd775ae85374467e89e41295b348b6ba`.
 - **Next:** fresh exact-head CI; fix resulting failures without weakening contracts; inspect real screenshots when browser access is available; proceed route-by-route with the shared design system, then accessibility/performance/release gates.
 
 - Fresh CI was triggered for code head `0417c0dc4992dafdab4519daadff890f523196f1`: JYC CI run `38992221749`, Browser QA `38992221751`, Quality Gate `38992221775`, CodeQL `38992221762`, Lighthouse CI `38992221745`. At last poll, JYC CI, Quality Gate and Lighthouse were in progress; Browser QA and CodeQL had no job details yet. Results are not yet known.
+
+
+## Exact-head QA follow-up — 2026-10-17
+
+Candidate at start: `9cb24019563f51463239ffcfa2d7240e986e5189` on `fix/release-qa-mobile-type`.
+
+- Production build, dependency install, lockfile checks, dependency vulnerability gate, CodeQL, JYC CI and JYC Quality Gate passed on this candidate.
+- Browser QA ran 93 cases: 83 passed and 6 failed across viewport projects. All failures traced to the new team-photo test treating a temporarily unmounted lazy-loaded FlipCard chunk as an empty team; the published team cards were present. Updated the test to distinguish “no team cards” from “lazy portraits not mounted yet,” then wait for the image elements without weakening the photo-integrity checks.
+- Lighthouse CI failed its accessibility assertion `label-content-name-mismatch` on all seven audited routes. Source review found the shared `ShareButton` used the page title as its accessible name while the visible action was “Share ↗”; changed the accessible name to include the visible action and added a source-contract regression.
+- Current Lighthouse failure is a real release blocker until a fresh exact-head run passes. No merge, production deployment, gallery-rights approval, DNS change or live Supabase security setting change has been performed.
+- The complete route-by-route visual inspection remains incomplete; this is a targeted QA repair, not completion of the 78-point redesign.

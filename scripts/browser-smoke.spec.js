@@ -62,15 +62,23 @@ test('published team portraits load or show the explicit neutral portrait fallba
   // Scroll each portrait into the viewport so native lazy-loading cannot make
   // an unrequested offscreen image look like a broken asset.
   const portraitImages = page.locator('.team-photo-editorial img');
-  const portraitCount = await portraitImages.count();
-  if (portraitCount === 0) {
+  const teamCards = page.locator('.team-layer-card');
+  const teamCardCount = await teamCards.count();
+  if (teamCardCount === 0) {
     // No published people: the page should expose its empty state, not fabricated portrait cards.
     await expect(page.locator('.team-hero-panel h1')).toContainText('Meet the people');
-    await expect(page.locator('.team-layer-card')).toHaveCount(0);
     await expect(page.locator('.team-command-strip')).toContainText('profiles awaiting publication');
     expect(errors, `team route runtime errors: ${errors.join(' | ')}`).toEqual([]);
     return;
   }
+
+  // Team portraits are inside a lazy-loaded React Bits flip-card chunk. Do not
+  // mistake its temporary Suspense fallback for an empty published team.
+  await expect.poll(
+    () => portraitImages.count(),
+    { timeout: 15000, message: 'published team cards should finish mounting their portrait images' }
+  ).toBeGreaterThan(0);
+  const portraitCount = await portraitImages.count();
   for (let index = 0; index < portraitCount; index += 1) {
     const portrait = portraitImages.nth(index);
     await portrait.scrollIntoViewIfNeeded();
