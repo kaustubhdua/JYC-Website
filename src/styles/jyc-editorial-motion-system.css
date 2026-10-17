@@ -514,3 +514,42 @@ html[data-theme="dark"] .jyc-editorial-home.jyc-home .jh-lead {
     min-height: 44px !important;
   }
 }
+
+
+/* Editorial art-direction pass: keep JYC's atmosphere, remove template-like glow. */
+.jyc-editorial-home.jyc-home .jh-ambient-orb {
+  opacity: .10;
+  filter: blur(112px);
+  mix-blend-mode: normal;
+}
+.jyc-editorial-home.jyc-home .jh-ambient-grid {
+  opacity: .22;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--jh-ink) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--jh-ink) 3%, transparent) 1px, transparent 1px);
+}
+.jyc-editorial-home.jyc-home .jh-cyber-badge {
+  box-shadow: none;
+  backdrop-filter: blur(8px);
+  letter-spacing: .08em;
+}
+.jyc-editorial-home.jyc-home .jh-hero-logo-plaque {
+  box-shadow: 0 22px 64px rgba(40, 25, 26, .08), inset 0 1px 0 rgba(255, 255, 255, .42);
+  backdrop-filter: none;
+}
+.jyc-editorial-home.jyc-home .jh-stat-item strong {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  filter: none;
+}
+@media (max-width: 700px) {
+  .jyc-editorial-home.jyc-home .jh-ambient-orb {
+    animation: none !important;
+    opacity: .035;
+    filter: blur(96px);
+  }
+  .jyc-editorial-home.jyc-home .jh-ambient-grid { opacity: .12; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jyc-editorial-home.jyc-home .jh-ambient-orb { animation: none !important; }
+}
