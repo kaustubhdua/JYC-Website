@@ -94,3 +94,15 @@ Candidate at start: `9cb24019563f51463239ffcfa2d7240e986e5189` on `fix/release-q
 - Lighthouse CI failed its accessibility assertion `label-content-name-mismatch` on all seven audited routes. Source review found the shared `ShareButton` used the page title as its accessible name while the visible action was “Share ↗”; changed the accessible name to include the visible action and added a source-contract regression.
 - Current Lighthouse failure is a real release blocker until a fresh exact-head run passes. No merge, production deployment, gallery-rights approval, DNS change or live Supabase security setting change has been performed.
 - The complete route-by-route visual inspection remains incomplete; this is a targeted QA repair, not completion of the 78-point redesign.
+
+
+## Latest exact-head verification — 2026-10-17
+
+Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
+- JYC CI: PASS.
+- JYC Quality Gate: PASS.
+- CodeQL: PASS.
+- Browser QA: 88 passed, 1 failed. Remaining failure: the homepage lab harness measured a 1,008 ms event duration against a strict 1,000 ms upper bound at the 1920px project. Do not loosen the assertion without checking repeatability and main-thread evidence.
+- Lighthouse CI: FAIL. `label-content-name-mismatch` persists on all seven audited routes despite the Search and Share label fixes. The homepage also had non-blocking performance/TBT warnings. Added an always-run Lighthouse report diagnostic step so the next run prints exact offending selectors/snippets and key performance metrics before artifact upload.
+- Updated ShareButton's accessible name to include the complete visible “Share ↗” text; the next Lighthouse report must confirm whether that was the offender or whether another shared control remains.
+- Exact-head Vercel preview was still building at the last status check; no visual sign-off or merge is authorized from source/build success alone.

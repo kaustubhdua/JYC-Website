@@ -37,6 +37,9 @@ jobs:
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
         run: npx --yes @lhci/cli@0.15.1 autorun --config=.lighthouserc.json
+      - name: Print Lighthouse failure details for follow-up
+        if: always()
+        run: node scripts/qa-lighthouse-report-details.mjs
       - name: Upload Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v7
