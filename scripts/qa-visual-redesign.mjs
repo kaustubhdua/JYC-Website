@@ -35,7 +35,7 @@ const designSystem = fs.readFileSync('src/styles/jyc-design-system.css', 'utf8')
 
   [designSystem.includes('html[data-theme="dark"]') && designSystem.includes('--jyc-muted-ink: var(--jyc-brand-muted)'), 'canonical design tokens remain theme-aware'],
   [designSystem.includes('--jyc-reading-width: 68ch') && designSystem.includes('--jyc-page-gutter: clamp(16px, 4vw, 64px)'), 'reading measure and responsive page gutters are centralized'],
-  [designSystem.includes('outline: 3px solid var(--jyc-brand-champagne)') && designSystem.includes('outline-offset: 3px'), 'the final shared design layer preserves visible keyboard focus'],
+  [designSystem.includes('outline: 3px solid var(--color-focus)') && designSystem.includes('outline-offset: 3px'), 'the final shared design layer preserves visible keyboard focus'],
   [designSystem.includes('@media (max-width: 420px)') && designSystem.includes('overflow-wrap: anywhere'), 'narrow mobile layouts handle long headings without forcing overflow'],
   [designSystem.includes('@media (prefers-reduced-motion: reduce)') && designSystem.includes('transition-delay: 0ms !important'), 'the final shared design layer honors reduced-motion preferences'],
 
