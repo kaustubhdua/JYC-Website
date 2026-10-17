@@ -180,3 +180,74 @@ html[data-theme="dark"] .public-app :where(.btn-secondary,.button-secondary,[dat
 @media (min-width: 1600px) {
   :root { --jyc-page-gutter: clamp(72px, 6vw, 120px); }
 }
+
+
+/* V69 — shared editorial tokens and predictable interaction states.
+   This layer adds a common foundation without flattening route-specific art direction. */
+:root {
+  --jyc-brand-space-1: 4px;
+  --jyc-brand-space-2: 8px;
+  --jyc-brand-space-3: 12px;
+  --jyc-brand-space-4: 16px;
+  --jyc-brand-space-5: 24px;
+  --jyc-brand-space-6: 32px;
+  --jyc-brand-space-7: 48px;
+  --jyc-brand-space-8: 64px;
+  --jyc-brand-text-xs: 0.75rem;
+  --jyc-brand-text-sm: 0.875rem;
+  --jyc-brand-text-base: 1rem;
+  --jyc-brand-text-lg: 1.125rem;
+  --jyc-brand-text-xl: clamp(1.25rem, 1.1rem + .7vw, 1.75rem);
+  --jyc-brand-text-2xl: clamp(1.65rem, 1.2rem + 1.8vw, 2.5rem);
+  --jyc-brand-text-display: clamp(2.25rem, 1.4rem + 4.2vw, 5.5rem);
+  --jyc-brand-leading-tight: 1.08;
+  --jyc-brand-leading-copy: 1.65;
+  --jyc-brand-focus-ring: 0 0 0 3px var(--jyc-brand-paper), 0 0 0 6px var(--jyc-brand-oxblood);
+}
+.public-app {
+  --jyc-page-gutter: clamp(16px, 4vw, 40px);
+  --jyc-content-max: 1240px;
+}
+.public-app :where(.page,.section,.page-shell,.content-shell,.route-stage) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.public-app :where(p,li) {
+  line-height: var(--jyc-brand-leading-copy);
+}
+.public-app :where(input,select,textarea,button,.btn,[role="button"]) {
+  font-family: inherit;
+}
+.public-app :where(input,select,textarea):focus-visible,
+.public-app :where(button,.btn,[role="button"],a):focus-visible {
+  outline: none;
+  box-shadow: var(--jyc-brand-focus-ring);
+}
+.public-app :where(input,select,textarea):disabled,
+.public-app :where(button,.btn,[role="button"]):disabled,
+.public-app :where([aria-disabled="true"]) {
+  cursor: not-allowed;
+  opacity: .62;
+}
+.public-app :where(.empty-state,[data-empty-state]) {
+  border: 1px dashed var(--jyc-brand-line-strong);
+  border-radius: var(--jyc-brand-radius-lg);
+  background: color-mix(in srgb, var(--jyc-brand-paper-raised) 82%, transparent);
+  padding: clamp(20px, 4vw, 36px);
+}
+@media (max-width: 360px) {
+  .public-app :where(.page,.section,.page-shell,.content-shell) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .public-app :where(button,.btn,[role="button"]) {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-app :where([data-parallax],[data-tilt],[data-pointer-light]) {
+    transform: none !important;
+    filter: none !important;
+  }
+}
