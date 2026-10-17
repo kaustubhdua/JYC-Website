@@ -96,8 +96,7 @@ const logoTiny='/assets/jyc-logo-48.avif';
 const logoSmall='/assets/jyc-logo-small.avif';
 function LogoImage({alt='',...props}){
  const requestedWidth=Number(props.width??48);
- const portraitPlaceholder=String(props.className||'').includes('team-photo-missing-logo');
- const src=!portraitPlaceholder&&requestedWidth<=48?logoTiny:!portraitPlaceholder&&requestedWidth<=96?logoSmall:logo;
+ const src=requestedWidth<=48?logoTiny:requestedWidth<=96?logoSmall:logo;
  const [failed,setFailed]=useState(false);
  useEffect(()=>setFailed(false),[src]);
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
