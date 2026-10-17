@@ -106,9 +106,16 @@ test('mobile homepage logo and primary actions stay clear of the fixed navigatio
   test.skip(!viewport || viewport.width > 680);
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'mobile hero and dock geometry');
-  // The bot is a lazy-loaded chunk behind Suspense; wait for its actual mount before measuring geometry.
-  // This preserves the overlap assertions instead of treating an early null query as a geometry failure.
+  // The bot is a lazy-loaded chunk behind Suspense; wait for actual layout, not just the app root.
+  // Fonts and responsive CSS can still change bounding boxes after React mounts.
   await expect(page.locator('.jyc-bot-shell')).toBeAttached({ timeout: 15000 });
+  for (const selector of ['.mobile-dock', '.jh-cyber-badge', '.jh-hero-logo-plaque', '.jh-dither-mark', '.jh-plaque-footer', '.jh-hero-actions']) {
+    await expect(page.locator(selector), `required hero geometry element ${selector}`).toBeVisible({ timeout: 15000 });
+  }
+  await page.evaluate(async () => {
+    if (document.fonts?.ready) await document.fonts.ready;
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
   const geometry = await page.evaluate(() => {
     const rect = selector => {
       const element = document.querySelector(selector);
