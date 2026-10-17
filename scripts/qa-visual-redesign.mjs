@@ -28,6 +28,9 @@ const designSystem = fs.readFileSync('src/styles/jyc-design-system.css', 'utf8')
   [designSystem.includes('--color-brand: #8f211f') && designSystem.includes('--color-brand-hover: #741b19') && designSystem.includes('--color-accent: #b99b70'), 'semantic brand and accent tokens use the approved JYC editorial direction'],
   [designSystem.includes('html[data-theme="dark"]') && designSystem.includes('--color-canvas: #141216') && designSystem.includes('--color-text: #f8f1e7'), 'dark theme overrides the semantic palette rather than a parallel token set'],
   [designSystem.includes('--color-focus: #725027') && designSystem.includes('--color-success: #176443') && designSystem.includes('--color-warning: #805000') && designSystem.includes('--color-error: #a51d24'), 'focus and status colors have explicit semantic tokens'],
+  [designSystem.includes('--color-surface-raised: #ffffff') && designSystem.includes('--jyc-brand-paper-raised: var(--color-surface-raised)'), 'raised public surfaces use the dedicated semantic raised-surface token'],
+  [designSystem.includes('outline: 3px solid var(--color-focus)') && designSystem.includes('outline-offset: 3px'), 'keyboard focus uses the semantic focus color rather than the decorative accent'],
+
   [designSystem.includes('--jyc-brand-paper: var(--color-canvas)') && designSystem.includes('--jyc-brand-oxblood: var(--color-brand)') && designSystem.includes('--jyc-brand-champagne: var(--color-accent)'), 'legacy brand tokens are aliases of semantic source-of-truth values'],
 
   [designSystem.includes('html[data-theme="dark"]') && designSystem.includes('--jyc-muted-ink: var(--jyc-brand-muted)'), 'canonical design tokens remain theme-aware'],
