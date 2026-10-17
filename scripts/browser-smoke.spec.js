@@ -53,13 +53,27 @@ for (const route of routes) {
 
 
 test('published team portraits load or show the explicit neutral portrait fallback', async ({ page }) => {
+  test.setTimeout(60000);
   const errors = [];
   page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
   await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, '/team');
-  await waitForImagesToSettle(page);
 
-  const portraits = await page.locator('.team-photo-editorial img').evaluateAll(images => images.map(img => {
+  // Scroll each portrait into the viewport so native lazy-loading cannot make
+  // an unrequested offscreen image look like a broken asset.
+  const portraitImages = page.locator('.team-photo-editorial img');
+  const portraitCount = await portraitImages.count();
+  expect(portraitCount, 'team route should render its published portrait cards').toBeGreaterThan(0);
+  for (let index = 0; index < portraitCount; index += 1) {
+    const portrait = portraitImages.nth(index);
+    await portrait.scrollIntoViewIfNeeded();
+    await expect.poll(
+      () => portrait.evaluate(img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0),
+      { timeout: 10000, message: `portrait ${index + 1} should load or render its neutral fallback` }
+    ).toBe(true);
+  }
+
+  const portraits = await portraitImages.evaluateAll(images => images.map(img => {
     const picture = img.closest('picture');
     const card = img.closest('.team-layer-card');
     return {
