@@ -52,6 +52,51 @@ for (const route of routes) {
 }
 
 
+test('published team portraits load or show the explicit neutral portrait fallback', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
+  await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, '/team');
+  await waitForImagesToSettle(page);
+
+  const portraits = await page.locator('.team-photo-editorial img').evaluateAll(images => images.map(img => {
+    const picture = img.closest('picture');
+    const card = img.closest('.team-layer-card');
+    return {
+      name: card?.querySelector('.team-name-front')?.textContent?.trim() || '',
+      src: img.getAttribute('src') || '',
+      currentSrc: img.currentSrc || '',
+      alt: img.getAttribute('alt') || '',
+      loaded: img.complete && img.naturalWidth > 0 && img.naturalHeight > 0,
+      naturalWidth: img.naturalWidth,
+      fallbackStage: img.getAttribute('data-image-fallback-stage') || '',
+      pictureFailed: picture?.getAttribute('data-image-failed') === 'true',
+      pictureLabel: picture?.getAttribute('data-image-fallback-label') || ''
+    };
+  }));
+
+  expect(portraits.length, 'team route should render its published portrait cards').toBeGreaterThan(0);
+  for (const portrait of portraits) {
+    expect(portrait.name, 'each portrait should belong to a named team member').not.toBe('');
+    expect(portrait.alt, `portrait for ${portrait.name} needs meaningful alt text`).not.toBe('');
+    expect(
+      /jyc-logo/i.test(portrait.currentSrc || portrait.src),
+      `a brand logo must never be presented as ${portrait.name}'s portrait`
+    ).toBe(false);
+    expect(
+      portrait.loaded,
+      `portrait for ${portrait.name} must load or render the real neutral fallback; source=${portrait.src}; currentSrc=${portrait.currentSrc}; stage=${portrait.fallbackStage}; failed=${portrait.pictureFailed}`
+    ).toBe(true);
+    if (/photo-unavailable\\.svg/i.test(portrait.currentSrc || portrait.src)) {
+      expect(portrait.fallbackStage, `fallback for ${portrait.name} should be explicitly marked`).not.toBe('');
+      expect(portrait.alt.toLowerCase(), `fallback alt text for ${portrait.name} should explain the missing portrait`).toContain('portrait unavailable');
+    } else {
+      expect(portrait.pictureFailed, `successfully loaded portrait for ${portrait.name} must not be marked as failed`).toBe(false);
+    }
+  }
+  expect(errors, `team route runtime errors: ${errors.join(' | ')}`).toEqual([]);
+});
+
 test('history, achievements and Best of JYC render their dedicated pages', async ({ page }) => {
   const cases = [
     ['/history', /A living record of JYC\./i],
