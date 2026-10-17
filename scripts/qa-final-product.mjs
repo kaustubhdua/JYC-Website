@@ -21,7 +21,7 @@ const checks=[
   [theme.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'),'body copy has an explicit readable theme color'],
   [index.includes('theme-color" media="(prefers-color-scheme: dark)" content="#0f0e11"'),'dark browser chrome uses the deep navy brand color'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color stays on the senior palette'],
-  [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"')&&manifest.includes('"sizes": "512x512"'),'PWA icon uses the configured WebP asset with matching MIME type and intrinsic dimensions'],
+  [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"')&&manifest.includes('"sizes": "512x512"')&&(manifest.match(/"type": "image\\/webp"/g)||[]).length===4&&(manifest.match(/"sizes": "512x512"/g)||[]).length===4,'PWA icon uses the configured WebP asset with matching MIME type and intrinsic dimensions'],
   [optimizer.includes('resize({width:512,withoutEnlargement:true})')&&optimizer.includes("webp({quality:92,effort:5,alphaQuality:100}"),'production build emits the manifest-declared 512px WebP icon from the untouched source logo'],
   [manifest.includes('"purpose": "any"')&&!manifest.includes('"purpose": "any maskable"'),'PWA icon only claims the non-maskable purpose until safe-area artwork is visually verified'],
   [editorialHome.includes('fetchPriority="high"')&&editorialHome.includes('jh-photo-frame'),'editorial hero image is prioritized for first paint'],
