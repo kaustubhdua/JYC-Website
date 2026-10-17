@@ -7,8 +7,8 @@ const main=read('src/main.jsx');
 const manifest=read('public/manifest.json');
 
 const checks=[
-  [system.includes("@import '../jyc-logo-final-theme.css';"),'final senior logo theme must be the last public-system layer'],
-  [theme.includes('--jyc-navy:#18161d')&&theme.includes('--jyc-champagne:#bf9c6f')&&theme.includes('--jyc-ivory:#ffffff')&&theme.includes('--accent-red:#a82420'),'senior logo palette tokens must be present'],
+  [system.includes("@import '../jyc-logo-final-theme.css';")&&system.indexOf("@import '../jyc-logo-final-theme.css';")<system.indexOf("@import '../jyc-editorial-system.css';"),'senior logo theme is part of the shared stack before page-specific editorial refinements'],
+  [theme.includes('--jyc-navy:#0F0E11')&&theme.includes('--jyc-champagne:#BF9C6F')&&theme.includes('--jyc-ivory:#FFF8E1')&&theme.includes('--accent-red:#A82420'),'senior logo palette tokens must be present'],
   [theme.includes('prefers-reduced-motion:reduce'),'final theme must respect reduced motion'],
   [theme.includes('prefers-contrast:more'),'final theme must support higher contrast'],
   [theme.includes('min-width:44px')&&theme.includes('min-height:44px'),'interactive targets must meet the 44px touch target used by the final public layer'],
