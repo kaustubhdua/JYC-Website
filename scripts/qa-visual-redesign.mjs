@@ -20,6 +20,7 @@ const checks = [
   [layer.includes(':focus-visible'), 'visible keyboard focus is defined'],
   [layer.includes('--jyc-oxblood') && layer.includes('--jyc-champagne'), 'JYC identity tokens are defined'],
   [layer.includes('.jh-overline{color:var(--jh-muted,var(--jyc-muted-ink));font-size:12px;letter-spacing:.16em}'), 'hero eyebrow text stays at the 12px minimum readable type size'],
+  [(() => { const mobile = layer.slice(layer.lastIndexOf('/* The campus identifier is meaningful content')); return mobile.includes('font-size: 12px !important;') && mobile.includes('line-height: 1.35 !important;') && !mobile.includes('font-size: 9px !important;'); })(), 'final mobile hero overline override remains readable at 12px'],
   [layer.includes('translateY(-3px)') && layer.includes('hover:hover'), 'card motion is restricted to fine pointers'],
 ];
 for (const [ok, name] of checks) { console.log((ok ? 'PASS: ' : 'FAIL: ') + name); assert.ok(ok, name); }
