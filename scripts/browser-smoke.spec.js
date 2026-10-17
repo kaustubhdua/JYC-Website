@@ -140,9 +140,14 @@ test('homepage accessibility and responsive guardrails', async ({ page }) => {
   await page.goto(base, { waitUntil: 'domcontentloaded' });
   const themeToggle = page.locator('button.theme-toggle');
   await expect(themeToggle).toBeVisible();
-  const visibleThemeLabel = (await themeToggle.innerText()).replace(/\\s+/g, ' ').trim();
+  const visibleThemeLabel = (await themeToggle.innerText()).replace(/\s+/g, ' ').trim();
   const themeAccessibleName = await themeToggle.getAttribute('aria-label');
   expect(themeAccessibleName, 'theme toggle accessible name must include its visible label').toContain(visibleThemeLabel);
+  const startingTheme = await page.locator('html').getAttribute('data-theme');
+  await themeToggle.focus();
+  await page.keyboard.press('Enter');
+  await expect.poll(() => page.locator('html').getAttribute('data-theme')).not.toBe(startingTheme);
+  await expect(themeToggle).toContainText(startingTheme === 'dark' ? 'Light' : 'Dark');
 
   const missingAlt = await page.locator('img:not([alt])').count();
   expect(missingAlt).toBe(0);
