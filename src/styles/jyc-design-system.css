@@ -180,3 +180,92 @@ html[data-theme="dark"] .public-app :where(.btn-secondary,.button-secondary,[dat
 @media (min-width: 1600px) {
   :root { --jyc-page-gutter: clamp(72px, 6vw, 120px); }
 }
+
+
+/* P0 foundation: one canonical token bridge for legacy public surfaces.
+   Keep older component-specific variable names working while ensuring their
+   colors, radii, type and motion resolve to the same JYC editorial palette. */
+:root {
+  --jyc-paper: var(--jyc-brand-paper);
+  --jyc-surface: var(--jyc-brand-paper-raised);
+  --jyc-ink: var(--jyc-brand-ink);
+  --jyc-muted-ink: var(--jyc-brand-muted);
+  --jyc-muted: var(--jyc-brand-muted);
+  --jyc-oxblood: var(--jyc-brand-oxblood);
+  --jyc-oxblood-hover: var(--jyc-brand-oxblood-hover);
+  --jyc-champagne: var(--jyc-brand-champagne);
+  --jyc-line: var(--jyc-brand-line);
+  --jyc-line-strong: var(--jyc-brand-line-strong);
+  --jyc-radius-sm: var(--jyc-brand-radius-sm);
+  --jyc-radius-md: var(--jyc-brand-radius-md);
+  --jyc-radius-lg: var(--jyc-brand-radius-lg);
+  --jyc-radius-xl: var(--jyc-brand-radius-xl);
+  --jyc-shadow-sm: var(--jyc-brand-shadow-sm);
+  --jyc-shadow-md: var(--jyc-brand-shadow-md);
+  --jyc-shadow-lg: var(--jyc-brand-shadow-lg);
+  --jyc-motion-ease: var(--jyc-brand-ease);
+  --jyc-motion-fast: var(--jyc-brand-fast);
+  --jyc-motion-base: var(--jyc-brand-base);
+  --jyc-content-width: 1240px;
+  --jyc-reading-width: 68ch;
+  --jyc-page-gutter: clamp(16px, 4vw, 64px);
+  --jyc-control-height: 44px;
+  --jyc-focus-ring: 0 0 0 3px color-mix(in srgb, var(--jyc-brand-champagne) 72%, transparent);
+}
+html[data-theme="dark"] {
+  --jyc-paper: var(--jyc-brand-paper);
+  --jyc-surface: var(--jyc-brand-paper-raised);
+  --jyc-ink: var(--jyc-brand-ink);
+  --jyc-muted-ink: var(--jyc-brand-muted);
+  --jyc-muted: var(--jyc-brand-muted);
+  --jyc-oxblood: var(--jyc-brand-oxblood);
+  --jyc-oxblood-hover: var(--jyc-brand-oxblood-hover);
+  --jyc-champagne: var(--jyc-brand-champagne);
+  --jyc-line: var(--jyc-brand-line);
+  --jyc-line-strong: var(--jyc-brand-line-strong);
+}
+.public-app {
+  --surface: var(--jyc-brand-paper-raised);
+  --text: var(--jyc-brand-ink);
+  --muted: var(--jyc-brand-muted);
+  --line: var(--jyc-brand-line);
+  --accent: var(--jyc-brand-oxblood);
+  --accent-hover: var(--jyc-brand-oxblood-hover);
+  --focus-ring: var(--jyc-focus-ring);
+}
+.public-app :where(main,section,article,aside,nav,header,footer) { min-width: 0; }
+.public-app :where(p,li,.description,.summary,.body-copy) {
+  max-width: var(--jyc-reading-width);
+}
+.public-app :where(button,input,select,textarea,[role="button"],a.btn,.btn,.button) {
+  min-height: var(--jyc-control-height);
+}
+.public-app :where(a,button,input,select,textarea,[role="button"],[tabindex]):focus-visible {
+  outline: 3px solid var(--jyc-brand-champagne);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+.public-app :where(img,video,canvas,svg) { max-width: 100%; }
+.public-app :where(img,video) { height: auto; }
+@media (max-width: 420px) {
+  .public-app {
+    --jyc-page-gutter: 16px;
+    --jyc-type-body: 1rem;
+  }
+  .public-app :where(.page,.section,.page-shell,.content-shell,.unified-public-page) {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .public-app :where(h1,h2,h3,h4) {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto !important; }
+  .public-app :where(*, *::before, *::after) {
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
