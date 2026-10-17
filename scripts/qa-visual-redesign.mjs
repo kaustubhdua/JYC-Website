@@ -7,7 +7,8 @@ const layer = fs.readFileSync('src/styles/jyc-editorial-motion-system.css', 'utf
 const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 const bot = fs.readFileSync('src/jyc-bot.jsx', 'utf8');
 const designSystem = fs.readFileSync('src/styles/jyc-design-system.css', 'utf8');
-\nconst checks = [
+
+const checks = [
   [bot.includes('window.setTimeout') && bot.includes('14000+Math.floor(Math.random()*9000)'), 'Falcon idle behavior uses bounded delayed scheduling rather than a perpetual interval'],
   [bot.includes("document.addEventListener('visibilitychange',onVisibilityChange)") && bot.includes("document.removeEventListener('visibilitychange',onVisibilityChange)"), 'Falcon idle scheduling pauses and cleans up on page visibility changes'],
   [bot.includes('[assistantOpen,loc.pathname]') && bot.includes('window.clearTimeout(idleTimer.current)'), 'Falcon idle behavior is cancelled when the assistant opens or route changes'],
