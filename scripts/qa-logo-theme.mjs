@@ -15,6 +15,7 @@ const checks=[
   [main.includes("theme==='dark'?'#0f0e11':'#f5f1e6'"),'browser theme-color must match the logo palette'],
   [manifest.includes('"theme_color": "#f5f1e6"'),'PWA theme color must match the logo palette'],
   [manifest.includes('"src": "/assets/jyc-logo.webp"')&&manifest.includes('"type": "image/webp"')&&manifest.includes('"sizes": "1600x1600"'),'PWA manifest logo path, MIME type and intrinsic dimensions must agree'],
+  [manifest.includes('"purpose": "any"')&&!manifest.includes('"purpose": "any maskable"'),'PWA does not advertise an unverified maskable safe area'],
   [main.includes('PDF_HUB_GALLERY')&&main.includes('PDF_HUB_EXTRA_GALLERY'),'homepage must retain supplied hub archive media'],
   [theme.includes('.public-app [style*="--hub-accent"]'),'hub/event accent colors must be constrained to the shared logo system']
 ];
