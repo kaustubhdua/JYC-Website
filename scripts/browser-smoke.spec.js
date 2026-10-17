@@ -64,8 +64,7 @@ test('published team portraits load or show the explicit neutral portrait fallba
   const portraitImages = page.locator('.team-photo-editorial img');
   const portraitCount = await portraitImages.count();
   if (portraitCount === 0) {
-    // The CMS may legitimately have no published people yet. In that case the
-    // page must communicate the empty state instead of rendering fabricated cards.
+    // No published people: the page should expose its empty state, not fabricated portrait cards.
     await expect(page.locator('.team-hero-panel h1')).toContainText('Meet the people');
     await expect(page.locator('.team-layer-card')).toHaveCount(0);
     await expect(page.locator('.team-command-strip')).toContainText('profiles awaiting publication');

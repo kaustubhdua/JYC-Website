@@ -337,7 +337,7 @@ function Team({data}){
      {/* Front Face: High-Res Portrait, Name, Position, Flip Trigger */}
      <div className="team-member-face-content" style={{position:'relative',width:'100%',height:'100%',overflow:'hidden',padding:0}}>
       <div className="team-photo-editorial">
-       {photo?<ResponsivePhoto src={photo} alt={name} width={600} height={720} loading="lazy" decoding="async" sizes="(max-width: 420px) 90vw, (max-width: 760px) 45vw, 25vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt={`Portrait unavailable for ${name}`}/>:<span className="jyc-logo-fallback team-photo-missing-logo" role="img" aria-label={`Portrait unavailable for ${name}`}>{String(name||'JYC').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase()}</span>}
+       <ResponsivePhoto src={photo||"/assets/photo-unavailable.svg"} alt={photo?name:`Portrait unavailable for ${name}`} width={600} height={720} loading="lazy" decoding="async" sizes="(max-width: 420px) 90vw, (max-width: 760px) 45vw, 25vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt={`Portrait unavailable for ${name}`}/>
       </div>
       <div className="team-front-overlay">
        <span className="team-role-tag">{role}</span>
