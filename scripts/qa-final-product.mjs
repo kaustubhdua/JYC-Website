@@ -11,8 +11,8 @@ const admin=read('src/admin-chunk.jsx');
 const adminExtra=read('src/admin-extra.jsx');
 
 const checks=[
-  [system.includes("@import '../jyc-logo-final-theme.css';"),'senior theme remains the final public CSS layer'],
-  [theme.includes('--jyc-navy:#18161d')&&theme.includes('--jyc-champagne:#bf9c6f')&&theme.includes('--jyc-ivory:#ffffff')&&theme.includes('--accent-red:#a82420'),'senior logo palette is explicit'],
+  [system.includes("@import '../jyc-logo-final-theme.css';")&&system.indexOf("@import '../jyc-logo-final-theme.css';")<system.indexOf("@import '../jyc-editorial-system.css';"),'senior theme remains in the shared public CSS stack before page-specific editorial refinements'],
+  [theme.includes('--jyc-navy:#0F0E11')&&theme.includes('--jyc-champagne:#BF9C6F')&&theme.includes('--jyc-ivory:#FFF8E1')&&theme.includes('--accent-red:#A82420'),'senior logo palette is explicit'],
   [theme.includes('hero-logo-stage::after')&&theme.includes('jycLogoSheen'),'hero has a restrained visible micro-interaction'],
   [theme.includes('.hero-logo-ring,')&&theme.includes('display:none!important'),'rejected orbital rings stay disabled'],
   [theme.includes('prefers-reduced-motion:reduce')&&theme.includes('jycLogoSheen'),'motion has a reduced-motion kill switch'],
