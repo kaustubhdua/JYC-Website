@@ -3,15 +3,30 @@
    semantic HTML; the homepage's signature art direction stays separately scoped. */
 :root {
   color-scheme: light;
-  --jyc-brand-paper: #f5f1e8;
-  --jyc-brand-paper-raised: #fffdf8;
-  --jyc-brand-ink: #211d22;
-  --jyc-brand-muted: #5f5860;
-  --jyc-brand-oxblood: #8f211f;
-  --jyc-brand-oxblood-hover: #741b19;
-  --jyc-brand-champagne: #b99b70;
-  --jyc-brand-line: rgba(33, 29, 34, .14);
-  --jyc-brand-line-strong: rgba(33, 29, 34, .24);
+  /* Semantic tokens are the source of truth; legacy names below are aliases. */
+  --color-canvas: #f5f1e8;
+  --color-surface: #fffdf8;
+  --color-surface-raised: #ffffff;
+  --color-text: #211d22;
+  --color-muted: #5f5860;
+  --color-border: rgba(33, 29, 34, .14);
+  --color-border-strong: rgba(33, 29, 34, .24);
+  --color-brand: #8f211f;
+  --color-brand-hover: #741b19;
+  --color-accent: #b99b70;
+  --color-focus: #725027;
+  --color-success: #176443;
+  --color-warning: #805000;
+  --color-error: #a51d24;
+  --jyc-brand-paper: var(--color-canvas);
+  --jyc-brand-paper-raised: var(--color-surface-raised);
+  --jyc-brand-ink: var(--color-text);
+  --jyc-brand-muted: var(--color-muted);
+  --jyc-brand-oxblood: var(--color-brand);
+  --jyc-brand-oxblood-hover: var(--color-brand-hover);
+  --jyc-brand-champagne: var(--color-accent);
+  --jyc-brand-line: var(--color-border);
+  --jyc-brand-line-strong: var(--color-border-strong);
   --jyc-brand-radius-sm: 8px;
   --jyc-brand-radius-md: 12px;
   --jyc-brand-radius-lg: 20px;
@@ -25,15 +40,20 @@
 }
 html[data-theme="dark"] {
   color-scheme: dark;
-  --jyc-brand-paper: #141216;
-  --jyc-brand-paper-raised: #1e1a20;
-  --jyc-brand-ink: #f8f1e7;
-  --jyc-brand-muted: #c1b8c1;
-  --jyc-brand-oxblood: #d45b55;
-  --jyc-brand-oxblood-hover: #ed7770;
-  --jyc-brand-champagne: #d2b48c;
-  --jyc-brand-line: rgba(248, 241, 231, .14);
-  --jyc-brand-line-strong: rgba(248, 241, 231, .24);
+  --color-canvas: #141216;
+  --color-surface: #1e1a20;
+  --color-surface-raised: #28232b;
+  --color-text: #f8f1e7;
+  --color-muted: #c1b8c1;
+  --color-border: rgba(248, 241, 231, .14);
+  --color-border-strong: rgba(248, 241, 231, .24);
+  --color-brand: #d45b55;
+  --color-brand-hover: #ed7770;
+  --color-accent: #d2b48c;
+  --color-focus: #d2b48c;
+  --color-success: #73d6a7;
+  --color-warning: #f2c66d;
+  --color-error: #ff8b91;
   --jyc-brand-shadow-sm: 0 2px 8px rgba(0, 0, 0, .18);
   --jyc-brand-shadow-md: 0 12px 32px rgba(0, 0, 0, .24);
   --jyc-brand-shadow-lg: 0 24px 64px rgba(0, 0, 0, .32);
@@ -68,7 +88,7 @@ body { text-rendering: optimizeLegibility; }
   transition-timing-function: var(--jyc-brand-ease);
 }
 .public-app :where(a,button,input,select,textarea,[tabindex]):focus-visible {
-  outline: 3px solid var(--jyc-brand-champagne);
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
@@ -179,4 +199,92 @@ html[data-theme="dark"] .public-app :where(.btn-secondary,.button-secondary,[dat
 }
 @media (min-width: 1600px) {
   :root { --jyc-page-gutter: clamp(72px, 6vw, 120px); }
+}
+
+
+/* P0 foundation: one canonical token bridge for legacy public surfaces.
+   Keep older component-specific variable names working while ensuring their
+   colors, radii, type and motion resolve to the same JYC editorial palette. */
+:root {
+  --jyc-paper: var(--jyc-brand-paper);
+  --jyc-surface: var(--jyc-brand-paper-raised);
+  --jyc-ink: var(--jyc-brand-ink);
+  --jyc-muted-ink: var(--jyc-brand-muted);
+  --jyc-muted: var(--jyc-brand-muted);
+  --jyc-oxblood: var(--jyc-brand-oxblood);
+  --jyc-oxblood-hover: var(--jyc-brand-oxblood-hover);
+  --jyc-champagne: var(--jyc-brand-champagne);
+  --jyc-line: var(--jyc-brand-line);
+  --jyc-line-strong: var(--jyc-brand-line-strong);
+  --jyc-radius-sm: var(--jyc-brand-radius-sm);
+  --jyc-radius-md: var(--jyc-brand-radius-md);
+  --jyc-radius-lg: var(--jyc-brand-radius-lg);
+  --jyc-radius-xl: var(--jyc-brand-radius-xl);
+  --jyc-shadow-sm: var(--jyc-brand-shadow-sm);
+  --jyc-shadow-md: var(--jyc-brand-shadow-md);
+  --jyc-shadow-lg: var(--jyc-brand-shadow-lg);
+  --jyc-motion-ease: var(--jyc-brand-ease);
+  --jyc-motion-fast: var(--jyc-brand-fast);
+  --jyc-motion-base: var(--jyc-brand-base);
+  --jyc-content-width: 1240px;
+  --jyc-reading-width: 68ch;
+  --jyc-page-gutter: clamp(16px, 4vw, 64px);
+  --jyc-control-height: 44px;
+  --jyc-focus-ring: 0 0 0 3px color-mix(in srgb, var(--jyc-brand-champagne) 72%, transparent);
+}
+html[data-theme="dark"] {
+  --jyc-paper: var(--jyc-brand-paper);
+  --jyc-surface: var(--jyc-brand-paper-raised);
+  --jyc-ink: var(--jyc-brand-ink);
+  --jyc-muted-ink: var(--jyc-brand-muted);
+  --jyc-muted: var(--jyc-brand-muted);
+  --jyc-oxblood: var(--jyc-brand-oxblood);
+  --jyc-oxblood-hover: var(--jyc-brand-oxblood-hover);
+  --jyc-champagne: var(--jyc-brand-champagne);
+  --jyc-line: var(--jyc-brand-line);
+  --jyc-line-strong: var(--jyc-brand-line-strong);
+}
+.public-app {
+  --surface: var(--jyc-brand-paper-raised);
+  --text: var(--jyc-brand-ink);
+  --muted: var(--jyc-brand-muted);
+  --line: var(--jyc-brand-line);
+  --accent: var(--jyc-brand-oxblood);
+  --accent-hover: var(--jyc-brand-oxblood-hover);
+  --focus-ring: var(--jyc-focus-ring);
+}
+.public-app :where(main,section,article,aside,nav,header,footer) { min-width: 0; }
+.public-app :where(p,li,.description,.summary,.body-copy) {
+  max-width: var(--jyc-reading-width);
+}
+.public-app :where(button,input,select,textarea,[role="button"],a.btn,.btn,.button) {
+  min-height: var(--jyc-control-height);
+}
+.public-app :where(a,button,input,select,textarea,[role="button"],[tabindex]):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+.public-app :where(img,video,canvas,svg) { max-width: 100%; }
+@media (max-width: 420px) {
+  .public-app {
+    --jyc-page-gutter: 16px;
+    --jyc-type-body: 1rem;
+  }
+  .public-app :where(.page,.section,.page-shell,.content-shell,.unified-public-page) {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .public-app :where(h1,h2,h3,h4) {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto !important; }
+  .public-app :where(*, *::before, *::after) {
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
 }

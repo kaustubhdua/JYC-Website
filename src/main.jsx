@@ -96,8 +96,7 @@ const logoTiny='/assets/jyc-logo-48.avif';
 const logoSmall='/assets/jyc-logo-small.avif';
 function LogoImage({alt='',...props}){
  const requestedWidth=Number(props.width??48);
- const portraitPlaceholder=String(props.className||'').includes('team-photo-missing-logo');
- const src=!portraitPlaceholder&&requestedWidth<=48?logoTiny:!portraitPlaceholder&&requestedWidth<=96?logoSmall:logo;
+ const src=requestedWidth<=48?logoTiny:requestedWidth<=96?logoSmall:logo;
  const [failed,setFailed]=useState(false);
  useEffect(()=>setFailed(false),[src]);
  if(failed)return <span className={`jyc-logo-fallback ${props.className||''}`.trim()} role="img" aria-label={alt||'JIIT Youth Club logo'}>JYC</span>;
@@ -337,7 +336,7 @@ function Team({data}){
      {/* Front Face: High-Res Portrait, Name, Position, Flip Trigger */}
      <div className="team-member-face-content" style={{position:'relative',width:'100%',height:'100%',overflow:'hidden',padding:0}}>
       <div className="team-photo-editorial">
-       {photo?<ResponsivePhoto src={photo} alt={name} width={600} height={720} loading="lazy" decoding="async" sizes="(max-width: 420px) 90vw, (max-width: 760px) 45vw, 25vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt={`Portrait unavailable for ${name}`}/>:<span className="jyc-logo-fallback team-photo-missing-logo" role="img" aria-label={`Portrait unavailable for ${name}`}>{String(name||'JYC').trim().split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase()}</span>}
+       <ResponsivePhoto src={photo||"/assets/photo-unavailable.svg"} alt={photo?name:`Portrait unavailable for ${name}`} width={600} height={720} loading="lazy" decoding="async" sizes="(max-width: 420px) 90vw, (max-width: 760px) 45vw, 25vw" fallbackSrc="/assets/photo-unavailable.svg" fallbackAlt={`Portrait unavailable for ${name}`}/>
       </div>
       <div className="team-front-overlay">
        <span className="team-role-tag">{role}</span>
@@ -766,7 +765,7 @@ function Navbar({data,admin,theme,setTheme}){
   });
  return <>
  <header className="nav"><div className="nav-inner">
-   <button type="button" className="brand" aria-label="JIIT Youth Club home" onClick={()=>{setOpen(false);nav('/')}}><span className="brand-mark"><LogoImage alt="JIIT Youth Club logo" loading="eager" fetchPriority="high" srcSet={`${logoTiny} 1x, ${logoSmall} 2x`}/></span><span>JIIT YOUTH CLUB</span></button>
+   <button type="button" className="brand" aria-label="JIIT YOUTH CLUB" onClick={()=>{setOpen(false);nav('/')}}><span className="brand-mark"><LogoImage alt="JIIT Youth Club logo" loading="eager" fetchPriority="high" srcSet={`${logoTiny} 1x, ${logoSmall} 2x`}/></span><span>JIIT YOUTH CLUB</span></button>
    <nav className={open?'open':''}>{navButtons}<button type="button" className={`nav-more-trigger ${moreOpen?'active':''}`} onClick={()=>{setOpen(false);setMoreOpen(v=>!v)}} aria-expanded={moreOpen}>More <span aria-hidden="true">⌄</span></button></nav>
    <button type="button" className="nav-join-cta" onClick={()=>nav('/join-jyc')}>Join JYC <span>↗</span></button>
    <Theme theme={theme} setTheme={setTheme}/><button type="button" className={`hamb ${open?'open':''}`} onClick={()=>setOpen(v=>!v)} aria-label="Menu" aria-expanded={open}><i/><i/><i/></button>
@@ -984,7 +983,7 @@ function EcosystemContextRail(){
  return <nav className="ecosystem-context-rail" aria-label="JYC ecosystem shortcuts"><span className="ecosystem-context-label">Explore</span>{items.map(item=><button type="button" key={item.name} onClick={()=>nav(item.path)}><small>{item.family}</small><strong>{item.name}</strong><b aria-hidden="true">↗</b></button>)}</nav>
 }
 function DetailSection({title,eyebrow='JYC DETAIL',children}){return <section className="detail-section reveal"><div className="detail-section-head"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2></div></div>{children}</section>}
-function ShareButton({title='Share JYC'}){const share=async()=>{try{if(navigator.share){await navigator.share({title,text:title,url:window.location.href});return}await navigator.clipboard?.writeText(window.location.href);jycToast('Link copied to clipboard.')}catch{}};return <button type="button" className="btn secondary share-button" onClick={share} aria-label={title}>Share ↗</button>}
+function ShareButton({title='Share JYC'}){const share=async()=>{try{if(navigator.share){await navigator.share({title,text:title,url:window.location.href});return}await navigator.clipboard?.writeText(window.location.href);jycToast('Link copied to clipboard.')}catch{}};return <button type="button" className="btn secondary share-button" onClick={share} aria-label={`Share ↗ ${title}`}>Share ↗</button>}
 
 function Card({children,className='',onClick}){const interactive=typeof onClick==='function';const ref=React.useRef(null);const handleClick=e=>{if(!interactive)return;if(e.target instanceof Element&&e.target.closest('button,a,input,textarea,select,[data-no-card-nav]'))return;onClick(e)};const handleKey=e=>{if(interactive&&e.currentTarget===e.target&&(e.key==='Enter'||e.key===' ')){e.preventDefault();onClick(e)}};const tilt=className.includes('tilt-card'),magnetic=className.includes('magnetic-card');const move=e=>{if((!tilt&&!magnetic)||!window.matchMedia?.('(hover:hover) and (pointer:fine)').matches||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const el=ref.current;if(!el)return;const r=el.getBoundingClientRect();if(!r.width||!r.height)return;const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;if(magnetic){el.style.setProperty('--magnetic-x',`${(x*7).toFixed(2)}px`);el.style.setProperty('--magnetic-y',`${(y*7).toFixed(2)}px`)}if(tilt){el.style.setProperty('--pointer-x',`${((x+.5)*100).toFixed(1)}%`);el.style.setProperty('--pointer-y',`${((y+.5)*100).toFixed(1)}%`);el.style.setProperty('--magnetic-rx',`${(-y*4).toFixed(2)}deg`);el.style.setProperty('--magnetic-ry',`${(x*5).toFixed(2)}deg`)}};const leave=()=>{const el=ref.current;if(!el)return;['--magnetic-x','--magnetic-y','--magnetic-rx','--magnetic-ry','--pointer-x','--pointer-y'].forEach(name=>el.style.removeProperty(name))};return <article ref={ref} className={`card ${className}`} onClick={handleClick} onKeyDown={handleKey} onPointerMove={move} onPointerLeave={leave} tabIndex={interactive?0:undefined}>{children}</article>}
 

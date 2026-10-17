@@ -52,6 +52,80 @@ for (const route of routes) {
 }
 
 
+test('published team portraits load or show the explicit neutral portrait fallback', async ({ page }) => {
+  test.setTimeout(60000);
+  const errors = [];
+  page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
+  await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
+  await waitForAppMount(page, '/team');
+
+  // Scroll each portrait into the viewport so native lazy-loading cannot make
+  // an unrequested offscreen image look like a broken asset.
+  const portraitImages = page.locator('.team-photo-editorial img');
+  const teamCards = page.locator('.team-layer-card');
+  const teamCardCount = await teamCards.count();
+  if (teamCardCount === 0) {
+    // No published people: the page should expose its empty state, not fabricated portrait cards.
+    await expect(page.locator('.team-hero-panel h1')).toContainText('Meet the people');
+    await expect(page.locator('.team-command-strip')).toContainText('profiles awaiting publication');
+    expect(errors, `team route runtime errors: ${errors.join(' | ')}`).toEqual([]);
+    return;
+  }
+
+  // Team portraits are inside a lazy-loaded React Bits flip-card chunk. Do not
+  // mistake its temporary Suspense fallback for an empty published team.
+  await expect.poll(
+    () => portraitImages.count(),
+    { timeout: 15000, message: 'published team cards should finish mounting their portrait images' }
+  ).toBeGreaterThan(0);
+  const portraitCount = await portraitImages.count();
+  for (let index = 0; index < portraitCount; index += 1) {
+    const portrait = portraitImages.nth(index);
+    await portrait.scrollIntoViewIfNeeded();
+    await expect.poll(
+      () => portrait.evaluate(img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0),
+      { timeout: 10000, message: `portrait ${index + 1} should load or render its neutral fallback` }
+    ).toBe(true);
+  }
+
+  const portraits = await portraitImages.evaluateAll(images => images.map(img => {
+    const picture = img.closest('picture');
+    const card = img.closest('.team-layer-card');
+    return {
+      name: card?.querySelector('.team-name-front')?.textContent?.trim() || '',
+      src: img.getAttribute('src') || '',
+      currentSrc: img.currentSrc || '',
+      alt: img.getAttribute('alt') || '',
+      loaded: img.complete && img.naturalWidth > 0 && img.naturalHeight > 0,
+      naturalWidth: img.naturalWidth,
+      fallbackStage: img.getAttribute('data-image-fallback-stage') || '',
+      pictureFailed: picture?.getAttribute('data-image-failed') === 'true',
+      pictureLabel: picture?.getAttribute('data-image-fallback-label') || ''
+    };
+  }));
+
+  expect(portraits.length, 'team route should render its published portrait cards').toBeGreaterThan(0);
+  for (const portrait of portraits) {
+    expect(portrait.name, 'each portrait should belong to a named team member').not.toBe('');
+    expect(portrait.alt, `portrait for ${portrait.name} needs meaningful alt text`).not.toBe('');
+    expect(
+      /jyc-logo/i.test(portrait.currentSrc || portrait.src),
+      `a brand logo must never be presented as ${portrait.name}'s portrait`
+    ).toBe(false);
+    expect(
+      portrait.loaded,
+      `portrait for ${portrait.name} must load or render the real neutral fallback; source=${portrait.src}; currentSrc=${portrait.currentSrc}; stage=${portrait.fallbackStage}; failed=${portrait.pictureFailed}`
+    ).toBe(true);
+    if (/photo-unavailable\.svg/i.test(portrait.currentSrc || portrait.src)) {
+      expect(portrait.alt.toLowerCase(), `fallback alt text for ${portrait.name} should explain the missing portrait`).toContain('portrait unavailable');
+      if (portrait.fallbackStage) expect(portrait.fallbackStage).not.toBe('failed');
+    } else {
+      expect(portrait.pictureFailed, `successfully loaded portrait for ${portrait.name} must not be marked as failed`).toBe(false);
+    }
+  }
+  expect(errors, `team route runtime errors: ${errors.join(' | ')}`).toEqual([]);
+});
+
 test('history, achievements and Best of JYC render their dedicated pages', async ({ page }) => {
   const cases = [
     ['/history', /A living record of JYC\./i],
@@ -1165,6 +1239,7 @@ test('responsive photos do not guess AVIF/WebP derivative URLs when the manifest
   await waitForAppMount(page, 'responsive photo manifest fallback');
 
   const portrait = page.locator('.team-photo-editorial img').first();
+  test.skip(await portrait.count() === 0, 'No published team portraits; the explicit empty state is tested separately.');
   await expect(portrait).toBeVisible();
   await portrait.scrollIntoViewIfNeeded();
   await expect.poll(() => portrait.evaluate(img => img.complete && img.naturalWidth > 0), { timeout: 10000 }).toBe(true);
@@ -1316,27 +1391,27 @@ test('team flip-card biographies and LinkedIn links remain readable in both them
 });
 
 
-test('failed team portraits fall through the optimized logo to the original PNG safely', async ({ page }) => {
+test('failed team portraits use the neutral unavailable-photo fallback, never a logo', async ({ page }) => {
   await page.route('**/assets/team/**', route => route.abort());
-  await page.route('**/assets/jyc-logo.avif', route => route.abort());
+  await page.route('**/assets/photo-derivatives/**', route => route.abort());
   await page.goto(base + '/team', { waitUntil: 'domcontentloaded' });
   await waitForAppMount(page, 'team portrait fallback');
 
   const portrait = page.locator('.team-photo-editorial img').first();
   await expect(portrait).toBeVisible();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '2');
-  await expect(portrait).toHaveAttribute('alt', 'Official JYC logo placeholder; portrait unavailable');
-  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
-  await expect.poll(() => portrait.evaluate(img => getComputedStyle(img).objectFit)).toBe('contain');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', /^(1|2)$/);
+  await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
+  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
   await expect.poll(() => portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect(portrait).not.toHaveAttribute('src', /jyc-logo|JYC%20Logo/i);
 
-  // A parent/theme render must not restore the failed original portrait URL.
+  // A parent/theme render must preserve the explicit neutral portrait fallback.
   const themeToggle = page.locator('.theme-toggle').first();
   await expect(themeToggle).toBeVisible();
   await themeToggle.click();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '2');
-  await expect(portrait).toHaveAttribute('alt', 'Official JYC logo placeholder; portrait unavailable');
-  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/JYC%20Logo(4).png');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', /^(1|2)$/);
+  await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
+  await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
 });
 
 
