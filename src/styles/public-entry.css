@@ -372,7 +372,7 @@ html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7
 }
 @media(max-width:620px){
   /* Keep the fixed assistant from covering the homepage's primary actions. */
-  body:has(.jyc-editorial-home) .jyc-bot-shell{top:calc(76px + env(safe-area-inset-top))!important;bottom:auto!important}
+  body:has(.jyc-editorial-home) .jyc-bot-shell{top:auto!important;bottom:calc(94px + env(safe-area-inset-bottom))!important}
   .public-app .team-layer-grid--two{
     grid-template-columns:minmax(0,1fr)!important;
     max-width:100%;
