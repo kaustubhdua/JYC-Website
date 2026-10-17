@@ -1059,7 +1059,7 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
 @media(max-width:700px){.jyc-team-page .team-member-back-content{padding-bottom:76px}}
 
 
-/* V68 — failed portraits fall back to the official mark, never an unrelated event photo. */
+/* V68 — failed portraits use the neutral unavailable-photo asset, never a logo or unrelated event photo. */
 .jyc-team-page .team-photo-editorial .jyc-responsive-picture{
   display:block;
   width:100%;
@@ -1077,7 +1077,7 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
 }
 
 
-/* Any failed editorial image becomes an identity mark, never a different event's photo. */
+/* Failed editorial images keep their neutral unavailable-media fallback contained; they never impersonate another subject. */
 .jyc-responsive-picture img[data-image-fallback-stage="1"],
 .jyc-responsive-picture img[data-image-fallback-stage="2"],
 .jyc-responsive-picture img[data-image-fallback-stage="3"]{
