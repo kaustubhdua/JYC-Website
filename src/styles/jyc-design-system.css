@@ -19,7 +19,7 @@
   --color-warning: #805000;
   --color-error: #a51d24;
   --jyc-brand-paper: var(--color-canvas);
-  --jyc-brand-paper-raised: var(--color-surface);
+  --jyc-brand-paper-raised: var(--color-surface-raised);
   --jyc-brand-ink: var(--color-text);
   --jyc-brand-muted: var(--color-muted);
   --jyc-brand-oxblood: var(--color-brand);
