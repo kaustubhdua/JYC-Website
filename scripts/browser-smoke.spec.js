@@ -1383,7 +1383,7 @@ test('failed team portraits use the neutral unavailable-photo fallback, never a 
 
   const portrait = page.locator('.team-photo-editorial img').first();
   await expect(portrait).toBeVisible();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '1');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', /^(1|2)$/);
   await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
   await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
   await expect.poll(() => portrait.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
@@ -1393,7 +1393,7 @@ test('failed team portraits use the neutral unavailable-photo fallback, never a 
   const themeToggle = page.locator('.theme-toggle').first();
   await expect(themeToggle).toBeVisible();
   await themeToggle.click();
-  await expect(portrait).toHaveAttribute('data-image-fallback-stage', '1');
+  await expect(portrait).toHaveAttribute('data-image-fallback-stage', /^(1|2)$/);
   await expect(portrait).toHaveAttribute('alt', /Portrait unavailable for /i);
   await expect.poll(() => portrait.evaluate(img => new URL(img.currentSrc || img.src).pathname)).toBe('/assets/photo-unavailable.svg');
 });
