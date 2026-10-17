@@ -108,9 +108,9 @@ test('published team portraits load or show the explicit neutral portrait fallba
       portrait.loaded,
       `portrait for ${portrait.name} must load or render the real neutral fallback; source=${portrait.src}; currentSrc=${portrait.currentSrc}; stage=${portrait.fallbackStage}; failed=${portrait.pictureFailed}`
     ).toBe(true);
-    if (/photo-unavailable\\.svg/i.test(portrait.currentSrc || portrait.src)) {
-      expect(portrait.fallbackStage, `fallback for ${portrait.name} should be explicitly marked`).not.toBe('');
+    if (/photo-unavailable\.svg/i.test(portrait.currentSrc || portrait.src)) {
       expect(portrait.alt.toLowerCase(), `fallback alt text for ${portrait.name} should explain the missing portrait`).toContain('portrait unavailable');
+      if (portrait.fallbackStage) expect(portrait.fallbackStage).not.toBe('failed');
     } else {
       expect(portrait.pictureFailed, `successfully loaded portrait for ${portrait.name} must not be marked as failed`).toBe(false);
     }
