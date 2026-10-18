@@ -656,3 +656,12 @@ html[data-theme="dark"] .jyc-editorial-home.jyc-home .jh-lead {
     transform: none !important;
   }
 }
+
+
+/* Readable campus identifier: do not let legacy hero rules shrink the overline. */
+.jyc-editorial-home.jyc-home .jh-hero-copy .jh-overline {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  letter-spacing: .025em !important;
+  overflow-wrap: anywhere;
+}
