@@ -18,12 +18,12 @@ The model is static. It can be displayed and gently transformed with CSS, but na
 ## Existing integration
 - `src/jyc-bot.jsx` is the lazy-loaded floating assistant launcher.
 - `src/jyc-assistant.jsx` is the accessible contextual assistant panel.
-- The current runtime asset URL is `/models/jyc-spatial.glb`.
+- The current runtime asset URL is `/models/1780947277181-w2z6yhqv.glb`.
 - The launcher uses Google's `model-viewer`, disables camera controls and auto-rotation, respects reduced-motion/save-data/lite mode, and has a logo fallback.
 - The chat panel searches published JYC content and navigates to the corresponding site routes.
 
 ## Required asset swap
-Replace `public/models/jyc-spatial.glb` with the supplied model bytes, keeping the public URL stable so existing runtime code and browser QA continue to work. Then update any exact-byte-size assertion in `scripts/qa-v45-social-bot.mjs` (currently hard-coded to the previous 876,764-byte asset) to assert a sensible maximum size and valid asset presence rather than a brittle exact size. Check for other hard-coded size assertions before changing them.
+Replace `public/models/1780947277181-w2z6yhqv.glb` with the supplied model bytes, keeping the public URL stable so existing runtime code and browser QA continue to work. Then update any exact-byte-size assertion in `scripts/qa-v45-social-bot.mjs` (currently hard-coded to the previous 876,764-byte asset) to assert a sensible maximum size and valid asset presence rather than a brittle exact size. Check for other hard-coded size assertions before changing them.
 
 ## UX contract
 1. Keep the launcher small and non-intrusive across routes.
@@ -35,4 +35,4 @@ Replace `public/models/jyc-spatial.glb` with the supplied model bytes, keeping t
 7. Verify desktop and mobile screenshots, model framing, material/texture fidelity, build output, browser QA, and Lighthouse before release.
 
 ## Current blocker
-The repository connector can edit text files but does not provide a binary upload operation for this conversation's local GLB attachment. The uploaded 2,660,588-byte binary has therefore **not** been copied into `public/models/jyc-spatial.glb` by this change. Do not claim the new model is live until the binary is actually replaced and the build/QA checks pass.
+The repository connector can edit text files but does not provide a binary upload operation for this conversation's local GLB attachment. The uploaded 2,660,588-byte binary has therefore **not** been copied into `public/models/1780947277181-w2z6yhqv.glb` by this change. Do not claim the new model is live until the binary is actually replaced and the build/QA checks pass.
