@@ -17,7 +17,7 @@ const isDerivativeDimensionEligible = (width, height) => {
   return ratio >= 0.25 && ratio <= 5;
 };
 const IMAGE_MIME_BY_EXTENSION = Object.freeze({
-  '.avif': 'image/avif', '.gif': 'image/gif', '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg',
+  '.glb': 'model/gltf-binary', '.avif': 'image/avif', '.gif': 'image/gif', '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp'
 });
 const isExpectedImageResponse = (pathname, response) => {
