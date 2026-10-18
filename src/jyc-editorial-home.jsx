@@ -139,7 +139,7 @@ function LazyActivityBento({ activities, nav }) {
   return <div ref={rootRef} className="jh-activity-bento-shell" role="group" aria-label="Explore JYC activities">
     {ready
       ? <Suspense fallback={<div className="jh-bento-loading" role="status">Loading activity discovery…</div>}>
-          <LazyMagicBento items={activities} enableMagnetism={false} enableTilt={false} enableStars={false} enableSpotlight={true} enableBorderGlow={false} particleCount={0} onNavigate={nav} glowColor="191,156,111" />
+          <LazyMagicBento items={activities} enableMagnetism={false} enableTilt={false} enableStars={false} enableSpotlight={true} enableBorderGlow={false} clickEffect={false} particleCount={0} onNavigate={nav} glowColor="191,156,111" />
         </Suspense>
       : <div className="jh-bento-loading" aria-hidden="true">
           {activities.map(activity => <div key={activity.id} className="jh-bento-loading-card"><span>{activity.label}</span><strong>{activity.title}</strong><p>{activity.description}</p></div>)}
