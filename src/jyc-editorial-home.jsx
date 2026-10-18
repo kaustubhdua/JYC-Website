@@ -214,9 +214,6 @@ export function JYCEditorialHome({ data }) {
             <button type="button" className="jh-btn jh-btn-glass" onClick={() => nav('/clubs')}>
               Explore Clubs <span>→</span>
             </button>
-            <button type="button" className="jh-btn jh-btn-outline" onClick={() => nav('/join-jyc')}>
-              Join JYC <span>→</span>
-            </button>
           </div>
 
 
