@@ -37,6 +37,9 @@ The supplied model is now present at `public/models/1780947277181-w2z6yhqv.glb` 
 ## Verification status
 - [x] The supplied model path is present on the candidate branch; its Git blob is reused from the same repository's verified `main` asset.
 - [x] Assistant QA scripts structurally inspect the GLB container, glTF JSON, mesh primitives, material indices, embedded image buffer views, and buffer bounds; the 3 MiB ceiling and GLB header/version/declared length are checked.
+- [x] Declare and lock the official Khronos `gltf-validator` development dependency so a clean `npm ci` can run the formal asset validator.
+- [x] Give the immutable GLB path explicit `model/gltf-binary` and cache headers; add a browser contract that checks served bytes and headers.
+- [x] Use the assistant's logo fallback if the model reports an error or WebGL context is lost.
 - [ ] Confirm CI completes the production build and the two assistant QA contracts on the latest candidate SHA.
 - [ ] Run the Khronos glTF Validator and inspect the actual GLB render in browser (desktop model framing/materials, mobile fallback, reduced motion, save-data, model/CDN failure, and WebGL context loss).
 - [ ] Obtain a successful preview and verify the exact candidate SHA; Vercel previously reported a build-rate-limit failure.
