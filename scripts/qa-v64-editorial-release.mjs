@@ -113,7 +113,7 @@ const checks=[
  ['GLB bot renders after model-viewer loads without a circular availability gate',bot.includes('modelReady&&!modelFailed?<model-viewer')&&bot.includes('onLoad={handleModelLoad}')&&bot.includes('setModelAvailable(true)')],
  ['GLB bot failure restores the safe fallback state',bot.includes('onError={handleModelError}')&&bot.includes('setModelAvailable(false)')&&bot.includes('setModelFailed(true)')],
  ['GLB bot animation respects reduced-motion preference',bot.includes("prefers-reduced-motion: reduce")&&bot.includes("if(prefersReducedMotion()){setMotion('');return}")],
- ['GLB bot keeps the bundled local model and avoids auto-rotation',bot.includes('src="/models/jyc-spatial.glb"')&&bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom')],
+ ['GLB bot keeps the bundled local model and avoids auto-rotation',bot.includes('src="/models/1780947277181-w2z6yhqv.glb"')&&bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom')],
  ['assistant dialog is labelled by its visible heading',assistant.includes('aria-labelledby="jyc-assistant-title"')&&assistant.includes('id="jyc-assistant-title"')],
  ['assistant brand uses compact official logo and falls back to the original PNG',assistant.includes("const JYC_LOGO=import.meta.env.PROD?'/assets/jyc-logo.webp':'/JYC%20Logo(4).png'")&&assistant.includes('src={JYC_LOGO}')&&assistant.includes('image.dataset.logoFallback="1"')&&assistant.includes('image.src="/JYC%20Logo(4).png"')],
  ['assistant keyboard focus is trapped and restored',assistant.includes('if(e.shiftKey&&(active===first||!root.contains(active)))')&&assistant.includes('target.focus({preventScroll:true})})};')],
