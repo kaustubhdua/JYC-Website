@@ -769,10 +769,19 @@ const DitherVeil = ({
     };
 
     const wake = () => {
-      if (raf || !visible) return;
+      if (raf || !visible || document.hidden) return;
       last = performance.now();
       raf = requestAnimationFrame(frame);
     };
+    const handleDocumentVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        return;
+      }
+      if (visible) wake();
+    };
+    document.addEventListener('visibilitychange', handleDocumentVisibility);
     wakeRef.current = wake;
 
     const img = new Image();
@@ -859,6 +868,7 @@ const DitherVeil = ({
       intersectionObserver.disconnect();
       canvas.removeEventListener('webglcontextlost', handleContextLost, false);
       canvas.removeEventListener('webglcontextrestored', handleContextRestored, false);
+      document.removeEventListener('visibilitychange', handleDocumentVisibility);
       img.onload = null;
       img.onerror = null;
       container.removeEventListener('pointermove', onMove);
