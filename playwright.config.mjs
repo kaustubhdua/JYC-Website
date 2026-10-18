@@ -32,6 +32,7 @@ export default defineConfig({
     { name: 'desktop-1280', grep: desktopCore, use: { viewport: { width: 1280, height: 900 } } },
     { name: 'desktop-1440', use: { viewport: { width: 1440, height: 900 } }, grep: desktop1440 },
     { name: 'desktop-1920', use: { viewport: { width: 1920, height: 1080 } }, grep: desktopCore },
+    { name: 'assistant-glb-desktop', use: { viewport: { width: 1280, height: 900 } }, grep: /desktop assistant renders supplied GLB and recovers from WebGL context loss|JYC assistant remains interactive with GLB or safe fallback|GLB request has expected bytes, MIME type and immutable cache headers|GLB model failure and simulated WebGL context loss keep assistant chat usable|GLB stays on capable desktop hardware and falls back on touch-first mobile/i },
     { name: 'visual-matrix', use: { viewport: { width: 1440, height: 900 } }, grep: /capture route matrix/ }
   ],
   webServer: {
