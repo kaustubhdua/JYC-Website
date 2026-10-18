@@ -2025,9 +2025,6 @@ html[data-theme="dark"] .jyc-editorial-home.jyc-home .jh-overline {
     line-height: 1.35 !important;
     letter-spacing: 0 !important;
   }
-  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-hero-actions .jh-btn:nth-child(3) {
-    grid-column: 1 / -1 !important;
-  }
   body:has(.jyc-editorial-home.jyc-home) .jyc-bot-shell {
     display: none !important;
     pointer-events: none !important;
