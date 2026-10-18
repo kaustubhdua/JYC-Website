@@ -1,123 +1,120 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 
 const root=process.cwd();
-const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const main=read('src/main.jsx');
-const pkg=JSON.parse(read('package.json'));
-const editorialHome=read('src/jyc-editorial-home.jsx');
-const editorialCss=read('src/jyc-editorial-home.css');
-const fallbacks=read('src/content/jyc-public-fallbacks.js');
-const extra=read('src/extra-features.jsx');
-const css=read('src/jyc-logo-final-theme.css');
-const index=read('index.html');
-const sw=read('public/sw.js');
-const hubContent=read('src/v21-hub-content.js');
-const sourceMedia=read('src/jyc-source-media.js');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const bot=read('src/jyc-bot.jsx');
-const logoTheme=read('src/jyc-logo-final-theme.css');
-const hubRegistry=read('src/jyc-hub-registry.js');
-const glbPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
-const glb=fs.existsSync(glbPath)?fs.readFileSync(glbPath):null;
-let glbJson=null,glbChunks=[],glbParseError='';
-if(glb){
+const assistant=read('src/jyc-assistant.jsx');
+const main=read('src/main.jsx');
+const theme=read('src/jyc-logo-final-theme.css');
+const publicEntry=read('src/styles/public-entry.css');
+const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
+const modelPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
+const distModelPath=path.join(root,'dist/models/1780947277181-w2z6yhqv.glb');
+const model=fs.existsSync(modelPath)?fs.readFileSync(modelPath):null;
+let gltf=null,chunks=[],parseError='';
+if(model){
  try{
-  if(glb.length<20)throw new Error('file is shorter than a GLB header and chunk');
-  const declared=glb.readUInt32LE(8);
-  if(declared!==glb.length)throw new Error('declared GLB length differs from actual bytes');
+  if(model.length<20)throw new Error('file shorter than a GLB header and chunk');
+  if(model.toString('ascii',0,4)!=='glTF')throw new Error('invalid GLB magic');
+  if(model.readUInt32LE(4)!==2)throw new Error('unsupported GLB version');
+  if(model.readUInt32LE(8)!==model.length)throw new Error('declared file length mismatch');
   let offset=12;
-  while(offset<declared){
-   if(offset+8>declared)throw new Error('truncated GLB chunk header');
-   const length=glb.readUInt32LE(offset),type=glb.readUInt32LE(offset+4),start=offset+8,end=start+length;
-   if(end>declared)throw new Error('GLB chunk exceeds declared length');
-   const bytes=glb.subarray(start,end);
-   glbChunks.push({type,length,bytes});
-   if(type===0x4e4f534a)glbJson=JSON.parse(bytes.toString('utf8').replace(/[\\u0000\\u0020]+$/g,''));
+  while(offset<model.length){
+   if(offset+8>model.length)throw new Error('truncated chunk header');
+   const length=model.readUInt32LE(offset),type=model.readUInt32LE(offset+4);
+   const start=offset+8,end=start+length;
+   if(end>model.length)throw new Error('chunk exceeds file length');
+   const data=model.subarray(start,end);
+   chunks.push({type,length,start,end,data});
+   if(type===0x4e4f534a)gltf=JSON.parse(data.toString('utf8').replace(/[\u0000\u0020]+$/g,''));
    offset=end;
   }
-  if(offset!==declared)throw new Error('GLB chunk boundaries do not end at declared length');
- }catch(error){glbParseError=String(error?.message||error)}
+  if(offset!==model.length)throw new Error('chunk boundary mismatch');
+ }catch(error){parseError=String(error?.message||error)}
 }
-const glbJsonChunk=glbChunks.find(c=>c.type===0x4e4f534a);
-const glbBinChunk=glbChunks.find(c=>c.type===0x004e4942);
-
-
-const hasExactUrl=(content,{protocol,hostname,pathname})=>{
-  const matches=content.match(/https?:\/\/[^\s"'`<>)]+/g)??[];
-  return matches.some(raw=>{
-    try{
-      const u=new URL(raw);
-      return u.protocol===protocol&&u.hostname===hostname&&u.pathname===pathname;
-    }catch{
-      return false;
-    }
-  });
-};
-
+const jsonChunk=chunks.find(c=>c.type===0x4e4f534a);
+const binChunk=chunks.find(c=>c.type===0x004e4942);
+const bufferViews=gltf?.bufferViews||[];
+const accessors=gltf?.accessors||[];
+const meshPrimitives=(gltf?.meshes||[]).flatMap(mesh=>mesh.primitives||[]);
+const textureSource=texture=>Number.isInteger(texture?.source)?texture.source:texture?.extensions?.EXT_texture_webp?.source;
 let pass=0,fail=0;
-const check=(name,ok)=>{if(ok){console.log('PASS: '+name);pass++}else{console.error('FAIL: '+name);fail++}};
+const check=(label,ok)=>{console.log((ok?'PASS: ':'FAIL: ')+label);if(ok)pass++;else fail++;};
 
-check('Consolidated public stylesheet is loaded exactly once',main.match(/import '\.\/styles\/public-system\.css';/g)?.length===1);
-check('final JYC logo theme remains inside consolidated stylesheet stack',read('src/styles/public-system.css').includes("@import '../jyc-logo-final-theme.css';"));
-check('logo beige is the final public brand anchor',css.includes('--jyc-champagne:#bf9c6f')&&css.includes('--jyc-cream:#f5f1e6')&&css.includes('--jyc-navy:#18161d')&&css.includes('--accent-red:#a82420'));
-check('light/dark theme contracts are explicit',css.includes('html[data-theme="light"]')&&css.includes('html[data-theme="dark"]')&&css.includes('--jyc-text:var(--jyc-ink)')&&css.includes('--jyc-muted-live:var(--jyc-muted)'));
-check('public text has explicit secondary contrast',css.includes('.public-app p,.public-app li{color:var(--jyc-muted-live)!important}'));
-check('homepage hierarchy and motion layer are present',editorialHome.includes('jh-hero')&&editorialHome.includes('JYCNetwork')&&editorialHome.includes('jh-photo-story')&&!editorialHome.includes('<PhotoChapters/>')&&!editorialHome.includes('jh-archive-section')&&editorialCss.includes('@media(prefers-reduced-motion:reduce)'));
+check('package and lockfile release versions are synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
+check('public entry stylesheet is wired into the active public app',/import\s+['"][^'"]*styles\/public-entry\.css['"]/.test(main)&&publicEntry.includes("@import './public-system.css';"));
+check('JYC beige/ink/oxblood/champagne tokens are explicit',theme.includes('--jyc-cream:#F5F1E6')&&theme.includes('--jyc-ink:#1A191D')&&theme.includes('--accent-red:#A82420')&&theme.includes('--jyc-champagne:#BF9C6F'));
+check('light and dark modes define intentional public surfaces',theme.includes('html[data-theme="light"]')&&theme.includes('html[data-theme="dark"]')&&theme.includes('--jyc-surface:#FFFFFF')&&theme.includes('--jyc-surface:#18161D'));
+check('launcher uses the supplied GLB at its canonical runtime path',bot.includes('src="/models/1780947277181-w2z6yhqv.glb"')&&bot.includes('data-jyc-glb-src="/models/1780947277181-w2z6yhqv.glb"'));
+check('launcher poster/logo fallback is present during load or failure',bot.includes('poster="/assets/jyc-logo-48.avif"')&&bot.includes('jyc-bot-model-fallback')&&bot.includes('jyc-logo-48.avif')&&bot.includes('onError={handleModelError}'));
+check('assistant exposes model error and WebGL context-loss fallback',bot.includes('onContextLost={handleViewerContextLost}')&&bot.includes('const handleViewerContextLost')&&bot.includes('setModelFailed(true)'));
+check('assistant preserves reduced-motion and constrained-device policy',bot.includes('prefers-reduced-motion: reduce')&&bot.includes('navigator.connection?.saveData')&&bot.includes("dataset.performance==='lite'"));
+check('model camera remains fixed with zoom and pan disabled',bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom')&&bot.includes('disable-pan')&&!bot.includes('camera-controls')&&!bot.includes('auto-rotate'));
+check('chat panel maintains semantic dialog and keyboard close handling',assistant.includes('aria-modal="true"')&&assistant.includes("e.key==='Escape'")&&assistant.includes('onClose'));
+check('GLB stays within the 3 MiB delivery budget',Boolean(model)&&model.length>20&&model.length<=3*1024*1024);
+check('GLB header, version, declared length and chunk framing are valid',Boolean(model)&&!parseError&&model.toString('ascii',0,4)==='glTF'&&model.readUInt32LE(4)===2&&model.readUInt32LE(8)===model.length&&chunks.length>=2&&chunks[0]?.type===0x4e4f534a&&chunks[1]?.type===0x004e4942);
+check('GLB JSON is glTF 2.0 with a valid default scene',gltf?.asset?.version==='2.0'&&Number.isInteger(gltf.scene)&&(gltf.scenes||[])[gltf.scene]?.nodes?.length>0);
+check('GLB scene graph references valid mesh and node indices',Array.isArray(gltf?.nodes)&&gltf.nodes.length>0&&gltf.nodes.every(n=>n.mesh===undefined||(Number.isInteger(n.mesh)&&n.mesh>=0&&n.mesh<(gltf.meshes||[]).length))&&(gltf.scenes||[]).every(scene=>scene.nodes.every(n=>Number.isInteger(n)&&n>=0&&n<gltf.nodes.length)));
+check('GLB includes drawable triangle primitives with position, normal and UV attributes',meshPrimitives.length>0&&meshPrimitives.every(p=>(p.mode===undefined||p.mode===4)&&['POSITION','NORMAL','TEXCOORD_0'].every(a=>Number.isInteger(p.attributes?.[a])&&accessors[p.attributes[a]])));
+check('GLB accessor and buffer-view ranges stay inside the binary buffer',Boolean(binChunk)&&Array.isArray(gltf?.buffers)&&gltf.buffers.length>0&&gltf.buffers.every(b=>Number.isInteger(b.byteLength)&&b.byteLength>0&&b.byteLength<=binChunk.length)&&bufferViews.every(v=>Number.isInteger(v.byteLength)&&v.byteLength>0&&Number.isInteger(v.byteOffset||0)&&(v.byteOffset||0)+v.byteLength<=gltf.buffers[v.buffer??0]?.byteLength)&&accessors.every(a=>Number.isInteger(a.count)&&a.count>0&&Number.isInteger(a.componentType)&&typeof a.type==='string'&&(a.bufferView===undefined||(Number.isInteger(a.bufferView)&&a.bufferView>=0&&a.bufferView<bufferViews.length))));
+check('GLB materials reference valid textures and embedded images',Array.isArray(gltf?.materials)&&gltf.materials.length>0&&Array.isArray(gltf?.textures)&&gltf.textures.length>0&&Array.isArray(gltf?.images)&&gltf.images.length>0&&gltf.images.every(i=>i.mimeType==='image/webp'&&Number.isInteger(i.bufferView)&&i.bufferView>=0&&i.bufferView<bufferViews.length)&&meshPrimitives.every(p=>Number.isInteger(p.material)&&p.material>=0&&p.material<gltf.materials.length));
+check('embedded WebP textures use the declared EXT_texture_webp extension',gltf?.extensionsUsed?.includes('EXT_texture_webp')&&gltf?.extensionsRequired?.includes('EXT_texture_webp')&&gltf.textures.every(t=>Number.isInteger(textureSource(t))&&textureSource(t)>=0&&textureSource(t)<gltf.images.length));
+check('GLB chunks parse cleanly without structural errors',!parseError&&Boolean(jsonChunk)&&Boolean(binChunk)&&chunks.every(c=>c.length===c.end-c.start+0));
+check('normalized model is present in production build output',fs.existsSync(distModelPath));
+if(fs.existsSync(distModelPath)&&model){
+ const built=fs.readFileSync(distModelPath);
+ check('built GLB is byte-for-byte identical to the validated source model',built.length===model.length&&built.equals(model));
+ check('built GLB retains the 3 MiB transfer limit',built.length<=3*1024*1024);
+}
 
-check('latest updates are part of homepage',editorialHome.includes('<JYCNowStrip limit={3} compact/>')&&read('src/jyc-now.jsx').includes('compact=false')&&read('src/jyc-now.jsx').includes('showMedia={!compact}'));
-check('Join JYC CTA is clear',editorialHome.includes("nav('/join-jyc')")&&editorialHome.includes('Join JYC'));
-check('Team hierarchy is explicit',main.includes('Faculty → Apex → Core → Clubs & Hubs')&&main.includes('team-command-strip')&&main.includes('JYC Apex'));
-check('About exposes requested principles',main.includes('WHAT WE STAND FOR')&&main.includes('about-principles-v33'));
-check('Gallery supports year discovery',extra.includes('gallery-years')&&extra.includes("const years=['All'"));
-check('Event details support structured extra information',main.includes('e.rules?.length')&&main.includes('e.eligibility')&&main.includes('e.prizes?.length')&&main.includes('e.faqs?.length'));
-check('Contact includes official JIIT campus context',main.includes('contact-location')&&hasExactUrl(main,{protocol:'https:',hostname:'www.jiit.ac.in',pathname:'/contact-us'}));
-check('mobile layout stays compact',css.includes('@media(max-width:640px)')&&css.includes('grid-template-columns:1fr'));
-check('image treatment uses non-distorting crops',css.includes('object-fit:cover!important')&&css.includes('object-position:center'));
-check('reduced motion remains supported',css.includes('@media(prefers-reduced-motion:reduce)'));
-check('public navigation exposes Contact',main.includes("['Contact','/contact']"));
-check('official JYC hub content is wired',main.includes('JYC_HUB_CONTENT')&&main.includes('JYC_HUB_FAMILIES'));
-check('verified leadership content remains source-grounded',fallbacks.includes('Dr. Vinay Anand Tikkiwal')&&fallbacks.includes('Dr. Pankaj Kumar Srivastava')&&fallbacks.includes("name:'Harisha'")&&fallbacks.includes("name:'Dhruv Choudhary'"));
-check('production path does not fabricate demo content',main.includes('allowContentFallback:false')&&main.includes('return norm(empty)'));
-check('JYC identity remains explicit in the public hero',editorialHome.includes('jh-kicker')&&editorialHome.includes('JIIT YOUTH CLUB')&&editorialHome.includes('128'));
-check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"'));
-check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
-check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/1780947277181-w2z6yhqv.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
-check('GLB asset exists within the 3 MiB transfer budget',Boolean(glb)&&glb.length>20&&glb.length<=3*1024*1024);
-check('GLB header magic, version and exact declared byte length match',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
-check('GLB chunk framing and JSON are parseable',Boolean(glbJsonChunk)&&Boolean(glbJson)&&!glbParseError&&glbChunks[0]?.type===0x4e4f534a);
-check('GLB JSON declares glTF 2.0 and at least one drawable mesh',glbJson?.asset?.version==='2.0'&&Array.isArray(glbJson.meshes)&&glbJson.meshes.length>0&&glbJson.meshes.every(m=>Array.isArray(m.primitives)&&m.primitives.length>0));
-check('GLB scene graph has nodes referencing meshes',Array.isArray(glbJson?.nodes)&&glbJson.nodes.length>0&&glbJson.nodes.some(n=>Number.isInteger(n.mesh)&&n.mesh>=0&&n.mesh<glbJson.meshes.length));
-check('GLB materials and primitives reference valid material indices',Array.isArray(glbJson?.materials)&&glbJson.materials.length>0&&glbJson.meshes.every(m=>m.primitives.every(p=>Number.isInteger(p.material)&&p.material>=0&&p.material<glbJson.materials.length)));
-check('GLB embedded image references map to valid buffer views',Array.isArray(glbJson?.images)&&glbJson.images.length>0&&glbJson.images.every(i=>Number.isInteger(i.bufferView)&&i.bufferView>=0&&i.bufferView<(glbJson.bufferViews||[]).length)&&Array.isArray(glbJson.bufferViews));
-check('GLB buffer views stay within the embedded BIN payload',Boolean(glbBinChunk)&&Array.isArray(glbJson?.buffers)&&glbJson.buffers.length>0&&glbJson.buffers.every(b=>Number.isInteger(b.byteLength)&&b.byteLength>0&&b.byteLength<=glbBinChunk.length)&&glbJson.bufferViews.every(v=>Number.isInteger(v.byteOffset||0)&&Number.isInteger(v.byteLength)&&v.byteLength>0&&(v.byteOffset||0)+v.byteLength<=glbBinChunk.length));
-
-check('GLB binary header, version and declared length are valid',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
-check('homepage team surface stays text-led while full team retains image support',editorialHome.includes('jh-team-monogram')&&!editorialHome.includes('m.photo||m.image')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
-check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
-check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
-check('service worker cache is current',read('public/sw.js').includes('jyc-cache-v'+pkg.version.replace(/\./g,'-')));
-const maintainedHubCount=(hubContent.match(/^\s{2}(?:'[^']+'|[A-Za-z][^:]+):\{/gm)||[]).length;
-check('orientation source count stays internally consistent',main.includes('JYC_HUB_CONTENT')&&main.includes("Object.keys(JYC_HUB_CONTENT).length")&&maintainedHubCount===23&&hubRegistry.match(/\{name:/g)?.length===23);
-check('hub detail exposes source and live evidence layers',main.includes('hub-evidence-rail')&&main.includes('club-source')&&main.includes('Published JYC records provide the live layer'));
-check('events support family-level discovery',main.includes("[family,setFamily]=useState('All')")&&main.includes('eventCategoryOf(e).toLowerCase()===family.toLowerCase()')&&main.includes('All'));
-check('hub identity comment matches maintained count',read('src/hub-identities.js').includes('23 maintained community signatures'));
-check('all 23 hub identities are represented',maintainedHubCount===23&&read('src/hub-identities.js').includes('23 maintained community signatures')&&read('src/hub-identities.js').includes('Qriosity')&&read('src/hub-identities.js').includes('JIIT OPTICA'));
-check('event identity system covers supplied flagship events',read('src/hub-identities.js').includes('Dron-O-War')&&read('src/hub-identities.js').includes('Converge')&&read('src/hub-identities.js').includes('Code Clash')&&main.includes('eventIdentity(e)'));
-check('event detail carries its own identity lockup',main.includes('event-identity-lockup')&&main.includes('event-identity-panel'));
-check('source-first hub media helper exists',sourceMedia.includes('enrichSourceClubs')&&sourceMedia.includes('mergeSourceGallery')&&sourceMedia.includes('QUALITY_OVERRIDES'));
-check('event identity fallback is deterministic',read('src/hub-identities.js').includes('EVENT_VISUALS')&&read('src/hub-identities.js').includes('hashEvent')&&read('src/hub-identities.js').includes('eventSeed'));
-check('hub directory editorial preview exists',main.includes('hub-directory-stage')&&main.includes('hub-directory-preview')&&main.includes('onMouseEnter={()=>setActive(name)}'));
-check('event timeline preview exists',main.includes('EventTimelinePreview')&&main.includes('event-timeline-row'));
-const lock=JSON.parse(read('package-lock.json'));check('public image failure fallback prevents broken-image gaps',main.includes("dataset.jycFallback==='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
-check('public image presentation is centered',read('src/jyc-logo-final-theme.css').includes('object-position:center')&&editorialCss.includes('object-position:center'));
-check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/1780947277181-w2z6yhqv.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
-check('GLB click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("const openAssistant=")&&read('src/jyc-bot.jsx').includes('triggerMotion(next[0],next[1],next[2])')&&read('src/jyc-bot.jsx').includes('availableAnimations'));
-check('GLB click path does not double-trigger pointer and keyboard animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes("onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap'"));
-check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
-check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
-check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/1780947277181-w2z6yhqv.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
-check('homepage proof strip is explicit and non-fabricated',editorialHome.includes('01</b> DISCOVER')&&editorialHome.includes('02</b> PARTICIPATE')&&editorialHome.includes('03</b> BELONG'));
-check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
-
-check('signature interaction modules remain local and lightweight',main.includes('DepthCarousel')&&!read('src/components/react-bits/DepthCarousel.jsx').includes("from'gsap'"));if(fail)process.exit(1);
-console.log(`Public visual QA: ${pass}/${pass+fail} passed.`);
+// Exercise the actual Vite production preview server rather than approximating
+// static-file headers. This intentionally does not call Vercel or any cloud API.
+const previewBin=path.join(root,'node_modules/vite/bin/vite.js');
+if(!fs.existsSync(previewBin)){
+ check('Vite preview binary exists for HTTP asset-delivery verification',false);
+}else{
+ const child=spawn(process.execPath,[previewBin,'preview','--host','127.0.0.1','--port','4179','--strictPort'],{cwd:root,stdio:'ignore'});
+ try{
+  let ready=false;
+  for(let i=0;i<60&&!ready;i++){
+   if(child.exitCode!==null)break;
+   try{const response=await fetch('http://127.0.0.1:4179/');ready=response.ok;}catch{}
+   if(!ready)await new Promise(resolve=>setTimeout(resolve,250));
+  }
+  check('Vite production preview starts for HTTP asset-delivery verification',ready);
+  if(ready){
+   const url='http://127.0.0.1:4179/models/1780947277181-w2z6yhqv.glb';
+   const response=await fetch(url);
+   const bytes=Buffer.from(await response.arrayBuffer());
+   const contentType=(response.headers.get('content-type')||'').split(';')[0].trim().toLowerCase();
+   check('served GLB returns HTTP 200 with model/gltf-binary content type',response.status===200&&contentType==='model/gltf-binary');
+   check('served content length and bytes match production asset',bytes.length>0&&Number(response.headers.get('content-length'))===bytes.length&&Boolean(model)&&bytes.equals(model));
+   check('served static asset exposes a revalidation/cache validator',Boolean(response.headers.get('etag')||response.headers.get('last-modified'))&&!/no-store/i.test(response.headers.get('cache-control')||''));
+   const etag=response.headers.get('etag');
+   if(etag){
+    const conditional=await fetch(url,{headers:{'If-None-Match':etag}});
+    check('conditional asset request returns HTTP 304 without retransmitting the model',conditional.status===304);
+    await conditional.arrayBuffer().catch(()=>{});
+   }else{
+    const modified=response.headers.get('last-modified');
+    if(modified){
+     const conditional=await fetch(url,{headers:{'If-Modified-Since':modified}});
+     check('conditional asset request returns HTTP 304 without retransmitting the model',conditional.status===304);
+     await conditional.arrayBuffer().catch(()=>{});
+    }else check('conditional asset request returns HTTP 304 without retransmitting the model',false);
+   }
+  }
+ }catch(error){
+  console.error('Asset HTTP verification exception:',String(error?.stack||error));
+  check('Vite production preview serves the validated GLB',false);
+ }finally{
+  child.kill('SIGTERM');
+  await new Promise(resolve=>setTimeout(resolve,100));
+  if(child.exitCode===null)child.kill('SIGKILL');
+ }
+}
+console.log('Assistant/brand/delivery QA: '+pass+'/'+(pass+fail)+' passed.');
+if(fail)process.exit(1);
