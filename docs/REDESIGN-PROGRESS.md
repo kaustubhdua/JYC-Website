@@ -112,3 +112,10 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - On the same P0 foundation branch, commit `875c095d50128bd7ae85e9d035324c776c18c1dd` removes blanket centered alignment from generic public section headings and shared card grids, keeps gallery-specific alignment in its own scoped rules, and softens routine card shadows.
 - Commit `a8a4519b74eb3b040e66544057ea133db3644e28` adds source-contract regression checks for those shared alignment/shadow rules.
 - These are source changes only until exact-head CI finishes. No route is visually verified from this change alone; no production deployment, domain/DNS, backend or gallery publishing state was changed.
+
+
+## 2026-10-18 — reduce stacked homepage motion
+- Commit `00e2cb11b6a8c46f69d63b365f01c1903030ef2` changes the three full-page ambient orb animations into low-opacity static depth. The Dither Veil remains the single dominant hero effect.
+- Commit `7f1334f0d6bc8069d281c20c5c6f1b91d9e00a18` disables Magic Bento magnetism and tilt while retaining its spotlight affordance, avoiding three simultaneous pointer effects on the same cards.
+- Commit `cf9ce1fc8dd1dcf080d0c2545beaacaa7369a664` adds regression assertions for the static ambient backdrop and single-interaction Bento configuration.
+- Exact-head browser screenshots and performance results are still required; this is a source-level motion simplification, not a claim that the homepage is visually approved.
