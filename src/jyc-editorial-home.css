@@ -1454,9 +1454,6 @@
   .jyc-editorial-home .jh-hero-actions { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 680px) {
-  .jyc-editorial-home 
-}
 
 
 /* Editorial photo story: asymmetry and motion in the approved red/gold palette. */
