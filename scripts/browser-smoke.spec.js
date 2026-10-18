@@ -1458,6 +1458,38 @@ test('JYC assistant remains interactive with GLB or safe fallback', async ({ pag
   await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
 });
 
+
+test('GLB request has expected bytes, MIME type and immutable cache headers', async ({ page, request }) => {
+  const response = await request.get(base + '/models/1780947277181-w2z6yhqv.glb');
+  expect(response.status()).toBe(200);
+  const headers = response.headers();
+  expect((headers['content-type'] || '').split(';')[0].trim().toLowerCase()).toBe('model/gltf-binary');
+  expect(headers['cache-control'] || '').toContain('immutable');
+  const bytes = await response.body();
+  expect(bytes.byteLength).toBeGreaterThan(20);
+  expect(bytes.byteLength).toBeLessThanOrEqual(3 * 1024 * 1024);
+  expect(bytes.subarray(0, 4).toString('ascii')).toBe('glTF');
+  expect(bytes.readUInt32LE ? bytes.readUInt32LE(4) : new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(4, true)).toBe(2);
+  const declared = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(8, true);
+  expect(declared).toBe(bytes.byteLength);
+});
+
+test('GLB model failure and simulated WebGL context loss keep assistant chat usable', async ({ page }) => {
+  await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
+  await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
+  await page.locator('.jyc-bot-orb').focus();
+  await page.locator('.jyc-bot-orb').click();
+  await expect(page.locator('.jyc-assistant-panel')).toBeVisible();
+  if (await page.locator('.jyc-bot-glb').count()) {
+    await page.locator('.jyc-bot-glb').evaluate(el => {
+      el.dispatchEvent(new CustomEvent('error'));
+    });
+    await expect(page.locator('.jyc-bot-model-fallback')).toBeVisible();
+  }
+  await expect(page.locator('.jyc-assistant-panel')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
+});
 test('GLB stays on capable desktop hardware and falls back on touch-first mobile', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
