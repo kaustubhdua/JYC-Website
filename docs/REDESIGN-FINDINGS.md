@@ -47,3 +47,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-014 | P2 | Homepage WebGL hero / background-tab performance | Dither Veil paused when offscreen but did not explicitly stop its RAF loop when the browser document became hidden. | Commit `b9ecca7` cancels scheduled frames on `visibilitychange`, resumes when visible and in view, and removes the listener on cleanup. Browser-level validation pending. |
+
+
+| R-015 | P1 | Homepage hero / 320–680px | The mobile CSS used 8px overline, 13px clamped lead, 29–35px headline, 116px logo plaque and 7px caption rules; a later override repaired only the overline. | Commit `5113dc0` restores readable fluid typography and a larger identity plaque with 44px actions. Exact-head mobile screenshots at 320/360/390/430/680px are required before closing. |
