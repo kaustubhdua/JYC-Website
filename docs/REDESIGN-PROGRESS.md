@@ -132,3 +132,8 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - Commit `49df9cfe70ca88c634695bd186b45635d9a13cae` now stops the render loop and reveals the preloaded static logo fallback if the context is lost; the renderer is intentionally not recreated after restoration.
 - Commit `dabfb35358619b737d2fed775d209c7ee4bd26c6` adds a source-contract regression check for listener setup/cleanup and static fallback behavior.
 - Browser-level forced context-loss verification and screenshots remain pending; do not treat the source assertion as proof of rendered fallback quality.
+
+
+## 2026-10-18 — final interaction simplification for the Bento
+- Commit `2a8eaa1120717286694b903d0c0427883f020eb3` disables the Magic Bento click ripple as well as magnetism and tilt, leaving the spotlight as the one deliberate card effect.
+- Commit `10f60b221fd68a1bb76daad51435824bca03b04a` updates the regression assertion to lock in the single-effect configuration.
