@@ -53,7 +53,7 @@ check('DepthCarousel avoids a direct GSAP import',!read('src/components/react-bi
 check('DepthCarousel is lazy-loaded on public routes',main.includes('LazyDepthCarousel')&&main.includes('<Suspense fallback={<div className="depth-carousel depth-carousel--loading"'));
 
 check('DriftWall remains available for the visual archive',fs.existsSync(path.join(root,'src/components/react-bits/DriftWall.jsx'))&&extraFeaturesSafe());
-check('Homepage uses the identity-first Dither Veil and lazy magnetic Bento without a continuously animated photo wall',home.includes('LazyDitherVeil')&&home.includes('LazyMagicBento')&&!home.includes('LazyDriftWall')&&home.includes('jh-dither-mark')&&home.includes('enableMagnetism={true}'));
+check('Homepage uses the identity-first Dither Veil and lazy magnetic Bento without a continuously animated photo wall',home.includes('LazyDitherVeil')&&home.includes('LazyActivityBento')&&!home.includes('LazyDriftWall')&&home.includes('jh-dither-mark')&&home.includes('enableMagnetism={false}'));
 check('MagicBento remains available as an optional library surface',fs.existsSync(path.join(root,'src/components/react-bits/MagicBento.jsx'))&&pkg.dependencies.gsap==='3.15.0'&&lock.packages['node_modules/gsap']?.version==='3.15.0');
 check('FlexCarousel component remains available for future archive surfaces',fs.existsSync(path.join(root,'src/components/react-bits/FlexCarousel.jsx'))&&fs.existsSync(path.join(root,'src/components/react-bits/FlexCarousel.css')));
 check('React Bits components do not ship CSP-incompatible remote demo media',!files.some(file=>/\.jsx$/.test(file)&&/images\.unsplash\.com/.test(read(file))));
