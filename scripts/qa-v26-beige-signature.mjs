@@ -82,8 +82,6 @@ check('JYC identity remains explicit in the public hero',editorialHome.includes(
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/1780947277181-w2z6yhqv.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
-const glbPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
-const glb=fs.existsSync(glbPath)?fs.readFileSync(glbPath):null;
 check('GLB asset exists within the 3 MiB transfer budget',Boolean(glb)&&glb.length>20&&glb.length<=3*1024*1024);
 check('GLB header magic, version and exact declared byte length match',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
 check('GLB chunk framing and JSON are parseable',Boolean(glbJsonChunk)&&Boolean(glbJson)&&!glbParseError&&glbChunks[0]?.type===0x4e4f534a);
