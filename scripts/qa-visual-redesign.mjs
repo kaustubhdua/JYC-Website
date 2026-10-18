@@ -5,6 +5,7 @@ const entry = fs.readFileSync('src/styles/public-entry.css', 'utf8');
 const main = fs.readFileSync('src/main.jsx', 'utf8');
 const layer = fs.readFileSync('src/styles/jyc-editorial-motion-system.css', 'utf8');
 const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
+const homeCss = fs.readFileSync('src/jyc-editorial-home.css', 'utf8');
 const bot = fs.readFileSync('src/jyc-bot.jsx', 'utf8');
 const theme = fs.readFileSync('src/jyc-logo-final-theme.css', 'utf8');
 const sharedHeadingRules = theme.slice(theme.indexOf('.public-app .section-head,'), theme.indexOf('.public-app .card-grid,'));
@@ -23,6 +24,8 @@ const checks = [
   [themeBase.includes('--jyc-shadow:0 8px 24px') && themeBase.includes('--jyc-shadow-dark:0 12px 32px'), 'shared card elevation uses restrained shadows instead of oversized global shadows'],
   [home.includes("import './jyc-editorial-home.css';") && home.includes("import './styles/jyc-editorial-motion-system.css';") && home.indexOf("import './styles/jyc-editorial-motion-system.css';") > home.indexOf("import './jyc-editorial-home.css';"), 'motion layer is loaded after the editorial home stylesheet'],
   [home.includes('jh-hero-dither-visual') && home.includes('LazyDitherVeil'), 'existing branded Dither Veil hero is retained'],
+  [home.includes('enableMagnetism={false} enableTilt={false} enableStars={false} enableSpotlight={true}'), 'Magic Bento uses a single restrained spotlight interaction'],
+  [(() => { const ambient = homeCss.slice(homeCss.indexOf('.jh-ambient-orb {'), homeCss.indexOf('.jh-ambient-grid')); return ambient.includes('opacity: 0.12;') && (ambient.match(/animation: none;/g) || []).length === 3 && !ambient.includes('animation: jh-float'); })(), 'homepage ambient depth is static and restrained instead of three perpetual orb animations'],
   [layer.includes('@media(max-width:700px)'), 'single-column mobile hero is explicitly supported'],
   [layer.includes('@media(max-width:980px)'), 'tablet hero layout is explicitly supported'],
   [layer.includes('prefers-reduced-motion:reduce'), 'reduced-motion preferences are honored'],
