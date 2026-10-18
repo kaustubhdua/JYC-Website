@@ -137,3 +137,8 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 ## 2026-10-18 — final interaction simplification for the Bento
 - Commit `2a8eaa1120717286694b903d0c0427883f020eb3` disables the Magic Bento click ripple as well as magnetism and tilt, leaving the spotlight as the one deliberate card effect.
 - Commit `10f60b221fd68a1bb76daad51435824bca03b04a` updates the regression assertion to lock in the single-effect configuration.
+
+
+## 2026-10-18 — hidden-tab WebGL scheduling
+- Commit `b9ecca79319e2b3db25ade081059b2caeac31356` makes Dither Veil stop scheduling animation frames while the document is hidden and resume only when visible and the canvas is still in view. The visibility listener is removed during cleanup.
+- This complements the existing IntersectionObserver pause and the newly added WebGL context-loss fallback. Browser-level visibility/context-loss tests and exact-head CI remain required.
