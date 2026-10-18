@@ -125,3 +125,10 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - Commit `72a067c5dbf88ab4f9f77897fa23fdcc33dcde3c` removes the repeated brass gradient applied to many unrelated public cards. Cards now use the theme surface token, leaving stronger decorative treatment to components that intentionally need it.
 - Commit `7de3deed37f6936ead0737c894be55fd48c6a87b` adds a regression assertion that the shared card surface stays clean and does not regain the repeated gradient.
 - Still awaiting exact-head QA and rendered screenshot review; this change is not visually signed off.
+
+
+## 2026-10-18 — WebGL context-loss fallback
+- Source inspection of `src/react-bits/DitherVeil.jsx` found that the implementation already had reduced-motion/constrained-hardware fallback, visibility-aware rendering and cleanup, but no `webglcontextlost` event listener despite the source comment claiming WebGL-loss protection.
+- Commit `49df9cfe70ca88c634695bd186b45635d9a13cae` now stops the render loop and reveals the preloaded static logo fallback if the context is lost; the renderer is intentionally not recreated after restoration.
+- Commit `dabfb35358619b737d2fed775d209c7ee4bd26c6` adds a source-contract regression check for listener setup/cleanup and static fallback behavior.
+- Browser-level forced context-loss verification and screenshots remain pending; do not treat the source assertion as proof of rendered fallback quality.
