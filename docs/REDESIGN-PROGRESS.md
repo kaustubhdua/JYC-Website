@@ -119,3 +119,9 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - Commit `7f1334f0d6bc8069d281c20c5c6f1b91d9e00a18` disables Magic Bento magnetism and tilt while retaining its spotlight affordance, avoiding three simultaneous pointer effects on the same cards.
 - Commit `cf9ce1fc8dd1dcf080d0c2545beaacaa7369a664` adds regression assertions for the static ambient backdrop and single-interaction Bento configuration.
 - Exact-head browser screenshots and performance results are still required; this is a source-level motion simplification, not a claim that the homepage is visually approved.
+
+
+## 2026-10-18 — simplify shared card surfaces
+- Commit `72a067c5dbf88ab4f9f77897fa23fdcc33dcde3c` removes the repeated brass gradient applied to many unrelated public cards. Cards now use the theme surface token, leaving stronger decorative treatment to components that intentionally need it.
+- Commit `7de3deed37f6936ead0737c894be55fd48c6a87b` adds a regression assertion that the shared card surface stays clean and does not regain the repeated gradient.
+- Still awaiting exact-head QA and rendered screenshot review; this change is not visually signed off.
