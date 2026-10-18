@@ -148,3 +148,8 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - Source review found an old compact mobile override shrinking the JYC hero overline to 8px, lead copy to 13px with a two-line clamp, the headline to 29–35px, logo plaque to 116px, and caption text to 7px. A later rule only repaired the overline, leaving the other cramped values active at the same breakpoint.
 - Commit `5113dc0aff29af56b20cc5efefc2ac97c26ec4de` replaces that compact block with readable responsive type (12px overline, 15px lead, 36–48px headline), a larger logo plaque, and 44px minimum action targets. The composition may grow vertically; readability takes precedence over forcing all content into a tiny viewport.
 - A source-contract check is being added to guard against the microtype overrides returning. Current browser screenshots are still required to validate the resulting composition at 320px through 680px.
+
+
+## 2026-10-18 — homepage pillar copy governance
+- Commit `7c4d326a8fc4ee7ffee51e9f3429ec4e1e3a5ec4` removes several unverified/out-of-registry club names and a misspelling from the homepage pillar copy. The categories now describe technical, cultural and literary activities without implying that OSDC, Knuth, uCR, Jhankaar or Crescendo are current published registry entries.
+- This is a content-trust correction; any named club or specific programme should be added only after it is verified against the canonical registry/approved material.
