@@ -162,3 +162,8 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 
 ## 2026-10-18 — remove residual homepage ambient overrides
 - Follow-up commit `ccc3980cefb79c018c993345bb51a01e6ed29a57` removes a second legacy rule group that reintroduced three ambient-orb selectors and a full-homepage brass radial gradient after the first cleanup. The homepage now uses its plain semantic canvas and the art-directed hero, without hidden ambient-effect CSS lingering later in the cascade.
+
+
+## 2026-10-18 — reduce homepage hero to two journeys
+- Commits `08b786bb8e0ceda904124c3005a86acd3831337e` and `da16dec6c8cae8eefefacda66504a98f29512163` remove the third “Join JYC” hero button and its mobile full-row rule. The hero now prioritises Events and Clubs; the separate Join JYC section remains available lower on the homepage and the canonical route is unchanged.
+- This restores the requested two-primary-journey hierarchy and reduces button crowding in the mobile hero.
