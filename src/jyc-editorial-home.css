@@ -82,9 +82,9 @@
 .jh-ambient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.28;
-  mix-blend-mode: screen;
+  filter: blur(88px);
+  opacity: 0.12;
+  mix-blend-mode: normal;
   pointer-events: none;
 }
 
@@ -94,7 +94,7 @@
   width: 650px;
   height: 650px;
   background: radial-gradient(circle, rgba(220, 38, 38, 0.25) 0%, rgba(168, 36, 32, 0.08) 50%, transparent 75%);
-  animation: jh-float-1 14s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .jh-ambient-orb-2 {
@@ -103,7 +103,7 @@
   width: 550px;
   height: 550px;
   background: radial-gradient(circle, rgba(191, 156, 111, 0.154) 0%, rgba(191, 156, 111, 0.060) 50%, transparent 75%);
-  animation: jh-float-2 18s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .jh-ambient-orb-3 {
@@ -112,7 +112,7 @@
   width: 580px;
   height: 580px;
   background: radial-gradient(circle, rgba(191, 156, 111, 0.088) 0%, rgba(168, 36, 32, 0.020) 50%, transparent 70%);
-  animation: jh-float-1 22s ease-in-out infinite alternate-reverse;
+  animation: none;
 }
 
 .jh-ambient-grid {
