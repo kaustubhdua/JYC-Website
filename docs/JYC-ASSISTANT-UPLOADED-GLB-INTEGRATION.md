@@ -23,7 +23,7 @@ The model is static. It can be displayed and gently transformed with CSS, but na
 - The chat panel searches published JYC content and navigates to the corresponding site routes.
 
 ## Required asset swap
-The supplied model is now present at `public/models/1780947277181-w2z6yhqv.glb` on `fix/release-qa-mobile-type` (2,660,588 bytes). Both assistant QA contracts validate GLB magic bytes, version 2, declared file length, and a 3 MiB maximum instead of relying on an exact byte count. The previous `jyc-spatial.glb` remains in place for rollback.
+The supplied model is now present at `public/models/1780947277181-w2z6yhqv.glb` on `fix/release-qa-mobile-type` (2,660,588 bytes). Both assistant QA contracts parse GLB chunk framing and the glTF JSON, verify drawable meshes and material references, require embedded image buffer views, check binary buffer-view bounds, and enforce GLB magic/version/declared length plus a 3 MiB maximum instead of relying on exact file size. The previous `jyc-spatial.glb` remains in place for rollback.
 
 ## UX contract
 1. Keep the launcher small and non-intrusive across routes.
@@ -36,8 +36,8 @@ The supplied model is now present at `public/models/1780947277181-w2z6yhqv.glb` 
 
 ## Verification status
 - [x] The supplied model path is present on the candidate branch; its Git blob is reused from the same repository's verified `main` asset.
-- [x] Assistant QA scripts now check the GLB header/version/declared length and a 3 MiB size ceiling.
-- [ ] Run the actual build and both QA scripts against the candidate checkout.
-- [ ] Run Khronos glTF Validator and browser rendering checks (desktop, mobile/fallback, reduced motion, save-data, and model/CDN failure).
+- [x] Assistant QA scripts structurally inspect the GLB container, glTF JSON, mesh primitives, material indices, embedded image buffer views, and buffer bounds; the 3 MiB ceiling and GLB header/version/declared length are checked.
+- [ ] Confirm CI completes the production build and the two assistant QA contracts on the latest candidate SHA.
+- [ ] Run the Khronos glTF Validator and inspect the actual GLB render in browser (desktop model framing/materials, mobile fallback, reduced motion, save-data, model/CDN failure, and WebGL context loss).
 - [ ] Obtain a successful preview and verify the exact candidate SHA; Vercel previously reported a build-rate-limit failure.
 - [ ] Complete visual sign-off and production smoke test before describing the model as released.
