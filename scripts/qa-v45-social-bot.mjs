@@ -57,5 +57,5 @@ const checks=[
  ...glbStructuralChecks
 ];
 let failed=false;
-for(const [ok,label] of glbStructuralChecks.concat(checks)){console.log(ok?'PASS':'FAIL',label);if(!ok)failed=true}
+for(const [ok,label] of checks){console.log(ok?'PASS':'FAIL',label);if(!ok)failed=true}
 process.exit(failed?1:0);
