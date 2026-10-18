@@ -19,7 +19,7 @@
     "qa:mobile-first": "npm run qa",
     "qa:responsive": "node scripts/qa-responsive-breakpoints.mjs",
     "qa:security": "node scripts/qa-security.mjs",
-    "prebuild": "node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs && node scripts/generate-photo-derivatives.mjs",
+    "prebuild": "node scripts/normalize-assistant-glb.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-image-manifest.mjs && node scripts/generate-photo-derivatives.mjs",
     "qa:performance": "npm run build && node scripts/qa-performance.mjs",
     "qa:final": "npm run qa",
     "qa:hygiene": "node scripts/qa-final-hygiene.mjs",
