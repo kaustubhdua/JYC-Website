@@ -157,9 +157,7 @@ html[data-theme="dark"] body{
 .public-app .feature-card,
 .public-app .about-intro-v28,
 .public-app .about-flow-v28{
-  background:
-    linear-gradient(145deg,rgba(191,156,111,.075),transparent 58%),
-    var(--jyc-surface)!important;
+  background:var(--jyc-surface)!important;
   color:var(--jyc-text)!important;
   border:1px solid var(--jyc-border)!important;
   box-shadow:var(--jyc-shadow)!important;
