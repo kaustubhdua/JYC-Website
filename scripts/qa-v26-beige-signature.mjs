@@ -17,6 +17,30 @@ const sourceMedia=read('src/jyc-source-media.js');
 const bot=read('src/jyc-bot.jsx');
 const logoTheme=read('src/jyc-logo-final-theme.css');
 const hubRegistry=read('src/jyc-hub-registry.js');
+const glbPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
+const glb=fs.existsSync(glbPath)?fs.readFileSync(glbPath):null;
+let glbJson=null,glbChunks=[],glbParseError='';
+if(glb){
+ try{
+  if(glb.length<20)throw new Error('file is shorter than a GLB header and chunk');
+  const declared=glb.readUInt32LE(8);
+  if(declared!==glb.length)throw new Error('declared GLB length differs from actual bytes');
+  let offset=12;
+  while(offset<declared){
+   if(offset+8>declared)throw new Error('truncated GLB chunk header');
+   const length=glb.readUInt32LE(offset),type=glb.readUInt32LE(offset+4),start=offset+8,end=start+length;
+   if(end>declared)throw new Error('GLB chunk exceeds declared length');
+   const bytes=glb.subarray(start,end);
+   glbChunks.push({type,length,bytes});
+   if(type===0x4e4f534a)glbJson=JSON.parse(bytes.toString('utf8').replace(/[\\u0000\\u0020]+$/g,''));
+   offset=end;
+  }
+  if(offset!==declared)throw new Error('GLB chunk boundaries do not end at declared length');
+ }catch(error){glbParseError=String(error?.message||error)}
+}
+const glbJsonChunk=glbChunks.find(c=>c.type===0x4e4f534a);
+const glbBinChunk=glbChunks.find(c=>c.type===0x004e4942);
+
 
 const hasExactUrl=(content,{protocol,hostname,pathname})=>{
   const matches=content.match(/https?:\/\/[^\s"'`<>)]+/g)??[];
@@ -61,6 +85,14 @@ check('GLB assistant loads without interaction-gated rendering',bot.includes("/m
 const glbPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
 const glb=fs.existsSync(glbPath)?fs.readFileSync(glbPath):null;
 check('GLB asset exists within the 3 MiB transfer budget',Boolean(glb)&&glb.length>20&&glb.length<=3*1024*1024);
+check('GLB header magic, version and exact declared byte length match',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
+check('GLB chunk framing and JSON are parseable',Boolean(glbJsonChunk)&&Boolean(glbJson)&&!glbParseError&&glbChunks[0]?.type===0x4e4f534a);
+check('GLB JSON declares glTF 2.0 and at least one drawable mesh',glbJson?.asset?.version==='2.0'&&Array.isArray(glbJson.meshes)&&glbJson.meshes.length>0&&glbJson.meshes.every(m=>Array.isArray(m.primitives)&&m.primitives.length>0));
+check('GLB scene graph has nodes referencing meshes',Array.isArray(glbJson?.nodes)&&glbJson.nodes.length>0&&glbJson.nodes.some(n=>Number.isInteger(n.mesh)&&n.mesh>=0&&n.mesh<glbJson.meshes.length));
+check('GLB materials and primitives reference valid material indices',Array.isArray(glbJson?.materials)&&glbJson.materials.length>0&&glbJson.meshes.every(m=>m.primitives.every(p=>Number.isInteger(p.material)&&p.material>=0&&p.material<glbJson.materials.length)));
+check('GLB embedded image references map to valid buffer views',Array.isArray(glbJson?.images)&&glbJson.images.length>0&&glbJson.images.every(i=>Number.isInteger(i.bufferView)&&i.bufferView>=0&&i.bufferView<(glbJson.bufferViews||[]).length)&&Array.isArray(glbJson.bufferViews));
+check('GLB buffer views stay within the embedded BIN payload',Boolean(glbBinChunk)&&Array.isArray(glbJson?.buffers)&&glbJson.buffers.length>0&&glbJson.buffers.every(b=>Number.isInteger(b.byteLength)&&b.byteLength>0&&b.byteLength<=glbBinChunk.length)&&glbJson.bufferViews.every(v=>Number.isInteger(v.byteOffset||0)&&Number.isInteger(v.byteLength)&&v.byteLength>0&&(v.byteOffset||0)+v.byteLength<=glbBinChunk.length));
+
 check('GLB binary header, version and declared length are valid',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
 check('homepage team surface stays text-led while full team retains image support',editorialHome.includes('jh-team-monogram')&&!editorialHome.includes('m.photo||m.image')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
