@@ -44,3 +44,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-013 | P1 | Homepage WebGL hero / Dither Veil | Source comment claimed WebGL-loss fallback, but the component had no `webglcontextlost` handler. A context loss could leave the canvas blank until a full reload. | Commits `49df9cf` and `dabfb35` stop animation and expose the static logo fallback on context loss, with source-contract coverage. Forced browser context-loss test remains required. |
+
+
+| R-014 | P2 | Homepage WebGL hero / background-tab performance | Dither Veil paused when offscreen but did not explicitly stop its RAF loop when the browser document became hidden. | Commit `b9ecca7` cancels scheduled frames on `visibilitychange`, resumes when visible and in view, and removes the listener on cleanup. Browser-level validation pending. |
