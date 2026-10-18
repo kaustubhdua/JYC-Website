@@ -38,3 +38,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-011 | P2 | Homepage ambient motion / activity Bento | Source review found three perpetual blurred orb animations plus simultaneous Magic Bento magnetism, tilt and spotlight. This stacks motion on top of the Dither Veil hero. | Commits `00e2cb1`, `7f1334f`, and `cf9ce1f` make ambient depth static, retain one Bento spotlight interaction, and add regression checks. Browser/performance confirmation pending. |
+
+
+| R-012 | P2 | Shared public card surfaces | The final theme applied the same brass gradient to a broad collection of cards, reducing differentiation and adding decoration to unrelated content. | Commits `72a067c` and `7de3dee` use the semantic surface token and guard against the repeated gradient; visual review remains pending. |
