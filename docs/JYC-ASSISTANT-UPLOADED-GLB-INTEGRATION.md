@@ -23,7 +23,7 @@ The model is static. It can be displayed and gently transformed with CSS, but na
 - The chat panel searches published JYC content and navigates to the corresponding site routes.
 
 ## Required asset swap
-Replace `public/models/1780947277181-w2z6yhqv.glb` with the supplied model bytes, keeping the public URL stable so existing runtime code and browser QA continue to work. Then update any exact-byte-size assertion in `scripts/qa-v45-social-bot.mjs` (currently hard-coded to the previous 876,764-byte asset) to assert a sensible maximum size and valid asset presence rather than a brittle exact size. Check for other hard-coded size assertions before changing them.
+The supplied model is now present at `public/models/1780947277181-w2z6yhqv.glb` on `fix/release-qa-mobile-type` (2,660,588 bytes). Both assistant QA contracts validate GLB magic bytes, version 2, declared file length, and a 3 MiB maximum instead of relying on an exact byte count. The previous `jyc-spatial.glb` remains in place for rollback.
 
 ## UX contract
 1. Keep the launcher small and non-intrusive across routes.
@@ -34,5 +34,10 @@ Replace `public/models/1780947277181-w2z6yhqv.glb` with the supplied model bytes
 6. Use the existing JYC palette (cream, charcoal, oxblood, champagne) rather than unrelated neon gradients.
 7. Verify desktop and mobile screenshots, model framing, material/texture fidelity, build output, browser QA, and Lighthouse before release.
 
-## Current blocker
-The repository connector can edit text files but does not provide a binary upload operation for this conversation's local GLB attachment. The uploaded 2,660,588-byte binary has therefore **not** been copied into `public/models/1780947277181-w2z6yhqv.glb` by this change. Do not claim the new model is live until the binary is actually replaced and the build/QA checks pass.
+## Verification status
+- [x] The supplied model path is present on the candidate branch; its Git blob is reused from the same repository's verified `main` asset.
+- [x] Assistant QA scripts now check the GLB header/version/declared length and a 3 MiB size ceiling.
+- [ ] Run the actual build and both QA scripts against the candidate checkout.
+- [ ] Run Khronos glTF Validator and browser rendering checks (desktop, mobile/fallback, reduced motion, save-data, and model/CDN failure).
+- [ ] Obtain a successful preview and verify the exact candidate SHA; Vercel previously reported a build-rate-limit failure.
+- [ ] Complete visual sign-off and production smoke test before describing the model as released.
