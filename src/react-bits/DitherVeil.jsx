@@ -560,6 +560,22 @@ const DitherVeil = ({
     const brush = { x: 0, y: 0, px: 0, py: 0 };
     const bursts = [];
 
+    // WebGL is progressive enhancement: if the browser/GPU loses the context,
+    // stop scheduling frames and reveal the already-loaded static logo fallback.
+    // This renderer is not recreated after restoration; the fallback stays stable.
+    const handleContextLost = event => {
+      event.preventDefault();
+      cancelAnimationFrame(raf);
+      raf = 0;
+      visible = false;
+      container.dataset.static = '1';
+    };
+    const handleContextRestored = () => {
+      container.dataset.static = '1';
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
+
     const layout = () => {
       width = Math.max(1, container.clientWidth);
       height = Math.max(1, container.clientHeight);
@@ -841,6 +857,8 @@ const DitherVeil = ({
       wakeRef.current = () => {};
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      canvas.removeEventListener('webglcontextlost', handleContextLost, false);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored, false);
       img.onload = null;
       img.onerror = null;
       container.removeEventListener('pointermove', onMove);
