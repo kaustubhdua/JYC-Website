@@ -47,7 +47,8 @@
     "qa:homepage-editorial": "node scripts/qa-homepage-editorial-truth.mjs",
     "qa:experience-system": "node scripts/qa-experience-system.mjs",
     "qa:dynamic-route-shells": "node scripts/qa-dynamic-route-shells.mjs",
-    "qa:visual-redesign": "node scripts/qa-visual-redesign.mjs"
+    "qa:visual-redesign": "node scripts/qa-visual-redesign.mjs",
+    "qa:assistant-assets": "node scripts/qa-v45-social-bot.mjs && node scripts/qa-v26-beige-signature.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.117.3",
