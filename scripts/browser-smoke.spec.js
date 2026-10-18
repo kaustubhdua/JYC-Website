@@ -282,7 +282,8 @@ test('homepage accessibility and responsive guardrails', async ({ page }) => {
     buttons.filter(button => {
       const text = (button.innerText || '').trim();
       const aria = button.getAttribute('aria-label') || button.getAttribute('aria-labelledby');
-      return !text && !aria;
+      const semanticChild = button.querySelector('img[alt]:not([alt=""]), svg[aria-label], [aria-label]');
+      return !text && !aria && !semanticChild;
     }).length
   );
   expect(unnamedButtons).toBe(0);
