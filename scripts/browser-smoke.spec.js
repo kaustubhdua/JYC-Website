@@ -1489,18 +1489,19 @@ test('desktop assistant renders supplied GLB and recovers from WebGL context los
 
   const loadResult = await viewer.evaluate(el => new Promise(resolve => {
     let settled = false;
+    let timer = null;
     const finish = value => {
       if (settled) return;
       settled = true;
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
       resolve(value);
     };
     if (el.loaded === true && el.modelIsVisible === true) return finish('rendered');
     el.addEventListener('load', () => finish('loaded'), { once: true });
     el.addEventListener('error', () => finish('error'), { once: true });
-    const timer = setTimeout(() => finish('timeout'), 20000);
+    timer = setTimeout(() => finish('timeout'), 20000);
   }));
-  expect(loadResult, 'the GLB must finish loading in the actual browser, not only pass binary checks').toBe('loaded');
+  expect(loadResult, 'the GLB must finish loading in the actual browser, not only pass binary checks').toMatch(/^(loaded|rendered)$/);
 
   const renderState = await viewer.evaluate(el => {
     const rect = el.getBoundingClientRect();
