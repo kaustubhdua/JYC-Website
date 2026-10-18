@@ -6,6 +6,9 @@ const css = fs.readFileSync('src/jyc-editorial-home.css', 'utf8');
 
 assert.match(home, /Find your people\.[\s\S]*?Make your mark\./i, 'homepage headline must have a clear student benefit');
 assert.match(home, /JYC helps you find the people and experiences/i, 'homepage lead must explain JYC in plain language');
+const heroActions = home.slice(home.indexOf('className="jh-actions jh-hero-actions"'), home.indexOf('HERO DITHERVEIL VISUAL PLAQUE'));
+assert.equal((heroActions.match(/className="jh-btn /g') || []).length, 2, 'homepage hero must present exactly two primary journeys: Events and Clubs');
+
 assert.doesNotMatch(home, /new Date\(['"]2026-11-15T09:00:00/, 'homepage must not hard-code an unverified countdown date');
 assert.doesNotMatch(home, /jh-flagship-countdown-strip|jh-countdown-timer/, 'homepage must not present an unverified flagship countdown');
 assert.doesNotMatch(home, /Fortissmo|OSDC|Knuth|uCR|Jhankaar|Crescendo/, 'homepage activity pillars must not name unregistered legacy clubs or misspell a published club');
