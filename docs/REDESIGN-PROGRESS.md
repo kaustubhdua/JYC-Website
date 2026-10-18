@@ -142,3 +142,9 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 ## 2026-10-18 — hidden-tab WebGL scheduling
 - Commit `b9ecca79319e2b3db25ade081059b2caeac31356` makes Dither Veil stop scheduling animation frames while the document is hidden and resume only when visible and the canvas is still in view. The visibility listener is removed during cleanup.
 - This complements the existing IntersectionObserver pause and the newly added WebGL context-loss fallback. Browser-level visibility/context-loss tests and exact-head CI remain required.
+
+
+## 2026-10-18 — restore mobile hero readability
+- Source review found an old compact mobile override shrinking the JYC hero overline to 8px, lead copy to 13px with a two-line clamp, the headline to 29–35px, logo plaque to 116px, and caption text to 7px. A later rule only repaired the overline, leaving the other cramped values active at the same breakpoint.
+- Commit `5113dc0aff29af56b20cc5efefc2ac97c26ec4de` replaces that compact block with readable responsive type (12px overline, 15px lead, 36–48px headline), a larger logo plaque, and 44px minimum action targets. The composition may grow vertically; readability takes precedence over forcing all content into a tiny viewport.
+- A source-contract check is being added to guard against the microtype overrides returning. Current browser screenshots are still required to validate the resulting composition at 320px through 680px.
