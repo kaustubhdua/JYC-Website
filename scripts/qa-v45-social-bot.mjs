@@ -49,6 +49,13 @@ const glbStructuralChecks=[
  [Boolean(khronosReport)&&khronosErrors.length===0,'Khronos glTF Validator reports zero severity-0 errors'],
 
  [modelExists,'assistant GLB exists at runtime path'],
+ [Boolean(model)&&modelJson?.asset?.version==='2.0','GLB embeds glTF asset version 2.0'],
+ [Boolean(modelJson?.meshes?.length)&&modelJson.meshes.every(m=>Array.isArray(m.primitives)&&m.primitives.length>0),'GLB contains drawable mesh primitives'],
+ [Boolean(modelJson?.nodes?.length)&&modelJson.nodes.some(n=>Number.isInteger(n.mesh)),'GLB scene nodes reference mesh geometry'],
+ [Boolean(modelJson?.materials?.length)&&modelJson.meshes.flatMap(m=>m.primitives||[]).every(p=>Number.isInteger(p.material)&&p.material>=0&&p.material<modelJson.materials.length),'GLB mesh primitives reference valid materials'],
+ [Boolean(modelJson?.bufferViews?.length)&&Boolean(modelJson?.accessors?.length)&&modelJson.accessors.every(a=>Number.isInteger(a.count)&&a.count>0&&(a.bufferView===undefined||(Number.isInteger(a.bufferView)&&a.bufferView>=0&&a.bufferView<modelJson.bufferViews.length))),'GLB geometry accessors reference valid buffer views'],
+ [Boolean(modelJson?.images?.length)&&modelJson.images.every(i=>Number.isInteger(i.bufferView)&&i.bufferView>=0&&i.bufferView<modelJson.bufferViews.length)&&Boolean(modelJson?.textures?.length),'GLB contains embedded image data and textures'],
+ [Boolean(binChunk)&&Boolean(modelJson?.buffers?.length)&&modelJson.buffers.every(b=>Number.isInteger(b.byteLength)&&b.byteLength>0&&b.byteLength<=binChunk.length),'GLB buffer declarations fit the embedded binary chunk'],
  [Boolean(model)&&model.length>20&&model.length<=3*1024*1024,'assistant GLB is within 3 MiB budget'],
  [Boolean(model)&&model.toString('ascii',0,4)==='glTF'&&model.readUInt32LE(4)===2&&model.readUInt32LE(8)===model.length,'assistant GLB magic/version/declared length match'],
  [Boolean(jsonChunk)&&Boolean(modelJson)&&Array.isArray(modelJson.asset?.version)&&false || Boolean(jsonChunk)&&modelJson?.asset?.version==='2.0','GLB contains parseable glTF 2.0 JSON chunk'],
