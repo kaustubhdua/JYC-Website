@@ -11,6 +11,7 @@ const theme = fs.readFileSync('src/jyc-logo-final-theme.css', 'utf8');
 const sharedHeadingRules = theme.slice(theme.indexOf('.public-app .section-head,'), theme.indexOf('.public-app .card-grid,'));
 const sharedGridRules = theme.slice(theme.indexOf('.public-app .card-grid,'), theme.indexOf('.public-app .card,'));
 const themeBase = theme.split('/* V56.15.2 visual resilience:')[0];
+const sharedCardSurfaceRules = theme.slice(theme.indexOf('.public-app .card,\n'), theme.indexOf('html[data-theme="dark"] .public-app .card,'));
 const designSystem = fs.readFileSync('src/styles/jyc-design-system.css', 'utf8');
 
 const checks = [
@@ -22,6 +23,7 @@ const checks = [
   [!sharedHeadingRules.includes('justify-items:center!important') && !sharedHeadingRules.includes('text-align:center!important'), 'shared public section headings do not receive blanket forced centering'],
   [!sharedGridRules.includes('justify-content:center!important'), 'shared public grids do not receive blanket forced centering'],
   [themeBase.includes('--jyc-shadow:0 8px 24px') && themeBase.includes('--jyc-shadow-dark:0 12px 32px'), 'shared card elevation uses restrained shadows instead of oversized global shadows'],
+  [sharedCardSurfaceRules.includes('background:var(--jyc-surface)!important;') && !sharedCardSurfaceRules.includes('linear-gradient(145deg'), 'shared public cards use clean surfaces instead of a repeated brass gradient'],
   [home.includes("import './jyc-editorial-home.css';") && home.includes("import './styles/jyc-editorial-motion-system.css';") && home.indexOf("import './styles/jyc-editorial-motion-system.css';") > home.indexOf("import './jyc-editorial-home.css';"), 'motion layer is loaded after the editorial home stylesheet'],
   [home.includes('jh-hero-dither-visual') && home.includes('LazyDitherVeil'), 'existing branded Dither Veil hero is retained'],
   [home.includes('enableMagnetism={false} enableTilt={false} enableStars={false} enableSpotlight={true}'), 'Magic Bento uses a single restrained spotlight interaction'],
