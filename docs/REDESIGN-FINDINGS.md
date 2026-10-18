@@ -53,3 +53,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-016 | P1 | Homepage activity pillars / content trust | Homepage copy named clubs absent from the current published 23-community registry and misspelled Fortissimo as “Fortissmo”; it also made specific programme claims without a clear source in the canonical registry. | Commit `7c4d326` replaces those names with accurate family-level descriptions. A regression assertion will guard against the old unverified names returning. |
+
+
+| R-017 | P2 | Homepage CSS cascade / unused visual layers | A later “editorial restoration” block reintroduced orb selectors and a radial background after the first ambient CSS cleanup, so the obsolete effect code was not fully removed. | Commit `ccc3980` removes the residual selectors and radial background; regression test checks for absence of ambient selectors/keyframes. Browser review still required. |
