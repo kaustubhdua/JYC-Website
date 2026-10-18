@@ -8,6 +8,7 @@ assert.match(home, /Find your people\.[\s\S]*?Make your mark\./i, 'homepage head
 assert.match(home, /JYC helps you find the people and experiences/i, 'homepage lead must explain JYC in plain language');
 assert.doesNotMatch(home, /new Date\(['"]2026-11-15T09:00:00/, 'homepage must not hard-code an unverified countdown date');
 assert.doesNotMatch(home, /jh-flagship-countdown-strip|jh-countdown-timer/, 'homepage must not present an unverified flagship countdown');
+assert.doesNotMatch(home, /Fortissmo|OSDC|Knuth|uCR|Jhankaar|Crescendo/, 'homepage activity pillars must not name unregistered legacy clubs or misspell a published club');
 assert.doesNotMatch(home, /5,000<i>\+<\/i>|50<i>\+<\/i>|15<i>\+<\/i>/, 'homepage must not publish unverified reach, event or legacy counters');
 assert.doesNotMatch(home, /jh-ambient-backdrop|jh-ambient-orb/, 'homepage must not use generic ambient cyber decoration');
 assert.match(home, /rimColor="#a82420"/i, 'Dither Veil rim must use JYC red rather than cyan');
