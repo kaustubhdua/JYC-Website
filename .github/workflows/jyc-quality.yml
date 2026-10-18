@@ -45,6 +45,9 @@ jobs:
       - name: Production build
         run: npm run build
 
+      - name: Run assistant GLB asset contracts
+        run: npm run qa:assistant-assets
+
       - name: Run full static release QA
         run: npm run qa
 
