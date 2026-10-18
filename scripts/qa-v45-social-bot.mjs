@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import validator from 'gltf-validator';
 
 const read=p=>fs.readFileSync(p,'utf8');
 const main=read('src/main.jsx');
@@ -28,9 +29,19 @@ if(model){
   if(offset!==declared)throw new Error('chunk boundary does not equal declared length');
  }catch(error){modelError=String(error?.message||error)}
 }
+let khronosReport=null,khronosError='';
+if(model){
+ try{khronosReport=await validator.validateBytes(new Uint8Array(model),{uri:modelPath,writeTimestamp:false,maxIssues:0});}
+ catch(error){khronosError=String(error?.message||error)}
+}
+const khronosErrors=(khronosReport?.issues?.messages||[]).filter(issue=>issue.severity===0);
+const khronosWarnings=(khronosReport?.issues?.messages||[]).filter(issue=>issue.severity===1);
 const jsonChunk=modelChunks.find(c=>c.type===0x4e4f534a);
 const binChunk=modelChunks.find(c=>c.type===0x004e4942);
 const glbStructuralChecks=[
+ [Boolean(khronosReport)&&!khronosError,'Khronos glTF Validator parses the supplied GLB'],
+ [Boolean(khronosReport)&&khronosErrors.length===0,'Khronos glTF Validator reports no severity-0 errors'],
+
  [modelExists,'assistant GLB exists at runtime path'],
  [Boolean(model)&&model.length>20&&model.length<=3*1024*1024,'assistant GLB is within 3 MiB budget'],
  [Boolean(model)&&model.toString('ascii',0,4)==='glTF'&&model.readUInt32LE(4)===2&&model.readUInt32LE(8)===model.length,'assistant GLB magic/version/declared length match'],
