@@ -379,3 +379,6 @@ html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7
     gap:12px!important;
   }
 }
+
+/* User-approved V23.6 visual reference: canonical palette, type scale and rhythm. */
+@import './v23-reference-restoration.css';
