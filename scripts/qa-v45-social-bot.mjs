@@ -7,6 +7,7 @@ const assistant=read('src/jyc-assistant.jsx');
 const popup=read('src/featured-event-popup.jsx');
 const socials=read('src/jyc-socials.js');
 const pkg=JSON.parse(read('package.json'));
+const lock=JSON.parse(read('package-lock.json'));
 
 const modelPath='public/models/1780947277181-w2z6yhqv.glb';
 const modelExists=fs.existsSync(modelPath);
@@ -45,7 +46,7 @@ const glbStructuralChecks=[
  [!modelError,'GLB chunk structure and glTF JSON parse without errors']
 ];
 const checks=[
- [pkg.version==='50.0.0','V50 current release'],
+ [pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version,'release metadata matches lockfile'],
  [main.includes("import {JYCBot} from './jyc-bot.jsx';")&&!main.includes('function JYCBot('),'bot runtime is isolated from main.jsx'],
  [main.includes("import {FeaturedEventPopup} from './featured-event-popup.jsx';")&&main.includes('<FeaturedEventPopup/>'),'featured event popup is mounted in the public shell'],
  [!main.includes('function FirstVisitTour(')&&!main.includes('<FirstVisitTour/>'),'obsolete first-visit tour does not compete with the persistent featured event'],
