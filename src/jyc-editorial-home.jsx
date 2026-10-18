@@ -70,7 +70,7 @@ const PILLARS = [
     family: 'Technical',
     title: 'Technical & Innovation',
     tag: 'AI · ROBOTICS · CP · WEB · CYBERSEC',
-    desc: 'Hackathons, open-source dev-sprints, AI research, and combat robotics across OSDC, Knuth, CICR, GDG & uCR.',
+    desc: 'Hackathons, open-source development, AI projects and robotics across JYC’s technical communities.',
     icon: '⚡'
   },
   {
@@ -78,7 +78,7 @@ const PILLARS = [
     family: 'Cultural',
     title: 'Cultural & Performing Arts',
     tag: 'DRAMATICS · DANCE · BANDS · CLASSICAL',
-    desc: 'Street play, stage dramatics, western & classical dance, and live acoustics with Abhivyakti, Jhankaar, Fortissmo & Crescendo.',
+    desc: 'Theatre, dance, music and live performance across JYC’s cultural communities.',
     icon: '🎭'
   },
   {
@@ -86,7 +86,7 @@ const PILLARS = [
     family: 'Literary',
     title: 'Literary, MUN & Speaking',
     tag: 'DEBATES · QUIZZING · MUN · WRITING',
-    desc: 'Parliamentary debates, National Model United Nations, literary journals, and inter-college quiz championships.',
+    desc: 'Debate, quizzing, public speaking and writing across JYC’s literary communities.',
     icon: '🖋️'
   },
   {
