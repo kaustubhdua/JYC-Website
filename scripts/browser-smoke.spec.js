@@ -1475,6 +1475,66 @@ test('GLB request has expected bytes, MIME type and immutable cache headers', as
   expect(declared).toBe(bytes.byteLength);
 });
 
+test('desktop assistant renders supplied GLB and recovers from WebGL context loss', async ({ page }) => {
+  test.setTimeout(45000);
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(base + '/events', { waitUntil: 'domcontentloaded' });
+  const launcher = page.locator('.jyc-bot-orb');
+  await expect(launcher, 'assistant launcher is available on a public route').toBeVisible({ timeout: 15000 });
+  await launcher.hover();
+
+  const viewer = page.locator('.jyc-bot-glb');
+  await expect(viewer, 'hover should load the model-viewer runtime on capable desktop hardware').toBeAttached({ timeout: 15000 });
+  await expect(viewer).toHaveAttribute('data-jyc-glb-src', '/models/1780947277181-w2z6yhqv.glb');
+
+  const loadResult = await viewer.evaluate(el => new Promise(resolve => {
+    let settled = false;
+    const finish = value => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve(value);
+    };
+    if (el.loaded === true && el.modelIsVisible === true) return finish('rendered');
+    el.addEventListener('load', () => finish('loaded'), { once: true });
+    el.addEventListener('error', () => finish('error'), { once: true });
+    const timer = setTimeout(() => finish('timeout'), 20000);
+  }));
+  expect(loadResult, 'the GLB must finish loading in the actual browser, not only pass binary checks').toBe('loaded');
+
+  const renderState = await viewer.evaluate(el => {
+    const rect = el.getBoundingClientRect();
+    return {
+      loaded: el.loaded === true,
+      modelIsVisible: el.modelIsVisible === true,
+      width: rect.width,
+      height: rect.height,
+      src: el.getAttribute('src')
+    };
+  });
+  expect(renderState.loaded).toBe(true);
+  expect(renderState.modelIsVisible, 'model-viewer must report visible model geometry after load').toBe(true);
+  expect(renderState.width).toBeGreaterThan(0);
+  expect(renderState.height).toBeGreaterThan(0);
+  expect(renderState.src).toBe('/models/1780947277181-w2z6yhqv.glb');
+
+  // Preserve visual evidence from the real loaded model before simulating context loss.
+  await launcher.screenshot({ path: 'test-results/jyc-assistant-glb-desktop.png' });
+
+  await launcher.click();
+  await expect(page.locator('.jyc-assistant-panel')).toBeVisible();
+  const defaultPrevented = await viewer.evaluate(el => {
+    const event = new Event('contextlost', { cancelable: true });
+    el.dispatchEvent(event);
+    return event.defaultPrevented;
+  });
+  expect(defaultPrevented, 'the assistant should handle and suppress the model-viewer context-loss event').toBe(true);
+  await expect(page.locator('.jyc-bot-model-fallback')).toBeVisible();
+  await expect(page.locator('.jyc-assistant-panel'), 'chat remains usable after WebGL failure').toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
+});
+
 test('GLB model failure and simulated WebGL context loss keep assistant chat usable', async ({ page }) => {
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
   await page.locator('.jyc-bot-orb').waitFor({ state: 'visible', timeout: 10000 });
