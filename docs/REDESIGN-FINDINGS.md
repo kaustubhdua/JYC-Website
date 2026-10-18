@@ -50,3 +50,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-015 | P1 | Homepage hero / 320–680px | The mobile CSS used 8px overline, 13px clamped lead, 29–35px headline, 116px logo plaque and 7px caption rules; a later override repaired only the overline. | Commit `5113dc0` restores readable fluid typography and a larger identity plaque with 44px actions. Exact-head mobile screenshots at 320/360/390/430/680px are required before closing. |
+
+
+| R-016 | P1 | Homepage activity pillars / content trust | Homepage copy named clubs absent from the current published 23-community registry and misspelled Fortissimo as “Fortissmo”; it also made specific programme claims without a clear source in the canonical registry. | Commit `7c4d326` replaces those names with accurate family-level descriptions. A regression assertion will guard against the old unverified names returning. |
