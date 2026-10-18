@@ -1358,12 +1358,7 @@
 /* --------------------------------------------------------------------------
    JYC EDITORIAL RESTORATION — warm paper, restrained motion, readable content
    -------------------------------------------------------------------------- */
-.jyc-editorial-home.jyc-home { background: var(--jh-bg); color: var(--jh-ink); background-image: radial-gradient(ellipse at 88% 4%, rgba(191,156,111,.09), transparent 28%); }
-.jyc-editorial-home .jh-ambient-orb { opacity: .07; filter: blur(110px); mix-blend-mode: multiply; }
-.jyc-editorial-home .jh-ambient-orb-1 { background: radial-gradient(circle, rgba(168,36,32,.14), transparent 72%); }
-.jyc-editorial-home .jh-ambient-orb-2 { background: radial-gradient(circle, rgba(191,156,111,.18), transparent 72%); }
-.jyc-editorial-home .jh-ambient-orb-3 { background: radial-gradient(circle, rgba(191,156,111,.10), transparent 72%); }
-.jyc-editorial-home .jh-ambient-grid { opacity: .025; }
+.jyc-editorial-home.jyc-home { background: var(--jh-bg); color: var(--jh-ink); }
 .jyc-editorial-home .jh-title-gradient { background: none !important; color: var(--jh-accent) !important; -webkit-text-fill-color: currentColor !important; }
 .jyc-editorial-home .jh-cyber-badge,
 .jyc-editorial-home .jh-assistant-badge-live,
