@@ -92,3 +92,11 @@ Latest branch head: `e51821edfd775ae85374467e89e41295b348b6ba`.
 - Commit: `51afbc8b63624b0571230540cc5b0321ccc3a565`.
 - Verification limitation: GitHub source was inspected, but this environment has not run Node 24, `npm ci`, browser screenshots, or the test suite against this commit. The PR/CI results must be checked before merge. Public routes remain visually unverified until exact-head screenshots are reviewed.
 - Still blocked/out of scope for this change: owner-reviewed gallery publishing rights/focal points; production domain DNS verification; independent screenshot review of the hero and all route/viewports.
+
+
+## 2026-10-18 execution — follow-up CSS and regression hardening
+- Continued the same review branch after inspecting the actual theme source rather than stopping at the first override block.
+- Commit `4b4e6b04c33bca9f111def1b4a3fb8f9bebcae50` changes the shared theme's base section-heading and card-grid rules so alignment is route-specific instead of globally centered; it also replaces oversized shared card shadows with restrained elevation tokens.
+- Commit `3d34782f239a585ce14a89a00cd6f9c08752db7d` adds source-contract assertions to `scripts/qa-visual-redesign.mjs` for accidental global centering and oversized shared shadows.
+- These are source-level improvements; no local Node/browser execution was available in this connector session. The exact-head CI runs triggered by these commits are the verification source, and screenshots still need actual visual inspection.
+- Palette candidates, official-logo sampling, hero-effect comparison, all-route screenshot QA, accessibility journeys and media rights remain open; no broad redesign or release completion is claimed.
