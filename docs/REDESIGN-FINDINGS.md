@@ -41,3 +41,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-012 | P2 | Shared public card surfaces | The final theme applied the same brass gradient to a broad collection of cards, reducing differentiation and adding decoration to unrelated content. | Commits `72a067c` and `7de3dee` use the semantic surface token and guard against the repeated gradient; visual review remains pending. |
+
+
+| R-013 | P1 | Homepage WebGL hero / Dither Veil | Source comment claimed WebGL-loss fallback, but the component had no `webglcontextlost` handler. A context loss could leave the canvas blank until a full reload. | Commits `49df9cf` and `dabfb35` stop animation and expose the static logo fallback on context loss, with source-contract coverage. Forced browser context-loss test remains required. |
