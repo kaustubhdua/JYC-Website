@@ -35,3 +35,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-009 | P1 | Public site-wide layout / all routes | Source inspection of the active late-loaded theme found a “CENTERED LAYOUT FINAL OVERRIDES” block forcing generic page/section headings, major card grids, event rows and contact form controls into centered alignment. | Candidate fix in `51afbc8b63624b0571230540cc5b0321ccc3a565`: scope alignment back to gallery controls/grid and remove broad centering. Needs exact-head build, responsive/browser checks and screenshot review before closing. |
+
+
+| R-010 | P1 | Public site-wide typography/layout/elevation | Follow-up source review found the same theme's opening rules still forced generic section headings to center and applied centered alignment to several shared grids; the shared shadow token was also unusually strong for routine cards. | Commits `4b4e6b0` and `3d34782` scope default alignment to route/component styling, reduce shared elevation and add source-contract regression checks. Must still pass exact-head CI and visual screenshot review. |
