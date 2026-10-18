@@ -32,3 +32,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 |---|---|---|---|---|
 | R-008 | P1 | Homepage hero / Dither Veil on touch devices | Source inspection found a blanket static-fallback branch for coarse pointers, which prevented the interactive effect from running on all touch devices regardless of actual capability. | Fixed in candidate commit `9ef450e`: capable touch devices now run the effect at DPR 1; reduced-motion and constrained-hardware fallback remain. Browser rendering and performance still require exact-head verification. |
 | R-009 | P2 | Homepage hero CTA and plaque | Source CSS mixed a bright gold-to-red primary CTA with the approved warm editorial palette and a small logo plaque on very narrow screens. | Refined in candidate commit `06dbffd` with oxblood CTA, restrained depth and responsive plaque sizing. Rendered visual acceptance is pending. |
+
+
+| R-010 | P1 | Public site-wide typography/layout/elevation | Source inspection found generic public section headings and shared grids forced to centered alignment, plus oversized shadows on routine cards. | Follow-up commits `875c095` and `a8a4519` scope alignment and add regression checks; exact-head CI and route screenshots remain required. |
