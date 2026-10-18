@@ -275,7 +275,7 @@
 @media (max-width: 700px) {
   .jyc-editorial-home.jyc-home .jh-hero { padding-block: 28px 40px !important; }
   .jyc-editorial-home.jyc-home .jh-hero-copy > h1 { max-width: 12ch !important; font-size: clamp(40px, 10vw, 58px) !important; }
-  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-overline { font-size: 10px !important; letter-spacing: .1em !important; }
+  .jyc-editorial-home.jyc-home .jh-hero-copy > .jh-overline { font-size: 12px !important; line-height: 1.35 !important; letter-spacing: .025em !important; }
   .jyc-editorial-home.jyc-home .jh-hero-visual { width: min(100%, 520px); margin-inline: auto; }
   .jyc-editorial-home.jyc-home .jh-hero-dither-visual::after { top: 0; right: 2px; font-size: 8px; }
   .jyc-editorial-home.jyc-home .jh-hero-logo-plaque { transform: none; }
@@ -552,4 +552,12 @@ html[data-theme="dark"] .jyc-editorial-home.jyc-home .jh-lead {
 }
 @media (prefers-reduced-motion: reduce) {
   .jyc-editorial-home.jyc-home .jh-ambient-orb { animation: none !important; }
+}
+
+
+/* Readability contract: the campus identifier remains readable at every viewport. */
+.jyc-editorial-home.jyc-home .jh-hero-copy > .jh-overline {
+  font-size: max(12px, 0.75rem) !important;
+  line-height: 1.35 !important;
+  letter-spacing: clamp(0.025em, 0.1vw, 0.12em) !important;
 }
