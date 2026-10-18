@@ -106,3 +106,9 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 - Lighthouse CI: FAIL. `label-content-name-mismatch` persists on all seven audited routes despite the Search and Share label fixes. The homepage also had non-blocking performance/TBT warnings. Added an always-run Lighthouse report diagnostic step so the next run prints exact offending selectors/snippets and key performance metrics before artifact upload.
 - Updated ShareButton's accessible name to include the complete visible “Share ↗” text; the next Lighthouse report must confirm whether that was the offender or whether another shared control remains.
 - Exact-head Vercel preview was still building at the last status check; no visual sign-off or merge is authorized from source/build success alone.
+
+
+## 2026-10-18 — layout alignment and shared elevation follow-up
+- On the same P0 foundation branch, commit `875c095d50128bd7ae85e9d035324c776c18c1dd` removes blanket centered alignment from generic public section headings and shared card grids, keeps gallery-specific alignment in its own scoped rules, and softens routine card shadows.
+- Commit `a8a4519b74eb3b040e66544057ea133db3644e28` adds source-contract regression checks for those shared alignment/shadow rules.
+- These are source changes only until exact-head CI finishes. No route is visually verified from this change alone; no production deployment, domain/DNS, backend or gallery publishing state was changed.
