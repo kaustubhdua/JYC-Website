@@ -32,6 +32,15 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Install pinned Khronos glTF validator for assistant asset QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gltf-validator"
+          cd "$RUNNER_TEMP/gltf-validator"
+          npm pack gltf-validator@2.0.0-dev.3.10 --silent
+          mkdir -p "$GITHUB_WORKSPACE/node_modules/gltf-validator"
+          tar -xzf gltf-validator-2.0.0-dev.3.10.tgz -C "$GITHUB_WORKSPACE/node_modules/gltf-validator" --strip-components=1
 
       - name: Production build
         run: npm run build
