@@ -59,3 +59,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-018 | P2 | Homepage hero / action hierarchy | The hero presented three equal-weight actions and added a special full-row mobile rule for the third, competing with the headline and logo. | Commits `08b786b` and `da16dec` retain Events and Clubs as the two primary journeys; Join JYC remains in its dedicated lower-page section. Mobile screenshot review pending. |
+
+
+| R-018 follow-up | P2 | Homepage hero / mobile CSS | The two-action markup still had an obsolete `nth-child(3)` full-row selector. | Commit `26863d5` removes the dead rule; regression assertion will ensure it does not return. |
