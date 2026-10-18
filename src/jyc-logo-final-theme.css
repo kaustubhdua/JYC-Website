@@ -1139,3 +1139,41 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
     aspect-ratio: 4 / 3;
   }
 }
+
+
+/* Team portrait cards keep the member's name and role legible on both real
+   photography and the neutral unavailable-photo fallback. */
+.jyc-team-page .team-front-overlay {
+  min-height: 44%;
+  justify-content: flex-end;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 22, 0) 0%,
+    rgba(20, 18, 22, .36) 24%,
+    rgba(20, 18, 22, .9) 100%
+  );
+  padding: clamp(16px, 2vw, 22px);
+}
+.jyc-team-page .team-name-front {
+  color: #fffdf8;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .34);
+}
+.jyc-team-page .team-role-tag {
+  color: #fffdf8;
+  background: rgba(20, 18, 22, .76);
+  border-color: rgba(210, 180, 140, .6);
+}
+.jyc-team-page .team-flip-indicator {
+  color: #741b19;
+  background: rgba(255, 253, 248, .96);
+  border-color: rgba(143, 33, 31, .28);
+  box-shadow: 0 3px 12px rgba(20, 18, 22, .14);
+}
+.jyc-team-page .team-member-flip:focus-visible .team-front-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 22, .12) 0%,
+    rgba(20, 18, 22, .46) 24%,
+    rgba(20, 18, 22, .94) 100%
+  );
+}
