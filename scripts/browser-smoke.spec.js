@@ -1452,7 +1452,7 @@ test('JYC assistant remains interactive with GLB or safe fallback', async ({ pag
   const media = await page.locator('.jyc-bot-glb, .jyc-bot-model-fallback').count();
   expect(media).toBeGreaterThan(0);
   if (await page.locator('.jyc-bot-glb').count()) {
-    await expect(page.locator('.jyc-bot-glb')).toHaveAttribute('data-jyc-glb-src', '/models/jyc-spatial.glb');
+    await expect(page.locator('.jyc-bot-glb')).toHaveAttribute('data-jyc-glb-src', '/models/1780947277181-w2z6yhqv.glb');
   }
   await page.keyboard.press('Escape');
   await expect(page.locator('.jyc-assistant-panel')).toHaveCount(0);
@@ -1467,7 +1467,7 @@ test('GLB stays on capable desktop hardware and falls back on touch-first mobile
     hasModel:Boolean(document.querySelector('.jyc-bot-glb')),
     src:document.querySelector('.jyc-bot-glb')?.getAttribute('data-jyc-glb-src')||null
   }));
-  if(desktopState.hasModel) expect(desktopState.src).toBe('/models/jyc-spatial.glb');
+  if(desktopState.hasModel) expect(desktopState.src).toBe('/models/1780947277181-w2z6yhqv.glb');
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
