@@ -167,3 +167,7 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 ## 2026-10-18 — reduce homepage hero to two journeys
 - Commits `08b786bb8e0ceda904124c3005a86acd3831337e` and `da16dec6c8cae8eefefacda66504a98f29512163` remove the third “Join JYC” hero button and its mobile full-row rule. The hero now prioritises Events and Clubs; the separate Join JYC section remains available lower on the homepage and the canonical route is unchanged.
 - This restores the requested two-primary-journey hierarchy and reduces button crowding in the mobile hero.
+
+
+## 2026-10-18 — remove retired hero action styling
+- Commit `26863d504dcdbb8d7d951bce2f7cf7339fbb57d3` removes the final legacy CSS selector that promoted a third hero action to a full row on mobile. It is now consistent with the two-action Events/Clubs hero.
