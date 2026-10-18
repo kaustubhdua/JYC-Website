@@ -53,7 +53,7 @@ The public archive:
 
 ## 3D JYC bot
 
-`src/jyc-bot.jsx` loads `public/models/jyc-spatial.glb` through `model-viewer`.
+`src/jyc-bot.jsx` loads `public/models/1780947277181-w2z6yhqv.glb` through `model-viewer`.
 
 Interaction contract:
 - no auto-rotation;
