@@ -66,7 +66,7 @@
   "devDependencies": {
     "@playwright/test": "^1.64.0",
     "sharp": "0.35.5",
-    "gltf-validator": "^2.0.0"
+    "gltf-validator": "^2.0.0-dev.3.10"
   },
   "engines": {
     "node": ">=24 <25"
