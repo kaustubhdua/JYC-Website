@@ -1102,3 +1102,40 @@ html,body,#root,.app-frame,.app.public-app,.route-stage{max-width:100%;min-width
 .public-app .event-jai-qr-link:focus-visible{outline:2px solid var(--jyc33-brand,#bf9c6f);outline-offset:3px}
 @media(max-width:1024px){.public-app .supplied-programme-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:600px){.public-app .supplied-programme-grid{grid-template-columns:minmax(0,1fr)!important}.public-app .supplied-programme-card>.supplied-programme-photo,.public-app .supplied-programme-card>.supplied-programme-photo img{height:180px!important}}
+
+
+/* Event timeline posters are thumbnails, never intrinsic-height row drivers.
+   Keep tall source artwork inside a fixed editorial frame so one poster cannot
+   stretch the whole event directory into a kilometre-long column. */
+.public-app .event-timeline-row {
+  align-items: center !important;
+  min-height: 88px;
+}
+.public-app .event-timeline-row .event-timeline-media {
+  display: block;
+  width: 112px;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  min-width: 0;
+  align-self: center;
+  overflow: hidden;
+  border-radius: var(--jyc-brand-radius-md, 12px);
+}
+.public-app .event-timeline-row .event-timeline-media > .event-timeline-poster,
+.public-app .event-timeline-row .event-timeline-media > .event-timeline-poster img,
+.public-app .event-timeline-row .event-timeline-media > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 900px) {
+  .public-app .event-timeline-row .event-timeline-media {
+    width: 76px;
+    aspect-ratio: 4 / 3;
+  }
+}
