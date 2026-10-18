@@ -1,0 +1,213 @@
+/* JYC V23.6 reference restoration — adapted from the user-supplied
+   JYC-Website-V23.6.0-REFERENCE-INTEGRATED-FINAL.zip.
+   Preserve current React/data flows; restore the reference's warm editorial
+   palette, deliberate type scale, compact navigation and balanced page rhythm. */
+:root {
+  --jyc-ref-paper: #f2e7d4;
+  --jyc-ref-paper-soft: #fbf5e9;
+  --jyc-ref-paper-raised: #fff9eb;
+  --jyc-ref-ink: #29231d;
+  --jyc-ref-muted: #766b5c;
+  --jyc-ref-gold: #a47b43;
+  --jyc-ref-gold-light: #c7a36a;
+  --jyc-ref-line: rgba(126, 95, 54, .22);
+  --jyc-ref-night: #090a0d;
+  --jyc-ref-night-surface: #111217;
+  --jyc-ref-night-raised: #19171d;
+  --jyc-ref-night-ink: #f4ead8;
+  --jyc-ref-night-muted: #b4a99b;
+  --jyc-ref-night-line: rgba(199, 163, 106, .22);
+  --jyc-ref-content-max: 1220px;
+  --jyc-ref-reading-max: 700px;
+  --jyc-ref-radius: 18px;
+}
+html[data-theme="light"] {
+  --jyc-ref-canvas: var(--jyc-ref-paper);
+  --jyc-ref-surface: var(--jyc-ref-paper-soft);
+  --jyc-ref-surface-raised: var(--jyc-ref-paper-raised);
+  --jyc-ref-text: var(--jyc-ref-ink);
+  --jyc-ref-text-muted: var(--jyc-ref-muted);
+  --jyc-ref-accent: var(--jyc-ref-gold);
+  --jyc-ref-accent-soft: var(--jyc-ref-gold-light);
+  --jyc-ref-border: var(--jyc-ref-line);
+}
+html[data-theme="dark"] {
+  --jyc-ref-canvas: var(--jyc-ref-night);
+  --jyc-ref-surface: var(--jyc-ref-night-surface);
+  --jyc-ref-surface-raised: var(--jyc-ref-night-raised);
+  --jyc-ref-text: var(--jyc-ref-night-ink);
+  --jyc-ref-text-muted: var(--jyc-ref-night-muted);
+  --jyc-ref-accent: var(--jyc-ref-gold-light);
+  --jyc-ref-accent-soft: var(--jyc-ref-gold-light);
+  --jyc-ref-border: var(--jyc-ref-night-line);
+}
+.public-app {
+  color: var(--jyc-ref-text);
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  overflow-wrap: anywhere;
+}
+html[data-theme="light"] body,
+html[data-theme="light"] .public-app {
+  color: var(--jyc-ref-ink);
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] .public-app {
+  color: var(--jyc-ref-night-ink);
+}
+.public-app :where(h1,h2,h3,h4,h5,h6) { text-wrap: balance; }
+.public-app :where(p,li) { max-width: var(--jyc-ref-reading-max); }
+.public-app :where(img,video,canvas,svg) { max-width: 100%; }
+.public-app :where(button,input,select,textarea) { font: inherit; }
+.public-app :where(a,button,input,select,textarea,[tabindex]):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--jyc-ref-accent) 78%, white 22%);
+  outline-offset: 3px;
+}
+.public-app .section,
+.public-app .section.page,
+.public-app .section:not(.home .section) {
+  width: min(var(--jyc-ref-content-max), calc(100% - 36px));
+  margin-inline: auto;
+}
+.public-app .section { padding-block: clamp(44px, 5.4vw, 68px); }
+.public-app .section-head,
+.public-app .reference-section-head { margin-bottom: 24px; }
+.public-app .section-head h2,
+.public-app .reference-section-head h2 {
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+  margin: 8px 0 10px;
+  font-weight: 720;
+}
+.public-app .section-head p,
+.public-app .reference-section-head p,
+.public-app .compact-page-head p,
+.public-app .clubs-page-head p,
+.public-app .events-page-head p,
+.public-app .hero-copy > p {
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.62;
+  max-width: var(--jyc-ref-reading-max);
+  color: var(--jyc-ref-text-muted);
+}
+.public-app .eyebrow,
+.public-app .section-kicker {
+  color: var(--jyc-ref-accent);
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.public-app .compact-page-head,
+.public-app .clubs-page-head,
+.public-app .events-page-head,
+.public-app .archive-hero,
+.public-app .team-hero-panel {
+  margin-block: 0 18px;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: var(--jyc-ref-radius);
+}
+.public-app .nav {
+  min-height: 68px;
+  border-bottom: 1px solid var(--jyc-ref-border);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+.public-app .nav-inner { min-height: 68px; }
+.public-app .nav nav button { font-size: 12px; letter-spacing: .025em; }
+.public-app .btn,
+.public-app .reference-view-all {
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 15px;
+  transition: transform .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.public-app .btn:hover,
+.public-app .reference-view-all:hover { transform: translateY(-2px); }
+html[data-theme="light"] .public-app .btn:not(.secondary),
+html[data-theme="light"] .public-app .reference-view-all {
+  color: #fff8ed;
+  background: #9a713d;
+  border-color: #9a713d;
+}
+html[data-theme="dark"] .public-app .btn:not(.secondary),
+html[data-theme="dark"] .public-app .reference-view-all {
+  color: #1a1510;
+  background: #c7a56d;
+  border-color: #c7a56d;
+}
+html[data-theme="light"] .public-app .btn.secondary {
+  color: #2b241c;
+  background: #fff9ef;
+  border-color: rgba(122, 88, 48, .28);
+}
+html[data-theme="dark"] .public-app .btn.secondary {
+  color: #f4ead8;
+  background: #15161b;
+  border-color: rgba(199, 165, 109, .28);
+}
+.public-app :where(.card,.featured,.contact-card,.hub-directory-card,.team-card-editorial,.event-context-card) {
+  border-radius: var(--jyc-ref-radius);
+}
+html[data-theme="light"] .public-app :where(.card,.featured,.contact-card,.hub-directory-card,.team-card-editorial) {
+  border-color: var(--jyc-ref-border);
+  box-shadow: 0 12px 34px rgba(78, 55, 31, .055);
+}
+html[data-theme="dark"] .public-app :where(.card,.featured,.contact-card,.hub-directory-card,.team-card-editorial) {
+  border-color: var(--jyc-ref-border);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .18);
+}
+.public-app :where(.card h3,.event-card h3,.club-card h3,.team-card-editorial h3) {
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+.public-app :where(.card p,.card-body p,.small-copy,.meta,.state p) {
+  color: var(--jyc-ref-text-muted);
+  line-height: 1.6;
+}
+.public-app :where(.tag,.chip,.pill) { letter-spacing: .035em; }
+.public-app .gallery-grid,
+.public-app .club-grid,
+.public-app .card-grid,
+.public-app .team-grid { align-items: stretch; }
+.public-app :where(.gallery-item,.archive-story-photo) { overflow: hidden; }
+.public-app :where(.gallery-item img,.archive-story-photo img) {
+  transition: transform .45s cubic-bezier(.2,.75,.25,1);
+}
+@media (hover:hover) {
+  .public-app :where(.gallery-item,.archive-story-photo):hover img { transform: scale(1.035); }
+}
+@media (max-width: 900px) {
+  .public-app .section,
+  .public-app .section.page,
+  .public-app .section:not(.home .section) {
+    width: min(var(--jyc-ref-content-max), calc(100% - 28px));
+  }
+  .public-app .section { padding-block: 42px; }
+  .public-app .nav { min-height: 62px; }
+  .public-app .nav-inner { min-height: 62px; }
+  .public-app .nav nav button { font-size: 11px; padding-inline: 9px; }
+}
+@media (max-width: 560px) {
+  .public-app .section,
+  .public-app .section.page,
+  .public-app .section:not(.home .section) {
+    width: calc(100% - 24px);
+  }
+  .public-app .section { padding-block: 34px; }
+  .public-app .section-head h2,
+  .public-app .reference-section-head h2 { font-size: clamp(27px, 7vw, 36px); }
+  .public-app .section-head p,
+  .public-app .reference-section-head p,
+  .public-app .compact-page-head p,
+  .public-app .clubs-page-head p,
+  .public-app .events-page-head p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-app .btn,
+  .public-app .reference-view-all,
+  .public-app :where(.gallery-item img,.archive-story-photo img) { transition: none; }
+  .public-app .btn:hover,
+  .public-app .reference-view-all:hover { transform: none; }
+}
