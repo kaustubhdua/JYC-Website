@@ -46,6 +46,8 @@ jobs:
       # Build first so photo-integrity QA validates generated manifest/derivative outputs.
       - name: Build production bundle and media derivatives
         run: npm run build
+      - name: Run assistant GLB asset contracts
+        run: npm run qa:assistant-assets
       - name: Verify responsive breakpoint contracts
         run: npm run qa:responsive
 
