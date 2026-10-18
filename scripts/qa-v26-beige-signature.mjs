@@ -57,8 +57,8 @@ check('production path does not fabricate demo content',main.includes('allowCont
 check('JYC identity remains explicit in the public hero',editorialHome.includes('jh-kicker')&&editorialHome.includes('JIIT YOUTH CLUB')&&editorialHome.includes('128'));
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
-check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/jyc-spatial.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
-check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/jyc-spatial.glb')).size===876764);
+check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/1780947277181-w2z6yhqv.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
+check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/1780947277181-w2z6yhqv.glb')).size===2660588);
 check('homepage team surface stays text-led while full team retains image support',editorialHome.includes('jh-team-monogram')&&!editorialHome.includes('m.photo||m.image')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
 check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
@@ -77,12 +77,12 @@ check('hub directory editorial preview exists',main.includes('hub-directory-stag
 check('event timeline preview exists',main.includes('EventTimelinePreview')&&main.includes('event-timeline-row'));
 const lock=JSON.parse(read('package-lock.json'));check('public image failure fallback prevents broken-image gaps',main.includes("dataset.jycFallback==='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('public image presentation is centered',read('src/jyc-logo-final-theme.css').includes('object-position:center')&&editorialCss.includes('object-position:center'));
-check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/jyc-spatial.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
+check('GLB stays fixed without camera controls',read('src/jyc-bot.jsx').includes('src="/models/1780947277181-w2z6yhqv.glb"')&&!read('src/jyc-bot.jsx').includes('camera-controls')&&!read('src/jyc-bot.jsx').includes('onPointerMove'));
 check('GLB click animation remains enabled',read('src/jyc-bot.jsx').includes("onClick={openAssistant}")&&read('src/jyc-bot.jsx').includes("const openAssistant=")&&read('src/jyc-bot.jsx').includes('triggerMotion(next[0],next[1],next[2])')&&read('src/jyc-bot.jsx').includes('availableAnimations'));
 check('GLB click path does not double-trigger pointer and keyboard animations',!read('src/jyc-bot.jsx').includes('onPointerDown={()=>triggerMotion')&&!read('src/jyc-bot.jsx').includes("onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){triggerMotion('is-tap'"));
 check('GLB animation stop timer prevents stacked playback timers',read('src/jyc-bot.jsx').includes('animationStopTimer')&&read('src/jyc-bot.jsx').includes('clearTimeout(animationStopTimer.current)'));
 check('GLB shadow cost is capped for smoother interaction',read('src/jyc-bot.jsx').includes('shadow-intensity="0.32"'));
-check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/jyc-spatial.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
+check('GLB avoids repeated asset HEAD probes and respects lite mode',!read('src/jyc-bot.jsx').includes("fetch('/models/1780947277181-w2z6yhqv.glb'")&&read('src/jyc-bot.jsx').includes("dataset.performance==='lite'")&&read('src/jyc-bot.jsx').includes('saveData'));
 check('homepage proof strip is explicit and non-fabricated',editorialHome.includes('01</b> DISCOVER')&&editorialHome.includes('02</b> PARTICIPATE')&&editorialHome.includes('03</b> BELONG'));
 check('release metadata is synchronized',pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version);
 
