@@ -1455,7 +1455,7 @@
 }
 
 @media (max-width: 680px) {
-  .jyc-editorial-home .jh-hero-actions .jh-btn:nth-child(3) { grid-column: 1 / -1; }
+  .jyc-editorial-home 
 }
 
 
