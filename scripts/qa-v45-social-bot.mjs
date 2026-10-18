@@ -58,18 +58,19 @@ const glbStructuralChecks=[
  [Boolean(modelJson)&&Array.isArray(modelJson.materials)&&modelJson.materials.length>0,'GLB contains materials'],
  [Boolean(modelJson)&&Array.isArray(modelJson.images)&&modelJson.images.length>0&&modelJson.images.every(i=>Number.isInteger(i.bufferView))&&Array.isArray(modelJson.bufferViews),'GLB textures/images are embedded using buffer views'],
  [Boolean(modelJson)&&Array.isArray(modelJson.buffers)&&modelJson.buffers.length>0&&modelJson.buffers.every(b=>Number.isInteger(b.byteLength)&&b.byteLength>0&&b.byteLength<=((binChunk?.length)||0)),'GLB buffer declarations fit the embedded binary chunk'],
+ [Boolean(modelJson)&&modelJson.extensionsUsed?.includes('EXT_texture_webp')&&modelJson.extensionsRequired?.includes('EXT_texture_webp')&&modelJson.textures?.filter(t=>Number.isInteger(t.extensions?.EXT_texture_webp?.source)).length===3,'embedded WebP textures use required EXT_texture_webp declarations'],
  [!modelError,'GLB chunk structure and glTF JSON parse without errors']
 ];
 const checks=[
  [pkg.version===lock.version&&pkg.version===lock.packages?.['']?.version,'release metadata matches lockfile'],
- [main.includes("import {JYCBot} from './jyc-bot.jsx';")&&!main.includes('function JYCBot('),'bot runtime is isolated from main.jsx'],
- [main.includes("import {FeaturedEventPopup} from './featured-event-popup.jsx';")&&main.includes('<FeaturedEventPopup/>'),'featured event popup is mounted in the public shell'],
+ [main.includes("const LazyJYCBot=lazy(()=>import('./jyc-bot.jsx').then(m=>({default:m.JYCBot})));")&&main.includes('<LazyJYCBot'),'bot runtime is isolated in a lazy-loaded launcher chunk'],
+ [main.includes("import {FeaturedEventPopup} from './featured-event-popup.jsx';")&&main.includes('<FeaturedEventPopup'),'featured event popup is mounted in the public shell'],
  [!main.includes('function FirstVisitTour(')&&!main.includes('<FirstVisitTour/>'),'obsolete first-visit tour does not compete with the persistent featured event'],
  [bot.includes('/models/1780947277181-w2z6yhqv.glb')&&bot.includes('camera-orbit="0deg 75deg auto"')&&bot.includes('disable-zoom'),'supplied bot uses a fixed, non-auto-rotating camera'],
  [bot.includes('is-wave')&&bot.includes('jycBotWave'),'bot click has a purposeful wave interaction'],
  [assistant.includes('rankSearchResults')&&assistant.includes('published JYC content first'),'assistant is source-grounded and reuses the public search relevance engine'],
  [popup.includes('unstop.com/o/XAfa40i')&&popup.includes('discord.gg/K6vrFAhMA')&&popup.includes('jiityouthclub128.in'),'JAI popup contains official registration, Discord and website routes'],
- [popup.includes('useState(true)')&&!popup.includes('storageGet'),'JAI popup is shown on every fresh public visit, including returning users'],
+ [popup.includes("const FEATURED_EVENT_DISMISS_KEY='jyc-featured-jai-2026-dismissed-until'")&&popup.includes('FEATURED_EVENT_DISMISS_MS=3*24*60*60*1000')&&popup.includes('EVENT_POPUP_DELAY_MS=10000')&&popup.includes("localStorage.getItem(FEATURED_EVENT_DISMISS_KEY)")&&popup.includes('min-width: 761px'),'featured JAI popup is delayed, desktop-gated and respects dismissal cooldown'],
  [socials.includes('@auraphotography.128')&&socials.includes('@eloquencej128')&&socials.includes('@cypherx_jiit')&&socials.includes('@arcadia_jiit')&&socials.includes('@vamunique'),'PDF-verified club Instagram handles are represented'],
  ...glbStructuralChecks
 ];
