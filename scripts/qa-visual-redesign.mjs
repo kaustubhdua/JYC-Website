@@ -6,6 +6,7 @@ const main = fs.readFileSync('src/main.jsx', 'utf8');
 const layer = fs.readFileSync('src/styles/jyc-editorial-motion-system.css', 'utf8');
 const home = fs.readFileSync('src/jyc-editorial-home.jsx', 'utf8');
 const homeCss = fs.readFileSync('src/jyc-editorial-home.css', 'utf8');
+const homeMobile = homeCss.slice(homeCss.indexOf('/* Responsive mobile composition:'), homeCss.indexOf('/* Exact browser-matrix regression fix:'));
 const dither = fs.readFileSync('src/react-bits/DitherVeil.jsx', 'utf8');
 const bot = fs.readFileSync('src/jyc-bot.jsx', 'utf8');
 const theme = fs.readFileSync('src/jyc-logo-final-theme.css', 'utf8');
@@ -31,6 +32,7 @@ const checks = [
   [dither.includes("addEventListener('webglcontextlost', handleContextLost, false)") && dither.includes("removeEventListener('webglcontextlost', handleContextLost, false)") && dither.includes("container.dataset.static = '1'"), 'Dither Veil falls back to the static logo when WebGL context is lost'],
   [dither.includes("document.addEventListener('visibilitychange', handleDocumentVisibility)") && dither.includes("document.removeEventListener('visibilitychange', handleDocumentVisibility)") && dither.includes('if (raf || !visible || document.hidden) return;'), 'Dither Veil pauses RAF while the document is hidden and resumes safely when visible'],
   [(() => { const ambient = homeCss.slice(homeCss.indexOf('.jh-ambient-orb {'), homeCss.indexOf('.jh-ambient-grid')); return ambient.includes('opacity: 0.12;') && (ambient.match(/animation: none;/g) || []).length === 3 && !ambient.includes('animation: jh-float'); })(), 'homepage ambient depth is static and restrained instead of three perpetual orb animations'],
+  [homeMobile.includes('font-size: 12px !important;') && homeMobile.includes('font-size: 15px !important;') && homeMobile.includes('clamp(36px, 9vw, 48px)') && homeMobile.includes('width: min(100%, 240px) !important;') && !homeMobile.includes('font-size: 8px !important;') && !homeMobile.includes('font-size: 7px !important;'), 'mobile hero preserves readable type and a recognisable logo plaque'],
   [layer.includes('@media(max-width:700px)'), 'single-column mobile hero is explicitly supported'],
   [layer.includes('@media(max-width:980px)'), 'tablet hero layout is explicitly supported'],
   [layer.includes('prefers-reduced-motion:reduce'), 'reduced-motion preferences are honored'],
