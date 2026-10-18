@@ -158,3 +158,7 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 ## 2026-10-18 — remove unused ambient effect code
 - Follow-up commit `0d576a4c7bba48193b7079497dbce0d4f636f3b1` removes the unused ambient backdrop/orb/grid CSS and both float keyframes entirely. The JSX had already stopped rendering this decoration; leaving the CSS would preserve dead code and a misleading promise of a layered cyber backdrop.
 - The homepage now relies on the art-directed hero and its single Dither Veil effect rather than unused global ambient animation rules. The source-contract test is being updated to ensure these obsolete rules do not return.
+
+
+## 2026-10-18 — remove residual homepage ambient overrides
+- Follow-up commit `ccc3980cefb79c018c993345bb51a01e6ed29a57` removes a second legacy rule group that reintroduced three ambient-orb selectors and a full-homepage brass radial gradient after the first cleanup. The homepage now uses its plain semantic canvas and the art-directed hero, without hidden ambient-effect CSS lingering later in the cascade.
