@@ -153,3 +153,8 @@ Candidate `664c54b05040b76fb96a0104aa86270fa72abc98`:
 ## 2026-10-18 — homepage pillar copy governance
 - Commit `7c4d326a8fc4ee7ffee51e9f3429ec4e1e3a5ec4` removes several unverified/out-of-registry club names and a misspelling from the homepage pillar copy. The categories now describe technical, cultural and literary activities without implying that OSDC, Knuth, uCR, Jhankaar or Crescendo are current published registry entries.
 - This is a content-trust correction; any named club or specific programme should be added only after it is verified against the canonical registry/approved material.
+
+
+## 2026-10-18 — remove unused ambient effect code
+- Follow-up commit `0d576a4c7bba48193b7079497dbce0d4f636f3b1` removes the unused ambient backdrop/orb/grid CSS and both float keyframes entirely. The JSX had already stopped rendering this decoration; leaving the CSS would preserve dead code and a misleading promise of a layered cyber backdrop.
+- The homepage now relies on the art-directed hero and its single Dither Veil effect rather than unused global ambient animation rules. The source-contract test is being updated to ensure these obsolete rules do not return.
