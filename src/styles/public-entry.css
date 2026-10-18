@@ -3,6 +3,7 @@
 @import '../jyc-design-upgrades.css';
 @import './jyc-pro-redesign.css';
 @import './jyc-visual-quality.css';
+@import './v23-reference-restoration.css';
 
 
 /* V68 — final shared-surface pass after legacy style layers. Keep the editorial home
@@ -379,6 +380,3 @@ html[data-theme="light"] .public-app .feature-hero :is(p,li,small){color:#D7D1C7
     gap:12px!important;
   }
 }
-
-/* User-approved V23.6 visual reference: canonical palette, type scale and rhythm. */
-@import './v23-reference-restoration.css';
