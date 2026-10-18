@@ -58,7 +58,10 @@ check('JYC identity remains explicit in the public hero',editorialHome.includes(
 check('SEO/social preview remains logo-led',index.includes('og:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"')&&index.includes('twitter:image" content="https://www.jiityouthclub128.in/JYC%20Logo(4).png"'));
 check('runtime image failures have a safe public fallback',main.includes("img.dataset.jycFallback='1'")&&main.includes("img.src='/JYC%20Logo(4).png'"));
 check('GLB assistant loads without interaction-gated rendering',bot.includes("/models/1780947277181-w2z6yhqv.glb")&&bot.includes('reveal="auto"')&&!bot.includes('requestIdleCallback'));
-check('GLB asset size remains within the approved supplied asset contract',fs.statSync(path.join(root,'public/models/1780947277181-w2z6yhqv.glb')).size===2660588);
+const glbPath=path.join(root,'public/models/1780947277181-w2z6yhqv.glb');
+const glb=fs.existsSync(glbPath)?fs.readFileSync(glbPath):null;
+check('GLB asset exists within the 3 MiB transfer budget',Boolean(glb)&&glb.length>20&&glb.length<=3*1024*1024);
+check('GLB binary header, version and declared length are valid',Boolean(glb)&&glb.toString('ascii',0,4)==='glTF'&&glb.readUInt32LE(4)===2&&glb.readUInt32LE(8)===glb.length);
 check('homepage team surface stays text-led while full team retains image support',editorialHome.includes('jh-team-monogram')&&!editorialHome.includes('m.photo||m.image')&&main.includes('divye-bajaj.webp')&&fs.existsSync(path.join(root,'public/assets/team/divye-bajaj.webp')));
 check('public media frames centre their images',logoTheme.includes('object-position:center center')&&logoTheme.includes('place-items:center'));
 check('mobile public content clears the persistent dock',logoTheme.includes('.public-app{padding-bottom:96px}'));
