@@ -56,3 +56,6 @@ No route is marked visually verified until a rendered browser screenshot has bee
 
 
 | R-017 | P2 | Homepage CSS cascade / unused visual layers | A later “editorial restoration” block reintroduced orb selectors and a radial background after the first ambient CSS cleanup, so the obsolete effect code was not fully removed. | Commit `ccc3980` removes the residual selectors and radial background; regression test checks for absence of ambient selectors/keyframes. Browser review still required. |
+
+
+| R-018 | P2 | Homepage hero / action hierarchy | The hero presented three equal-weight actions and added a special full-row mobile rule for the third, competing with the headline and logo. | Commits `08b786b` and `da16dec` retain Events and Clubs as the two primary journeys; Join JYC remains in its dedicated lower-page section. Mobile screenshot review pending. |
