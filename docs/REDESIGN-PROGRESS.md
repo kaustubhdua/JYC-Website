@@ -83,3 +83,12 @@ Latest branch head: `e51821edfd775ae85374467e89e41295b348b6ba`.
 - **Next:** fresh exact-head CI; fix resulting failures without weakening contracts; inspect real screenshots when browser access is available; proceed route-by-route with the shared design system, then accessibility/performance/release gates.
 
 - Fresh CI was triggered for code head `0417c0dc4992dafdab4519daadff890f523196f1`: JYC CI run `38992221749`, Browser QA `38992221751`, Quality Gate `38992221775`, CodeQL `38992221762`, Lighthouse CI `38992221745`. At last poll, JYC CI, Quality Gate and Lighthouse were in progress; Browser QA and CodeQL had no job details yet. Results are not yet known.
+
+
+## 2026-10-18 execution — global centering override
+- Created branch `fix/editorial-layout-centering-audit-2026-10-18` from `main`; no production deployment or merge performed.
+- Source audit found a late-loaded block in `src/jyc-logo-final-theme.css` that forced generic public headings, multiple card grids, event rows, and contact form labels/fields into centered alignment. This was a site-wide layout rule, not a gallery-only requirement, and risked flattening page-specific editorial hierarchy and making form reading/alignment awkward.
+- Replaced the global alignment rules with gallery-scoped alignment only; retained responsive gallery filter grouping. This is a focused CSS correction, not a claim that the full redesign is complete.
+- Commit: `51afbc8b63624b0571230540cc5b0321ccc3a565`.
+- Verification limitation: GitHub source was inspected, but this environment has not run Node 24, `npm ci`, browser screenshots, or the test suite against this commit. The PR/CI results must be checked before merge. Public routes remain visually unverified until exact-head screenshots are reviewed.
+- Still blocked/out of scope for this change: owner-reviewed gallery publishing rights/focal points; production domain DNS verification; independent screenshot review of the hero and all route/viewports.
