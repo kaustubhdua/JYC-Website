@@ -3,17 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import './JYC3DInteractiveExplorer.css';
 
 const HUBS = [
-  { id: 'cicr', name: 'CICR', family: 'Technical', role: 'Robotics, IoT & Automation', color: '#38bdf8', icon: '🤖', x: -145, y: -55, z: 45, members: '120+ Active', highlight: 'National Robowars & Autonomous Drones' },
-  { id: 'osdc', name: 'OSDC', family: 'Technical', role: 'Open Source & Dev Ecosystem', color: '#06b6d4', icon: '💻', x: -115, y: 75, z: -45, members: '250+ Devs', highlight: 'Open Source Hackathons & Git Workshops' },
-  { id: 'dronotics', name: 'Dronotics', family: 'Technical', role: 'UAV & Aerial Robotics', color: '#0ea5e9', icon: '🛸', x: -175, y: 25, z: 25, members: '80+ Pilots', highlight: 'Dron-O-War Championship & Quad Racing' },
-  { id: 'fortissimo', name: 'Fortissimo', family: 'Cultural', role: 'Music & Campus Live Bands', color: '#f43f5e', icon: '🎸', x: 135, y: -75, z: 55, members: '65+ Musicians', highlight: 'Battle of the Bands & Acoustic Jams' },
-  { id: 'vamunique', name: 'VamUnique', family: 'Cultural', role: 'Western, Hip-Hop & Classical Dance', color: '#ec4899', icon: '💃', x: 165, y: 35, z: -35, members: '90+ Dancers', highlight: 'Inter-College Dance Trophies & Flashmobs' },
-  { id: 'panache', name: 'Panache', family: 'Cultural', role: 'Fashion & Haute Couture Runway', color: '#fb7185', icon: '✨', x: 125, y: 95, z: 45, members: '50+ Models', highlight: 'Converge Runway Night & Style Showcases' },
-  { id: 'abhivyakti', name: 'Abhivyakti', family: 'Cultural', role: 'Dramatics & Street Theatre', color: '#d946ef', icon: '🎭', x: 95, y: -25, z: -65, members: '70+ Actors', highlight: 'Award-winning Nukkad Natak & Stage Plays' },
-  { id: 'aura', name: 'Aura', family: 'Creative', role: 'Photography & Visual Cinematography', color: '#f59e0b', icon: '📷', x: -25, y: -135, z: -45, members: '60+ Creators', highlight: 'Official Campus Media & Street Photo Walks' },
-  { id: 'aakriti', name: 'Aakriti', family: 'Creative', role: 'Fine Arts & Stage Installations', color: '#eab308', icon: '🎨', x: 45, y: -125, z: 45, members: '85+ Artists', highlight: 'Fest Set Design, Live Murals & Craft Art' },
-  { id: 'eloquence', name: 'Eloquence', family: 'Literary', role: 'Debate, MUN & Literary Arts', color: '#10b981', icon: '🖋️', x: -45, y: 135, z: 35, members: '75+ Orators', highlight: 'Grand Conclave MUN & Youth Parliamentary' },
-  { id: 'jsa', name: 'JSA Sports', family: 'Sports', role: 'Athletics, Football, Cricket & Esports', color: '#84cc16', icon: '🏆', x: 35, y: 145, z: -45, members: '300+ Athletes', highlight: 'Kshitij Annual Sports Tournament' }
+  { id: 'cicr', name: 'CICR', family: 'Technical', role: 'Robotics, IoT & Automation', color: '#FCD34D', icon: '🤖', x: -145, y: -55, z: 45, members: '120+ Active', highlight: 'National Robowars & Autonomous Drones' },
+  { id: 'jodc', name: 'JODC', family: 'Technical', role: 'Open Source & Dev Ecosystem', color: '#8B5CF6', icon: '💻', x: -115, y: 75, z: -45, members: '250+ Devs', highlight: 'Open Source Hackathons & Git Workshops' },
+  { id: 'dronotics', name: 'Dronotics', family: 'Technical', role: 'UAV & Aerial Robotics', color: '#0EA5E9', icon: '🛸', x: -175, y: 25, z: 25, members: '80+ Pilots', highlight: 'Dron-O-War Championship & Quad Racing' },
+  { id: 'rph', name: 'RPH', family: 'Technical', role: 'Algorithms & Competitive Programming', color: '#10B981', icon: '⚡', x: -130, y: -105, z: 15, members: '150+ Coders', highlight: 'Code Clash & ICPC Track' },
+  { id: 'cypherx', name: 'CypherX', family: 'Technical', role: 'Cybersecurity, Cryptography & CTFs', color: '#22C55E', icon: '🛡️', x: -85, y: 125, z: -15, members: '90+ Whitehats', highlight: 'Annual CTF & Vulnerability Research' },
+  { id: 'zencoders', name: 'Zencoders', family: 'Technical', role: 'Software Engineering & App Dev', color: '#2563EB', icon: '⚙️', x: -160, y: -15, z: -55, members: '110+ Builders', highlight: 'Production Web Apps & System Engineering' },
+  { id: 'neural-nexus', name: 'Neural Nexus', family: 'Technical', role: 'Artificial Intelligence & Machine Learning', color: '#D946EF', icon: '🧠', x: -95, y: -75, z: -65, members: '130+ Researchers', highlight: 'Agentic AI & Neural Hackathons' },
+  { id: 'gdg', name: 'GDG JIIT', family: 'Technical', role: 'Google Cloud, Android & Flutter', color: '#3B82F6', icon: '🌐', x: -150, y: 95, z: 35, members: '200+ Community', highlight: 'Google Solution Challenge & DevFests' },
+  { id: 'jiit-optica', name: 'JIIT Optica', family: 'Technical', role: 'Optics, Lasers & Applied Photonics', color: '#06B6D4', icon: '🔬', x: -70, y: -140, z: 35, members: '70+ Scholars', highlight: 'Optics Fair & International Conferences' },
+  { id: 'innovation', name: 'Innovation Hub', family: 'Technical', role: 'Maker Lab, Patents & Hardware Prototypes', color: '#EAB308', icon: '💡', x: -60, y: 45, z: 75, members: '85+ Makers', highlight: 'Startup Pitch & Hardware Hackdays' },
+
+  { id: 'fortissimo', name: 'Fortissimo', family: 'Cultural', role: 'Music & Campus Live Bands', color: '#F59E0B', icon: '🎸', x: 135, y: -75, z: 55, members: '65+ Musicians', highlight: 'Battle of the Bands & Acoustic Jams' },
+  { id: 'vamunique', name: 'VamUnique', family: 'Cultural', role: 'Western, Hip-Hop & Classical Dance', color: '#EC4899', icon: '💃', x: 165, y: 35, z: -35, members: '90+ Dancers', highlight: 'Inter-College Dance Trophies & Flashmobs' },
+  { id: 'panache', name: 'Panache', family: 'Cultural', role: 'Fashion & Haute Couture Runway', color: '#D4AF37', icon: '✨', x: 125, y: 95, z: 45, members: '50+ Models', highlight: 'Converge Runway Night & Style Showcases' },
+  { id: 'abhivyakti', name: 'Abhivyakti', family: 'Cultural', role: 'Dramatics & Street Theatre', color: '#DC2626', icon: '🎭', x: 95, y: -25, z: -65, members: '70+ Actors', highlight: 'Award-winning Nukkad Natak & Stage Plays' },
+  { id: 'bds', name: 'BDS', family: 'Cultural', role: 'Bhangra, Folk Rhythm & Energy', color: '#F97316', icon: '🔥', x: 155, y: -35, z: 25, members: '60+ Performers', highlight: 'National Folk Festivals & Dhol Showcases' },
+
+  { id: 'aura', name: 'Aura', family: 'Creative', role: 'Photography & Visual Cinematography', color: '#38BDF8', icon: '📷', x: -25, y: -135, z: -45, members: '60+ Creators', highlight: 'Official Campus Media & Street Photo Walks' },
+  { id: 'aakriti', name: 'Aakriti', family: 'Creative', role: 'Fine Arts & Stage Installations', color: '#F43F5E', icon: '🎨', x: 45, y: -125, z: 45, members: '85+ Artists', highlight: 'Fest Set Design, Live Murals & Craft Art' },
+  { id: 'cinekala', name: 'Cinekala', family: 'Creative', role: 'Filmmaking, Screenwriting & Documentaries', color: '#E11D48', icon: '🎬', x: 75, y: -85, z: -25, members: '55+ Directors', highlight: 'Short Film Festivals & 48-Hour Film Projects' },
+  { id: 'prismatic', name: 'Prismatic', family: 'Creative', role: 'Visual Branding, Motion & Graphic Design', color: '#6366F1', icon: '📐', x: 15, y: -155, z: 15, members: '70+ Designers', highlight: 'Converge Brand Identity & UI Design Labs' },
+
+  { id: 'eloquence', name: 'Eloquence', family: 'Literary', role: 'Debate, MUN & Literary Arts', color: '#C59B27', icon: '🖋️', x: -45, y: 135, z: 35, members: '75+ Orators', highlight: 'Grand Conclave MUN & Youth Parliamentary' },
+  { id: 'qriosity', name: 'Qriosity', family: 'Literary', role: 'Quizzing, General Knowledge & Trivia', color: '#0D9488', icon: '❓', x: 25, y: 125, z: 55, members: '50+ Quizzers', highlight: 'Inter-College Quiz Leagues & Business Quizzes' },
+
+  { id: 'jsa', name: 'JSA Sports', family: 'Sports', role: 'Athletics, Football, Cricket & Basketball', color: '#EF4444', icon: '🏆', x: 35, y: 145, z: -45, members: '300+ Athletes', highlight: 'Kshitij Annual Sports Tournament' },
+  { id: 'arcadia', name: 'Arcadia', family: 'Sports', role: 'Esports, Competitive Gaming & Lan Tournaments', color: '#A855F7', icon: '🎮', x: 75, y: 105, z: -25, members: '180+ Gamers', highlight: 'BGMI, Valorant & FIFA Campus Cups' }
 ];
 
 export function JYC3DInteractiveExplorer() {
