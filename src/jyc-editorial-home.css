@@ -1954,9 +1954,7 @@
   --jh-accent: #d45b60;
   --jh-accent-glow: rgba(212,91,96,.13);
   --jh-line: rgba(248,242,232,.14);
-  background:
-    radial-gradient(ellipse at 82% 10%,rgba(198,167,119,.10),transparent 34%),
-    #121113;
+  background: transparent !important;
 }
 [data-theme="dark"] .jyc-editorial-home.jyc-home .jh-hero-logo-plaque {
   background: radial-gradient(ellipse at 50% 40%,rgba(55,46,49,.98),rgba(28,25,28,.92) 62%,rgba(20,18,20,.95));
