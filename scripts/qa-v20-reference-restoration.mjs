@@ -23,7 +23,7 @@ assert.ok(browser.includes('JAI event does not advertise an expired registration
 assert.ok(main.includes("if(saved==='dark'||saved==='light')return saved;") && main.includes("return 'light';"), 'first visit must retain the approved warm V20 palette even when the OS requests dark mode');
 assert.ok(css.includes('grid-auto-flow: row dense !important') && css.includes('align-content: start !important'), 'photo wall must pack variable-height frames without avoidable empty grid tracks');
 assert.ok(css.includes('repeat(auto-fit, minmax(min(100%, 260px), 1fr))') && css.includes('.jyc-memory-card:focus-visible'), 'album cards must adapt to available width and remain keyboard visible');
-assert.ok(gallery.includes('const registrationOpen=(e)=>') && gallery.includes('{registrationOpen(e)&&<span className="jyc57-reg-pill">REGISTRATION OPEN ↗</span>}'), 'event directory must not claim registration is open after its deadline');
+assert.ok(gallery.includes('const registrationOpen=(e)=>') && gallery.includes('{registrationOpen(e)&&<span className="reg-badge">REGISTRATION OPEN ↗</span>}'), 'event directory must not claim registration is open after its deadline');
 assert.ok(gallery.includes('const photoObjectPosition=photo=>') && gallery.includes('objectPosition={photoObjectPosition(g)}') && gallery.includes('objectPosition={photoObjectPosition(selected)}'), 'gallery and lightbox must honor reviewed photo focal points when available');
 assert.ok(browser.includes('first visit keeps the V20 light palette even when OS requests dark') && browser.includes('event directory does not label JAI registration open after its deadline'), 'browser regressions must cover theme and registration status');
 
