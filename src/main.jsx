@@ -32,6 +32,7 @@ import {ResponsivePhoto} from './jyc-responsive-photo.jsx';
 import { teamPhotoFor } from './jyc-team-media.js';
 import {FeaturedEventPopup} from './featured-event-popup.jsx';
 import {JYC57Events,JYC57Clubs,JYC57Gallery,JYCBestOf} from './jyc57-experience.jsx';
+import {JYCConvergeLive} from './components/JYCConvergeLive.jsx';
 
 
 import {PUBLIC_TEAM_FALLBACK,JAI_OFFICIAL_MEDIA,PUBLIC_GALLERY_FALLBACK,PUBLIC_EVENT_FALLBACK} from './content/jyc-public-fallbacks.js';
@@ -723,7 +724,7 @@ function Routes({data,admin,session,setAdmin,commit,notify,theme,setTheme}){
  if(clean==='/achievements')return <>{schema}<Achievements data={data}/></>;
  if(clean==='/best-of-jyc')return <>{schema}<JYCBestOf data={data}/></>;
  if(clean==='/about')return <>{schema}<About data={data}/></>;if(clean==='/clubs')return <>{schema}<JYC57Clubs data={data}/></>;if(club)return <>{schema}<ClubDetail data={data} id={slugId} virtualName={hubKey||undefined}/></>;
- if(clean==='/events')return <>{schema}<JYC57Events data={data}/></>;if(clean==='/fests')return <>{schema}<FestsPage data={data}/></>;if(clean.startsWith('/events/')&&legacyEventRedirect)return <Navigate to={'/events/'+legacyEventRedirect} replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session} notify={notify}/></>;
+ if(clean==='/events')return <>{schema}<JYC57Events data={data}/></>;if(clean==='/fests')return <>{schema}<FestsPage data={data}/></>;if(clean==='/converge'||clean==='/converge-live')return <>{schema}<JYCConvergeLive data={data}/></>;if(clean.startsWith('/events/')&&legacyEventRedirect)return <Navigate to={'/events/'+legacyEventRedirect} replace/>;if(event&&parts[2]==='register')return <><RegistrationPage data={data} id={slugId} session={session}/></>;if(event)return <>{schema}<EventDetail data={data} id={slugId} session={session} notify={notify}/></>;
  if(clean==='/gallery'||clean.startsWith('/gallery/'))return <>{schema}<JYC57Gallery data={data}/></>;if(clean==='/leadership')return <Navigate to="/team" replace/>;if(clean==='/team')return <>{schema}<Team data={data}/></>;if(clean==='/contact')return <>{schema}<Contact data={data}/></>;if(clean==='/archive')return <>{schema}<Suspense fallback={<div className="jyc57-empty" role="status">Loading the JYC archive…</div>}><LazyJYC57Archive data={data}/></Suspense></>;
  if(clean==='/announcements')return <>{schema}<Announcements data={data}/></>;
  if(clean==='/updates')return <>{schema}<JYCNowPage data={data}/></>;
@@ -819,6 +820,7 @@ function MobileMoreSheet({data,admin,close,openSearch}){
  const go=p=>{close();nav(p)};
 const explore=[
     ['/about','About JYC','Purpose, communities, values and the JYC story'],
+    ['/converge','Converge Live Fest','Multi-arena schedule, leaderboard and live fest stream'],
     ['/team','Leadership','Faculty, Apex and Core Team'],
     ['/clubs','Clubs & Communities','Explore the official hub ecosystem'],
     ['/events','Events','Upcoming, ongoing and completed experiences'],
