@@ -4,6 +4,8 @@ The official production web platform for **JIIT Youth Club (JYC), JIIT Wish Town
 
 > **Notice: Closed Repository.** This repository is maintained exclusively by the authorized JYC 128 technical team. External contributions, pull requests, and public issues are not accepted.
 
+Current release: V64.5.12
+
 ---
 
 ## 🏛️ Platform Overview
