@@ -200,7 +200,7 @@ export function JYCAssistant({ data, onClose }) {
         <div className="jyc-assistant-head">
           <div className="jyc-assistant-brand">
             <span className="jyc-assistant-mark">
-              <img src={JYC_LOGO} alt="" onError={e => { e.currentTarget.src = "/assets/jyc-logo.avif"; }} />
+              <img src={JYC_LOGO} alt="" loading="lazy" decoding="async" onError={e => { e.currentTarget.src = "/assets/jyc-logo.avif"; }} />
             </span>
             <div>
               <div className="jyc-assistant-status-tag">
@@ -239,7 +239,7 @@ export function JYCAssistant({ data, onClose }) {
                 <div key={m.id} className={`chat-bubble-wrap ${m.sender}`}>
                   {m.sender === 'bot' && (
                     <div className="bot-avatar">
-                      <img src={JYC_LOGO} alt="" />
+                      <img src={JYC_LOGO} alt="" loading="lazy" decoding="async" />
                     </div>
                   )}
                   <div className="chat-bubble">
@@ -262,7 +262,7 @@ export function JYCAssistant({ data, onClose }) {
               ))}
               {isTyping && (
                 <div className="chat-bubble-wrap bot">
-                  <div className="bot-avatar"><img src={JYC_LOGO} alt="" /></div>
+                  <div className="bot-avatar"><img src={JYC_LOGO} alt="" loading="lazy" decoding="async" /></div>
                   <div className="chat-bubble typing">
                     <span /><span /><span />
                   </div>
